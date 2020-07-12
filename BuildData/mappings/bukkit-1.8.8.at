@@ -1,0 +1,150 @@
+public net/minecraft/server/BlockDispenser/dispense(Lnet/minecraft/server/World;Lnet/minecraft/server/BlockPosition;)V
+
+# No inheritance in AT :(
+public net/minecraft/server/BlockDropper/dispense(Lnet/minecraft/server/World;Lnet/minecraft/server/BlockPosition;)V
+
+public net/minecraft/server/BlockJukeBox/dropRecord(Lnet/minecraft/server/World;Lnet/minecraft/server/BlockPosition;Lnet/minecraft/server/IBlockData;)V
+
+public net/minecraft/server/BlockRedstoneWire/getPower(Lnet/minecraft/server/World;Lnet/minecraft/server/BlockPosition;I)I
+
+public net/minecraft/server/Chunk/world
+public net/minecraft/server/Chunk/heightMap
+public net/minecraft/server/Chunk/tileEntities
+public net/minecraft/server/Chunk/entitySlices
+
+public net/minecraft/server/ChunkProviderServer/emptyChunk
+public net/minecraft/server/ChunkProviderServer/chunkProvider
+public net/minecraft/server/ChunkProviderServer/world
+public net/minecraft/server/ChunkProviderServer/loadChunk(II)Lnet/minecraft/server/Chunk;
+public net/minecraft/server/ChunkProviderServer/saveChunkNOP(Lnet/minecraft/server/Chunk;)V
+public net/minecraft/server/ChunkProviderServer/saveChunk(Lnet/minecraft/server/Chunk;)V
+
+public net/minecraft/server/ContainerDispenser/items
+
+public-final net/minecraft/server/CraftingManager/recipes
+public net/minecraft/server/CraftingManager/<init>()V
+
+public net/minecraft/server/DedicatedServer/propertyManager
+
+public net/minecraft/server/Entity/fireTicks
+public net/minecraft/server/Entity/setSize(FF)V
+
+public net/minecraft/server/EntityArmorStand/headPose
+public net/minecraft/server/EntityArmorStand/bodyPose
+public net/minecraft/server/EntityArmorStand/leftArmPose
+public net/minecraft/server/EntityArmorStand/rightArmPose
+public net/minecraft/server/EntityArmorStand/leftLegPose
+public net/minecraft/server/EntityArmorStand/rightLegPose
+public net/minecraft/server/EntityArmorStand/setSmall(Z)V
+public net/minecraft/server/EntityArmorStand/setGravity(Z)V
+public net/minecraft/server/EntityArmorStand/setArms(Z)V
+public net/minecraft/server/EntityArmorStand/setBasePlate(Z)V
+
+public net/minecraft/server/EntityArrow/knockbackStrength
+
+public net/minecraft/server/EntityEnderDragon/target
+
+public net/minecraft/server/EntityExperienceOrb/value
+
+public net/minecraft/server/EntityFireworks/expectedLifespan
+
+public net/minecraft/server/EntityGuardian/goalRandomStroll
+public net/minecraft/server/EntityGuardian/initAttributes()V
+
+public net/minecraft/server/EntityHanging/blockPosition
+public net/minecraft/server/EntityHanging/setDirection(Lnet/minecraft/server/EnumDirection;)V
+
+public net/minecraft/server/EntityHorse/attributeJumpStrength
+public net/minecraft/server/EntityHorse/inventoryChest
+public net/minecraft/server/EntityHorse/loadChest()V
+
+public net/minecraft/server/EntityHuman/sleeping
+public net/minecraft/server/EntityHuman/sleepTicks
+public net/minecraft/server/EntityHuman/closeInventory()V
+
+public-final net/minecraft/server/EntityInsentient/goalSelector
+public-final net/minecraft/server/EntityInsentient/targetSelector
+public net/minecraft/server/EntityInsentient/dropChances
+public net/minecraft/server/EntityInsentient/canPickUpLoot
+public net/minecraft/server/EntityInsentient/persistent
+
+public net/minecraft/server/EntityItem/pickupDelay
+
+public net/minecraft/server/EntityLiving/combatTracker
+public net/minecraft/server/EntityLiving/effects
+public net/minecraft/server/EntityLiving/killer
+public net/minecraft/server/EntityLiving/lastDamage
+public net/minecraft/server/EntityLiving/updateEffects
+public net/minecraft/server/EntityLiving/lastDamager
+public net/minecraft/server/EntityLiving/hurtTimestamp
+
+public net/minecraft/server/EntityPigZombie/angerLevel
+
+public net/minecraft/server/EntityPlayer/removeQueue
+public net/minecraft/server/EntityPlayer/lastSentExp
+public net/minecraft/server/EntityPlayer/invulnerableTicks
+
+public net/minecraft/server/EntityPotion/item
+
+public net/minecraft/server/EntityProjectile/shooter
+public net/minecraft/server/EntityProjectile/shooterName
+
+public net/minecraft/server/EntitySlime/setSize(I)V
+
+public net/minecraft/server/EntityTracker/trackedEntities
+
+public net/minecraft/server/EntityVillager/inventory
+
+public net/minecraft/server/Explosion/source
+
+public net/minecraft/server/FoodMetaData/foodLevel
+public net/minecraft/server/FoodMetaData/saturationLevel
+public net/minecraft/server/FoodMetaData/exhaustionLevel
+
+public net/minecraft/server/InventoryLargeChest/left
+public net/minecraft/server/InventoryLargeChest/right
+
+public net/minecraft/server/InventorySubcontainer/items
+
+public net/minecraft/server/JsonListEntry/getKey()Ljava/lang/Object;
+
+public net/minecraft/server/MinecraftServer/LOGGER
+public-final net/minecraft/server/MinecraftServer/convertable
+public-final net/minecraft/server/MinecraftServer/universe
+
+public net/minecraft/server/MobSpawnerAbstract/spawnDelay
+public net/minecraft/server/MobSpawnerAbstract/getMobName()Ljava/lang/String;
+
+public net/minecraft/server/NetworkManager/channel
+
+public net/minecraft/server/PacketHandshakingInSetProtocol/hostname
+public net/minecraft/server/PacketHandshakingInSetProtocol/port
+
+public net/minecraft/server/PacketPlayOutBlockChange/block
+
+public net/minecraft/server/PacketPlayOutSpawnPosition/position
+
+public net/minecraft/server/PlayerAbilities/flySpeed
+public net/minecraft/server/PlayerAbilities/walkSpeed
+
+public net/minecraft/server/PlayerList/players
+public net/minecraft/server/PlayerList/playerFileData
+public net/minecraft/server/PlayerList/sendScoreboard(Lnet/minecraft/server/ScoreboardServer;Lnet/minecraft/server/EntityPlayer;)V
+
+public net/minecraft/server/PropertyManager/properties
+
+public net/minecraft/server/RecipesFurnace/recipes
+
+public net/minecraft/server/Slot/index
+
+public net/minecraft/server/TileEntityBanner/color
+public net/minecraft/server/TileEntityBanner/patterns
+
+public net/minecraft/server/TileEntityBrewingStand/brewTime
+
+public net/minecraft/server/TileEntityFurnace/burnTime
+public net/minecraft/server/TileEntityFurnace/cookTime
+
+public net/minecraft/server/TileEntitySign/isEditable
+
+public-final net/minecraft/server/WorldServer/tracker
