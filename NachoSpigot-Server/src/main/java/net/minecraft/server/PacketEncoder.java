@@ -1,6 +1,6 @@
 package net.minecraft.server;
 
-import club.nachospigot.commons.ExploitException;
+import dev.cobblesword.nachospigot.ExploitException;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;

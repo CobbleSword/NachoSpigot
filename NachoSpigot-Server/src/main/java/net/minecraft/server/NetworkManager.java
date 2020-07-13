@@ -1,9 +1,8 @@
 package net.minecraft.server;
 
-import club.nachospigot.commons.ExploitException;
+import dev.cobblesword.nachospigot.ExploitException;
 import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.mojang.authlib.properties.Property;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
