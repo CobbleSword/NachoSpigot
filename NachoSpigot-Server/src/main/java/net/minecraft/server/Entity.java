@@ -1208,6 +1208,7 @@ public abstract class Entity implements ICommandListener {
     public void b(Entity entity, int i) {}
 
     public boolean c(NBTTagCompound nbttagcompound) {
+        if(this instanceof EntityFireworks || this instanceof EntityArrow)return false; // YAPFA - Don't save arrows or fireworks
         String s = this.ag();
 
         if (!this.dead && s != null) {
