@@ -165,6 +165,7 @@ public abstract class EntityLiving extends Entity {
         super.a(d0, flag, block, blockposition);
     }
 
+    public boolean canBreatheUnderwater() { return this.aY(); } // Paper - OBFHELPER
     public boolean aY() {
         return false;
     }
@@ -195,7 +196,7 @@ public abstract class EntityLiving extends Entity {
 
         if (this.isAlive()) {
             if (this.a(Material.WATER)) {
-                if (!this.aY() && !this.hasEffect(MobEffectList.WATER_BREATHING.id) && !flag1) {
+                if (!this.canBreatheUnderwater() && !this.hasEffect(MobEffectList.WATER_BREATHING.id) && !flag1) { // Paper - use OBFHELPER so it can be overridden
                     this.setAirTicks(this.j(this.getAirTicks()));
                     if (this.getAirTicks() == -20) {
                         this.setAirTicks(0);

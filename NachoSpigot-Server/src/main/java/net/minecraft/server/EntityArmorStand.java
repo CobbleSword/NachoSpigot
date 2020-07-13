@@ -208,6 +208,10 @@ public class EntityArmorStand extends EntityLiving {
 
     }
 
+    public boolean canBreatheUnderwater() { // Skips a bit of damage handling code, probably a micro-optimization
+        return true;
+    }
+
     private NBTTagCompound z() {
         NBTTagCompound nbttagcompound = new NBTTagCompound();
 
