@@ -4,11 +4,12 @@ Since both Paper and Spigot no longer support the version.
 
 ## Backported Patches
 ```
-[Paper-0102] Faster redstone torch rapid clock removal by Martin Panzer.
 [Paper-0097] Don't save empty scoreboard teams to scoreboard.dat by Aikar
 [Paper-0100] Avoid blocking on Network Manager creation by Aikar
+[Paper-0102] Faster redstone torch rapid clock removal by Martin Panzer.
 [Paper-0122] Don't let fishinghooks use portals by Zach Brown
 [Paper-0125] Optimize World.isLoaded(BlockPosition)Z by Aikar
+[Paper-0125] Improve Maps (in item frames) performance and bug fixes by Aikar
 [Paper-0141] Do not let armorstands drown
 [Paper-0164] [MC-117075] TE Unload Lag Spike by mezz
 [Paper-0313] Optimize World Time Updates by Aikar
