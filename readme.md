@@ -17,6 +17,8 @@ Since both Paper and Spigot no longer support the version.
 [Nacho-0001] Remove stream usage when counting entities
 [Nacho-0002] Check if the fuel is coal first before checking others
 [Nacho-0003] Disable Snooper
+
+[YAPFA-0030] Don't save Fireworks and Arrows by tr7zw
 ```
 
 ## Discord
