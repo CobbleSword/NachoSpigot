@@ -10,15 +10,14 @@ import org.bukkit.event.block.BlockRedstoneEvent; // CraftBukkit
 
 public class BlockRedstoneTorch extends BlockTorch {
 
-    private static Map<World, List<BlockRedstoneTorch.RedstoneUpdateInfo>> b = new java.util.WeakHashMap(); // Spigot
     private final boolean isOn;
 
     private boolean a(World world, BlockPosition blockposition, boolean flag) {
-        if (!BlockRedstoneTorch.b.containsKey(world)) {
-            BlockRedstoneTorch.b.put(world, Lists.<BlockRedstoneTorch.RedstoneUpdateInfo>newArrayList()); // CraftBukkit - fix decompile error
+        java.util.ArrayDeque<BlockRedstoneTorch.RedstoneUpdateInfo> list = world.redstoneUpdateInfos;
+        if(list == null)
+        {
+            list = world.redstoneUpdateInfos = new java.util.ArrayDeque<>();
         }
-
-        List list = (List) BlockRedstoneTorch.b.get(world);
 
         if (flag) {
             list.add(new BlockRedstoneTorch.RedstoneUpdateInfo(blockposition, world.getTime()));
@@ -26,8 +25,8 @@ public class BlockRedstoneTorch extends BlockTorch {
 
         int i = 0;
 
-        for (int j = 0; j < list.size(); ++j) {
-            BlockRedstoneTorch.RedstoneUpdateInfo blockredstonetorch_redstoneupdateinfo = (BlockRedstoneTorch.RedstoneUpdateInfo) list.get(j);
+        for (java.util.Iterator<BlockRedstoneTorch.RedstoneUpdateInfo> iterator = list.iterator(); iterator.hasNext();) {
+            BlockRedstoneTorch.RedstoneUpdateInfo blockredstonetorch_redstoneupdateinfo = iterator.next();
 
             if (blockredstonetorch_redstoneupdateinfo.a.equals(blockposition)) {
                 ++i;
@@ -114,11 +113,17 @@ public class BlockRedstoneTorch extends BlockTorch {
 
     public void b(World world, BlockPosition blockposition, IBlockData iblockdata, Random random) {
         boolean flag = this.g(world, blockposition, iblockdata);
-        List list = (List) BlockRedstoneTorch.b.get(world);
-
-        while (list != null && !list.isEmpty() && world.getTime() - ((BlockRedstoneTorch.RedstoneUpdateInfo) list.get(0)).b > 60L) {
-            list.remove(0);
+        // Paper start
+        java.util.ArrayDeque<BlockRedstoneTorch.RedstoneUpdateInfo> redstoneUpdateInfos = world.redstoneUpdateInfos;
+        if (redstoneUpdateInfos != null)
+        {
+            BlockRedstoneTorch.RedstoneUpdateInfo curr;
+            while ((curr = redstoneUpdateInfos.peek()) != null && world.getTime() - curr.getTime() > 60L)
+            {
+                redstoneUpdateInfos.poll();
+            }
         }
+        // Paper end
 
         // CraftBukkit start
         org.bukkit.plugin.PluginManager manager = world.getServer().getPluginManager();
@@ -197,7 +202,7 @@ public class BlockRedstoneTorch extends BlockTorch {
     static class RedstoneUpdateInfo {
 
         BlockPosition a;
-        long b;
+        long b;  final long getTime() { return this.b; } // Paper - OBFHELPER
 
         public RedstoneUpdateInfo(BlockPosition blockposition, long i) {
             this.a = blockposition;
