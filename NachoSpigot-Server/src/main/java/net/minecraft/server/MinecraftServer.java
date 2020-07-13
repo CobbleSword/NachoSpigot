@@ -749,16 +749,16 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
         this.methodProfiler.a("tallying");
         this.h[this.ticks % 100] = System.nanoTime() - i;
         this.methodProfiler.b();
-        this.methodProfiler.a("snooper");
-        if (getSnooperEnabled() && !this.n.d() && this.ticks > 100) {  // Spigot
-            this.n.a();
-        }
-
-        if (getSnooperEnabled() && this.ticks % 6000 == 0) { // Spigot
-            this.n.b();
-        }
-
-        this.methodProfiler.b();
+//        this.methodProfiler.a("snooper");
+//        if (false && getSnooperEnabled() && !this.n.d() && this.ticks > 100) {  // Spigot
+//            this.n.a();
+//        }
+//
+//        if (false && getSnooperEnabled() && this.ticks % 6000 == 0) { // Spigot
+//            this.n.b();
+//        }
+//
+//        this.methodProfiler.b();
         this.methodProfiler.b();
         org.spigotmc.WatchdogThread.tick(); // Spigot
         co.aikar.timings.TimingsManager.FULL_SERVER_TICK.stopTiming(); // Spigot
