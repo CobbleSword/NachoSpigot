@@ -13,6 +13,8 @@ Since both Paper and Spigot no longer support the version.
 [Paper-0164] [MC-117075] TE Unload Lag Spike by mezz
 [Paper-0389] performance improvement for Chunk.getEntities by wea_ondara
 [Paper-0539] Optimize NetworkManager Exception Handling by Andrew Steinborn
+
+[Nacho-0001] Remove stream usage when counting entities
 ```
 
 ## Discord
