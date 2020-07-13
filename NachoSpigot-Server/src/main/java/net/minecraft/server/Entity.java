@@ -117,7 +117,7 @@ public abstract class Entity implements ICommandListener {
     public boolean ah;
     public boolean ai;
     public int portalCooldown;
-    protected boolean ak;
+    protected boolean ak; public final boolean inPortal() { return this.ak; } // Paper - OBFHELPER
     protected int al;
     public int dimension;
     protected BlockPosition an;

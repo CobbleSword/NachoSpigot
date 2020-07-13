@@ -360,6 +360,9 @@ public class EntityFishingHook extends Entity {
                 this.motY *= (double) f2;
                 this.motZ *= (double) f2;
                 this.setPosition(this.locX, this.locY, this.locZ);
+
+                if (inPortal())
+                    die();
             }
         }
     }
