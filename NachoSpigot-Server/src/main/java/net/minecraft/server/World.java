@@ -1492,9 +1492,15 @@ public abstract class World implements IBlockAccess {
         this.M = true;
         // CraftBukkit start - From below, clean up tile entities before ticking them
         if (!this.c.isEmpty()) {
-            this.tileEntityList.removeAll(this.c);//c  == tileEntityListUnload
+
+            // Paper start - Use alternate implementation with faster contains
+            java.util.Set<TileEntity> toRemove = java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<>());
+            toRemove.addAll(this.getTileEntityListUnload());
+            this.getTileEntityListUnload().removeAll(toRemove);
+            // Paper end
+//            this.tileEntityList.removeAll(this.c);//c  == tileEntityListUnload
             //this.h.removeAll(this.c); // PaperSpigot - Remove unused list
-            this.c.clear();
+            this.getTileEntityListUnload().clear();
         }
         // CraftBukkit end
 
