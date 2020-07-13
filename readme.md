@@ -10,6 +10,7 @@ Since both Paper and Spigot no longer support the version.
 [Paper-0122] Don't let fishinghooks use portals by Zach Brown
 [Paper-0125] Optimize World.isLoaded(BlockPosition)Z by Aikar
 [Paper-0141] Do not let armorstands drown
+[Paper-0164] [MC-117075] TE Unload Lag Spike by mezz
 ```
 
 ## Discord

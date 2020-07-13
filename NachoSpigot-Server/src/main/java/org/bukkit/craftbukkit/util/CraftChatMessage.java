@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import dev.cobblesword.nachospigot.ExploitException;
+import dev.cobblesword.nachospigot.exception.ExploitException;
 import net.minecraft.server.ChatClickable;
 import net.minecraft.server.ChatComponentText;
 import net.minecraft.server.ChatModifier;

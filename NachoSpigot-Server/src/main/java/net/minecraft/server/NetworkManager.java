@@ -1,6 +1,6 @@
 package net.minecraft.server;
 
-import dev.cobblesword.nachospigot.ExploitException;
+import dev.cobblesword.nachospigot.exception.ExploitException;
 import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.netty.channel.Channel;
