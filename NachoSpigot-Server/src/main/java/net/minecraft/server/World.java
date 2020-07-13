@@ -63,7 +63,7 @@ public abstract class World implements IBlockAccess {
     //public final List<TileEntity> h = Lists.newArrayList(); // PaperSpigot - Remove unused list
     public final List<TileEntity> tileEntityList = Lists.newArrayList();
     private final List<TileEntity> b = Lists.newArrayList();
-    private final Set<TileEntity> c = Sets.newHashSet(); // Paper
+    private final Set<TileEntity> c = Sets.newHashSet(); public Set<TileEntity> getTileEntityListUnload() { return c; }// Paper
     public final List<EntityHuman> players = Lists.newArrayList();
     public final List<Entity> k = Lists.newArrayList();
     protected final IntHashMap<Entity> entitiesById = new IntHashMap();
@@ -1492,7 +1492,7 @@ public abstract class World implements IBlockAccess {
         this.M = true;
         // CraftBukkit start - From below, clean up tile entities before ticking them
         if (!this.c.isEmpty()) {
-            this.tileEntityList.removeAll(this.c);
+            this.tileEntityList.removeAll(this.c);//c  == tileEntityListUnload
             //this.h.removeAll(this.c); // PaperSpigot - Remove unused list
             this.c.clear();
         }
