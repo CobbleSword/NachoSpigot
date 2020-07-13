@@ -3,16 +3,16 @@ package net.minecraft.server;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 // CraftBukkit start
-import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.map.CraftMapView;
+import org.bukkit.entity.Player;
 // CraftBukkit end
 
 public class WorldMap extends PersistentBase {
@@ -25,6 +25,7 @@ public class WorldMap extends PersistentBase {
     public List<WorldMap.WorldMapHumanTracker> g = Lists.newArrayList();
     public Map<EntityHuman, WorldMap.WorldMapHumanTracker> i = Maps.newHashMap(); // Spigot
     public Map<UUID, MapIcon> decorations = Maps.newLinkedHashMap(); // Spigot
+    private org.bukkit.craftbukkit.map.RenderData vanillaRender = new org.bukkit.craftbukkit.map.RenderData(); // Paper
 
     // CraftBukkit start
     public final CraftMapView mapView;
@@ -37,6 +38,7 @@ public class WorldMap extends PersistentBase {
         // CraftBukkit start
         mapView = new CraftMapView(this);
         server = (CraftServer) org.bukkit.Bukkit.getServer();
+        vanillaRender.buffer = colors; // Paper
         // CraftBukkit end
     }
 
@@ -104,7 +106,7 @@ public class WorldMap extends PersistentBase {
                 }
             }
         }
-
+        this.vanillaRender.buffer = this.colors;
     }
 
     public void b(NBTTagCompound nbttagcompound) {
@@ -134,6 +136,11 @@ public class WorldMap extends PersistentBase {
         nbttagcompound.setShort("width", (short) 128);
         nbttagcompound.setShort("height", (short) 128);
         nbttagcompound.setByteArray("colors", this.colors);
+    }
+
+    public void updateSeenPlayers(EntityHuman entityhuman, ItemStack itemstack)
+    {
+        this.a(entityhuman, itemstack);
     }
 
     public void a(EntityHuman entityhuman, ItemStack itemstack) {
@@ -275,11 +282,15 @@ public class WorldMap extends PersistentBase {
             this.trackee = entityhuman;
         }
 
-        public Packet a(ItemStack itemstack) {
+        public Packet<?> a(ItemStack itemstack) {
             // CraftBukkit start
-            org.bukkit.craftbukkit.map.RenderData render = WorldMap.this.mapView.render((org.bukkit.craftbukkit.entity.CraftPlayer) this.trackee.getBukkitEntity()); // CraftBukkit
+            // org.bukkit.craftbukkit.map.RenderData render = WorldMap.this.mapView.render((org.bukkit.craftbukkit.entity.CraftPlayer) this.trackee.getBukkitEntity()); // CraftBukkit
+            if (!this.d && this.i % 5 != 0) { this.i++; return null; } // Paper - this won't end up sending, so don't render it!
+            boolean vanillaMaps = shouldUseVanillaMap(); // Paper
+            org.bukkit.craftbukkit.map.RenderData render = !vanillaMaps ? WorldMap.this.mapView.render((org.bukkit.craftbukkit.entity.CraftPlayer) this.trackee.getBukkitEntity()) : WorldMap.this.vanillaRender; // CraftBukkit // Paper
 
             java.util.Collection<MapIcon> icons = new java.util.ArrayList<MapIcon>();
+            if (vanillaMaps) addSeenPlayers(icons); // Paper
 
             for ( org.bukkit.map.MapCursor cursor : render.cursors) {
 
@@ -295,6 +306,20 @@ public class WorldMap extends PersistentBase {
                 return this.i++ % 5 == 0 ? new PacketPlayOutMap(itemstack.getData(), WorldMap.this.scale, icons, render.buffer, 0, 0, 0, 0) : null;
             }
             // CraftBukkit end
+        }
+
+        private void addSeenPlayers(Collection<MapIcon> icons)
+        {
+            Player player = (Player) this.trackee.getBukkitEntity();
+            WorldMap.this.decorations.forEach((uuid, mapIcon) -> {
+                Player other = Bukkit.getPlayer(uuid);
+                if (other == null || player.canSee(other))
+                    icons.add(mapIcon);
+            });
+        }
+
+        private boolean shouldUseVanillaMap() {
+            return mapView.getRenderers().size() == 1 && mapView.getRenderers().get(0).getClass() == org.bukkit.craftbukkit.map.CraftMapRenderer.class;
         }
 
         public void a(int i, int j) {

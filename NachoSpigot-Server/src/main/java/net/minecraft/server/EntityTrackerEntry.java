@@ -84,11 +84,11 @@ public class EntityTrackerEntry {
             this.broadcast(new PacketPlayOutAttachEntity(0, this.tracker, this.tracker.vehicle));
         }
 
-        if (this.tracker instanceof EntityItemFrame /*&& this.m % 10 == 0*/) { // CraftBukkit - Moved below, should always enter this block
+        if (this.tracker instanceof EntityItemFrame && this.m % 20 == 0) { // Paper
             EntityItemFrame entityitemframe = (EntityItemFrame) this.tracker;
             ItemStack itemstack = entityitemframe.getItem();
 
-            if (this.m % 10 == 0 && itemstack != null && itemstack.getItem() instanceof ItemWorldMap) { // CraftBukkit - Moved this.m % 10 logic here so item frames do not enter the other blocks
+            if (itemstack != null && itemstack.getItem() instanceof ItemWorldMap) { // Paper - moved back up
                 WorldMap worldmap = Items.FILLED_MAP.getSavedMap(itemstack, this.tracker.world);
                 Iterator iterator = this.trackedPlayers.iterator(); // CraftBukkit
 

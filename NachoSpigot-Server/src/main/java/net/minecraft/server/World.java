@@ -1108,6 +1108,7 @@ public abstract class World implements IBlockAccess {
                     {
                         if ( iter.next().trackee == entity )
                         {
+                            map.decorations.remove(entity.getUniqueID()); // Paper
                             iter.remove();
                         }
                     }
