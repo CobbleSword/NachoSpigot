@@ -798,15 +798,36 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
 
         SpigotTimings.timeUpdateTimer.startTiming(); // Spigot
         // Send time updates to everyone, it will get the right time from the world the player is in.
-        if (this.ticks % 20 == 0) {
-            for (int i = 0; i < this.getPlayerList().players.size(); ++i) {
-                EntityPlayer entityplayer = (EntityPlayer) this.getPlayerList().players.get(i);
-                entityplayer.playerConnection.sendPacket(new PacketPlayOutUpdateTime(entityplayer.world.getTime(), entityplayer.getPlayerTime(), entityplayer.world.getGameRules().getBoolean("doDaylightCycle"))); // Add support for per player time
+        // Paper start - optimize time updates
+        int i;
+
+        if ((this.ticks % 20) == 0)
+        {
+            for (i = 0; i < this.worlds.size(); ++i) {
+                WorldServer world = this.worlds.get(i);
+
+                final boolean doDaylight = world.getGameRules().getBoolean("doDaylightCycle");
+                final long dayTime = world.getDayTime();
+                long worldTime = world.getTime();
+                final PacketPlayOutUpdateTime worldPacket = new PacketPlayOutUpdateTime(worldTime, dayTime, doDaylight);
+                for (EntityHuman entityhuman : world.players) {
+                    if (!(entityhuman instanceof EntityPlayer)) {//|| (ticks + entityhuman.getId()) % 20 != 0
+                        continue;
+                    }
+
+                    if (entityhuman.world == world)
+                    {
+                        EntityPlayer entityplayer = (EntityPlayer) entityhuman;
+                        long playerTime = entityplayer.getPlayerTime();
+                        PacketPlayOutUpdateTime packet = (playerTime == dayTime) ? worldPacket : new PacketPlayOutUpdateTime(worldTime, playerTime, doDaylight);
+                        entityplayer.playerConnection.sendPacket(packet); // Add support for per player time
+                    }
+                }
             }
         }
         SpigotTimings.timeUpdateTimer.stopTiming(); // Spigot
 
-        int i;
+
 
         for (i = 0; i < this.worlds.size(); ++i) {
             long j = System.nanoTime();
