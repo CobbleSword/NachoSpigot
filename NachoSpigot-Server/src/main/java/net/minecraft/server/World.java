@@ -296,7 +296,8 @@ public abstract class World implements IBlockAccess {
     }
 
     public boolean isLoaded(BlockPosition blockposition) {
-        return this.a(blockposition, true);
+        return getChunkIfLoaded(blockposition.getX() >> 4, blockposition.getZ() >> 4) != null; // Paper
+        //return this.a(blockposition, true);
     }
 
     public boolean a(BlockPosition blockposition, boolean flag) {
