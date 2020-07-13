@@ -23,6 +23,8 @@ import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
+import dev.cobblesword.nachospigot.Nacho;
+import lombok.Getter;
 import net.minecraft.server.*;
 
 import org.bukkit.BanList;
@@ -165,6 +167,8 @@ public final class CraftServer implements Server {
     private final UUID invalidUserUUID = UUID.nameUUIDFromBytes("InvalidUsername".getBytes(Charsets.UTF_8));
     private final List<CraftPlayer> playerView;
     public int reloadCount;
+    @Getter
+    private Nacho nacho;
 
     private final class BooleanWrapper {
         private boolean value = true;
@@ -715,6 +719,7 @@ public final class CraftServer implements Server {
         org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
         org.github.paperspigot.PaperSpigotConfig.init((File) console.options.valueOf("paper-settings")); // PaperSpigot
         net.techcable.tacospigot.TacoSpigotConfig.init((File) console.options.valueOf("taco-settings")); // TacoSpigot
+        this.nacho = new Nacho();
         for (WorldServer world : console.worlds) {
             world.worldData.setDifficulty(difficulty);
             world.setSpawnFlags(monsters, animals);
