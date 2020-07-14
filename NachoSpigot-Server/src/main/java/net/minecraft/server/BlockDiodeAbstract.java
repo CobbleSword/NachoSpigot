@@ -6,6 +6,7 @@ import org.bukkit.craftbukkit.event.CraftEventFactory; // CraftBukkit
 
 public abstract class BlockDiodeAbstract extends BlockDirectional {
 
+    public static final EnumDirection[] aenumdirection = EnumDirection.values();
     protected final boolean N;
 
     protected BlockDiodeAbstract(boolean flag) {
@@ -83,7 +84,6 @@ public abstract class BlockDiodeAbstract extends BlockDirectional {
                 return;
             }
             // PaperSpigot end
-            EnumDirection[] aenumdirection = EnumDirection.values();
             int i = aenumdirection.length;
 
             for (int j = 0; j < i; ++j) {
@@ -191,7 +191,6 @@ public abstract class BlockDiodeAbstract extends BlockDirectional {
                 return;
             }
             // PaperSpigot end
-            EnumDirection[] aenumdirection = EnumDirection.values();
             int i = aenumdirection.length;
 
             for (int j = 0; j < i; ++j) {

@@ -5,6 +5,7 @@ import java.util.Random;
 
 public abstract class BlockFluids extends Block {
 
+    public static final EnumDirection[] aenumdirection = EnumDirection.values();
     public static final BlockStateInteger LEVEL = BlockStateInteger.of("level", 0, 15);
 
     protected BlockFluids(Material material) {
@@ -133,7 +134,6 @@ public abstract class BlockFluids extends Block {
     public boolean e(World world, BlockPosition blockposition, IBlockData iblockdata) {
         if (this.material == Material.LAVA) {
             boolean flag = false;
-            EnumDirection[] aenumdirection = EnumDirection.values();
             int i = aenumdirection.length;
 
             for (int j = 0; j < i; ++j) {

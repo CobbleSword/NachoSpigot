@@ -132,7 +132,7 @@ public enum EnumDirection implements INamable {
     }
 
     public static EnumDirection a(EnumDirection.EnumAxisDirection var0, EnumDirection.EnumAxis var1) {
-        EnumDirection[] var2 = values();
+        EnumDirection[] var2 = ALL;
         int var3 = var2.length;
 
         for(int var4 = 0; var4 < var3; ++var4) {

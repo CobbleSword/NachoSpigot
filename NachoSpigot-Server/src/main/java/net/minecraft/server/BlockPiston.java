@@ -16,6 +16,8 @@ import org.bukkit.event.block.BlockPistonExtendEvent;
 
 public class BlockPiston extends Block {
 
+    private final static EnumDirection[] aenumdirection = EnumDirection.values();
+
     public static final BlockStateDirection FACING = BlockStateDirection.of("facing");
     public static final BlockStateBoolean EXTENDED = BlockStateBoolean.of("extended");
     private final boolean sticky;
@@ -86,7 +88,6 @@ public class BlockPiston extends Block {
     }
 
     private boolean a(World world, BlockPosition blockposition, EnumDirection enumdirection) {
-        EnumDirection[] aenumdirection = EnumDirection.values();
         int i = aenumdirection.length;
 
         int j;
@@ -103,12 +104,11 @@ public class BlockPiston extends Block {
             return true;
         } else {
             BlockPosition blockposition1 = blockposition.up();
-            EnumDirection[] aenumdirection1 = EnumDirection.values();
 
-            j = aenumdirection1.length;
+            j = aenumdirection.length;
 
             for (int k = 0; k < j; ++k) {
-                EnumDirection enumdirection2 = aenumdirection1[k];
+                EnumDirection enumdirection2 = aenumdirection[k];
 
                 if (enumdirection2 != EnumDirection.DOWN && world.isBlockFacePowered(blockposition1.shift(enumdirection2), enumdirection2)) {
                     return true;
@@ -437,7 +437,7 @@ public class BlockPiston extends Block {
 
     static class SyntheticClass_1 {
 
-        static final int[] a = new int[EnumDirection.values().length];
+        static final int[] a = new int[aenumdirection.length];
 
         static {
             try {
