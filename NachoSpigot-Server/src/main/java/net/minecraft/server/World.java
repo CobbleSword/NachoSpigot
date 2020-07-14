@@ -3271,6 +3271,7 @@ public abstract class World implements IBlockAccess {
         return this.N;
     }
 
+    public boolean shouldStayLoaded(int i,  int j) { return c(i, j); } // Paper - OBFHELPER
     public boolean c(int i, int j) {
         BlockPosition blockposition = this.getSpawn();
         int k = i * 16 + 8 - blockposition.getX();

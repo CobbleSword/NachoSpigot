@@ -8,6 +8,7 @@ Since both Paper and Spigot no longer support the version.
 
 [Paper-0044] Use UserCache for player heads
 [Paper-0072] Fix Furnace cook time bug when lagging by Aikar
+[Paper-0083] Waving banner workaround by Gabscap
 [Paper-0097] Don't save empty scoreboard teams to scoreboard.dat by Aikar
 [Paper-0100] Avoid blocking on Network Manager creation by Aikar
 [Paper-0102] Faster redstone torch rapid clock removal by Martin Panzer.
