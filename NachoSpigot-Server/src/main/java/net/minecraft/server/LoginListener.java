@@ -27,6 +27,13 @@ import org.bukkit.event.player.PlayerPreLoginEvent;
 
 public class LoginListener implements PacketLoginInListener, IUpdatePlayerListBox {
 
+    // Paper start - Cache authenticator threads
+    private static final AtomicInteger threadId = new AtomicInteger(0);
+    private static final java.util.concurrent.ExecutorService authenticatorPool = java.util.concurrent.Executors.newCachedThreadPool(
+            r -> new Thread(r, "User Authenticator #" + threadId.incrementAndGet())
+    );
+    // Paper end
+
     private static final AtomicInteger b = new AtomicInteger(0);
     private static final Logger c = LogManager.getLogger();
     private static final Random random = new Random();
@@ -191,7 +198,8 @@ public class LoginListener implements PacketLoginInListener, IUpdatePlayerListBo
             this.loginKey = packetlogininencryptionbegin.a(privatekey);
             this.g = LoginListener.EnumProtocolState.AUTHENTICATING;
             this.networkManager.a(this.loginKey);
-            (new Thread("User Authenticator #" + LoginListener.b.incrementAndGet()) {
+            // Paper start - Cache authenticator threads
+            (authenticatorPool.execute(new Runnable() {
                 public void run() {
                     GameProfile gameprofile = LoginListener.this.i;
 
@@ -231,7 +239,7 @@ public class LoginListener implements PacketLoginInListener, IUpdatePlayerListBo
                     }
 
                 }
-            }).start();
+            });
         }
     }
 
