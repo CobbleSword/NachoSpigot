@@ -1122,6 +1122,7 @@ public abstract class World implements IBlockAccess {
             }
 
             this.getChunkAt(i, j).a(entity);
+            if (entity.dead) return false; // Paper - don't add dead entities, chunk registration may of killed it
             this.entityList.add(entity);
             this.a(entity);
             return true;
