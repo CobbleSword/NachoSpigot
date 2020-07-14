@@ -31,6 +31,7 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 [Paper-0168] Cache user authenticator threads by vemacs
 [Paper-0207] Shame on you Mojang moves chunk loading off https thread by Aikar
 [Paper-0249] Improve BlockPosition inlining by Techcable
+[Paper-0254] Don't blindly send unlit chunks when lighting updates are allowed by Shane Freeder
 [Paper-0266] [MC-99321] Dont check for blocked double chest for hoppers
 [Paper-0302] Don't load chunks for villager door checks by Aikar
 [Paper-0313] Optimize World Time Updates by Aikar
