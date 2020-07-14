@@ -17,6 +17,7 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 [Paper-0072] Fix Furnace cook time bug when lagging by Aikar
 [Paper-0076] Optimized Light Level Comparisons by Aikar
 [Paper-0083] Waving banner workaround by Gabscap
+[Paper-0085] Use a Shared Random for Entities by Aikar
 [Paper-0097] Don't save empty scoreboard teams to scoreboard.dat by Aikar
 [Paper-0100] Avoid blocking on Network Manager creation by Aikar
 [Paper-0102] Faster redstone torch rapid clock removal by Martin Panzer.
