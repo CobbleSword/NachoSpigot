@@ -32,6 +32,7 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 [Paper-0249] Improve BlockPosition inlining by Techcable
 [Paper-0313] Optimize World Time Updates by Aikar
 [Paper-0347] don't go below 0 for pickupDelay, breaks picking up items by Aikar
+[Paper-0352] Optimize BlockPosition helper methods by Spottedleaf
 [Paper-0353] Send nearby packets from world player list not server list by Mystiflow
 [Paper-0389] performance improvement for Chunk.getEntities by wea_ondara
 [Paper-0539] Optimize NetworkManager Exception Handling by Andrew Steinborn
