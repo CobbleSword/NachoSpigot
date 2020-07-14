@@ -16,6 +16,7 @@ Since both Paper and Spigot no longer support the version.
 [Paper-0141] Do not let armorstands drown
 [Paper-0144] Improve Minecraft Hopper Performance by  Aikar
 [Paper-0164] [MC-117075] TE Unload Lag Spike by mezz
+[Paper-168] Cache user authenticator threads by vemacs
 [Paper-0207] Shame on you Mojang moves chunk loading off https thread by Aikar
 [Paper-0249] Improve BlockPosition inlining by Techcable
 [Paper-0313] Optimize World Time Updates by Aikar
