@@ -4,6 +4,8 @@ Since both Paper and Spigot no longer support the version.
 
 ## Backported Patches
 ```
+[Spigot-2380] Hitting in the air will always load the chunk at 0,0 by md_5
+
 [Paper-0097] Don't save empty scoreboard teams to scoreboard.dat by Aikar
 [Paper-0100] Avoid blocking on Network Manager creation by Aikar
 [Paper-0102] Faster redstone torch rapid clock removal by Martin Panzer.

@@ -548,7 +548,9 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
             boolean flag = false;
 
             if (itemstack1 == null) {
+                IGNORE_TILE_UPDATES = true; // Paper
                 iinventory.setItem(i, itemstack);
+                IGNORE_TILE_UPDATES = false; // Paper
                 itemstack = null;
                 flag = true;
             } else if (a(itemstack1, itemstack)) {
@@ -568,7 +570,7 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
                         tileentityhopper.d(tileentityhopper.world.spigotConfig.hopperTransfer); // Spigot
                     }
 
-                    iinventory.update();
+//                    iinventory.update(); // Paper
                 }
 
                 iinventory.update();
@@ -655,6 +657,7 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
         this.g = i;
     }
 
+    boolean isCooledDown() { return n(); } // Paper // OBFHELPER
     public boolean n() {
         return this.g > 0;
     }

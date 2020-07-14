@@ -21,6 +21,7 @@ public abstract class TileEntity {
     protected boolean d;
     private int h;
     protected Block e;
+    static boolean IGNORE_TILE_UPDATES = false; // Paper
 
     public TileEntity() {
         this.position = BlockPosition.ZERO;
@@ -99,6 +100,7 @@ public abstract class TileEntity {
 
     public void update() {
         if (this.world != null) {
+            if (IGNORE_TILE_UPDATES) return; // Paper
             IBlockData iblockdata = this.world.getType(this.position);
 
             this.h = iblockdata.getBlock().toLegacyData(iblockdata);
