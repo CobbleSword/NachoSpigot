@@ -5,7 +5,6 @@ import lombok.Getter;
 
 import java.io.File;
 
-@Getter
 public class Nacho
 {
     private static Nacho INSTANCE;
@@ -30,5 +29,10 @@ public class Nacho
     public static Nacho get()
     {
         return INSTANCE;
+    }
+
+    public NachoConfig getConfig()
+    {
+        return config;
     }
 }
