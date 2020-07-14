@@ -2,6 +2,11 @@
 A 1.8 fork of paper which aims to optimize, give long term support for 1.8.9 and add useful apis, 
 Since both Paper and Spigot no longer support the version.
 
+## Features
+Since 1.8 is ~5 years old now, it has missed out on a lot of critial fixes, updates and optimizations,
+So we plan on offering those much needed updates to 1.8!
+By the end, we plan to support Java 14, Netty 4.1, allow higher player counts and still support a large number of plugins
+
 ## Backported Patches
 ```
 [Spigot-2380] Hitting in the air will always load the chunk at 0,0 by md_5
@@ -19,7 +24,7 @@ Since both Paper and Spigot no longer support the version.
 [Paper-0141] Do not let armorstands drown
 [Paper-0144] Improve Minecraft Hopper Performance by  Aikar
 [Paper-0164] [MC-117075] TE Unload Lag Spike by mezz
-[Paper-168] Cache user authenticator threads by vemacs
+[Paper-0168] Cache user authenticator threads by vemacs
 [Paper-0207] Shame on you Mojang moves chunk loading off https thread by Aikar
 [Paper-0249] Improve BlockPosition inlining by Techcable
 [Paper-0313] Optimize World Time Updates by Aikar
