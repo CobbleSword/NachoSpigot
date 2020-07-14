@@ -189,6 +189,10 @@ public class BlockChest extends BlockContainer {
         }
     }
 
+    public IBlockData f(World world, BlockPosition blockposition, IBlockData iblockdata) {
+        return f(world, blockposition, iblockdata, false);
+    }
+
     public IBlockData f(World world, BlockPosition blockposition, IBlockData iblockdata, boolean flag) {
         EnumDirection enumdirection = null;
         Iterator iterator = EnumDirection.EnumDirectionLimit.HORIZONTAL.iterator();
