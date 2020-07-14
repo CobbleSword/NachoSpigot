@@ -100,7 +100,7 @@ public class TileEntityFurnace extends TileEntityContainer implements IUpdatePla
 
         if (i == 0 && !flag) {
             this.cookTimeTotal = this.a(itemstack);
-            this.cookTime = 0;
+            this.cookTime -= this.cookTimeTotal; // Paper
             this.update();
         }
 
