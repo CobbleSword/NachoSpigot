@@ -1197,7 +1197,11 @@ public class Chunk {
          * We cannot unfortunately do this lighting stage during chunk gen as it appears to put a lot more noticeable load on the server, than when it is done at play time.
          * For now at least we will simply send all chunks, in accordance with pre 1.7 behaviour.
          */
-        return true;
+        // Paper Start
+        // if randomLightUpdates are disabled, we should always return true, otherwise chunks may never send
+        // to the client due to not being lit, otherwise retain standard behavior and only send properly lit chunks.
+        return !this.world.spigotConfig.randomLightUpdates || (this.isTicked() && this.done && this.lit);
+        // Paper End
         // Spigot End
     }
 
