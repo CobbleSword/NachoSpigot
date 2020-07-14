@@ -770,6 +770,10 @@ public class Chunk {
         // Spigot end
     }
 
+    public void removeEntity(Entity entity)
+    {
+        b(entity);
+    } // Paper - OBFHELPER
     public void b(Entity entity) {
         this.a(entity, entity.af);
     }
