@@ -2,13 +2,9 @@ package org.bukkit.craftbukkit.inventory;
 
 import java.util.Map;
 
-import net.minecraft.server.GameProfileSerializer;
-import net.minecraft.server.NBTBase;
-import net.minecraft.server.NBTTagCompound;
+import net.minecraft.server.*;
 
 // PaperSpigot start
-import net.minecraft.server.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
 // PaperSpigot end
 
 import org.bukkit.Material;
@@ -139,9 +135,13 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
         } else {
             // PaperSpigot start - Check usercache if the player is online
             EntityPlayer player = MinecraftServer.getServer().getPlayerList().getPlayer(name);
-            profile = player != null ? player.getProfile() : new GameProfile(null, name);
+            if (profile == null && player != null) profile = player.getProfile();
             // PaperSpigot end
         }
+
+        if (profile == null) profile = TileEntitySkull.skinCache.getIfPresent(name.toLowerCase(java.util.Locale.ROOT)); // Paper
+        if (profile == null) profile = new GameProfile(null, name);
+
 
         return true;
     }
