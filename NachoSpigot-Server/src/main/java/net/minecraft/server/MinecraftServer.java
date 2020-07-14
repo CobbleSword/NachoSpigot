@@ -673,6 +673,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
 
         if (file.isFile()) {
             ByteBuf bytebuf = Unpooled.buffer();
+            ByteBuf bytebuf1 = null; // Paper - cleanup favicon bytebuf
 
             try {
                 BufferedImage bufferedimage = ImageIO.read(file);
@@ -680,13 +681,18 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
                 Validate.validState(bufferedimage.getWidth() == 64, "Must be 64 pixels wide", new Object[0]);
                 Validate.validState(bufferedimage.getHeight() == 64, "Must be 64 pixels high", new Object[0]);
                 ImageIO.write(bufferedimage, "PNG", new ByteBufOutputStream(bytebuf));
-                ByteBuf bytebuf1 = Base64.encode(bytebuf);
+                /*ByteBuf*/ bytebuf1 = Base64.encode(bytebuf); // Paper - cleanup favicon bytebuf
 
                 serverping.setFavicon("data:image/png;base64," + bytebuf1.toString(Charsets.UTF_8));
             } catch (Exception exception) {
                 MinecraftServer.LOGGER.error("Couldn\'t load server icon", exception);
             } finally {
                 bytebuf.release();
+                // Paper start - cleanup favicon bytebuf
+                if (bytebuf1 != null) {
+                    bytebuf1.release();
+                }
+                // Paper end - cleanup favicon bytebuf
             }
         }
 
