@@ -3,11 +3,9 @@ package net.minecraft.server;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+
+import java.util.*;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -447,7 +445,8 @@ public abstract class BiomeBase {
         }
     }
 
-    public static class BiomeMeta extends WeightedRandom.WeightedRandomChoice {
+    public static class BiomeMeta extends WeightedRandom.WeightedRandomChoice
+    {
 
         public Class<? extends EntityInsentient> b;
         public int c;
@@ -465,8 +464,8 @@ public abstract class BiomeBase {
         }
     }
 
-    public static class BiomeTemperature {
-
+    public static class BiomeTemperature
+    {
         public float a;
         public float b;
 
@@ -480,8 +479,8 @@ public abstract class BiomeBase {
         }
     }
 
-    public static enum EnumTemperature {
-
+    public static enum EnumTemperature
+    {
         OCEAN, COLD, MEDIUM, WARM;
 
         private EnumTemperature() {}
