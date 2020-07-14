@@ -70,6 +70,7 @@ public class EntityItem extends Entity implements HopperPusher {
             // CraftBukkit start - Use wall time for pickup and despawn timers
             int elapsedTicks = MinecraftServer.currentTick - this.lastTick;
             if (this.pickupDelay != 32767) this.pickupDelay -= elapsedTicks;
+            this.pickupDelay = Math.max(0, this.pickupDelay); // Paper - don't go below 0
             if (this.age != -32768) this.age += elapsedTicks;
             this.lastTick = MinecraftServer.currentTick;
             // CraftBukkit end
@@ -137,6 +138,7 @@ public class EntityItem extends Entity implements HopperPusher {
         // CraftBukkit start - Use wall time for pickup and despawn timers
         int elapsedTicks = MinecraftServer.currentTick - this.lastTick;
         if (this.pickupDelay != 32767) this.pickupDelay -= elapsedTicks;
+        this.pickupDelay = Math.max(0, this.pickupDelay); // Paper - don't go below 0
         if (this.age != -32768) this.age += elapsedTicks;
         this.lastTick = MinecraftServer.currentTick;
         // CraftBukkit end
