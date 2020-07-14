@@ -2,6 +2,8 @@
 A 1.8 fork of paper which aims to optimize, give long term support for 1.8.9 and add useful apis, 
 Since both Paper and Spigot no longer support the version.
 
+**The most up to date, optimized 1.8.9 on the market**
+
 ## Features
 Since 1.8 is ~5 years old now, it has missed out on a lot of critial fixes, updates and optimizations,
 So we plan on offering those much needed updates to 1.8!
