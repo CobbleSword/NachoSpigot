@@ -767,6 +767,31 @@ public abstract class World implements IBlockAccess {
         return this.worldProvider.p()[this.getLightLevel(blockposition)];
     }
 
+    private IBlockData getCapturedBlockType(int x, int y, int z) {
+        Iterator<BlockState> it = this.capturedBlockStates.iterator();
+        while (it.hasNext()) {
+            BlockState previous = it.next();
+            if (previous.getX() == x && previous.getY() == y && previous.getZ() == z)
+                return CraftMagicNumbers.getBlock(previous.getTypeId()).fromLegacyData(previous.getRawData());
+        }
+        return null;
+    }
+
+    public IBlockData getTypeIfLoaded(BlockPosition blockposition) {
+        int x = blockposition.getX();
+        int y = blockposition.getY();
+        int z = blockposition.getZ();
+        if (this.captureTreeGeneration) {
+            IBlockData previous = getCapturedBlockType(x, y, z);
+            if (previous != null)
+                return previous;
+        }
+        Chunk chunk = ((ChunkProviderServer)this.chunkProvider).getChunkIfLoaded(x >> 4, z >> 4);
+        if (chunk != null)
+            return chunk.getBlockData(blockposition);
+        return null;
+    }
+
     // Spigot start
     public IBlockData getType(BlockPosition blockposition)
     {
