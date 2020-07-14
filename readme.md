@@ -26,6 +26,7 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 [Paper-0125] Improve Maps (in item frames) performance and bug fixes by Aikar
 [Paper-0141] Do not let armorstands drown
 [Paper-0144] Improve Minecraft Hopper Performance by  Aikar
+[Paper-0152] Disable ticking of snow blocks by killme
 [Paper-0164] [MC-117075] TE Unload Lag Spike by mezz
 [Paper-0168] Cache user authenticator threads by vemacs
 [Paper-0207] Shame on you Mojang moves chunk loading off https thread by Aikar
