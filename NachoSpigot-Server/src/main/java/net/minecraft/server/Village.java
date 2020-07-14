@@ -318,7 +318,12 @@ public class Village {
     }
 
     private boolean f(BlockPosition blockposition) {
-        Block block = this.a.getType(blockposition).getBlock();
+        // Paper start
+        IBlockData iblockdata = this.a.getTypeIfLoaded(blockposition);
+        if (iblockdata == null)
+            return false;
+        Block block = iblockdata.getBlock();
+        // Paper end
 
         return block instanceof BlockDoor ? block.getMaterial() == Material.WOOD : false;
     }
