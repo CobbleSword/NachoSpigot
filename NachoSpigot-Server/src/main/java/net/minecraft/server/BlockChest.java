@@ -343,6 +343,10 @@ public class BlockChest extends BlockContainer {
         return f(world, blockposition, false);
     }
 
+    public ITileInventory f(World world, BlockPosition blockposition) {
+        return f(world, blockposition, false);
+    }
+
     public ITileInventory f(World world, BlockPosition blockposition, boolean flag) {
         TileEntity tileentity = world.getTileEntity(blockposition);
 
