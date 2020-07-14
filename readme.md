@@ -36,6 +36,7 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 [Nacho-0002] Check if the fuel is coal first before checking others
 [Nacho-0003] Disable Snooper
 [Nacho-0004] Do not repeatily allocate EnumDirection
+[Nacho-0005] Do not reallocate enums via values
 
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 ```
