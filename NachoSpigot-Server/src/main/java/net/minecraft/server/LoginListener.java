@@ -199,7 +199,7 @@ public class LoginListener implements PacketLoginInListener, IUpdatePlayerListBo
             this.g = LoginListener.EnumProtocolState.AUTHENTICATING;
             this.networkManager.a(this.loginKey);
             // Paper start - Cache authenticator threads
-            (authenticatorPool.execute(new Runnable() {
+            authenticatorPool.execute(new Runnable() {
                 public void run() {
                     GameProfile gameprofile = LoginListener.this.i;
 
