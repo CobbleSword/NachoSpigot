@@ -26,7 +26,7 @@ public class HopperHelper {
     public static IInventory getInventory(World world, BlockPosition position) {
         Block block = world.getType(position).getBlock();
         if (block instanceof BlockChest) {
-            return ((BlockChest) block).f(world, position);
+            return ((BlockChest) block).getInventory(world, position);
         }
         if (block.isTileEntity()) {
             TileEntity tile = world.getTileEntity(position);

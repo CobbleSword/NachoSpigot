@@ -213,6 +213,9 @@
                                         <exclude>org.bukkit.craftbukkit.Main*</exclude>
                                     </excludes>
                                 </relocation>
+
+
+
                                 <relocation>
                                     <pattern>net.minecraft.server</pattern>
                                     <shadedPattern>net.minecraft.server.v${minecraft_version}</shadedPattern>

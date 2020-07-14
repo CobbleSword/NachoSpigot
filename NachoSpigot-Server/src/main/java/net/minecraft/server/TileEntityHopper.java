@@ -595,6 +595,10 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
     }
 
     public static IInventory b(World world, double d0, double d1, double d2) {
+        return getInventory(world, d0, d1, d2, true);
+    }
+
+    public static IInventory getInventory(World world, double d0, double d1, double d2, boolean searchForEntities) {
         Object object = null;
         int i = MathHelper.floor(d0);
         int j = MathHelper.floor(d1);
@@ -609,12 +613,12 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
             if (tileentity instanceof IInventory) {
                 object = (IInventory) tileentity;
                 if (object instanceof TileEntityChest && block instanceof BlockChest) {
-                    object = ((BlockChest) block).f(world, blockposition);
+                    object = ((BlockChest) block).f(world, blockposition, true);
                 }
             }
         }
 
-        if (object == null) {
+        if (object == null && searchForEntities) {
             List list = world.a((Entity) null, new AxisAlignedBB(d0 - 0.5D, d1 - 0.5D, d2 - 0.5D, d0 + 0.5D, d1 + 0.5D, d2 + 0.5D), IEntitySelector.c);
 
             if (list.size() > 0) {

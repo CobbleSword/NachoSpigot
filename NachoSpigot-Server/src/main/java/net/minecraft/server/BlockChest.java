@@ -189,7 +189,7 @@ public class BlockChest extends BlockContainer {
         }
     }
 
-    public IBlockData f(World world, BlockPosition blockposition, IBlockData iblockdata) {
+    public IBlockData f(World world, BlockPosition blockposition, IBlockData iblockdata, boolean flag) {
         EnumDirection enumdirection = null;
         Iterator iterator = EnumDirection.EnumDirectionLimit.HORIZONTAL.iterator();
 
@@ -319,7 +319,7 @@ public class BlockChest extends BlockContainer {
         if (world.isClientSide) {
             return true;
         } else {
-            ITileInventory itileinventory = this.f(world, blockposition);
+            ITileInventory itileinventory = getInventory(world, blockposition);
 
             if (itileinventory != null) {
                 entityhuman.openContainer(itileinventory);
@@ -334,44 +334,53 @@ public class BlockChest extends BlockContainer {
         }
     }
 
-    public ITileInventory f(World world, BlockPosition blockposition) {
+    //Paper - OBF HELPER
+    public ITileInventory getInventory(World world, BlockPosition blockposition) {
+        return f(world, blockposition, false);
+    }
+
+    public ITileInventory f(World world, BlockPosition blockposition, boolean flag) {
         TileEntity tileentity = world.getTileEntity(blockposition);
 
-        if (!(tileentity instanceof TileEntityChest)) {
+        if (!(tileentity instanceof TileEntityChest))
             return null;
-        } else {
-            Object object = (TileEntityChest) tileentity;
 
-            if (this.n(world, blockposition)) {
-                return null;
-            } else {
-                Iterator iterator = EnumDirection.EnumDirectionLimit.HORIZONTAL.iterator();
+        Object object = (TileEntityChest) tileentity;
 
-                while (iterator.hasNext()) {
-                    EnumDirection enumdirection = (EnumDirection) iterator.next();
-                    BlockPosition blockposition1 = blockposition.shift(enumdirection);
-                    Block block = world.getType(blockposition1).getBlock();
+        if (flag && this.n(world, blockposition))
+            return null;
 
-                    if (block == this) {
-                        if (this.n(world, blockposition1)) {
-                            return null;
-                        }
+        Iterator iterator = EnumDirection.EnumDirectionLimit.HORIZONTAL.iterator();
 
-                        TileEntity tileentity1 = world.getTileEntity(blockposition1);
+        while (iterator.hasNext()) {
+            EnumDirection enumdirection = (EnumDirection) iterator.next();
+            BlockPosition blockposition1 = blockposition.shift(enumdirection);
+            IBlockData typeIfLoaded = world.getTypeIfLoaded(blockposition1);
 
-                        if (tileentity1 instanceof TileEntityChest) {
-                            if (enumdirection != EnumDirection.WEST && enumdirection != EnumDirection.NORTH) {
-                                object = new InventoryLargeChest("container.chestDouble", (ITileInventory) object, (TileEntityChest) tileentity1);
-                            } else {
-                                object = new InventoryLargeChest("container.chestDouble", (TileEntityChest) tileentity1, (ITileInventory) object);
-                            }
-                        }
-                    }
+            if (typeIfLoaded == null)
+                continue;
+            Block block = typeIfLoaded.getBlock();
+
+            if (flag && block == this) {
+                if (this.n(world, blockposition1)) {
+                    return null;
                 }
 
-                return (ITileInventory) object;
+                TileEntity tileentity1 = world.getTileEntity(blockposition1);
+
+                if (tileentity1 instanceof TileEntityChest) {
+                    if (enumdirection != EnumDirection.WEST && enumdirection != EnumDirection.NORTH) {
+                        object = new InventoryLargeChest("container.chestDouble", (ITileInventory) object, (TileEntityChest) tileentity1);
+                    } else {
+                        object = new InventoryLargeChest("container.chestDouble", (TileEntityChest) tileentity1, (ITileInventory) object);
+                    }
+                }
             }
         }
+
+        return (ITileInventory) object;
+
+
     }
 
     public TileEntity a(World world, int i) {
@@ -437,7 +446,7 @@ public class BlockChest extends BlockContainer {
     }
 
     public int l(World world, BlockPosition blockposition) {
-        return Container.b((IInventory) this.f(world, blockposition));
+        return Container.b((IInventory) this.getInventory(world, blockposition));
     }
 
     public IBlockData fromLegacyData(int i) {
