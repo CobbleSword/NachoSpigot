@@ -1,7 +1,6 @@
 package dev.cobblesword.nachospigot;
 
 import dev.cobblesword.nachospigot.commons.FileUtils;
-import lombok.Getter;
 
 import java.io.File;
 

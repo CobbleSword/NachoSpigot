@@ -24,7 +24,6 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 
 import dev.cobblesword.nachospigot.Nacho;
-import lombok.Getter;
 import net.minecraft.server.*;
 
 import org.bukkit.BanList;
@@ -167,8 +166,7 @@ public final class CraftServer implements Server {
     private final UUID invalidUserUUID = UUID.nameUUIDFromBytes("InvalidUsername".getBytes(Charsets.UTF_8));
     private final List<CraftPlayer> playerView;
     public int reloadCount;
-    @Getter
-    private Nacho nacho;
+    private Nacho nacho; public Nacho getNacho() { return this.nacho; }
 
     private final class BooleanWrapper {
         private boolean value = true;
