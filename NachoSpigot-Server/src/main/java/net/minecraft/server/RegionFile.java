@@ -1,14 +1,10 @@
 package net.minecraft.server;
 
 import com.google.common.collect.Lists;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+
+import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 import java.util.List;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.GZIPInputStream;
@@ -65,9 +61,17 @@ public class RegionFile {
             this.c.seek(0L);
 
             int k;
+            // Paper Start
+            ByteBuffer header = ByteBuffer.allocate(8192);
+            while (header.hasRemaining())  {
+                if (this.c.getChannel().read(header) == -1) throw new EOFException();
+            }
+            header.clear();
+            IntBuffer headerAsInts = header.asIntBuffer();
+            // Paper end
 
             for (j = 0; j < 1024; ++j) {
-                k = this.c.readInt();
+                k = headerAsInts.get(); // Paper
                 this.d[j] = k;
                 if (k != 0 && (k >> 8) + (k & 255) <= this.f.size()) {
                     for (int l = 0; l < (k & 255); ++l) {
@@ -77,7 +81,7 @@ public class RegionFile {
             }
 
             for (j = 0; j < 1024; ++j) {
-                k = this.c.readInt();
+                k = headerAsInts.get(); // Paper
                 this.e[j] = k;
             }
         } catch (IOException ioexception) {
