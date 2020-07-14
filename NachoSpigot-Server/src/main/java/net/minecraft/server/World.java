@@ -653,7 +653,40 @@ public abstract class World implements IBlockAccess {
         }
     }
 
-    public int getLightLevel(BlockPosition blockposition) {
+    public boolean isLightLevel(BlockPosition blockposition, int level) {
+        if (blockposition.getX() >= -30000000 && blockposition.getZ() >= -30000000 && blockposition.getX() < 30000000 && blockposition.getZ() < 30000000) {
+            if (this.getType(blockposition).getBlock().s())
+            {
+                if (c(blockposition.up(), false) >= level)
+                    return true;
+                if (c(blockposition.east(), false) >= level)
+                    return true;
+                if (c(blockposition.west(), false) >= level)
+                    return true;
+                if (c(blockposition.south(), false) >= level)
+                    return true;
+                if (c(blockposition.north(), false) >= level)
+                    return true;
+                return false;
+            }
+
+            if (blockposition.getY() >= 256) {
+                blockposition = new BlockPosition(blockposition.getX(), 255, blockposition.getZ());
+            }
+
+            Chunk chunk = this.getChunkAtWorldCoords(blockposition);
+
+            return chunk.getLightSubtracted(blockposition, this.I) >= level;
+        }
+        else if (blockposition.getY() < 0) {
+            return false;
+        }
+        return true;
+    }
+
+
+    public int getLightLevel(BlockPosition blockposition)
+    {
         return this.c(blockposition, true);
     }
 
@@ -762,6 +795,7 @@ public abstract class World implements IBlockAccess {
         }
 
     }
+
 
     public float o(BlockPosition blockposition) {
         return this.worldProvider.p()[this.getLightLevel(blockposition)];

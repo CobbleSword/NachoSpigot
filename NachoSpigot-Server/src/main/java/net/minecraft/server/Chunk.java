@@ -689,6 +689,11 @@ public class Chunk {
 
     }
 
+    public int getLightSubtracted(BlockPosition blockposition, int i)
+    {
+        return this.a(blockposition, i);
+    }
+
     public int a(BlockPosition blockposition, int i) {
         int j = blockposition.getX() & 15;
         int k = blockposition.getY();

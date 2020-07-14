@@ -26,7 +26,7 @@ public class BlockCrops extends BlockPlant implements IBlockFragilePlantElement 
 
     public void b(World world, BlockPosition blockposition, IBlockData iblockdata, Random random) {
         super.b(world, blockposition, iblockdata, random);
-        if (world.getLightLevel(blockposition.up()) >= 9) {
+        if (world.isLightLevel(blockposition.up(), 9)) { // Paper
             int i = ((Integer) iblockdata.get(BlockCrops.AGE)).intValue();
 
             if (i < 7) {
