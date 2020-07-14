@@ -28,6 +28,7 @@ public enum EnumDirection implements INamable {
     private final BaseBlockPosition m;
     private static final EnumDirection[] n = new EnumDirection[6];
     private static final EnumDirection[] o = new EnumDirection[4];
+    private static final EnumDirection[] ALL = EnumDirection.values();
     private static final Map<String, EnumDirection> p = Maps.newHashMap();
 
     private EnumDirection(int var3, int var4, int var5, String var6, EnumDirection.EnumAxisDirection var7, EnumDirection.EnumAxis var8, BaseBlockPosition var9) {
@@ -53,7 +54,7 @@ public enum EnumDirection implements INamable {
     }
 
     public EnumDirection opposite() {
-        return fromType1(this.h);
+        return ALL[this.h];
     }
 
     public EnumDirection e() {
@@ -118,8 +119,8 @@ public enum EnumDirection implements INamable {
         return fromType2(MathHelper.floor(var0 / 90.0D + 0.5D) & 3);
     }
 
-    public static EnumDirection a(Random var0) {
-        return values()[var0.nextInt(values().length)];
+    public static EnumDirection a(Random random) {
+        return ALL[random.nextInt(ALL.length)];
     }
 
     public String toString() {
