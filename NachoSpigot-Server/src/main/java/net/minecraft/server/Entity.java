@@ -144,7 +144,7 @@ public abstract class Entity implements ICommandListener {
                 locked = true;
             }
         }
-    }
+    };
 
     // Spigot start
     public Timing tickTimer = SpigotTimings.getEntityTimings(this); // Spigot

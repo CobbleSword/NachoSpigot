@@ -98,6 +98,10 @@ public class Chunk {
     }
     // PaperSpigot end
 
+    private boolean isTicked() {
+        return this.p;
+    }
+
     // CraftBukkit start - Neighbor loaded cache for chunk lighting and entity ticking
     private int neighbors = 0x1 << 12;
 
