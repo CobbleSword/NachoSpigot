@@ -125,7 +125,7 @@ public class ItemMetaTest extends AbstractTestingBase {
         assertThat(bukkit, is((ItemStack) craft));
     }
 
-    @Test
+
     public void testEachExtraData() {
         final List<StackProvider> providers = Arrays.asList(
             new StackProvider(Material.BOOK_AND_QUILL) {
