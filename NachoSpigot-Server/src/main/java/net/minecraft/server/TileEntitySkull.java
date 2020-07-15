@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import com.github.benmanes.caffeine.cache.CacheLoader;
+import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.google.common.collect.Iterables;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
@@ -7,9 +9,6 @@ import java.util.UUID;
 
 // Spigot start
 import com.google.common.base.Predicate;
-import com.google.common.cache.LoadingCache;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -30,13 +29,13 @@ public class TileEntitySkull extends TileEntity {
                     .setNameFormat("Head Conversion Thread - %1$d")
                     .build()
     );
-    public static final LoadingCache<String, GameProfile> skinCache = CacheBuilder.newBuilder()
+    public static final LoadingCache<String, GameProfile> skinCache = com.github.benmanes.caffeine.cache.Caffeine.newBuilder()
             .maximumSize( 5000 )
             .expireAfterAccess( 60, TimeUnit.MINUTES )
             .build( new CacheLoader<String, GameProfile>()
             {
                 @Override
-                public GameProfile load(String key) throws Exception
+                public GameProfile load(String key)
                 {
                     final GameProfile[] profiles = new GameProfile[1];
                     ProfileLookupCallback gameProfileLookup = new ProfileLookupCallback() {
@@ -169,7 +168,7 @@ public class TileEntitySkull extends TileEntity {
                     executor.execute(new Runnable() {
                         @Override
                         public void run() {
-                            final GameProfile profile = skinCache.getUnchecked(gameprofile.getName().toLowerCase());                            
+                            final GameProfile profile = skinCache.get(gameprofile.getName().toLowerCase());
                             MinecraftServer.getServer().processQueue.add(new Runnable() {
                                 @Override
                                 public void run() {
