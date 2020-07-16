@@ -60,3 +60,8 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 
 ## Discord
 [Join Discord group](https://discord.gg/SBTEbSx)
+
+## Supporters 
+```
+Henry Lanier (MILDJELLYo#9091)
+```
