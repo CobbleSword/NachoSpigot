@@ -63,5 +63,5 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 
 ## Supporters 
 
-[Henry Lanier](youtube.com/channel/UCYKmXuEo1ZVMzvsWwaBeBwQ)(MILDJELLYo#9091)
+[Henry Lanier](youtube.com/channel/UCYKmXuEo1ZVMzvsWwaBeBwQ) (MILDJELLYo#9091)
 
