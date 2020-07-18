@@ -11,6 +11,7 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 
 ## Backported Patches
 ```
+[Spigot-0138] Branchless NibbleArray by md5
 [Spigot-2380] Hitting in the air will always load the chunk at 0,0 by md_5
 
 [Paper-0044] Use UserCache for player heads
