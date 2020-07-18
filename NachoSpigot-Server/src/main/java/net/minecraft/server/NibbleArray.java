@@ -30,7 +30,7 @@ public class NibbleArray {
     public int a(int i) {
         int j = this.c(i);
 
-        return this.b(i) ? this.a[j] & 15 : this.a[j] >> 4 & 15;
+        return this.a[j] >> ((i & 1) << 2) & 15; // Spigot
     }
 
     public void a(int i, int j) {

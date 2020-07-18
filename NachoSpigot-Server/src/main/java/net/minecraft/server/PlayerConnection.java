@@ -1943,7 +1943,8 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 
     }
 
-    public void a(PacketPlayInKeepAlive packetplayinkeepalive) {
+    public void a(PacketPlayInKeepAlive packetplayinkeepalive)
+    {
         if (packetplayinkeepalive.a() == this.i) {
             int i = (int) (this.d() - this.j);
 
