@@ -1,5 +1,8 @@
 package net.minecraft.server;
 
+import co.aikar.timings.SpigotTimings;
+import co.aikar.timings.Timing;
+import co.aikar.timings.Timings;
 import dev.cobblesword.nachospigot.exception.ExploitException;
 import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
@@ -140,10 +143,15 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
 
     protected void a(ChannelHandlerContext channelhandlercontext, Packet packet) throws Exception {
         if (this.channel.isOpen()) {
+            Timing packetHandlerTimer = SpigotTimings.getPacketHandlerTimings(packet);
+            packetHandlerTimer.startTiming();
             try {
                 packet.a(this.m);
             } catch (CancelledPacketHandleException cancelledpackethandleexception) {
                 ;
+            }
+            finally {
+                packetHandlerTimer.stopTiming();
             }
         }
 

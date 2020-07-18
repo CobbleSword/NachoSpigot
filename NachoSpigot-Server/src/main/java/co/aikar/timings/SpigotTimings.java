@@ -5,6 +5,9 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import org.bukkit.craftbukkit.scheduler.CraftTask;
+import org.spigotmc.CustomTimingsHandler;
+
+import java.util.HashMap;
 
 public final class SpigotTimings {
 
@@ -107,5 +110,9 @@ public final class SpigotTimings {
 
     public static Timing getBlockTiming(Block block) {
         return Timings.ofSafe("## Scheduled Block: " + block.getName());
+    }
+
+    public static Timing getPacketHandlerTimings(Packet<?> packet) {
+        return Timings.ofSafe("## Connection Handler - " + packet.getClass().getName());
     }
 }
