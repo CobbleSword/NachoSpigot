@@ -1,4 +1,4 @@
-# NachSpigot
+# NachoSpigot
 A 1.8 fork of paper which aims to optimize, give long term support for 1.8.9 and add useful apis, 
 Since both Paper and Spigot no longer support the version.
 
@@ -60,3 +60,8 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 
 ## Discord
 [Join Discord group](https://discord.gg/SBTEbSx)
+
+## Supporters 
+
+[Henry Lanier](youtube.com/channel/UCYKmXuEo1ZVMzvsWwaBeBwQ) (MILDJELLYo#9091)
+
