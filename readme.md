@@ -54,6 +54,7 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 [Nacho-0005] Do not reallocate enums via values
 [Nacho-0006] Use Caffeine instead of Guava for player heads
 [Nacho-0007] Add timings for packets
+[Nacho-0008] Upgrade Netty version to 4.1.50 and support java 14
 
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 
