@@ -147,7 +147,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
             Timing packetHandlerTimer = SpigotTimings.getPacketHandlerTimings(packet);
             packetHandlerTimer.startTiming();
             try {
-                packet.a(this.m);
+                packet.a(this.m);//packet.handle(PlayerConnection)
             } catch (CancelledPacketHandleException cancelledpackethandleexception) {
                 ;
             }
@@ -196,9 +196,10 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
 
     }
 
-    private void a(final Packet packet, final GenericFutureListener<? extends Future<? super Void>>[] agenericfuturelistener) {
+    private void a(final Packet packet, final GenericFutureListener<? extends Future<? super Void>>[] agenericfuturelistener)
+    {
         final EnumProtocol enumprotocol = EnumProtocol.a(packet);
-        final EnumProtocol enumprotocol1 = (EnumProtocol) this.channel.attr(NetworkManager.c).get();
+        final EnumProtocol enumprotocol1 = this.channel.attr(NetworkManager.c).get();
 
         if (enumprotocol1 != enumprotocol) {
 //            NetworkManager.g.debug("Disabled auto read");
@@ -206,32 +207,36 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         }
 
         if (this.channel.eventLoop().inEventLoop()) {
-            if (enumprotocol != enumprotocol1) {
+
+            if (enumprotocol != enumprotocol1)
+            {
                 this.a(enumprotocol);
             }
 
             ChannelFuture channelfuture = this.channel.writeAndFlush(packet);
 
-            if (agenericfuturelistener != null) {
+            if (agenericfuturelistener != null)
+            {
                 channelfuture.addListeners(agenericfuturelistener);
             }
 
             channelfuture.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
-        } else {
-            this.channel.eventLoop().execute(new Runnable() {
-                public void run() {
-                    if (enumprotocol != enumprotocol1) {
-                        NetworkManager.this.a(enumprotocol);
-                    }
-
-                    ChannelFuture channelfuture = NetworkManager.this.channel.writeAndFlush(packet);
-
-                    if (agenericfuturelistener != null) {
-                        channelfuture.addListeners(agenericfuturelistener);
-                    }
-
-                    channelfuture.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
+        }
+        else
+        {
+            this.channel.eventLoop().execute(() ->
+            {
+                if (enumprotocol != enumprotocol1) {
+                    NetworkManager.this.a(enumprotocol);
                 }
+
+                ChannelFuture channelfuture = NetworkManager.this.channel.writeAndFlush(packet);
+
+                if (agenericfuturelistener != null) {
+                    channelfuture.addListeners(agenericfuturelistener);
+                }
+
+                channelfuture.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
             });
         }
 
@@ -350,8 +355,9 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         }
     }
 
-    protected void channelRead0(ChannelHandlerContext channelhandlercontext, Packet object) throws Exception { // CraftBukkit - fix decompile error
-        this.a(channelhandlercontext, (Packet) object);
+    protected void channelRead0(ChannelHandlerContext channelhandlercontext, Packet object) throws Exception
+    { // CraftBukkit - fix decompile error
+        this.a(channelhandlercontext, object);
     }
 
     static class QueuedPacket {
