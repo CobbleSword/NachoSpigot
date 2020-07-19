@@ -55,6 +55,7 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 [Nacho-0006] Use Caffeine instead of Guava for player heads
 [Nacho-0007] Add timings for packets
 [Nacho-0008] Upgrade Netty version to 4.1.50 and support java 14
+[Nacho-0009] Remove an extra file io call within world credit bob7l
 
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 
