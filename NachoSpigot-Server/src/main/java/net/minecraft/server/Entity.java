@@ -197,6 +197,7 @@ public abstract class Entity implements ICommandListener {
         this.datawatcher.a(2, "");
         this.datawatcher.a(4, Byte.valueOf((byte) 0));
         this.h();
+        this.datawatcher.registrationLocked = true; // Spigot
     }
 
     protected abstract void h();

@@ -31,13 +31,15 @@ public class DataWatcher {
     // TacoSpigot end
     // Spigot End
     private boolean e;
-    private ReadWriteLock f = new ReentrantReadWriteLock();
+//    private ReadWriteLock f = new ReentrantReadWriteLock(); // Spigot - Remove DataWatcher Locking
+    boolean registrationLocked; // Spigot
 
     public DataWatcher(Entity entity) {
         this.a = entity;
     }
 
     public <T> void a(int i, T t0) {
+        if (this.registrationLocked) throw new IllegalStateException("Registering datawatcher object after entity initialization"); // Spigot
         int integer = classToId.get(t0.getClass()); // Spigot
 
         if (integer == -1) { // Spigot
@@ -49,9 +51,9 @@ public class DataWatcher {
         } else {
             DataWatcher.WatchableObject datawatcher_watchableobject = new DataWatcher.WatchableObject(integer, i, t0); // Spigot
 
-            this.f.writeLock().lock();
+//            this.f.writeLock().lock(); // Spigot - not required
             this.dataValues.put(i, datawatcher_watchableobject); // Spigot
-            this.f.writeLock().unlock();
+//            this.f.writeLock().unlock(); // Spigot - not required
             this.b = false;
         }
     }
@@ -59,9 +61,9 @@ public class DataWatcher {
     public void add(int i, int j) {
         DataWatcher.WatchableObject datawatcher_watchableobject = new DataWatcher.WatchableObject(j, i, (Object) null);
 
-        this.f.writeLock().lock();
+//        this.f.writeLock().lock(); // Spigot - not required
         this.dataValues.put(i, datawatcher_watchableobject); // Spigot
-        this.f.writeLock().unlock();
+//        this.f.writeLock().unlock(); // Spigot - not required
         this.b = false;
     }
 
@@ -90,6 +92,8 @@ public class DataWatcher {
     }
 
     private DataWatcher.WatchableObject j(int i) {
+        // Spigot - not required
+        /*
         this.f.readLock().lock();
 
         DataWatcher.WatchableObject datawatcher_watchableobject;
@@ -106,6 +110,9 @@ public class DataWatcher {
 
         this.f.readLock().unlock();
         return datawatcher_watchableobject;
+
+         */
+        return (WatchableObject) this.dataValues.get(i);
     }
 
     public Vector3f h(int i) {
@@ -151,7 +158,7 @@ public class DataWatcher {
         ArrayList arraylist = null;
 
         if (this.e) {
-            this.f.readLock().lock();
+//            this.f.readLock().lock(); // Spigot - not required
             Iterator iterator = this.dataValues.values().iterator(); // Spigot // TacoSpigot
 
             while (iterator.hasNext()) {
@@ -178,7 +185,7 @@ public class DataWatcher {
                 }
             }
 
-            this.f.readLock().unlock();
+//            this.f.readLock().unlock(); // Spigot - not required
         }
 
         this.e = false;
@@ -186,7 +193,7 @@ public class DataWatcher {
     }
 
     public void a(PacketDataSerializer packetdataserializer) throws IOException {
-        this.f.readLock().lock();
+//        this.f.readLock().lock(); // Spigot - not required
         Iterator iterator = this.dataValues.values().iterator(); // Spigot // TacoSpigot
 
         while (iterator.hasNext()) {
@@ -195,14 +202,14 @@ public class DataWatcher {
             a(packetdataserializer, datawatcher_watchableobject);
         }
 
-        this.f.readLock().unlock();
+//        this.f.readLock().unlock(); // Spigot - not required
         packetdataserializer.writeByte(127);
     }
 
     public List<DataWatcher.WatchableObject> c() {
         ArrayList arraylist = Lists.newArrayList(); // Spigot
 
-        this.f.readLock().lock();
+//        this.f.readLock().lock(); // Spigot - not required
 
         arraylist.addAll(this.dataValues.values()); // Spigot // TacoSpigot
         // Spigot start - copy ItemStacks to prevent ConcurrentModificationExceptions
@@ -221,7 +228,7 @@ public class DataWatcher {
         }
         // Spigot end
 
-        this.f.readLock().unlock();
+//        this.f.readLock().unlock(); // Spigot - not required
         return arraylist;
     }
 
