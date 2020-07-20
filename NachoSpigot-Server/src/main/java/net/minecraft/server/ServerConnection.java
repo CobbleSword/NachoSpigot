@@ -156,7 +156,7 @@ public class ServerConnection {
                         networkmanager.l();
                     } else {
                         try {
-                            networkmanager.a();
+                            networkmanager.tick();
                         } catch (Exception exception) {
                             if (networkmanager.c()) {
                                 CrashReport crashreport = CrashReport.a(exception, "Ticking memory connection");

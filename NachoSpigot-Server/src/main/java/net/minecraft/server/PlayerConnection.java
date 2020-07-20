@@ -130,11 +130,14 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
     private final static HashSet<Integer> invalidItems = new HashSet<Integer>(java.util.Arrays.asList(8, 9, 10, 11, 26, 34, 36, 43, 51, 52, 55, 59, 60, 62, 63, 64, 68, 71, 74, 75, 83, 90, 92, 93, 94, 104, 105, 115, 117, 118, 119, 125, 127, 132, 140, 141, 142, 144)); // TODO: Check after every update.
     // CraftBukkit end
 
-    public void c() {
+    @Override
+    public void c()
+    {
         this.h = false;
         ++this.e;
         this.minecraftServer.methodProfiler.a("keepAlive");
-        if ((long) this.e - this.k > 40L) {
+        if ((long) this.e - this.k > 40L)
+        {
             this.k = (long) this.e;
             this.j = this.d();
             this.i = (int) this.j;
@@ -151,7 +154,8 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
         */
         // CraftBukkit end
 
-        if (this.m > 0) {
+        if (this.m > 0)
+        {
             --this.m;
         }
 

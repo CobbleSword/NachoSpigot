@@ -168,7 +168,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     //sendPacket
     public void handle(Packet packet) {
         if (this.isConnected()) {
-            this.m();
+            this.sendPacketQueue();
             this.dispatchPacket(packet, null);
         } else {
             this.j.writeLock().lock();
@@ -185,7 +185,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     //sendPacket
     public void a(Packet packet, GenericFutureListener<? extends Future<? super Void>> genericfuturelistener, GenericFutureListener<? extends Future<? super Void>>... agenericfuturelistener) {
         if (this.isConnected()) {
-            this.m();
+            this.sendPacketQueue();
             this.dispatchPacket(packet, (GenericFutureListener[]) ArrayUtils.add(agenericfuturelistener, 0, genericfuturelistener));
         } else {
             this.j.writeLock().lock();
@@ -250,35 +250,39 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         this.dispatchPacket(packet, agenericfuturelistener);
     }
 
-    private void m()
+    private void sendPacketQueue()
     {
-        if (this.channel != null && this.channel.isOpen())
-        {
+        if (this.channel != null && this.channel.isOpen()) {
             this.j.readLock().lock();
 
-            try
-            {
-                while (!this.i.isEmpty())
-                {
+            try {
+                while (!this.i.isEmpty()) {
                     NetworkManager.QueuedPacket networkmanager_queuedpacket = (NetworkManager.QueuedPacket) this.i.poll();
                     this.dispatchPacket(networkmanager_queuedpacket.a, networkmanager_queuedpacket.b);
                 }
-            }
-            finally
-            {
+            } finally {
                 this.j.readLock().unlock();
             }
-
         }
     }
 
-    public void a() {
-        this.m();
+    private void m()
+    {
+        this.sendPacketQueue();
+    }
+
+    public void tick()
+    {
+        this.sendPacketQueue();
         if (this.m instanceof IUpdatePlayerListBox) {
             ((IUpdatePlayerListBox) this.m).c();
         }
 
         this.channel.flush();
+    }
+
+    public void a() {
+        this.tick();
     }
 
     public SocketAddress getSocketAddress() {
