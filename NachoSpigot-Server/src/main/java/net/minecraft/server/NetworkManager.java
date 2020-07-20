@@ -165,10 +165,11 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         this.m = packetlistener;
     }
 
+    //sendPacket
     public void handle(Packet packet) {
         if (this.isConnected()) {
             this.m();
-            this.a(packet, (GenericFutureListener[]) null);
+            this.dispatchPacket(packet, null);
         } else {
             this.j.writeLock().lock();
 
@@ -181,10 +182,11 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
 
     }
 
+    //sendPacket
     public void a(Packet packet, GenericFutureListener<? extends Future<? super Void>> genericfuturelistener, GenericFutureListener<? extends Future<? super Void>>... agenericfuturelistener) {
         if (this.isConnected()) {
             this.m();
-            this.a(packet, (GenericFutureListener[]) ArrayUtils.add(agenericfuturelistener, 0, genericfuturelistener));
+            this.dispatchPacket(packet, (GenericFutureListener[]) ArrayUtils.add(agenericfuturelistener, 0, genericfuturelistener));
         } else {
             this.j.writeLock().lock();
 
@@ -197,7 +199,8 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
 
     }
 
-    private void a(final Packet packet, final GenericFutureListener<? extends Future<? super Void>>[] agenericfuturelistener)
+    //
+    public void dispatchPacket(final Packet packet, final GenericFutureListener<? extends Future<? super Void>>[] agenericfuturelistener)
     {
         final EnumProtocol enumprotocol = EnumProtocol.a(packet);
         final EnumProtocol enumprotocol1 = this.channel.attr(NetworkManager.ATTRIBUTE_PROTOCOL).get();
@@ -240,20 +243,29 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
                 channelfuture.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
             });
         }
-
     }
 
-    private void m() {
-        if (this.channel != null && this.channel.isOpen()) {
+    private void a(final Packet packet, final GenericFutureListener<? extends Future<? super Void>>[] agenericfuturelistener)
+    {
+        this.dispatchPacket(packet, agenericfuturelistener);
+    }
+
+    private void m()
+    {
+        if (this.channel != null && this.channel.isOpen())
+        {
             this.j.readLock().lock();
 
-            try {
-                while (!this.i.isEmpty()) {
+            try
+            {
+                while (!this.i.isEmpty())
+                {
                     NetworkManager.QueuedPacket networkmanager_queuedpacket = (NetworkManager.QueuedPacket) this.i.poll();
-
-                    this.a(networkmanager_queuedpacket.a, networkmanager_queuedpacket.b);
+                    this.dispatchPacket(networkmanager_queuedpacket.a, networkmanager_queuedpacket.b);
                 }
-            } finally {
+            }
+            finally
+            {
                 this.j.readLock().unlock();
             }
 
