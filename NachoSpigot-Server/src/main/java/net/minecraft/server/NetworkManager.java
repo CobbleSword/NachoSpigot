@@ -166,7 +166,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     }
 
     public void handle(Packet packet) {
-        if (this.g()) {
+        if (this.isConnected()) {
             this.m();
             this.a(packet, (GenericFutureListener[]) null);
         } else {
@@ -182,7 +182,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     }
 
     public void a(Packet packet, GenericFutureListener<? extends Future<? super Void>> genericfuturelistener, GenericFutureListener<? extends Future<? super Void>>... agenericfuturelistener) {
-        if (this.g()) {
+        if (this.isConnected()) {
             this.m();
             this.a(packet, (GenericFutureListener[]) ArrayUtils.add(agenericfuturelistener, 0, genericfuturelistener));
         } else {
@@ -296,8 +296,13 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         this.channel.pipeline().addBefore("prepender", "encrypt", new PacketEncrypter(MinecraftEncryption.a(1, secretkey)));
     }
 
-    public boolean g() {
+    public boolean isConnected()
+    {
         return this.channel != null && this.channel.isOpen();
+    }
+
+    public boolean g() {
+        return this.isConnected();
     }
 
     public boolean h() {
@@ -366,6 +371,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         this.handleDisconnection();
     }
 
+    @Override
     protected void channelRead0(ChannelHandlerContext channelhandlercontext, Packet object) throws Exception
     { // CraftBukkit - fix decompile error
         this.a(channelhandlercontext, object);

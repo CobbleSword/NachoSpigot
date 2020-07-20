@@ -46,7 +46,7 @@ public class EntityEnderPearl extends EntityProjectile {
             if (entityliving instanceof EntityPlayer) {
                 EntityPlayer entityplayer = (EntityPlayer) entityliving;
 
-                if (entityplayer.playerConnection.a().g() && entityplayer.world == this.world && !entityplayer.isSleeping()) {
+                if (entityplayer.playerConnection.a().isConnected() && entityplayer.world == this.world && !entityplayer.isSleeping()) {
                     // CraftBukkit start - Fire PlayerTeleportEvent
                     org.bukkit.craftbukkit.entity.CraftPlayer player = entityplayer.getBukkitEntity();
                     org.bukkit.Location location = getBukkitEntity().getLocation();
