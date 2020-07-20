@@ -13,7 +13,7 @@ import org.apache.logging.log4j.MarkerManager;
 public class PacketEncoder extends MessageToByteEncoder<Packet> {
 
     private static final Logger a = LogManager.getLogger();
-    private static final Marker b = MarkerManager.getMarker("PACKET_SENT", NetworkManager.b);
+    private static final Marker b = MarkerManager.getMarker("PACKET_SENT", NetworkManager.PACKET_MARKER);
     private final EnumProtocolDirection c;
 
     public PacketEncoder(EnumProtocolDirection enumprotocoldirection) {
@@ -21,10 +21,10 @@ public class PacketEncoder extends MessageToByteEncoder<Packet> {
     }
 
     protected void a(ChannelHandlerContext channelhandlercontext, Packet packet, ByteBuf bytebuf) throws Exception {
-        Integer integer = ((EnumProtocol) channelhandlercontext.channel().attr(NetworkManager.c).get()).a(this.c, packet);
+        Integer integer = ((EnumProtocol) channelhandlercontext.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get()).a(this.c, packet);
 
         if (PacketEncoder.a.isDebugEnabled()) {
-            PacketEncoder.a.debug(PacketEncoder.b, "OUT: [{}:{}] {}", new Object[]{channelhandlercontext.channel().attr(NetworkManager.c).get(), integer, packet.getClass().getName()});
+            PacketEncoder.a.debug(PacketEncoder.b, "OUT: [{}:{}] {}", new Object[]{channelhandlercontext.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get(), integer, packet.getClass().getName()});
         }
 
         if (integer == null) {
@@ -43,7 +43,7 @@ public class PacketEncoder extends MessageToByteEncoder<Packet> {
                     packet.b(packetdataserializer);
                 } catch (ExploitException ex) {
 
-                    System.out.println("rarrr " + channelhandlercontext.channel().attr(NetworkManager.c).get());
+                    System.out.println("rarrr " + channelhandlercontext.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get());
                 }
             } catch (Throwable throwable) {
                 PacketEncoder.a.error(throwable);

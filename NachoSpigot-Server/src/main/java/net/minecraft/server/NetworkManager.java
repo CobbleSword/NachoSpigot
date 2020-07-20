@@ -2,7 +2,6 @@ package net.minecraft.server;
 
 import co.aikar.timings.SpigotTimings;
 import co.aikar.timings.Timing;
-import co.aikar.timings.Timings;
 import dev.cobblesword.nachospigot.exception.ExploitException;
 import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
@@ -36,11 +35,12 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
 
 public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
 
-    private static final Logger g = LogManager.getLogger();
-    public static final Marker a = MarkerManager.getMarker("NETWORK");
-    public static final Marker b = MarkerManager.getMarker("NETWORK_PACKETS", NetworkManager.a);
-    public static final AttributeKey<EnumProtocol> c = AttributeKey.valueOf("protocol");
-    public static final LazyInitVar<NioEventLoopGroup> d = new LazyInitVar() {
+    private static final Logger LOGGER = LogManager.getLogger();
+    public static final Marker ROOT_MARKER = MarkerManager.getMarker("NETWORK");
+    public static final Marker PACKET_MARKER = MarkerManager.getMarker("NETWORK_PACKETS", NetworkManager.ROOT_MARKER);
+    public static final AttributeKey<EnumProtocol> ATTRIBUTE_PROTOCOL = AttributeKey.valueOf("protocol");
+    public static final LazyInitVar NETWORK_WORKER_GROUP = new LazyInitVar()
+    {
         protected NioEventLoopGroup a() {
             return new NioEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Client IO #%d").setDaemon(true).build());
         }
@@ -49,7 +49,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
             return this.a();
         }
     };
-    public static final LazyInitVar<EpollEventLoopGroup> e = new LazyInitVar() {
+    public static final LazyInitVar NETWORK_EPOLL_WORKER_GROUP = new LazyInitVar() {
         protected EpollEventLoopGroup a() {
             return new EpollEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Epoll Client IO #%d").setDaemon(true).build());
         }
@@ -58,7 +58,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
             return this.a();
         }
     };
-    public static final LazyInitVar<LocalEventLoopGroup> f = new LazyInitVar() {
+    public static final LazyInitVar LOCAL_WORKER_GROUP = new LazyInitVar() {
         protected LocalEventLoopGroup a() {
             return new LocalEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Local Client IO #%d").setDaemon(true).build());
         }
@@ -97,13 +97,13 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         try {
             this.a(EnumProtocol.HANDSHAKING);
         } catch (Throwable throwable) {
-            NetworkManager.g.fatal(throwable);
+            NetworkManager.LOGGER.fatal(throwable);
         }
 
     }
 
     public void a(EnumProtocol enumprotocol) {
-        this.channel.attr(NetworkManager.c).set(enumprotocol);
+        this.channel.attr(NetworkManager.ATTRIBUTE_PROTOCOL).set(enumprotocol);
         this.channel.config().setAutoRead(true);
 //        NetworkManager.g.debug("Enabled auto read");
     }
@@ -199,7 +199,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     private void a(final Packet packet, final GenericFutureListener<? extends Future<? super Void>>[] agenericfuturelistener)
     {
         final EnumProtocol enumprotocol = EnumProtocol.a(packet);
-        final EnumProtocol enumprotocol1 = this.channel.attr(NetworkManager.c).get();
+        final EnumProtocol enumprotocol1 = this.channel.attr(NetworkManager.ATTRIBUTE_PROTOCOL).get();
 
         if (enumprotocol1 != enumprotocol) {
 //            NetworkManager.g.debug("Disabled auto read");
@@ -349,7 +349,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
                 }
                 this.i.clear(); // Free up packet queue.
             } else {
-                NetworkManager.g.warn("handleDisconnection() called twice");
+                NetworkManager.LOGGER.warn("handleDisconnection() called twice");
             }
 
         }

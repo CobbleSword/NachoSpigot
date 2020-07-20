@@ -23,17 +23,17 @@ public class PacketDecoder extends ByteToMessageDecoder {
         if (var2.readableBytes() != 0) {
             PacketDataSerializer var4 = new PacketDataSerializer(var2);
             int var5 = var4.e();
-            Packet var6 = ((EnumProtocol)var1.channel().attr(NetworkManager.c).get()).a(this.c, var5);
+            Packet var6 = ((EnumProtocol)var1.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get()).a(this.c, var5);
             if (var6 == null) {
                 throw new IOException("Bad packet id " + var5);
             } else {
                 var6.a(var4);
                 if (var4.readableBytes() > 0) {
-                    throw new IOException("Packet " + ((EnumProtocol)var1.channel().attr(NetworkManager.c).get()).a() + "/" + var5 + " (" + var6.getClass().getSimpleName() + ") was larger than I expected, found " + var4.readableBytes() + " bytes extra whilst reading packet " + var5);
+                    throw new IOException("Packet " + ((EnumProtocol)var1.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get()).a() + "/" + var5 + " (" + var6.getClass().getSimpleName() + ") was larger than I expected, found " + var4.readableBytes() + " bytes extra whilst reading packet " + var5);
                 } else {
                     var3.add(var6);
                     if (a.isDebugEnabled()) {
-                        a.debug(b, " IN: [{}:{}] {}", new Object[]{var1.channel().attr(NetworkManager.c).get(), var5, var6.getClass().getName()});
+                        a.debug(b, " IN: [{}:{}] {}", new Object[]{var1.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get(), var5, var6.getClass().getName()});
                     }
 
                 }
@@ -42,6 +42,6 @@ public class PacketDecoder extends ByteToMessageDecoder {
     }
 
     static {
-        b = MarkerManager.getMarker("PACKET_RECEIVED", NetworkManager.b);
+        b = MarkerManager.getMarker("PACKET_RECEIVED", NetworkManager.PACKET_MARKER);
     }
 }
