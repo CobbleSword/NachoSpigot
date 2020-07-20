@@ -79,8 +79,9 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     // Spigot End
     private PacketListener m;
     private IChatBaseComponent n;
-    private boolean o;
-    private boolean p;
+    private boolean o; public boolean isEncrypted() { return this.o; } // Nacho - OBFHELPER
+    private boolean p; public boolean isDisconnectionHandled() { return this.p; } // Nacho - OBFHELPER
+    public void setDisconnectionHandled(boolean handled) { this.p = handled;} // Nacho - OBFHELPER
 
     public NetworkManager(EnumProtocolDirection enumprotocoldirection) {
         this.h = enumprotocoldirection;
@@ -272,22 +273,24 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         return this.l;
     }
 
-    public void close(IChatBaseComponent ichatbasecomponent) {
+    public void close(IChatBaseComponent ichatbasecomponent)
+    {
         // Spigot Start
         this.preparing = false;
         // Spigot End
-        if (this.channel.isOpen()) {
+        if (this.channel.isOpen())
+        {
             this.channel.close(); // We can't wait as this may be called from an event loop.
             this.n = ichatbasecomponent;
         }
-
     }
 
     public boolean c() {
         return this.channel instanceof LocalChannel || this.channel instanceof LocalServerChannel;
     }
 
-    public void a(SecretKey secretkey) {
+    public void a(SecretKey secretkey)
+    {
         this.o = true;
         this.channel.pipeline().addBefore("splitter", "decrypt", new PacketDecrypter(MinecraftEncryption.a(2, secretkey)));
         this.channel.pipeline().addBefore("prepender", "encrypt", new PacketEncrypter(MinecraftEncryption.a(1, secretkey)));
@@ -338,10 +341,13 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
 
     }
 
-    public void l() {
-        if (this.channel != null && !this.channel.isOpen()) {
-            if (!this.p) {
-                this.p = true;
+    public void handleDisconnection()
+    {
+        if (this.channel != null && !this.channel.isOpen())
+        {
+            if (!this.isDisconnectionHandled())
+            {
+                this.setDisconnectionHandled(true);
                 if (this.j() != null) {
                     this.getPacketListener().a(this.j());
                 } else if (this.getPacketListener() != null) {
@@ -355,15 +361,20 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         }
     }
 
+    public void l()
+    {
+        this.handleDisconnection();
+    }
+
     protected void channelRead0(ChannelHandlerContext channelhandlercontext, Packet object) throws Exception
     { // CraftBukkit - fix decompile error
         this.a(channelhandlercontext, object);
     }
 
-    static class QueuedPacket {
-
-        private final Packet a;
-        private final GenericFutureListener<? extends Future<? super Void>>[] b;
+    static class QueuedPacket
+    {
+        private final Packet a; //packet
+        private final GenericFutureListener<? extends Future<? super Void>>[] b; //listener
 
         public QueuedPacket(Packet packet, GenericFutureListener<? extends Future<? super Void>>... agenericfuturelistener) {
             this.a = packet;
