@@ -1,23 +1,33 @@
 package net.minecraft.server;
 
 import com.google.common.base.Charsets;
-import io.netty.buffer.*;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
+import io.netty.buffer.ByteBufProcessor;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.EncoderException;
 import io.netty.util.ByteProcessor;
-import net.techcable.tacospigot.CompatHacks;
-import org.bukkit.craftbukkit.inventory.CraftItemStack;
-
-import java.io.*;
+import io.netty.util.ReferenceCounted;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 import java.nio.channels.GatheringByteChannel;
 import java.nio.channels.ScatteringByteChannel;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.inventory.CraftItemStack; // CraftBukkit
 // TacoSpigot start
+import net.techcable.tacospigot.CompatHacks;
 // TacoSpigot end
 
 public class PacketDataSerializer extends ByteBuf {
@@ -98,36 +108,28 @@ public class PacketDataSerializer extends ByteBuf {
     }
 
     public int e() {
+        byte b0;
         int i = 0;
         int j = 0;
-
-        byte b0;
-
         do {
-            b0 = this.readByte();
+            b0 = readByte();
             i |= (b0 & Byte.MAX_VALUE) << j++ * 7;
-            if (j > 5) {
+            if (j > 5)
                 throw new RuntimeException("VarInt too big");
-            }
-        } while ((b0 & 128) == 128);
-
+        } while ((b0 & 0x80) == 128);
         return i;
     }
 
     public long f() {
+        byte b0;
         long i = 0L;
         int j = 0;
-
-        byte b0;
-
         do {
-            b0 = this.readByte();
-            i |= (long) (b0 & Byte.MAX_VALUE) << j++ * 7;
-            if (j > 10) {
+            b0 = readByte();
+            i |= (b0 & Byte.MAX_VALUE) << j++ * 7;
+            if (j > 10)
                 throw new RuntimeException("VarLong too big");
-            }
-        } while ((b0 & 128) == 128);
-
+        } while ((b0 & 0x80) == 128);
         return i;
     }
 
@@ -142,7 +144,7 @@ public class PacketDataSerializer extends ByteBuf {
 
     public void b(int i) {
         while ((i & -128) != 0) {
-            this.writeByte(i & Byte.MAX_VALUE | 128);
+            this.writeByte(i & 127 | 128);
             i >>>= 7;
         }
 
@@ -240,20 +242,15 @@ public class PacketDataSerializer extends ByteBuf {
 
     public String c(int i) {
         int j = this.e();
-
-        if (j > i * 4) {
-            throw new DecoderException("The received encoded string buffer length is longer than maximum allowed (" + j + " > " + i * 4 + ")");
-        } else if (j < 0) {
+        if (j > i * 4)
+            throw new DecoderException("The received encoded string buffer length is longer than maximum allowed (" + j + " > " + (i * 4) + ")");
+        if (j < 0)
             throw new DecoderException("The received encoded string buffer length is less than zero! Weird string!");
-        } else {
-            String s = new String(this.readBytes(j).array(), Charsets.UTF_8);
-
-            if (s.length() > i) {
-                throw new DecoderException("The received string length is longer than maximum allowed (" + j + " > " + i + ")");
-            } else {
-                return s;
-            }
-        }
+        String s = toString(readerIndex(), j, StandardCharsets.UTF_8);
+        readerIndex(readerIndex() + j);
+        if (s.length() > i)
+            throw new DecoderException("The received string length is longer than maximum allowed (" + j + " > " + i + ")");
+        return s;
     }
 
     public PacketDataSerializer a(String s) {
