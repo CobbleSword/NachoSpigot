@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+
+import dev.cobblesword.nachospigot.Nacho;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -181,6 +183,8 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
             org.github.paperspigot.PaperSpigotConfig.init((File) options.valueOf("paper-settings"));
             org.github.paperspigot.PaperSpigotConfig.registerCommands();
             // PaperSpigot end
+            if(Nacho.get() == null) new Nacho();
+            Nacho.get().registerCommands();
 
             DedicatedServer.LOGGER.info("Generating keypair");
             this.a(MinecraftEncryption.b());
@@ -292,16 +296,16 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                 }
                 // CraftBukkit end
 
-        if (org.spigotmc.SpigotConfig.lateBind) {
-            try {
-                this.aq().a(inetaddress, this.R());
-            } catch (IOException ioexception) {
-                DedicatedServer.LOGGER.warn("**** FAILED TO BIND TO PORT!");
-                DedicatedServer.LOGGER.warn("The exception was: {}", new Object[] { ioexception.toString()});
-                DedicatedServer.LOGGER.warn("Perhaps a server is already running on that port?");
-                return false;
-            }
-        }
+                if (org.spigotmc.SpigotConfig.lateBind) {
+                    try {
+                        this.aq().a(inetaddress, this.R());
+                    } catch (IOException ioexception) {
+                        DedicatedServer.LOGGER.warn("**** FAILED TO BIND TO PORT!");
+                        DedicatedServer.LOGGER.warn("The exception was: {}", new Object[] { ioexception.toString()});
+                        DedicatedServer.LOGGER.warn("Perhaps a server is already running on that port?");
+                        return false;
+                    }
+                }
 
                 if (false && this.aS() > 0L) {  // Spigot - disable
                     Thread thread1 = new Thread(new ThreadWatchdog(this));

@@ -1,15 +1,11 @@
-package dev.cobblesword.nachospigot.commands;
+package org.bukkit.command.defaults;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.spigotmc.SpigotWorldConfig;
 
 public class SpawnMobCommand extends Command {
   public SpawnMobCommand(String name)
@@ -28,6 +24,12 @@ public class SpawnMobCommand extends Command {
     {
       sender.sendMessage(ChatColor.RED + "Please run this command as a player");
       return true;
+    }
+
+    if(args.length == 0)
+    {
+      sender.sendMessage(ChatColor.RED + "Please use '/spawnMob <MobName> [amount]'");
+      return false;
     }
 
     int amount = 1;
@@ -49,6 +51,17 @@ public class SpawnMobCommand extends Command {
       player.sendMessage(ChatColor.RED + "Please give a correct entity type");
       player.sendMessage(entityListStr.toString());
       return false;
+    }
+
+    if(args.length == 2) {
+      try {
+        amount = Integer.parseInt(args[1]);
+      }
+      catch (Exception ex)
+      {
+        player.sendMessage(ChatColor.RED + "Please enter a number instead of '" + args[1] + "'.");
+        return false;
+      }
     }
 
     for(int i = 0; i < amount; i++)

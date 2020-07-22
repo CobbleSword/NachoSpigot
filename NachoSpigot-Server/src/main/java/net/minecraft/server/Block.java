@@ -289,8 +289,19 @@ public class Block {
 
     }
 
+    public void a(World world, int blockposition_x, int blockposition_y, int blockposition_z, IBlockData iblockdata, AxisAlignedBB axisalignedbb, List<AxisAlignedBB> list, Entity entity) {
+        AxisAlignedBB axisalignedbb1 = this.a(world, blockposition_x, blockposition_y, blockposition_z, iblockdata);
+
+        if (axisalignedbb1 != null && axisalignedbb.b(axisalignedbb1))
+            list.add(axisalignedbb1);
+    }
+
     public AxisAlignedBB a(World world, BlockPosition blockposition, IBlockData iblockdata) {
         return new AxisAlignedBB((double) blockposition.getX() + this.minX, (double) blockposition.getY() + this.minY, (double) blockposition.getZ() + this.minZ, (double) blockposition.getX() + this.maxX, (double) blockposition.getY() + this.maxY, (double) blockposition.getZ() + this.maxZ);
+    }
+
+    public AxisAlignedBB a(World world, int blockposition_x, int blockposition_y, int blockposition_z, IBlockData iblockdata) {
+        return new AxisAlignedBB((double) blockposition_x + this.minX, (double) blockposition_y + this.minY, (double) blockposition_z + this.minZ, (double) blockposition_x + this.maxX, (double) blockposition_y + this.maxY, (double) blockposition_z + this.maxZ);
     }
 
     public boolean c() {

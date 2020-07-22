@@ -1,6 +1,8 @@
 package dev.cobblesword.nachospigot;
 
 import dev.cobblesword.nachospigot.commons.FileUtils;
+import net.minecraft.server.MinecraftServer;
+import org.bukkit.command.defaults.SpawnMobCommand;
 
 import java.io.File;
 
@@ -33,5 +35,11 @@ public class Nacho
     public NachoConfig getConfig()
     {
         return config;
+    }
+
+    public void registerCommands()
+    {
+        SpawnMobCommand spawnMobCommand = new SpawnMobCommand("spawnmob");
+        MinecraftServer.getServer().server.getCommandMap().register( spawnMobCommand.getName(), "NachoSpigot", spawnMobCommand);
     }
 }

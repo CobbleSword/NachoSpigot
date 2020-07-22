@@ -1255,7 +1255,8 @@ public abstract class World implements IBlockAccess {
         this.u.add(iworldaccess);
     }
 
-    public List<AxisAlignedBB> getCubes(Entity entity, AxisAlignedBB axisalignedbb) {
+    public List<AxisAlignedBB> getCubes(Entity entity, AxisAlignedBB axisalignedbb)
+    {
         ArrayList arraylist = Lists.newArrayList();
         int i = MathHelper.floor(axisalignedbb.a);
         int j = MathHelper.floor(axisalignedbb.d + 1.0D);
@@ -1267,7 +1268,6 @@ public abstract class World implements IBlockAccess {
         boolean flag = entity.aT();
         boolean flag1 = this.a(worldborder, entity);
         IBlockData iblockdata = Blocks.STONE.getBlockData();
-        BlockPosition.MutableBlockPosition blockposition_mutableblockposition = new BlockPosition.MutableBlockPosition();
 
         // Spigot start
         int ystart = ( ( k - 1 ) < 0 ) ? 0 : ( k - 1 );
@@ -1288,6 +1288,8 @@ public abstract class World implements IBlockAccess {
                     }
                     // PaperSpigot end
                 }
+
+                boolean collidesWithSign = entity.world.paperSpigotConfig.fallingBlocksCollideWithSigns && (entity instanceof EntityTNTPrimed || entity instanceof EntityFallingBlock);
                 int cz = chunkz << 4;
                 // Compute ranges within chunk
                 int xstart = ( i < cx ) ? cx : i;
@@ -1301,8 +1303,6 @@ public abstract class World implements IBlockAccess {
                     {
                         for ( int y = ystart; y < l; y++ )
                         {
-                            BlockPosition blockposition = new BlockPosition( x, y, z );
-
                             if (flag && flag1) {
                                 entity.h(false);
                             } else if (!flag && !flag1) {
@@ -1310,21 +1310,23 @@ public abstract class World implements IBlockAccess {
                             }
 
                             IBlockData block;
-                            if (!this.getWorldBorder().a(blockposition) && flag1) {
-                                block = Blocks.STONE.getBlockData();
-                            } else
+                            if (!this.getWorldBorder().isInWorldBoder(x, y, z) && flag1)
                             {
-                                block = chunk.getBlockData( blockposition );
+                                block = Blocks.STONE.getBlockData();
+                            }
+                            else
+                            {
+                                block = chunk.getBlockData( x, y, z);
                             }
                             if ( block != null )
                             {
                                 // PaperSpigot start - FallingBlocks and TNT collide with specific non-collidable blocks
                                 Block b = block.getBlock();
-                                if (entity.world.paperSpigotConfig.fallingBlocksCollideWithSigns && (entity instanceof EntityTNTPrimed || entity instanceof EntityFallingBlock) && (b instanceof BlockSign || b instanceof BlockFenceGate || b instanceof BlockTorch || b instanceof BlockButtonAbstract || b instanceof BlockLever || b instanceof BlockTripwireHook || b instanceof BlockTripwire || b instanceof BlockChest || b instanceof BlockSlowSand || b instanceof BlockBed || b instanceof BlockEnderChest || b instanceof BlockEnchantmentTable || b instanceof BlockBrewingStand)) {
+                                if (collidesWithSign && (b instanceof BlockSign || b instanceof BlockFenceGate || b instanceof BlockTorch || b instanceof BlockButtonAbstract || b instanceof BlockLever || b instanceof BlockTripwireHook || b instanceof BlockTripwire || b instanceof BlockChest || b instanceof BlockSlowSand || b instanceof BlockBed || b instanceof BlockEnderChest || b instanceof BlockEnchantmentTable || b instanceof BlockBrewingStand)) {
                                     AxisAlignedBB aabb = AxisAlignedBB.a(x, y, z, x + 1.0, y + 1.0, z + 1.0);
                                     if (axisalignedbb.b(aabb)) arraylist.add(aabb);
                                 } else {
-                                    b.a(this, blockposition, block, axisalignedbb, arraylist, entity);
+                                    b.a(this, x, y, z, block, axisalignedbb, arraylist, entity);
                                 }
                                 // PaperSpigot end
                             }

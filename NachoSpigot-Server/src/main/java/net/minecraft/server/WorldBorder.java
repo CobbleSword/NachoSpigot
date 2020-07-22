@@ -33,6 +33,14 @@ public class WorldBorder {
         return (double) (blockposition.getX() + 1) > this.b() && (double) blockposition.getX() < this.d() && (double) (blockposition.getZ() + 1) > this.c() && (double) blockposition.getZ() < this.e();
     }
 
+    public boolean isInWorldBoder(int blockposition_x, int blockposition_y, int blockposition_z)
+    {
+        return (double) (blockposition_x + 1) > this.b()
+                && (double) blockposition_x < this.d()
+                && (double) (blockposition_z + 1) > this.c()
+                && (double) blockposition_z < this.e();
+    }
+
     // CraftBukkit start - split method
     public boolean isInBounds(ChunkCoordIntPair chunkcoordintpair) {
         return isInBounds(chunkcoordintpair.x, chunkcoordintpair.z);

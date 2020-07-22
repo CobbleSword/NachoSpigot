@@ -167,7 +167,6 @@ public final class CraftServer implements Server {
     private final UUID invalidUserUUID = UUID.nameUUIDFromBytes("InvalidUsername".getBytes(Charsets.UTF_8));
     private final List<CraftPlayer> playerView;
     public int reloadCount;
-    private Nacho nacho; public Nacho getNacho() { return this.nacho; }
 
     private final class BooleanWrapper {
         private boolean value = true;
@@ -718,7 +717,7 @@ public final class CraftServer implements Server {
         org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
         org.github.paperspigot.PaperSpigotConfig.init((File) console.options.valueOf("paper-settings")); // PaperSpigot
         net.techcable.tacospigot.TacoSpigotConfig.init((File) console.options.valueOf("taco-settings")); // TacoSpigot
-        this.nacho = new Nacho();
+        if(Nacho.get() == null) new Nacho();
         for (WorldServer world : console.worlds) {
             world.worldData.setDifficulty(difficulty);
             world.setSpawnFlags(monsters, animals);
@@ -743,6 +742,7 @@ public final class CraftServer implements Server {
         resetRecipes();
         org.spigotmc.SpigotConfig.registerCommands(); // Spigot
         org.github.paperspigot.PaperSpigotConfig.registerCommands(); // PaperSpigot
+        Nacho.get().registerCommands(); //NachoSpigot :: Commands
 
         overrideAllCommandBlockCommands = commandsConfiguration.getStringList("command-block-overrides").contains("*");
 
