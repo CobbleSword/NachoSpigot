@@ -18,9 +18,10 @@ import org.bukkit.event.block.BlockExplodeEvent;
 
 public class Explosion {
 
+    public static final Random CACHED_RANDM = new Random();
     private final boolean a;
     private final boolean b;
-    private final Random c = new Random();
+    private final Random c = CACHED_RANDM;
     private final World world;
     private final double posX;
     private final double posY;
