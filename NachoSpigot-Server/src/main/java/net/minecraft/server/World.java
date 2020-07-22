@@ -2505,7 +2505,7 @@ public abstract class World implements IBlockAccess {
 
     public boolean f(int blockposition_x, int blockposition_y, int blockposition_z, boolean flag) {
         BiomeBase biomebase = this.getBiome(blockposition_x, blockposition_y, blockposition_z);
-        float f = biomebase.a(blockposition_x, blockposition_y, blockposition_z);
+        float f = biomebase.a(blockposition_x, blockposition_y, blockposition_z, true);
 
         if (f > 0.15F) {
             return false;
@@ -2796,17 +2796,21 @@ public abstract class World implements IBlockAccess {
         return this.a(entity, axisalignedbb, IEntitySelector.d);
     }
 
-    public List<Entity> a(Entity entity, AxisAlignedBB axisalignedbb, Predicate<? super Entity> predicate) {
-        ArrayList arraylist = Lists.newArrayList();
-        int i = MathHelper.floor((axisalignedbb.a - 2.0D) / 16.0D);
-        int j = MathHelper.floor((axisalignedbb.d + 2.0D) / 16.0D);
-        int k = MathHelper.floor((axisalignedbb.c - 2.0D) / 16.0D);
-        int l = MathHelper.floor((axisalignedbb.f + 2.0D) / 16.0D);
+    public List<Entity> a(Entity entity, AxisAlignedBB axisalignedbb, Predicate<? super Entity> predicate)
+    {
+        ArrayList<Entity> arraylist = Lists.newArrayList();
+        int minChunkX = MathHelper.floor((axisalignedbb.a - 2.0D) / 16.0D);
+        int maxChunkX = MathHelper.floor((axisalignedbb.d + 2.0D) / 16.0D);
+        int minChunkZ = MathHelper.floor((axisalignedbb.c - 2.0D) / 16.0D);
+        int maxChunkZ = MathHelper.floor((axisalignedbb.f + 2.0D) / 16.0D);
 
-        for (int i1 = i; i1 <= j; ++i1) {
-            for (int j1 = k; j1 <= l; ++j1) {
-                if (this.isChunkLoaded(i1, j1, true)) {
-                    this.getChunkAt(i1, j1).a(entity, axisalignedbb, arraylist, predicate);
+        for (int chunkX = minChunkX; chunkX <= maxChunkX; ++chunkX)
+        {
+            for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; ++chunkZ)
+            {
+                Chunk chunk = this.getChunkIfLoaded(chunkX, chunkZ);
+                if (chunk != null) {
+                    chunk.a(entity, axisalignedbb, arraylist, predicate);
                 }
             }
         }

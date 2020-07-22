@@ -253,7 +253,7 @@ public abstract class BiomeBase {
         }
     }
 
-    public final float a(int blockposition_x, int blockposition_y, int blockposition_z) {
+    public final float a(int blockposition_x, int blockposition_y, int blockposition_z, boolean flag) {
         if (blockposition_y > 64) {
             float f = (float) (BiomeBase.ae.a((double) blockposition_x * 1.0D / 8.0D, (double) blockposition_z * 1.0D / 8.0D) * 4.0D);
 

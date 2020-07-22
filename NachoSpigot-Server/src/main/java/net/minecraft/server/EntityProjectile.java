@@ -119,9 +119,10 @@ public abstract class EntityProjectile extends Entity implements IProjectile {
             vec3d1 = new Vec3D(movingobjectposition.pos.a, movingobjectposition.pos.b, movingobjectposition.pos.c);
         }
 
-        if (!this.world.isClientSide) {
+        if (!this.world.isClientSide)
+        {
             Entity entity = null;
-            List list = this.world.getEntities(this, this.getBoundingBox().a(this.motX, this.motY, this.motZ).grow(1.0D, 1.0D, 1.0D));
+            List<Entity> list = this.world.getEntities(this, this.getBoundingBox().a(this.motX, this.motY, this.motZ).grow(1.0D, 1.0D, 1.0D));
             double d0 = 0.0D;
             EntityLiving entityliving = this.getShooter();
 

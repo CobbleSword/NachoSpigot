@@ -1041,9 +1041,11 @@ public class Chunk {
         i = MathHelper.clamp(i, 0, this.entitySlices.length - 1);
         j = MathHelper.clamp(j, 0, this.entitySlices.length - 1);
 
-        for (int k = i; k <= j; ++k) {
-            if (!this.entitySlices[k].isEmpty()) {
-                Iterator iterator = this.entitySlices[k].iterator();
+        for (int k = i; k <= j; ++k)
+        {
+            if (!this.entitySlices[k].isEmpty())
+            {
+                Iterator<Entity> iterator = this.entitySlices[k].iterator();
                 // PaperSpigot start - Don't search for inventories if we have none, and that is all we want
                 /*
                  * We check if they want inventories by seeing if it is the static `IEntitySelector.c`
@@ -1053,20 +1055,26 @@ public class Chunk {
                  */
                 if (predicate == IEntitySelector.c && inventoryEntityCounts[k] <= 0) continue;
                 // PaperSpigot end
-                while (iterator.hasNext()) {
-                    Entity entity1 = (Entity) iterator.next();
+                while (iterator.hasNext())
+                {
+                    Entity entity1 = iterator.next();
 
-                    if (entity1.getBoundingBox().b(axisalignedbb) && entity1 != entity) {
-                        if (predicate == null || predicate.apply(entity1)) {
+                    if (entity1.getBoundingBox().b(axisalignedbb) && entity1 != entity)
+                    {
+                        if (predicate == null || predicate.apply(entity1))
+                        {
                             list.add(entity1);
                         }
 
                         Entity[] aentity = entity1.aB();
 
-                        if (aentity != null) {
-                            for (int l = 0; l < aentity.length; ++l) {
+                        if (aentity != null)
+                        {
+                            for (int l = 0; l < aentity.length; ++l)
+                            {
                                 entity1 = aentity[l];
-                                if (entity1 != entity && entity1.getBoundingBox().b(axisalignedbb) && (predicate == null || predicate.apply(entity1))) {
+                                if (entity1 != entity && entity1.getBoundingBox().b(axisalignedbb) && (predicate == null || predicate.apply(entity1)))
+                                {
                                     list.add(entity1);
                                 }
                             }
