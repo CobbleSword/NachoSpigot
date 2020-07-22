@@ -60,6 +60,7 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 [Nacho-0010] Use jchambers' FAST UUID methods
 [Nacho-0011] Optimize weather update loops
 [Nacho-0012] Don't load chunks for physics
+[Nacho-0013] Use less resources for collisions
 
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 
