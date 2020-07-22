@@ -357,6 +357,10 @@ public abstract class World implements IBlockAccess {
         return this.getChunkAt(blockposition.getX() >> 4, blockposition.getZ() >> 4);
     }
 
+    public Chunk getChunkAtWorldCoords(int blockposition_x, int blockposition_y, int blockposition_z) {
+        return this.getChunkAt(blockposition_x >> 4, blockposition_z >> 4);
+    }
+
     public Chunk getChunkAt(int i, int j) {
         return this.chunkProvider.getOrCreateChunk(i, j);
     }
@@ -835,6 +839,12 @@ public abstract class World implements IBlockAccess {
         return getType( blockposition, true );
     }
 
+    public IBlockData getType(int blockposition_x, int blockposition_y, int blockposition_z)
+    {
+        return getType( blockposition_x, blockposition_y, blockposition_z, true );
+    }
+
+
     public IBlockData getType(BlockPosition blockposition, boolean useCaptured) {
         // CraftBukkit start - tree generation
         if (captureTreeGeneration && useCaptured) {
@@ -854,6 +864,33 @@ public abstract class World implements IBlockAccess {
             Chunk chunk = this.getChunkAtWorldCoords(blockposition);
 
             return chunk.getBlockData(blockposition);
+        }
+    }
+
+    public IBlockData getType(int blockposition_x, int blockposition_y, int blockposition_z, boolean useCaptured) {
+        // CraftBukkit start - tree generation
+        if (captureTreeGeneration && useCaptured) {
+            // Spigot end
+            Iterator<BlockState> it = capturedBlockStates.iterator();
+            while (it.hasNext()) {
+                BlockState previous = it.next();
+                if (previous.getX() == blockposition_x && previous.getY() == blockposition_y && previous.getZ() == blockposition_z) {
+                    return CraftMagicNumbers.getBlock(previous.getTypeId()).fromLegacyData(previous.getRawData());
+                }
+            }
+        }
+        // CraftBukkit end
+        if(!(blockposition_x >= -30000000 && blockposition_z >= -30000000
+                && blockposition_x < 30000000 && blockposition_z < 30000000
+                && blockposition_y >= 0 && blockposition_y < 256))
+        {
+            return Blocks.AIR.getBlockData();
+        }
+        else
+        {
+            Chunk chunk = this.getChunkAtWorldCoords(blockposition_x, blockposition_y, blockposition_z);
+
+            return chunk.getBlockData(blockposition_x, blockposition_y, blockposition_z);
         }
     }
 

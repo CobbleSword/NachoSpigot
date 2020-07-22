@@ -508,6 +508,17 @@ public class Chunk {
         }
         return Blocks.AIR.getBlockData();
     }
+
+    public IBlockData getBlockData(int blockposition_x, int blockposition_y, int blockposition_z) {
+        if (blockposition_y >= 0 && blockposition_y >> 4 < this.sections.length) {
+            ChunkSection chunksection = this.sections[blockposition_y >> 4];
+            if (chunksection != null) {
+                return chunksection.getType(blockposition_x & 15, blockposition_y & 15, blockposition_z & 15);
+            }
+        }
+        return Blocks.AIR.getBlockData();
+    }
+
     public IBlockData getBlockDataSlow(final BlockPosition blockposition) {
         // PaperSpigot end
         if (this.world.G() == WorldType.DEBUG_ALL_BLOCK_STATES) {

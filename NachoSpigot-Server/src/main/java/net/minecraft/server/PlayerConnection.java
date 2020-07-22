@@ -216,15 +216,19 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 
     public void a(PacketPlayInFlying packetplayinflying) {
         PlayerConnectionUtils.ensureMainThread(packetplayinflying, this, this.player.u());
-        if (this.b(packetplayinflying)) {
+        if (this.b(packetplayinflying))
+        {
             this.disconnect("Invalid move packet received");
-        } else {
+        }
+        else
+            {
             creativeSlotCount = Math.max(creativeSlotCount--, 0);
             windowClickCount = 0;
             WorldServer worldserver = this.minecraftServer.getWorldServer(this.player.dimension);
 
             this.h = true;
-            if (!this.player.viewingCredits) {
+            if (!this.player.viewingCredits)
+            {
                 double d0 = this.player.locX;
                 double d1 = this.player.locY;
                 double d2 = this.player.locZ;
@@ -257,14 +261,16 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                 Location to = player.getLocation().clone(); // Start off the To location as the Players current location.
 
                 // If the packet contains movement information then we update the To location with the correct XYZ.
-                if (packetplayinflying.hasPos && !(packetplayinflying.hasPos && packetplayinflying.y == -999.0D)) {
+                if (packetplayinflying.hasPos && !(packetplayinflying.hasPos && packetplayinflying.y == -999.0D))
+                {
                     to.setX(packetplayinflying.x);
                     to.setY(packetplayinflying.y);
                     to.setZ(packetplayinflying.z);
                 }
 
                 // If the packet contains look information then we update the To location with the correct Yaw & Pitch.
-                if (packetplayinflying.hasLook) {
+                if (packetplayinflying.hasLook)
+                {
                     to.setYaw(packetplayinflying.yaw);
                     to.setPitch(packetplayinflying.pitch);
                 }
@@ -273,7 +279,8 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                 double delta = Math.pow(this.lastPosX - to.getX(), 2) + Math.pow(this.lastPosY - to.getY(), 2) + Math.pow(this.lastPosZ - to.getZ(), 2);
                 float deltaAngle = Math.abs(this.lastYaw - to.getYaw()) + Math.abs(this.lastPitch - to.getPitch());
 
-                if ((delta > 1f / 256 || deltaAngle > 10f) && (this.checkMovement && !this.player.dead)) {
+                if ((delta > 1f / 256 || deltaAngle > 10f) && (this.checkMovement && !this.player.dead))
+                {
                     this.lastPosX = to.getX();
                     this.lastPosY = to.getY();
                     this.lastPosZ = to.getZ();
@@ -287,7 +294,8 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                         this.server.getPluginManager().callEvent(event);
 
                         // If the event is cancelled we move the player back to their old location.
-                        if (event.isCancelled()) {
+                        if (event.isCancelled())
+                        {
                             this.player.playerConnection.sendPacket(new PacketPlayOutPosition(from.getX(), from.getY(), from.getZ(), from.getYaw(), from.getPitch(), Collections.<PacketPlayOutPosition.EnumPlayerTeleportFlags>emptySet()));
                             return;
                         }
@@ -302,21 +310,24 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 
                         /* Check to see if the Players Location has some how changed during the call of the event.
                         This can happen due to a plugin teleporting the player instead of using .setTo() */
-                        if (!from.equals(this.getPlayer().getLocation()) && this.justTeleported) {
+                        if (!from.equals(this.getPlayer().getLocation()) && this.justTeleported)
+                        {
                             this.justTeleported = false;
                             return;
                         }
                     }
                 }
 
-                if (this.checkMovement && !this.player.dead) {
+                if (this.checkMovement && !this.player.dead)
+                {
                     // CraftBukkit end
                     this.f = this.e;
                     double d7;
                     double d8;
                     double d9;
 
-                    if (this.player.vehicle != null) {
+                    if (this.player.vehicle != null)
+                    {
                         float f = this.player.yaw;
                         float f1 = this.player.pitch;
 
@@ -324,7 +335,8 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                         d7 = this.player.locX;
                         d8 = this.player.locY;
                         d9 = this.player.locZ;
-                        if (packetplayinflying.h()) {
+                        if (packetplayinflying.h())
+                        {
                             f = packetplayinflying.d();
                             f1 = packetplayinflying.e();
                         }
@@ -332,12 +344,14 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                         this.player.onGround = packetplayinflying.f();
                         this.player.l();
                         this.player.setLocation(d7, d8, d9, f, f1);
-                        if (this.player.vehicle != null) {
+                        if (this.player.vehicle != null)
+                        {
                             this.player.vehicle.al();
                         }
 
                         this.minecraftServer.getPlayerList().d(this.player);
-                        if (this.player.vehicle != null) {
+                        if (this.player.vehicle != null)
+                        {
                             this.player.vehicle.ai = true; // CraftBukkit - moved from below
                             if (d3 > 4.0D) {
                                 Entity entity = this.player.vehicle;
@@ -349,7 +363,8 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                             // this.player.vehicle.ai = true; // CraftBukkit - moved up
                         }
 
-                        if (this.checkMovement) {
+                        if (this.checkMovement)
+                        {
                             this.o = this.player.locX;
                             this.p = this.player.locY;
                             this.q = this.player.locZ;
@@ -359,7 +374,8 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                         return;
                     }
 
-                    if (this.player.isSleeping()) {
+                    if (this.player.isSleeping())
+                    {
                         this.player.l();
                         this.player.setLocation(this.o, this.p, this.q, this.player.yaw, this.player.pitch);
                         worldserver.g(this.player);
