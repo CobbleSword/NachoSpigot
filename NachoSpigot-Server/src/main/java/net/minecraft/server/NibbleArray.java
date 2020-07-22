@@ -3,9 +3,18 @@ package net.minecraft.server;
 public class NibbleArray {
 
     private final byte[] a;
+    private final boolean dummy;
 
-    public NibbleArray() {
+    public NibbleArray()
+    {
         this.a = new byte[2048];
+        this.dummy = false;
+    }
+
+    public NibbleArray(boolean isDummy)
+    {
+        this.a = new byte[2048];
+        this.dummy = true;
     }
 
     public NibbleArray(byte[] abyte) {
@@ -13,6 +22,7 @@ public class NibbleArray {
         if (abyte.length != 2048) {
             throw new IllegalArgumentException("ChunkNibbleArrays should be 2048 bytes not: " + abyte.length);
         }
+        this.dummy = false;
     }
 
     public int a(int i, int j, int k) {
@@ -59,5 +69,11 @@ public class NibbleArray {
 
     public byte[] a() {
         return this.a;
+    }
+
+    public byte[] getBytes() { return this.a; }
+
+    public boolean isDummy() {
+        return dummy;
     }
 }

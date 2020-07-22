@@ -11,7 +11,7 @@ public final class Versioning {
     public static String getBukkitVersion() {
         String result = "Unknown-Version";
 
-        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/net.techcable.tacospigot/api/pom.properties");
+        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/dev.cobblesword.nachospigot/api/pom.properties");
         Properties properties = new Properties();
 
         if (stream != null) {
