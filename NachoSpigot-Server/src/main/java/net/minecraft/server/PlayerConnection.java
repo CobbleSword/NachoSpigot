@@ -261,7 +261,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                 Location to = player.getLocation().clone(); // Start off the To location as the Players current location.
 
                 // If the packet contains movement information then we update the To location with the correct XYZ.
-                if (packetplayinflying.hasPos && !(packetplayinflying.hasPos && packetplayinflying.y == -999.0D))
+                if (packetplayinflying.hasPos && packetplayinflying.y != -999.0D)
                 {
                     to.setX(packetplayinflying.x);
                     to.setY(packetplayinflying.y);
