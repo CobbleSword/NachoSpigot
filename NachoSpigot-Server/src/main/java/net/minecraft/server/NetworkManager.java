@@ -252,15 +252,19 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
 
     private void sendPacketQueue()
     {
-        if (this.channel != null && this.channel.isOpen()) {
+            if (this.channel != null && this.channel.isOpen()) {
             this.j.readLock().lock();
 
-            try {
-                while (!this.i.isEmpty()) {
+            try
+            {
+                while (!this.i.isEmpty())
+                {
                     NetworkManager.QueuedPacket networkmanager_queuedpacket = (NetworkManager.QueuedPacket) this.i.poll();
                     this.dispatchPacket(networkmanager_queuedpacket.a, networkmanager_queuedpacket.b);
                 }
-            } finally {
+            }
+            finally
+            {
                 this.j.readLock().unlock();
             }
         }
@@ -337,8 +341,10 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         this.channel.config().setAutoRead(false);
     }
 
-    public void a(int i) {
-        if (i >= 0) {
+    public void a(int i)
+    {
+        if (i >= 0)
+        {
             if (this.channel.pipeline().get("decompress") instanceof PacketDecompressor) {
                 ((PacketDecompressor) this.channel.pipeline().get("decompress")).a(i);
             } else {
