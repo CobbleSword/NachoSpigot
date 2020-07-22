@@ -889,8 +889,10 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
                 this.methodProfiler.b();
                 this.methodProfiler.a("tracker");
                 worldserver.timings.tracker.startTiming(); // Spigot
-                worldserver.getTracker().updatePlayers();
+                if(this.getPlayerList().getPlayerCount() != 0) // Tuinity
+                    worldserver.getTracker().updatePlayers();
                 worldserver.timings.tracker.stopTiming(); // Spigot
+//                if(this.)
                 this.methodProfiler.b();
                 this.methodProfiler.b();
                 worldserver.explosionDensityCache.clear(); // PaperSpigot - Optimize explosions
