@@ -63,6 +63,7 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 [Nacho-0013] Use less resources for collisions
 [Nacho-0014] stop timings crashing the server but still print the error
 [Nacho-0015] Remove the usage of BlockPosition from getCubes
+[Nacho-0016] faster getHighestBlockYAt function
 
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 
