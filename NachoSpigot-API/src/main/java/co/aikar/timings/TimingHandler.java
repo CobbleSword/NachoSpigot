@@ -115,7 +115,14 @@ class TimingHandler implements Timing {
 //                start = 0;
 //                return;
 //            }
-            addDiff(System.nanoTime() - start);
+            try
+            {
+                addDiff(System.nanoTime() - start);
+            }
+            catch (ArrayIndexOutOfBoundsException ex)
+            {
+                ex.printStackTrace();
+            }
             start = 0;
         }
     }
