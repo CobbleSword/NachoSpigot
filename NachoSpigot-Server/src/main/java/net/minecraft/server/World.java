@@ -742,8 +742,10 @@ public abstract class World implements IBlockAccess {
         int i;
 
         if (blockposition.getX() >= -30000000 && blockposition.getZ() >= -30000000 && blockposition.getX() < 30000000 && blockposition.getZ() < 30000000) {
-            if (this.isChunkLoaded(blockposition.getX() >> 4, blockposition.getZ() >> 4, true)) {
-                i = this.getChunkAt(blockposition.getX() >> 4, blockposition.getZ() >> 4).b(blockposition.getX() & 15, blockposition.getZ() & 15);
+
+            Chunk chunk = this.getChunkIfLoaded(blockposition.getX() >> 4, blockposition.getZ() >> 4);
+            if (chunk != null) {
+                i = chunk.b(blockposition.getX() & 15, blockposition.getZ() & 15);
             } else {
                 i = 0;
             }
