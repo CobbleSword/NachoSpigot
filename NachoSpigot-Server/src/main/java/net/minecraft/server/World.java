@@ -290,12 +290,21 @@ public abstract class World implements IBlockAccess {
         return blockposition.getX() >= -30000000 && blockposition.getZ() >= -30000000 && blockposition.getX() < 30000000 && blockposition.getZ() < 30000000 && blockposition.getY() >= 0 && blockposition.getY() < 256;
     }
 
+    private boolean isValidLocation(int blockposition_x, int blockposition_y, int blockposition_z) {
+        return blockposition_x >= -30000000 && blockposition_z >= -30000000 && blockposition_x < 30000000 && blockposition_z < 30000000 && blockposition_z >= 0 && blockposition_y < 256;
+    }
+
     public boolean isEmpty(BlockPosition blockposition) {
         return this.getType(blockposition).getBlock().getMaterial() == Material.AIR;
     }
 
     public boolean isLoaded(BlockPosition blockposition) {
         return getChunkIfLoaded(blockposition.getX() >> 4, blockposition.getZ() >> 4) != null; // Paper
+        //return this.a(blockposition, true);
+    }
+
+    public boolean isLoaded(int blockposition_x, int blockposition_y, int blockposition_z) {
+        return getChunkIfLoaded(blockposition_x >> 4, blockposition_z >> 4) != null; // Paper
         //return this.a(blockposition, true);
     }
 
@@ -764,11 +773,29 @@ public abstract class World implements IBlockAccess {
             if (chunk != null)
             {
                 return 0;
-            } else {
+            }
+            else
+            {
                 return chunk.v();
             }
         } else {
             return this.F() + 1;
+        }
+    }
+
+    public int b(EnumSkyBlock enumskyblock, int blockposition_x, int blockposition_y, int blockposition_z) {
+        if (blockposition_y < 0) {
+             blockposition_y = 0;
+        }
+
+        if (!this.isValidLocation(blockposition_x, blockposition_y, blockposition_z)) {
+            return enumskyblock.c;
+        } else if (!this.isLoaded(blockposition_x, blockposition_y, blockposition_z)) {
+            return enumskyblock.c;
+        } else {
+            Chunk chunk = this.getChunkAtWorldCoords(blockposition_x, blockposition_y, blockposition_z);
+
+            return chunk.getBrightness(enumskyblock, blockposition_x, blockposition_y, blockposition_z);
         }
     }
 

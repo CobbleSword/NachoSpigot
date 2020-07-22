@@ -682,6 +682,44 @@ public class Chunk {
         return chunksection == null ? (this.d(blockposition) ? enumskyblock.c : 0) : (enumskyblock == EnumSkyBlock.SKY ? (this.world.worldProvider.o() ? 0 : chunksection.d(i, j & 15, k)) : (enumskyblock == EnumSkyBlock.BLOCK ? chunksection.e(i, j & 15, k) : enumskyblock.c));
     }
 
+    public int getBrightness(EnumSkyBlock enumskyblock, int blockposition_x, int blockposition_y, int blockposition_z) {
+        int i = blockposition_x & 15;
+        int j = blockposition_y;
+        int k = blockposition_z & 15;
+        ChunkSection chunksection = this.sections[j >> 4];
+
+        if(chunksection == null)
+        {
+            if(j >= this.heightMap[(k) << 4 | (i)])
+            {
+                return enumskyblock.c;
+            }
+        }
+        else
+        {
+            if(enumskyblock == EnumSkyBlock.SKY)
+            {
+                if(!this.world.worldProvider.o())
+                {
+                    return chunksection.d(i, j & 15, k);
+                }
+            }
+            else
+            {
+                if(enumskyblock == EnumSkyBlock.BLOCK)
+                {
+                    return chunksection.e(i, j & 15, k);
+                }
+                else
+                {
+                    return enumskyblock.c;
+                }
+            }
+        }
+
+        return 0;
+    }
+
     public void a(EnumSkyBlock enumskyblock, BlockPosition blockposition, int i) {
         int j = blockposition.getX() & 15;
         int k = blockposition.getY();
@@ -832,6 +870,14 @@ public class Chunk {
         int i = blockposition.getX() & 15;
         int j = blockposition.getY();
         int k = blockposition.getZ() & 15;
+
+        return j >= this.heightMap[k << 4 | i];
+    }
+
+    public boolean isBelowHeightMap(int blockposition_x, int blockposition_y, int blockposition_z) {
+        int i = blockposition_x & 15;
+        int j = blockposition_y;
+        int k = blockposition_z & 15;
 
         return j >= this.heightMap[k << 4 | i];
     }
