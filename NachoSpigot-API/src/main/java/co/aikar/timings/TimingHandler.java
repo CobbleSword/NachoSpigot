@@ -109,12 +109,12 @@ class TimingHandler implements Timing {
 
     public void stopTiming() {
         if (enabled && --timingDepth == 0 && start != 0) {
-//            if (!Bukkit.isPrimaryThread()) {
-//                Bukkit.getLogger().log(Level.SEVERE, "stopTiming called async for " + name);
-//                new Throwable().printStackTrace();
-//                start = 0;
-//                return;
-//            }
+            if (!Bukkit.isPrimaryThread()) {
+                Bukkit.getLogger().log(Level.SEVERE, "stopTiming called async for " + name);
+                new Throwable().printStackTrace();
+                start = 0;
+                return;
+            }
             try
             {
                 addDiff(System.nanoTime() - start);

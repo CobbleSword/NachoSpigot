@@ -111,8 +111,4 @@ public final class SpigotTimings {
     public static Timing getBlockTiming(Block block) {
         return Timings.ofSafe("## Scheduled Block: " + block.getName());
     }
-
-    public static Timing getPacketHandlerTimings(Packet<?> packet) {
-        return Timings.ofSafe("## Connection Handler - " + packet.getClass().getName());
-    }
 }

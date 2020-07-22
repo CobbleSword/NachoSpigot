@@ -1,0 +1,60 @@
+package dev.cobblesword.nachospigot.commands;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.spigotmc.SpigotWorldConfig;
+
+public class SpawnMobCommand extends Command {
+  public SpawnMobCommand(String name)
+  {
+    super(name);
+    this.description = "Spawn mobs";
+    this.usageMessage = "/spawnMob <MobName> [amount]";
+    setPermission("NachoSpigot.command.mobspawns");
+  }
+
+  public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+    if (!testPermission(sender))
+      return true;
+
+    if(!(sender instanceof Player))
+    {
+      sender.sendMessage(ChatColor.RED + "Please run this command as a player");
+      return true;
+    }
+
+    int amount = 1;
+    Player player = (Player) sender;
+    Location location = player.getLocation();
+
+    EntityType entityType = null;
+    try
+    {
+      entityType = EntityType.valueOf(args[0]);
+    }
+    catch(IllegalArgumentException ex)
+    {
+      StringBuilder entityListStr = new StringBuilder();
+      for (EntityType entityVal : EntityType.values())
+        entityListStr.append(ChatColor.GREEN).append(entityVal.name()).append(ChatColor.WHITE).append(", ");
+      entityListStr.setLength(entityListStr.length() - 2);
+
+      player.sendMessage(ChatColor.RED + "Please give a correct entity type");
+      player.sendMessage(entityListStr.toString());
+      return false;
+    }
+
+    for(int i = 0; i < amount; i++)
+      location.getWorld().spawnEntity(location, entityType);
+
+    player.sendMessage(ChatColor.GREEN + "Spawned " + amount + "x " + entityType.name() + ".");
+    return false;
+  }
+}

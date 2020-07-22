@@ -145,15 +145,10 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     protected void a(ChannelHandlerContext channelhandlercontext, Packet packet) throws Exception {
         if (this.channel.isOpen())
         {
-            Timing packetHandlerTimer = SpigotTimings.getPacketHandlerTimings(packet);
-            packetHandlerTimer.startTiming();
             try {
                 packet.a(this.m);//packet.handle(PlayerConnection)
             } catch (CancelledPacketHandleException cancelledpackethandleexception) {
                 ;
-            }
-            finally {
-                packetHandlerTimer.stopTiming();
             }
         }
 
