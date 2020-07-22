@@ -1301,6 +1301,23 @@ public class Chunk {
         }
     }
 
+    public BiomeBase getBiome(int blockposition_x, int blockposition_y, int blockposition_z, WorldChunkManager worldchunkmanager) {
+        int i = blockposition_x & 15;
+        int j = blockposition_z & 15;
+        int k = this.e[j << 4 | i] & 255;
+        BiomeBase biomebase;
+
+        if (k == 255)
+        {
+            biomebase = worldchunkmanager.getBiome(blockposition_x, blockposition_z, BiomeBase.PLAINS);
+            k = biomebase.id;
+            this.e[j << 4 | i] = (byte) (k & 255);
+        }
+
+        biomebase = BiomeBase.getBiome(k);
+        return biomebase == null ? BiomeBase.PLAINS : biomebase;
+    }
+
     public BiomeBase getBiome(BlockPosition blockposition, WorldChunkManager worldchunkmanager) {
         int i = blockposition.getX() & 15;
         int j = blockposition.getZ() & 15;

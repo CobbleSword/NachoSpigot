@@ -527,6 +527,10 @@ public class Block {
         return world.getType(blockposition).getBlock().material.isReplaceable();
     }
 
+    public boolean canPlace(World world, int blockposition_x, int blockposition_y, int blockposition_z) {
+        return world.getType(blockposition_x, blockposition_y, blockposition_z).getBlock().material.isReplaceable();
+    }
+
     public boolean interact(World world, BlockPosition blockposition, IBlockData iblockdata, EntityHuman entityhuman, EnumDirection enumdirection, float f, float f1, float f2) {
         return false;
     }

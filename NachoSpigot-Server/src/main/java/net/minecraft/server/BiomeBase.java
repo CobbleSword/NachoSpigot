@@ -253,6 +253,16 @@ public abstract class BiomeBase {
         }
     }
 
+    public final float a(int blockposition_x, int blockposition_y, int blockposition_z) {
+        if (blockposition_y > 64) {
+            float f = (float) (BiomeBase.ae.a((double) blockposition_x * 1.0D / 8.0D, (double) blockposition_z * 1.0D / 8.0D) * 4.0D);
+
+            return this.temperature - (f + (float) blockposition_y - 64.0F) * 0.05F / 30.0F;
+        } else {
+            return this.temperature;
+        }
+    }
+
     public void a(World world, Random random, BlockPosition blockposition) {
         this.as.a(world, random, this, blockposition);
     }

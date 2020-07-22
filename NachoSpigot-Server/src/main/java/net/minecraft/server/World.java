@@ -240,6 +240,33 @@ public abstract class World implements IBlockAccess {
         return this;
     }
 
+    public BiomeBase getBiome(int blockposition_x, int blockposition_y, int blockposition_z)
+    {
+        if (this.isLoaded(blockposition_x, blockposition_y, blockposition_z)) {
+            Chunk chunk = this.getChunkAtWorldCoords(blockposition_x, blockposition_y, blockposition_z);
+
+            try {
+                return chunk.getBiome(blockposition_x, blockposition_y, blockposition_z, this.worldProvider.m());
+            } catch (Throwable throwable) {
+                CrashReport crashreport = CrashReport.a(throwable, "Getting biome");
+                CrashReportSystemDetails crashreportsystemdetails = crashreport.a("Coordinates of biome request");
+
+                crashreportsystemdetails.a("Location", new Callable() {
+                    public String a() throws Exception {
+                        return CrashReportSystemDetails.a(new BlockPosition(blockposition_x, blockposition_y, blockposition_z));
+                    }
+
+                    public Object call() throws Exception {
+                        return this.a();
+                    }
+                });
+                throw new ReportedException(crashreport);
+            }
+        } else {
+            return this.worldProvider.m().getBiome(blockposition_x, blockposition_z, BiomeBase.PLAINS);
+        }
+    }
+
     public BiomeBase getBiome(final BlockPosition blockposition) {
         if (this.isLoaded(blockposition)) {
             Chunk chunk = this.getChunkAtWorldCoords(blockposition);
@@ -799,6 +826,7 @@ public abstract class World implements IBlockAccess {
         }
     }
 
+    //TODO: Note: replace all childern
     public int b(EnumSkyBlock enumskyblock, BlockPosition blockposition) {
         if (blockposition.getY() < 0) {
             blockposition = new BlockPosition(blockposition.getX(), 0, blockposition.getZ());
@@ -2473,6 +2501,27 @@ public abstract class World implements IBlockAccess {
 
     private boolean F(BlockPosition blockposition) {
         return this.getType(blockposition).getBlock().getMaterial() == Material.WATER;
+    }
+
+    public boolean f(int blockposition_x, int blockposition_y, int blockposition_z, boolean flag) {
+        BiomeBase biomebase = this.getBiome(blockposition_x, blockposition_y, blockposition_z);
+        float f = biomebase.a(blockposition_x, blockposition_y, blockposition_z);
+
+        if (f > 0.15F) {
+            return false;
+        } else if (!flag) {
+            return true;
+        } else {
+            if (blockposition_y >= 0 && blockposition_y < 256 && this.b(EnumSkyBlock.BLOCK, blockposition_x, blockposition_y, blockposition_z) < 10) {
+                Block block = this.getType(blockposition_x, blockposition_y, blockposition_z).getBlock();
+
+                if (block.getMaterial() == Material.AIR && Blocks.SNOW_LAYER.canPlace(this, blockposition_x, blockposition_y, blockposition_z)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 
     public boolean f(BlockPosition blockposition, boolean flag) {
