@@ -94,10 +94,11 @@ public class ServerConnection {
                 ServerConnection.e.info("Using default channel type");
             }
 
-            this.g.add(((ServerBootstrap) ((ServerBootstrap) (new ServerBootstrap()).channel(oclass)).childHandler(new ChannelInitializer() {
+            this.g.add(((ServerBootstrap) ((ServerBootstrap) (new ServerBootstrap()).channel(oclass)).childHandler(new ChannelInitializer()
+            {
                 protected void initChannel(Channel channel) throws Exception {
                     try {
-                        channel.config().setOption(ChannelOption.TCP_NODELAY, Boolean.valueOf(true));
+                        channel.config().setOption(ChannelOption.TCP_NODELAY, true);
                     } catch (ChannelException channelexception) {
                         ;
                     }
