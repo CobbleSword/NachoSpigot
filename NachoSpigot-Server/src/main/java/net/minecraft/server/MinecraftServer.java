@@ -895,7 +895,6 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
 //                if(this.)
                 this.methodProfiler.b();
                 this.methodProfiler.b();
-                worldserver.explosionDensityCache.clear(); // PaperSpigot - Optimize explosions
             // } // CraftBukkit
 
             // this.i[i][this.ticks % 100] = System.nanoTime() - j; // CraftBukkit

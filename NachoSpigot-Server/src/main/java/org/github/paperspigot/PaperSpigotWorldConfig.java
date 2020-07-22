@@ -309,12 +309,6 @@ public class PaperSpigotWorldConfig
         fallingBlocksCollideWithSigns = getBoolean( "falling-blocks-collide-with-signs", false );
     }
 
-    public boolean optimizeExplosions;
-    private void optimizeExplosions()
-    {
-        optimizeExplosions = getBoolean( "optimize-explosions", false );
-    }
-
     public boolean fastDrainLava;
     public boolean fastDrainWater;
     private void fastDraining()

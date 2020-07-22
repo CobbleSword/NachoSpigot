@@ -137,7 +137,6 @@ public abstract class World implements IBlockAccess {
     private org.spigotmc.TickLimiter tileLimiter;
     private int tileTickPosition;
     public ExecutorService lightingExecutor = Executors.newSingleThreadExecutor(new ThreadFactoryBuilder().setNameFormat("PaperSpigot - Lighting Thread").build()); // PaperSpigot - Asynchronous lighting updates
-    public final Map<Explosion.CacheKey, Float> explosionDensityCache = new HashMap<Explosion.CacheKey, Float>(); // PaperSpigot - Optimize explosions
     public java.util.ArrayDeque<BlockRedstoneTorch.RedstoneUpdateInfo> redstoneUpdateInfos; // Paper - Move from Map in BlockRedstoneTorch to here
 
     public static long chunkToKey(int x, int z)
@@ -1267,7 +1266,7 @@ public abstract class World implements IBlockAccess {
         WorldBorder worldborder = this.getWorldBorder();
         boolean flag = entity.aT();
         boolean flag1 = this.a(worldborder, entity);
-        IBlockData iblockdata = Blocks.STONE.getBlockData();
+        IBlockData block = Blocks.STONE.getBlockData();
 
         // Spigot start
         int ystart = ( ( k - 1 ) < 0 ) ? 0 : ( k - 1 );
@@ -1309,15 +1308,11 @@ public abstract class World implements IBlockAccess {
                                 entity.h(true);
                             }
 
-                            IBlockData block;
-                            if (!this.getWorldBorder().isInWorldBoder(x, y, z) && flag1)
-                            {
-                                block = Blocks.STONE.getBlockData();
-                            }
-                            else
+                            if (this.getWorldBorder().isInWorldBoder(x, y, z) && flag1)
                             {
                                 block = chunk.getBlockData( x, y, z);
                             }
+
                             if ( block != null )
                             {
                                 // PaperSpigot start - FallingBlocks and TNT collide with specific non-collidable blocks
