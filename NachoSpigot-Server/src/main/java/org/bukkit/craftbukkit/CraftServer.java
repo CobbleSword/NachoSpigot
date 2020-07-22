@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
+import com.eatthepath.uuid.FastUUID;
 import dev.cobblesword.nachospigot.Nacho;
 import net.minecraft.server.*;
 
@@ -1515,7 +1516,7 @@ public final class CraftServer implements Server {
 
         for (String file : files) {
             try {
-                players.add(getOfflinePlayer(UUID.fromString(file.substring(0, file.length() - 4))));
+                players.add(getOfflinePlayer(FastUUID.parseUUID(file.substring(0, file.length() - 4))));
             } catch (IllegalArgumentException ex) {
                 // Who knows what is in this directory, just ignore invalid files
             }

@@ -1,5 +1,6 @@
 package org.bukkit.craftbukkit.entity;
 
+import com.eatthepath.uuid.FastUUID;
 import net.minecraft.server.EntityHorse;
 import org.apache.commons.lang.Validate;
 import org.bukkit.craftbukkit.CraftServer;
@@ -117,7 +118,7 @@ public class CraftHorse extends CraftAnimals implements Horse {
 
     public UUID getOwnerUUID() {
         try {
-            return UUID.fromString(getHandle().getOwnerUUID());
+            return FastUUID.parseUUID(getHandle().getOwnerUUID());
         } catch (IllegalArgumentException ex) {
             return null;
         }
@@ -127,7 +128,7 @@ public class CraftHorse extends CraftAnimals implements Horse {
         if (uuid == null) {
             getHandle().setOwnerUUID("");
         } else {
-            getHandle().setOwnerUUID(uuid.toString());
+            getHandle().setOwnerUUID(FastUUID.toString(uuid));
         }
     }
 

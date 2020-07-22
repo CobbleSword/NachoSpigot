@@ -1,5 +1,6 @@
 package net.minecraft.server;
 
+import com.eatthepath.uuid.FastUUID;
 import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import java.util.Date;
@@ -36,7 +37,7 @@ public class GameProfileBanEntry extends ExpirableListEntry<GameProfile> {
             String s = jsonobject.get("uuid").getAsString();
 
             try {
-                uuid = UUID.fromString(s);
+                uuid = FastUUID.parseUUID(s);
             } catch (Throwable throwable) {
             }
 

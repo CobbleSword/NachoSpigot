@@ -1,5 +1,6 @@
 package org.bukkit.craftbukkit.entity;
 
+import com.eatthepath.uuid.FastUUID;
 import net.minecraft.server.EntityTameableAnimal;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.AnimalTamer;
@@ -20,7 +21,7 @@ public class CraftTameableAnimal extends CraftAnimals implements Tameable, Creat
 
     public UUID getOwnerUUID() {
         try {
-            return UUID.fromString(getHandle().getOwnerUUID());
+            return FastUUID.parseUUID(getHandle().getOwnerUUID());
         } catch (IllegalArgumentException ex) {
             return null;
         }
@@ -30,7 +31,7 @@ public class CraftTameableAnimal extends CraftAnimals implements Tameable, Creat
         if (uuid == null) {
             getHandle().setOwnerUUID("");
         } else {
-            getHandle().setOwnerUUID(uuid.toString());
+            getHandle().setOwnerUUID(FastUUID.toString(uuid));
         }
     }
 

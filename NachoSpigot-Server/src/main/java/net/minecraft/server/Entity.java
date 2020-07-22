@@ -7,6 +7,7 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 
 // CraftBukkit start
+import com.eatthepath.uuid.FastUUID;
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -1348,7 +1349,7 @@ public abstract class Entity implements ICommandListener {
             if (nbttagcompound.hasKeyOfType("UUIDMost", 4) && nbttagcompound.hasKeyOfType("UUIDLeast", 4)) {
                 this.uniqueID = new UUID(nbttagcompound.getLong("UUIDMost"), nbttagcompound.getLong("UUIDLeast"));
             } else if (nbttagcompound.hasKeyOfType("UUID", 8)) {
-                this.uniqueID = UUID.fromString(nbttagcompound.getString("UUID"));
+                this.uniqueID = FastUUID.parseUUID(nbttagcompound.getString("UUID"));
             }
 
             this.setPosition(this.locX, this.locY, this.locZ);

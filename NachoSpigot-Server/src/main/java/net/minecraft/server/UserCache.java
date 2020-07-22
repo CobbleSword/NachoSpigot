@@ -1,5 +1,6 @@
 package net.minecraft.server;
 
+import com.eatthepath.uuid.FastUUID;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
@@ -280,7 +281,7 @@ public class UserCache {
             jsonobject.addProperty("name", usercache_usercacheentry.a().getName());
             UUID uuid = usercache_usercacheentry.a().getId();
 
-            jsonobject.addProperty("uuid", uuid == null ? "" : uuid.toString());
+            jsonobject.addProperty("uuid", uuid == null ? "" : FastUUID.toString(uuid));
             jsonobject.addProperty("expiresOn", UserCache.a.format(usercache_usercacheentry.b()));
             return jsonobject;
         }
@@ -309,7 +310,7 @@ public class UserCache {
                         UUID uuid;
 
                         try {
-                            uuid = UUID.fromString(s);
+                            uuid = FastUUID.parseUUID(s);
                         } catch (Throwable throwable) {
                             return null;
                         }

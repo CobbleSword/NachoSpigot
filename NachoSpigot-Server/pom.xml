@@ -111,6 +111,11 @@
             <version>1.3</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.eatthepath</groupId>
+            <artifactId>fast-uuid</artifactId>
+            <version>0.1</version>
+        </dependency>
     </dependencies>
 
     <!-- required until fixed plexus-compiler-eclipse is deployed -->

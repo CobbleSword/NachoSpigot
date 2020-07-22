@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import com.eatthepath.uuid.FastUUID;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -261,7 +263,7 @@ public abstract class EntityProjectile extends Entity implements IProjectile {
             this.shooter = this.world.a(this.shooterName);
             if (this.shooter == null && this.world instanceof WorldServer) {
                 try {
-                    Entity entity = ((WorldServer) this.world).getEntity(UUID.fromString(this.shooterName));
+                    Entity entity = ((WorldServer) this.world).getEntity(FastUUID.parseUUID(this.shooterName));
 
                     if (entity instanceof EntityLiving) {
                         this.shooter = (EntityLiving) entity;

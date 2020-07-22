@@ -1,5 +1,6 @@
 package org.bukkit.craftbukkit;
 
+import com.eatthepath.uuid.FastUUID;
 import com.mojang.authlib.GameProfile;
 import java.io.File;
 import java.util.LinkedHashMap;
@@ -135,7 +136,7 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
             return Bukkit.getServer().getOfflinePlayer((String) args.get("name"));
         }
 
-        return Bukkit.getServer().getOfflinePlayer(UUID.fromString((String) args.get("UUID")));
+        return Bukkit.getServer().getOfflinePlayer(FastUUID.parseUUID((String) args.get("UUID")));
     }
 
     @Override

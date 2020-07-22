@@ -1,5 +1,6 @@
 package net.minecraft.server;
 
+import com.eatthepath.uuid.FastUUID;
 import com.google.common.base.Charsets;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
@@ -335,7 +336,7 @@ public class NameReferencingFileConverter {
                         if (uuid == null) {
                             throw new NameReferencingFileConverter.FileConversionException("Missing UUID for user profile " + gameprofile.getName(), null);
                         } else {
-                            this.a(file, this.a(gameprofile), uuid.toString());
+                            this.a(file, this.a(gameprofile), FastUUID.toString(uuid));
                         }
                     }
 

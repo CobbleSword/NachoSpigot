@@ -3,12 +3,13 @@ package net.minecraft.server;
 import java.util.UUID;
 
 // CraftBukkit start
+import com.eatthepath.uuid.FastUUID;
 import org.bukkit.event.entity.EntityUnleashEvent;
 // CraftBukkit end
 
 public abstract class EntityCreature extends EntityInsentient {
 
-    public static final UUID bk = UUID.fromString("E199AD21-BA8A-4C53-8D13-6182D5C69D3A");
+    public static final UUID bk = FastUUID.parseUUID("E199AD21-BA8A-4C53-8D13-6182D5C69D3A");
     public static final AttributeModifier bl = (new AttributeModifier(EntityCreature.bk, "Fleeing speed bonus", 2.0D, 2)).a(false);
     private BlockPosition a;
     private float b;

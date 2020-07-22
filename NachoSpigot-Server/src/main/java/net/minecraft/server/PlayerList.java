@@ -1,5 +1,6 @@
 package net.minecraft.server;
 
+import com.eatthepath.uuid.FastUUID;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -1239,7 +1240,7 @@ public abstract class PlayerList {
 
         if (serverstatisticmanager == null) {
             File file = new File(this.server.getWorldServer(0).getDataManager().getDirectory(), "stats");
-            File file1 = new File(file, uuid.toString() + ".json");
+            File file1 = new File(file, FastUUID.toString(uuid) + ".json");
 
             if (!file1.exists()) {
                 File file2 = new File(file, entityhuman.getName() + ".json");

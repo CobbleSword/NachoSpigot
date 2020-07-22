@@ -1,5 +1,6 @@
 package net.minecraft.server;
 
+import com.eatthepath.uuid.FastUUID;
 import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
 import java.util.Iterator;
@@ -391,7 +392,7 @@ public class Village {
 
             if (nbttagcompound2.hasKey("UUID")) {
                 UserCache usercache = MinecraftServer.getServer().getUserCache();
-                GameProfile gameprofile = usercache.a(UUID.fromString(nbttagcompound2.getString("UUID")));
+                GameProfile gameprofile = usercache.a(FastUUID.parseUUID(nbttagcompound2.getString("UUID")));
 
                 if (gameprofile != null) {
                     this.j.put(gameprofile.getName(), Integer.valueOf(nbttagcompound2.getInt("S")));
