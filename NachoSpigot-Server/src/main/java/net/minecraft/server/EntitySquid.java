@@ -20,7 +20,6 @@ public class EntitySquid extends EntityWaterAnimal {
     public EntitySquid(World world) {
         super(world);
         this.setSize(0.95F, 0.95F);
-        this.random.setSeed((long) (1 + this.getId()));
         this.bq = 1.0F / (this.random.nextFloat() + 1.0F) * 0.2F;
         this.goalSelector.a(0, new EntitySquid.PathfinderGoalSquid(this));
     }
