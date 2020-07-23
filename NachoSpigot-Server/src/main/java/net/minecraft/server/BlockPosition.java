@@ -6,14 +6,14 @@ import java.util.Iterator;
 public class BlockPosition extends BaseBlockPosition {
 
     public static final BlockPosition ZERO = new BlockPosition(0, 0, 0);
-    private static final int c = 1 + MathHelper.c(MathHelper.b(30000000));
-    private static final int d = BlockPosition.c;
-    private static final int e = 64 - BlockPosition.c - BlockPosition.d;
-    private static final int f = 0 + BlockPosition.d;
-    private static final int g = BlockPosition.f + BlockPosition.e;
-    private static final long h = (1L << BlockPosition.c) - 1L;
-    private static final long i = (1L << BlockPosition.e) - 1L;
-    private static final long j = (1L << BlockPosition.d) - 1L;
+    public static final int c = 1 + MathHelper.c(MathHelper.b(30000000));
+    public static final int d = BlockPosition.c;
+    public static final int e = 64 - BlockPosition.c - BlockPosition.d;
+    public static final int f = 0 + BlockPosition.d;
+    public static final int g = BlockPosition.f + BlockPosition.e;
+    public static final long h = (1L << BlockPosition.c) - 1L;
+    public static final long i = (1L << BlockPosition.e) - 1L;
+    public static final long j = (1L << BlockPosition.d) - 1L;
 
     public BlockPosition(int i, int j, int k) {
         super(i, j, k);

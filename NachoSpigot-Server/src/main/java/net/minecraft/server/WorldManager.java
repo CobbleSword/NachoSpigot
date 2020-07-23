@@ -48,6 +48,12 @@ public class WorldManager implements IWorldAccess {
         this.a.getPlayerList().sendPacketNearby(entityhuman, (double) blockposition.getX(), (double) blockposition.getY(), (double) blockposition.getZ(), 64.0D, this.world, new PacketPlayOutWorldEvent(i, blockposition, j, false));
     }
 
+    @Override
+    public void sendPlayWorldPacket(EntityHuman entityhuman, int i, int blockPosition_x, int blockPosition_y, int blockPosition_z, int j)
+    {
+        this.a.getPlayerList().sendPacketNearby(entityhuman, (double) blockPosition_x, (double) blockPosition_y, (double) blockPosition_z, 64.0D, this.world, new Int3PacketPlayOutWorldEvent(i, blockPosition_x, blockPosition_y, blockPosition_z, j, false));
+    }
+
     public void a(int i, BlockPosition blockposition, int j) {
         this.a.getPlayerList().sendAll(new PacketPlayOutWorldEvent(i, blockposition, j, true));
     }
