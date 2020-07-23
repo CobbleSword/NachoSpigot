@@ -57,19 +57,21 @@ public class BlockBeacon extends BlockContainer {
 
     }
 
-    public static void f(final World var0, final BlockPosition var1) {
+    public static void f(final World var0, final BlockPosition blockPos) {
        /* HttpUtilities.a.submit(new Runnable() {
             public void run() { */ //Paper
-                Chunk var1x = var0.getChunkAtWorldCoords(var1);
+                Chunk var1x = var0.getChunkAtWorldCoords(blockPos);
 
-                for(int var2 = var1.getY() - 1; var2 >= 0; --var2) {
-                    final BlockPosition var3 = new BlockPosition(var1.getX(), var2, var1.getZ());
-                    if (!var1x.d(var3)) {
+                for(int blockY = blockPos.getY() - 1; blockY >= 0; --blockY) {
+
+                    if (!var1x.isBelowHeightMap(blockPos.getX(), blockY, blockPos.getZ())) {
                         break;
                     }
 
-                    IBlockData var4 = var0.getType(var3);
-                    if (var4.getBlock() == Blocks.BEACON) {
+                    IBlockData var4 = var0.getType(blockPos.getX(), blockY, blockPos.getZ());
+                    if (var4.getBlock() == Blocks.BEACON)
+                    {
+                        final BlockPosition var3 = new BlockPosition(blockPos.getX(), blockY, blockPos.getZ());
                        /* ((WorldServer)var0).postToMainThread(new Runnable() {
                             public void run() { */ //Paper
                                 TileEntity tileentity = var0.getTileEntity(var3);
