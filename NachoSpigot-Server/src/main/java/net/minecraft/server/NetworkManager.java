@@ -247,6 +247,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
 
     private void sendPacketQueue()
     {
+            if(this.i.isEmpty()) return; // [Nacho-0019] :: Avoid lock every packet send
             if (this.channel != null && this.channel.isOpen()) {
             this.j.readLock().lock();
 
