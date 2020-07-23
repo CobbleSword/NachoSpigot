@@ -624,10 +624,10 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
         int j = MathHelper.floor(this.locY - 0.20000000298023224D);
         int k = MathHelper.floor(this.locZ);
         BlockPosition blockposition = new BlockPosition(i, j, k);
-        Block block = this.world.getType(blockposition).getBlock();
+        Block block = this.world.getType(i, j, k).getBlock();
 
         if (block.getMaterial() == Material.AIR) {
-            Block block1 = this.world.getType(blockposition.down()).getBlock();
+            Block block1 = this.world.getType(i, j - 1, k).getBlock();
 
             if (block1 instanceof BlockFence || block1 instanceof BlockCobbleWall || block1 instanceof BlockFenceGate) {
                 blockposition = blockposition.down();

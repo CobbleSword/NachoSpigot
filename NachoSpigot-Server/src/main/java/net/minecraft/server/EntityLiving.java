@@ -1381,7 +1381,7 @@ public abstract class EntityLiving extends Entity {
                 float f5 = 0.91F;
 
                 if (this.onGround) {
-                    f5 = this.world.getType(new BlockPosition(MathHelper.floor(this.locX), MathHelper.floor(this.getBoundingBox().b) - 1, MathHelper.floor(this.locZ))).getBlock().frictionFactor * 0.91F;
+                    f5 = this.world.getType(MathHelper.floor(this.locX), MathHelper.floor(this.getBoundingBox().b) - 1, MathHelper.floor(this.locZ)).getBlock().frictionFactor * 0.91F;
                 }
 
                 float f6 = 0.16277136F / (f5 * f5 * f5);
@@ -1395,7 +1395,7 @@ public abstract class EntityLiving extends Entity {
                 this.a(f, f1, f3);
                 f5 = 0.91F;
                 if (this.onGround) {
-                    f5 = this.world.getType(new BlockPosition(MathHelper.floor(this.locX), MathHelper.floor(this.getBoundingBox().b) - 1, MathHelper.floor(this.locZ))).getBlock().frictionFactor * 0.91F;
+                    f5 = this.world.getType(MathHelper.floor(this.locX), MathHelper.floor(this.getBoundingBox().b) - 1, MathHelper.floor(this.locZ)).getBlock().frictionFactor * 0.91F;
                 }
 
                 if (this.k_()) {
@@ -1419,7 +1419,7 @@ public abstract class EntityLiving extends Entity {
                     this.motY = 0.2D;
                 }
 
-                if (this.world.isClientSide && (!this.world.isLoaded(new BlockPosition((int) this.locX, 0, (int) this.locZ)) || !this.world.getChunkAtWorldCoords(new BlockPosition((int) this.locX, 0, (int) this.locZ)).o())) {
+                if (this.world.isClientSide && (!this.world.isLoaded((int) this.locX, 0, (int) this.locZ) || !this.world.getChunkAtWorldCoords((int) this.locX, 0, (int) this.locZ).o())) {
                     if (this.locY > 0.0D) {
                         this.motY = -0.1D;
                     } else {

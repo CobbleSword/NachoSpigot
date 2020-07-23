@@ -322,7 +322,7 @@ public class Chunk {
     }
 
     private void c(int i, int j, int k) {
-        int l = this.world.getHighestBlockYAt(new BlockPosition(i, 0, j)).getY();
+        int l = this.world.getHighestBlockYAt(i, 0, j);
 
         if (l > k) {
             this.a(i, j, k, l + 1);
