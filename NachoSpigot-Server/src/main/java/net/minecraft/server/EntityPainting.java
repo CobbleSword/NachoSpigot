@@ -5,17 +5,19 @@ import java.util.ArrayList;
 
 public class EntityPainting extends EntityHanging {
 
+    public static final EnumArt[] CACHED_ART_VALUES = EnumArt.values();
     public EntityPainting.EnumArt art;
+
 
     public EntityPainting(World world) {
         super(world);
-        this.art = EnumArt.values()[this.random.nextInt(EnumArt.values().length)]; // CraftBukkit - generate a non-null painting
+        this.art = CACHED_ART_VALUES[this.random.nextInt(CACHED_ART_VALUES.length)]; // CraftBukkit - generate a non-null painting
     }
 
     public EntityPainting(World world, BlockPosition blockposition, EnumDirection enumdirection) {
         super(world, blockposition);
         ArrayList arraylist = Lists.newArrayList();
-        EntityPainting.EnumArt[] aentitypainting_enumart = EntityPainting.EnumArt.values();
+        EntityPainting.EnumArt[] aentitypainting_enumart = CACHED_ART_VALUES;
         int i = aentitypainting_enumart.length;
 
         for (int j = 0; j < i; ++j) {
@@ -42,7 +44,7 @@ public class EntityPainting extends EntityHanging {
 
     public void a(NBTTagCompound nbttagcompound) {
         String s = nbttagcompound.getString("Motive");
-        EntityPainting.EnumArt[] aentitypainting_enumart = EntityPainting.EnumArt.values();
+        EntityPainting.EnumArt[] aentitypainting_enumart = CACHED_ART_VALUES;
         int i = aentitypainting_enumart.length;
 
         for (int j = 0; j < i; ++j) {

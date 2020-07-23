@@ -836,10 +836,14 @@ public abstract class Entity implements ICommandListener {
         BlockPosition blockposition = new BlockPosition(this.getBoundingBox().a + 0.001D, this.getBoundingBox().b + 0.001D, this.getBoundingBox().c + 0.001D);
         BlockPosition blockposition1 = new BlockPosition(this.getBoundingBox().d - 0.001D, this.getBoundingBox().e - 0.001D, this.getBoundingBox().f - 0.001D);
 
-        if (this.world.areChunksLoadedBetween(blockposition, blockposition1)) {
-            for (int x = blockposition.getX(); x <= blockposition1.getX(); ++x) {
-                for (int y = blockposition.getY(); y <= blockposition1.getY(); ++y) {
-                    for (int z = blockposition.getZ(); z <= blockposition1.getZ(); ++z) {
+        if (this.world.areChunksLoadedBetween(blockposition, blockposition1))
+        {
+            for (int x = blockposition.getX(); x <= blockposition1.getX(); ++x)
+            {
+                for (int y = blockposition.getY(); y <= blockposition1.getY(); ++y)
+                {
+                    for (int z = blockposition.getZ(); z <= blockposition1.getZ(); ++z)
+                    {
 
                         BlockPosition blockposition2 = new BlockPosition(x, y, z);
                         IBlockData iblockdata = this.world.getType(x, y, z);
