@@ -1,4 +1,4 @@
-package org.bukkit.command.defaults;
+package org.bukkit.command.defaults.nacho;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;

@@ -2,6 +2,7 @@ package net.minecraft.server;
 
 import co.aikar.timings.SpigotTimings;
 import co.aikar.timings.Timing;
+import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.exception.ExploitException;
 import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
@@ -145,6 +146,18 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     protected void a(ChannelHandlerContext channelhandlercontext, Packet packet) throws Exception {
         if (this.channel.isOpen())
         {
+            if (this.m instanceof PlayerConnection) {
+                try {
+                    for (dev.cobblesword.nachospigot.protocol.PacketListener packetListener : Nacho.get().getPacketListeners())
+                    {
+                        if(!packetListener.onSentPacket((PlayerConnection) this.m, packet))
+                            return;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
             try {
                 packet.a(this.m);//packet.handle(PlayerConnection)
             } catch (CancelledPacketHandleException cancelledpackethandleexception) {

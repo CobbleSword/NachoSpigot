@@ -3,6 +3,7 @@ package net.minecraft.server;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Floats;
+import dev.cobblesword.nachospigot.Nacho;
 import io.netty.buffer.Unpooled;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
@@ -943,6 +944,14 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
         // CraftBukkit end
 
         try {
+            for (dev.cobblesword.nachospigot.protocol.PacketListener packetListener : Nacho.get().getPacketListeners()) {
+                try {
+                    if (!packetListener.onSentPacket(this, packet))
+                        return;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             this.networkManager.handle(packet);
         } catch (Throwable throwable) {
             CrashReport crashreport = CrashReport.a(throwable, "Sending packet");
