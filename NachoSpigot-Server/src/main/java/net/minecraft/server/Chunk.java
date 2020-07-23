@@ -39,6 +39,9 @@ public class Chunk {
     private final int[] itemCounts = new int[16];
     private final int[] inventoryEntityCounts = new int[16];
     // PaperSpigot end
+    // Nacho start
+    private List<Entity>[][] entityGrid = new List[16][16];
+    // Nacho end
     private boolean done;
     private boolean lit;
     private boolean p;
@@ -1034,19 +1037,28 @@ public class Chunk {
         this.q = true;
     }
 
+    /***
+     * adds entities to a list if they are within a box
+     *
+     */
+    public void getEntitiesInAABB(Entity entity, AxisAlignedBB axisalignedbb, List<Entity> list, Predicate<? super Entity> predicate)
+    {
+        this.a(entity, axisalignedbb, list, predicate);
+    }
+
     public void a(Entity entity, AxisAlignedBB axisalignedbb, List<Entity> list, Predicate<? super Entity> predicate)
     {
-        int i = MathHelper.floor((axisalignedbb.b - 2.0D) / 16.0D);
-        int j = MathHelper.floor((axisalignedbb.e + 2.0D) / 16.0D);
+        int minSectionY = MathHelper.floor((axisalignedbb.b - 2.0D) / 16.0D);
+        int maxSectionY = MathHelper.floor((axisalignedbb.e + 2.0D) / 16.0D);
 
-        i = MathHelper.clamp(i, 0, this.entitySlices.length - 1);
-        j = MathHelper.clamp(j, 0, this.entitySlices.length - 1);
+        minSectionY = MathHelper.clamp(minSectionY, 0, this.entitySlices.length - 1);
+        maxSectionY = MathHelper.clamp(maxSectionY, 0, this.entitySlices.length - 1);
 
-        for (int k = i; k <= j; ++k)
+        for (int sectionYIndex = minSectionY; sectionYIndex <= maxSectionY; ++sectionYIndex)
         {
-            if (!this.entitySlices[k].isEmpty())
+            if (!this.entitySlices[sectionYIndex].isEmpty())
             {
-                Iterator<Entity> iterator = this.entitySlices[k].iterator();
+                Iterator<Entity> iterator = this.entitySlices[sectionYIndex].iterator();
                 // PaperSpigot start - Don't search for inventories if we have none, and that is all we want
                 /*
                  * We check if they want inventories by seeing if it is the static `IEntitySelector.c`
@@ -1054,30 +1066,30 @@ public class Chunk {
                  * Make sure the inventory selector stays in sync.
                  * It should be the one that checks `var1 instanceof IInventory && var1.isAlive()`
                  */
-                if (predicate == IEntitySelector.c && inventoryEntityCounts[k] <= 0) continue;
+                if (predicate == IEntitySelector.c && inventoryEntityCounts[sectionYIndex] <= 0) continue;
                 // PaperSpigot end
                 while (iterator.hasNext())
                 {
-                    Entity entity1 = iterator.next();
+                    Entity entityCheck = iterator.next();
 
-                    if (entity1.getBoundingBox().b(axisalignedbb) && entity1 != entity)
+                    if (entityCheck.getBoundingBox().contains(axisalignedbb) && entityCheck != entity)
                     {
-                        if (predicate == null || predicate.apply(entity1))
+                        if (predicate == null || predicate.apply(entityCheck))
                         {
-                            list.add(entity1);
+                            list.add(entityCheck);
                         }
 
-                        // ender dragon
-                        Entity[] aentity = entity1.aB();
+                        // ender dragon code
+                        Entity[] entitybody = entityCheck.aB();
 
-                        if (aentity != null)
+                        if (entitybody != null)
                         {
-                            for (int l = 0; l < aentity.length; ++l)
+                            for (int l = 0; l < entitybody.length; ++l)
                             {
-                                entity1 = aentity[l];
-                                if (entity1 != entity && entity1.getBoundingBox().b(axisalignedbb) && (predicate == null || predicate.apply(entity1)))
+                                entityCheck = entitybody[l];
+                                if (entityCheck != entity && entityCheck.getBoundingBox().b(axisalignedbb) && (predicate == null || predicate.apply(entityCheck)))
                                 {
-                                    list.add(entity1);
+                                    list.add(entityCheck);
                                 }
                             }
                         }

@@ -152,6 +152,11 @@ public class AxisAlignedBB {
         }
     }
 
+    public boolean contains(AxisAlignedBB var1)
+    {
+        return this.b(var1);
+    }
+
     public boolean b(AxisAlignedBB var1) {
         if (var1.d > this.a && var1.a < this.d) {
             if (var1.e > this.b && var1.b < this.e) {
@@ -162,6 +167,11 @@ public class AxisAlignedBB {
         } else {
             return false;
         }
+    }
+
+    public boolean contains(Vec3D var1)
+    {
+        return this.a(var1);
     }
 
     public boolean a(Vec3D var1) {

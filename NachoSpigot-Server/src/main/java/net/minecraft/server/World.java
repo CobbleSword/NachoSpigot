@@ -2809,8 +2809,9 @@ public abstract class World implements IBlockAccess {
             for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; ++chunkZ)
             {
                 Chunk chunk = this.getChunkIfLoaded(chunkX, chunkZ);
-                if (chunk != null) {
-                    chunk.a(entity, axisalignedbb, arraylist, predicate);
+                if (chunk != null)
+                {
+                    chunk.getEntitiesInAABB(entity, axisalignedbb, arraylist, predicate);
                 }
             }
         }
