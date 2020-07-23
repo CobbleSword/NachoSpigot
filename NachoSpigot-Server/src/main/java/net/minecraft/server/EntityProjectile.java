@@ -126,18 +126,22 @@ public abstract class EntityProjectile extends Entity implements IProjectile {
             double d0 = 0.0D;
             EntityLiving entityliving = this.getShooter();
 
-            for (int i = 0; i < list.size(); ++i) {
-                Entity entity1 = (Entity) list.get(i);
+            for (int i = 0; i < list.size(); ++i)
+            {
+                Entity entity1 = list.get(i);
 
-                if (entity1.ad() && (entity1 != entityliving || this.ar >= 5)) {
+                if (entity1.ad() && (entity1 != entityliving || this.ar >= 5))
+                {
                     float f = 0.3F;
                     AxisAlignedBB axisalignedbb = entity1.getBoundingBox().grow((double) f, (double) f, (double) f);
                     MovingObjectPosition movingobjectposition1 = axisalignedbb.a(vec3d, vec3d1);
 
-                    if (movingobjectposition1 != null) {
+                    if (movingobjectposition1 != null)
+                    {
                         double d1 = vec3d.distanceSquared(movingobjectposition1.pos);
 
-                        if (d1 < d0 || d0 == 0.0D) {
+                        if (d1 < d0 || d0 == 0.0D)
+                        {
                             entity = entity1;
                             d0 = d1;
                         }
@@ -145,14 +149,17 @@ public abstract class EntityProjectile extends Entity implements IProjectile {
                 }
             }
 
-            if (entity != null) {
+            if (entity != null)
+            {
                 movingobjectposition = new MovingObjectPosition(entity);
             }
         }
 
         // PaperSpigot start - Allow projectiles to fly through vanished players the shooter can't see
-        if (movingobjectposition != null && movingobjectposition.entity instanceof EntityPlayer && shooter != null && shooter instanceof EntityPlayer) {
-            if (!((EntityPlayer) shooter).getBukkitEntity().canSee(((EntityPlayer) movingobjectposition.entity).getBukkitEntity())) {
+        if (movingobjectposition != null && movingobjectposition.entity instanceof EntityPlayer && shooter != null && shooter instanceof EntityPlayer)
+        {
+            if (!((EntityPlayer) shooter).getBukkitEntity().canSee(((EntityPlayer) movingobjectposition.entity).getBukkitEntity()))
+            {
                 movingobjectposition = null;
             }
         }

@@ -452,6 +452,9 @@ public abstract class Entity implements ICommandListener {
             this.a(this.getBoundingBox().c(d0, d1, d2));
             this.recalcPosition();
         } else {
+            // [Nacho-0019] :: We must move a meaningful amount of distance to tick collisions
+            if(d0 * d0 + d1 * d1 + d2 * d2 < 0.0001D)
+                return;
             // CraftBukkit start - Don't do anything if we aren't moving
             // We need to do this regardless of whether or not we are moving thanks to portals
             try {

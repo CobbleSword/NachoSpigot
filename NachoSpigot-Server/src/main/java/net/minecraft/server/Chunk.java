@@ -1034,7 +1034,8 @@ public class Chunk {
         this.q = true;
     }
 
-    public void a(Entity entity, AxisAlignedBB axisalignedbb, List<Entity> list, Predicate<? super Entity> predicate) {
+    public void a(Entity entity, AxisAlignedBB axisalignedbb, List<Entity> list, Predicate<? super Entity> predicate)
+    {
         int i = MathHelper.floor((axisalignedbb.b - 2.0D) / 16.0D);
         int j = MathHelper.floor((axisalignedbb.e + 2.0D) / 16.0D);
 
@@ -1066,6 +1067,7 @@ public class Chunk {
                             list.add(entity1);
                         }
 
+                        // ender dragon
                         Entity[] aentity = entity1.aB();
 
                         if (aentity != null)
