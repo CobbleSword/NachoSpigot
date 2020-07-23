@@ -65,7 +65,8 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 [Nacho-0015] Remove the usage of BlockPosition from getCubes
 [Nacho-0016] faster getHighestBlockYAt function
 [Nacho-0017] tiny winy optimization for async lighting
-[Nacho-0018] more tiny winy optimization to lighting 
+[Nacho-0018] more tiny winy optimization to lighting
+[Nacho-0019] Avoid lock every packet send 
 
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 
