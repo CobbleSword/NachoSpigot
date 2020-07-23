@@ -91,7 +91,7 @@ public class CraftWorld implements World {
     }
 
     public int getBlockTypeIdAt(int x, int y, int z) {
-        return CraftMagicNumbers.getId(world.getType(new BlockPosition(x, y, z)).getBlock());
+        return CraftMagicNumbers.getId(world.getType(x, y, z).getBlock());
     }
 
     public int getHighestBlockYAt(int x, int z) {
@@ -99,7 +99,7 @@ public class CraftWorld implements World {
             loadChunk(x >> 4, z >> 4);
         }
 
-        return world.getHighestBlockYAt(new BlockPosition(x, 0, z)).getY();
+        return world.getHighestBlockYAt(x, 0, z);
     }
 
     public Location getSpawnLocation() {

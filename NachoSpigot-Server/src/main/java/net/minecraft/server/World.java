@@ -792,6 +792,42 @@ public abstract class World implements IBlockAccess {
         return new BlockPosition(blockposition.getX(), i, blockposition.getZ());
     }
 
+    public BlockPosition getHighestBlockYAtBlockPos(int blockposition_x, int blockposition_y, int blockposition_z) {
+        int i;
+
+        if (blockposition_x >= -30000000 && blockposition_z >= -30000000 && blockposition_x < 30000000 && blockposition_z < 30000000) {
+
+            Chunk chunk = this.getChunkIfLoaded(blockposition_x >> 4, blockposition_z >> 4);
+            if (chunk != null) {
+                i = chunk.b(blockposition_x & 15, blockposition_z & 15);
+            } else {
+                i = 0;
+            }
+        } else {
+            i = this.F() + 1;
+        }
+
+        return new BlockPosition(blockposition_x, i, blockposition_z);
+    }
+
+    public int getHighestBlockYAt(int blockposition_x, int blockposition_y, int blockposition_z) {
+        int i;
+
+        if (blockposition_x >= -30000000 && blockposition_z >= -30000000 && blockposition_x < 30000000 && blockposition_z < 30000000) {
+
+            Chunk chunk = this.getChunkIfLoaded(blockposition_x >> 4, blockposition_z >> 4);
+            if (chunk != null) {
+                i = chunk.b(blockposition_x & 15, blockposition_z & 15);
+            } else {
+                i = 0;
+            }
+        } else {
+            i = this.F() + 1;
+        }
+
+        return i;
+    }
+
     public int b(int i, int j)
     {
         if (i >= -30000000 && j >= -30000000 && i < 30000000 && j < 30000000)
