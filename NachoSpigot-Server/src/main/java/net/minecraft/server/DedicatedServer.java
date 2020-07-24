@@ -31,7 +31,7 @@ import org.bukkit.event.server.RemoteServerCommandEvent;
 public class DedicatedServer extends MinecraftServer implements IMinecraftServer {
 
     private static final Logger LOGGER = LogManager.getLogger();
-    private final List<ServerCommand> l = Collections.synchronizedList(Lists.<ServerCommand>newArrayList()); // CraftBukkit - fix decompile error
+    private final java.util.Queue<ServerCommand> l = new java.util.concurrent.ConcurrentLinkedQueue<>(); // Paper - use a proper queue
     private RemoteStatusListener m;
     private RemoteControlListener n;
     public PropertyManager propertyManager;
@@ -407,8 +407,10 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 
     public void aO() {
         SpigotTimings.serverCommandTimer.startTiming(); // Spigot
-        while (!this.l.isEmpty()) {
-            ServerCommand servercommand = (ServerCommand) this.l.remove(0);
+        // [Paper-0350] start - use a Queue for Queueing Commands
+        ServerCommand servercommand;
+        while ((servercommand = this.l.poll()) != null) {
+            // [Paper-0350] end - use a Queue for Queueing Commands
 
             // CraftBukkit start - ServerCommand for preprocessing
             ServerCommandEvent event = new ServerCommandEvent(console, servercommand.command);
