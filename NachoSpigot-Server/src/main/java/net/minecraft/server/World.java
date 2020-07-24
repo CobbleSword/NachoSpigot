@@ -1416,7 +1416,7 @@ public abstract class World implements IBlockAccess {
                                     AxisAlignedBB aabb = AxisAlignedBB.a(x, y, z, x + 1.0, y + 1.0, z + 1.0);
                                     if (axisalignedbb.b(aabb)) arraylist.add(aabb);
                                 } else {
-                                    b.a(this, x, y, z, block, axisalignedbb, arraylist, entity);
+                                    b.a(this, new BlockPosition(x, y, z), block, axisalignedbb, arraylist, entity);
                                 }
                                 // PaperSpigot end
                             }
