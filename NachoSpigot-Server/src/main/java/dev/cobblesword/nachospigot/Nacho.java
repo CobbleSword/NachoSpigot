@@ -3,6 +3,7 @@ package dev.cobblesword.nachospigot;
 import dev.cobblesword.nachospigot.commons.FileUtils;
 import dev.cobblesword.nachospigot.protocol.PacketListener;
 import net.minecraft.server.MinecraftServer;
+import org.bukkit.command.defaults.nacho.SetMaxSlotCommand;
 import org.bukkit.command.defaults.nacho.SpawnMobCommand;
 import org.bukkit.command.defaults.nacho.TestTpCommand;
 
@@ -44,10 +45,12 @@ public class Nacho
 
     public void registerCommands()
     {
+        SetMaxSlotCommand setMaxSlotCommand = new SetMaxSlotCommand("setMaxSlot");//[Nacho-0021] Add setMaxPlayers within Bukkit.getServer() and SetMaxSlot Command
         SpawnMobCommand spawnMobCommand = new SpawnMobCommand("spawnmob");
         TestTpCommand testTpCommand = new TestTpCommand("testtp");
         MinecraftServer.getServer().server.getCommandMap().register( spawnMobCommand.getName(), "NachoSpigot", spawnMobCommand);
         MinecraftServer.getServer().server.getCommandMap().register( testTpCommand.getName(), "NachoSpigot", testTpCommand);
+        MinecraftServer.getServer().server.getCommandMap().register( setMaxSlotCommand.getName(), "NachoSpigot", setMaxSlotCommand);
     }
 
     public void registerPacketListener(PacketListener packetListener)

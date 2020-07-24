@@ -135,6 +135,8 @@ public interface Server extends PluginMessageRecipient {
      */
     public int getMaxPlayers();
 
+    public void setMaxPlayers(int maxPlayers); // [Nacho-0021] Add setMaxPlayers within Bukkit.getServer() and SetMaxSlot Command
+
     /**
      * Get the game port that the server runs on.
      *

@@ -1157,6 +1157,8 @@ public abstract class PlayerList {
         return this.maxPlayers;
     }
 
+    public void setMaxPlayers(int maxPlayerCount) { this.maxPlayers = maxPlayerCount; }
+
     public String[] getSeenPlayers() {
         return this.server.worlds.get(0).getDataManager().getPlayerFileData().getSeenPlayers(); // CraftBukkit
     }
