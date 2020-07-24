@@ -1636,5 +1636,10 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
     {
         return spigot;
     }
+
+    @Override
+    public NachoPlayer nacho() {
+        return null;
+    }
     // Spigot end
 }

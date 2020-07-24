@@ -40,6 +40,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     public static final Marker ROOT_MARKER = MarkerManager.getMarker("NETWORK");
     public static final Marker PACKET_MARKER = MarkerManager.getMarker("NETWORK_PACKETS", NetworkManager.ROOT_MARKER);
     public static final AttributeKey<EnumProtocol> ATTRIBUTE_PROTOCOL = AttributeKey.valueOf("protocol");
+    public static final AttributeKey<EnumProtocol> c = ATTRIBUTE_PROTOCOL;
     public static final LazyInitVar NETWORK_WORKER_GROUP = new LazyInitVar()
     {
         protected NioEventLoopGroup a() {

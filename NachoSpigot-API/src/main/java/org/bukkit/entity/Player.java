@@ -39,6 +39,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      */
     public String getDisplayName();
 
+
     /**
      * Sets the "friendly" name to display of this player. This may include
      * color.
@@ -1391,4 +1392,31 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
 
     Spigot spigot();
     // Spigot end
+
+    public class NachoPlayer
+    {
+        public int sendActionBar(String message)
+        {
+            throw new UnsupportedOperationException( "Not supported yet" );
+        }
+
+        public int setTabHeader(String message)
+        {
+            throw new UnsupportedOperationException( "Not supported yet" );
+        }
+
+        public int setTabFooter(String message)
+        {
+            throw new UnsupportedOperationException( "Not supported yet" );
+        }
+
+        public int setTabFooterAndFooter(String header, String footer)
+        {
+            throw new UnsupportedOperationException( "Not supported yet" );
+        }
+    }
+
+    public NachoPlayer nacho();
+
+
 }
