@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import org.apache.logging.log4j.LogManager;
@@ -22,13 +23,16 @@ public class EntityTracker {
         this.e = worldserver.getMinecraftServer().getPlayerList().d();
     }
 
-    public void track(Entity entity) {
-        if (entity instanceof EntityPlayer) {
+    public void track(Entity entity)
+    {
+        if (entity instanceof EntityPlayer)
+        {
             this.addEntity(entity, 512, 2);
             EntityPlayer entityplayer = (EntityPlayer) entity;
-            Iterator iterator = this.c.iterator();
+            Iterator<EntityTrackerEntry> iterator = this.c.iterator();
 
-            while (iterator.hasNext()) {
+            while (iterator.hasNext())
+            {
                 EntityTrackerEntry entitytrackerentry = (EntityTrackerEntry) iterator.next();
 
                 if (entitytrackerentry.tracker != entityplayer) {
@@ -93,7 +97,8 @@ public class EntityTracker {
         this.addEntity(entity, i, j, false);
     }
 
-    public void addEntity(Entity entity, int i, final int j, boolean flag) {
+    public void addEntity(Entity entity, int i, final int j, boolean flag)
+    {
         org.spigotmc.AsyncCatcher.catchOp( "entity track"); // Spigot
         i = org.spigotmc.TrackingRange.getEntityTrackingRange(entity, i); // Spigot
         if (i > this.e) {
@@ -145,11 +150,12 @@ public class EntityTracker {
 
     }
 
-    public void untrackEntity(Entity entity) {
+    public void untrackEntity(Entity entity)
+    {
         org.spigotmc.AsyncCatcher.catchOp( "entity untrack"); // Spigot
         if (entity instanceof EntityPlayer) {
             EntityPlayer entityplayer = (EntityPlayer) entity;
-            Iterator iterator = this.c.iterator();
+            Iterator<EntityTrackerEntry> iterator = this.c.iterator();
 
             while (iterator.hasNext()) {
                 EntityTrackerEntry entitytrackerentry = (EntityTrackerEntry) iterator.next();
@@ -167,9 +173,10 @@ public class EntityTracker {
 
     }
 
-    public void updatePlayers() {
-        ArrayList arraylist = Lists.newArrayList();
-        Iterator iterator = this.c.iterator();
+    public void updatePlayers()
+    {
+        ArrayList<EntityPlayer> arraylist = Lists.newArrayList();
+        Iterator<EntityTrackerEntry> iterator = this.c.iterator();
 
         while (iterator.hasNext()) {
             EntityTrackerEntry entitytrackerentry = (EntityTrackerEntry) iterator.next();
@@ -180,7 +187,8 @@ public class EntityTracker {
             }
         }
 
-        for (int i = 0; i < arraylist.size(); ++i) {
+        for (int i = 0; i < arraylist.size(); ++i)
+        {
             EntityPlayer entityplayer = (EntityPlayer) arraylist.get(i);
             Iterator iterator1 = this.c.iterator();
 
@@ -195,8 +203,9 @@ public class EntityTracker {
 
     }
 
-    public void a(EntityPlayer entityplayer) {
-        Iterator iterator = this.c.iterator();
+    public void a(EntityPlayer entityplayer)
+    {
+        Iterator<EntityTrackerEntry> iterator = this.c.iterator();
 
         while (iterator.hasNext()) {
             EntityTrackerEntry entitytrackerentry = (EntityTrackerEntry) iterator.next();
@@ -210,7 +219,8 @@ public class EntityTracker {
 
     }
 
-    public void a(Entity entity, Packet packet) {
+    public void a(Entity entity, Packet packet)
+    {
         EntityTrackerEntry entitytrackerentry = (EntityTrackerEntry) this.trackedEntities.get(entity.getId());
 
         if (entitytrackerentry != null) {
@@ -219,7 +229,8 @@ public class EntityTracker {
 
     }
 
-    public void sendPacketToEntity(Entity entity, Packet packet) {
+    public void sendPacketToEntity(Entity entity, Packet packet)
+    {
         EntityTrackerEntry entitytrackerentry = (EntityTrackerEntry) this.trackedEntities.get(entity.getId());
 
         if (entitytrackerentry != null) {
@@ -228,8 +239,9 @@ public class EntityTracker {
 
     }
 
-    public void untrackPlayer(EntityPlayer entityplayer) {
-        Iterator iterator = this.c.iterator();
+    public void untrackPlayer(EntityPlayer entityplayer)
+    {
+        Iterator<EntityTrackerEntry> iterator = this.c.iterator();
 
         while (iterator.hasNext()) {
             EntityTrackerEntry entitytrackerentry = (EntityTrackerEntry) iterator.next();
@@ -240,7 +252,7 @@ public class EntityTracker {
     }
 
     public void a(EntityPlayer entityplayer, Chunk chunk) {
-        Iterator iterator = this.c.iterator();
+        Iterator<EntityTrackerEntry> iterator = this.c.iterator();
 
         while (iterator.hasNext()) {
             EntityTrackerEntry entitytrackerentry = (EntityTrackerEntry) iterator.next();

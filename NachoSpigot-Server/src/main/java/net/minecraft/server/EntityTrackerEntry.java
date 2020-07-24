@@ -298,7 +298,8 @@ public class EntityTrackerEntry {
     public void broadcast(Packet packet) {
         Iterator iterator = this.trackedPlayers.iterator();
 
-        while (iterator.hasNext()) {
+        while (iterator.hasNext())
+        {
             EntityPlayer entityplayer = (EntityPlayer) iterator.next();
 
             entityplayer.playerConnection.sendPacket(packet);

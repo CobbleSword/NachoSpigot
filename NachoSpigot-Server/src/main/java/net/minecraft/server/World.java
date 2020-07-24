@@ -1606,8 +1606,8 @@ public abstract class World implements IBlockAccess {
 
         // Paper start - Set based removal lists
         for (Entity e : this.g) {
-            j = e.ae;
-            k = e.ag;
+            j = e.ae;//getChunkX
+            k = e.ag;//getChunkZ
             if (e.ad && this.isChunkLoaded(j, k, true)) {
                 this.getChunkAt(j, k).b(e);
             }
