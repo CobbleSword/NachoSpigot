@@ -251,13 +251,21 @@ public class EntityTracker {
 
     }
 
-    public void a(EntityPlayer entityplayer, Chunk chunk) {
+    public void updatePlayerChunk(EntityPlayer entityplayer, Chunk chunk)
+    {
+        this.a(entityplayer, chunk);
+    }
+
+    public void a(EntityPlayer entityplayer, Chunk chunk)
+    {
         Iterator<EntityTrackerEntry> iterator = this.c.iterator();
 
-        while (iterator.hasNext()) {
-            EntityTrackerEntry entitytrackerentry = (EntityTrackerEntry) iterator.next();
+        while (iterator.hasNext())
+        {
+            EntityTrackerEntry entitytrackerentry = iterator.next();
 
-            if (entitytrackerentry.tracker != entityplayer && entitytrackerentry.tracker.ae == chunk.locX && entitytrackerentry.tracker.ag == chunk.locZ) {
+            if (entitytrackerentry.tracker != entityplayer && entitytrackerentry.tracker.ae == chunk.locX && entitytrackerentry.tracker.ag == chunk.locZ)
+            {
                 entitytrackerentry.updatePlayer(entityplayer);
             }
         }

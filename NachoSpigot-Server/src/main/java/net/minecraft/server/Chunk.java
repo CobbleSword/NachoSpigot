@@ -58,6 +58,8 @@ public class Chunk {
     public long lightUpdateTime;
     // PaperSpigot end
 
+
+
     // PaperSpigot start - ChunkMap caching
     private PacketPlayOutMapChunk.ChunkMap chunkMap;
     private int emptySectionBits;
