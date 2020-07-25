@@ -91,10 +91,14 @@ public class RegionFile {
     }
 
     // CraftBukkit start - This is a copy (sort of) of the method below it, make sure they stay in sync
-    public synchronized boolean chunkExists(int i, int j) {
-        if (this.d(i, j)) {
+    public boolean chunkExists(int i, int j) // [Nacho-0022] Sync is maintained higher up and is causing issues
+    {
+        if (this.d(i, j))
+        {
             return false;
-        } else {
+        }
+        else
+        {
             try {
                 int k = this.e(i, j);
 
@@ -108,7 +112,7 @@ public class RegionFile {
                         return false;
                     }
 
-                    this.c.seek((long) (l * 4096));
+                    this.c.seek(l * 4096);
                     int j1 = this.c.readInt();
 
                     if (j1 > 4096 * i1 || j1 <= 0) {
@@ -120,7 +124,9 @@ public class RegionFile {
                         return true;
                     }
                 }
-            } catch (IOException ioexception) {
+            }
+            catch (IOException ioexception)
+            {
                 return false;
             }
         }
@@ -129,7 +135,8 @@ public class RegionFile {
     }
     // CraftBukkit end
 
-    public synchronized DataInputStream a(int i, int j) {
+    //read
+    public DataInputStream a(int i, int j) {
         if (this.d(i, j)) {
             return null;
         } else {
@@ -181,7 +188,8 @@ public class RegionFile {
         return this.d(i, j) ? null : new DataOutputStream(new java.io.BufferedOutputStream(new DeflaterOutputStream(new RegionFile.ChunkBuffer(i, j)))); // Spigot - use a BufferedOutputStream to greatly improve file write performance
     }
 
-    protected synchronized void a(int i, int j, byte[] abyte, int k) {
+    //write
+    protected void a(int i, int j, byte[] abyte, int k) { // [Nacho-0022] Sync is maintained higher up and is causing issues
         try {
             int l = this.e(i, j);
             int i1 = l >> 8;

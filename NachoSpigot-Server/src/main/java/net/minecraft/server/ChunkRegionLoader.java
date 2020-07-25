@@ -27,11 +27,14 @@ public class ChunkRegionLoader implements IChunkLoader, IAsyncChunkSaver {
     }
 
     // CraftBukkit start
-    public boolean chunkExists(World world, int i, int j) {
+    public boolean chunkExists(World world, int i, int j)
+    {
         ChunkCoordIntPair chunkcoordintpair = new ChunkCoordIntPair(i, j);
 
-        if (this.c.contains(chunkcoordintpair)) {
-            if (this.b.containsKey(chunkcoordintpair)) {
+        if (this.c.contains(chunkcoordintpair))
+        {
+            if (this.b.containsKey(chunkcoordintpair))
+            {
                 return true;
             }
         }
