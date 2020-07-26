@@ -200,7 +200,8 @@ public class RegionFile {
                 return;
             }
 
-            if (i1 != 0 && j1 == k1) {
+            if (i1 != 0 && j1 == k1)
+            {
                 this.a(i1, abyte, k);
             } else {
                 int l1;

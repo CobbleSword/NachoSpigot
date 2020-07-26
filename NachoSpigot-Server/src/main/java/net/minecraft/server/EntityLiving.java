@@ -1467,7 +1467,8 @@ public abstract class EntityLiving extends Entity {
 
     public void t_() {
         super.t_();
-        if (!this.world.isClientSide) {
+        if (!this.world.isClientSide)
+        {
             int i = this.bv();
 
             if (i > 0) {
@@ -1481,7 +1482,8 @@ public abstract class EntityLiving extends Entity {
                 }
             }
 
-            for (int j = 0; j < 5; ++j) {
+            for (int j = 0; j < 5; ++j)
+            {
                 ItemStack itemstack = this.h[j];
                 ItemStack itemstack1 = this.getEquipment(j);
 

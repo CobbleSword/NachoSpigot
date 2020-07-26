@@ -474,11 +474,19 @@ public final class ItemStack {
     // Spigot End
 
     public static boolean matches(ItemStack itemstack, ItemStack itemstack1) {
-        return itemstack == null && itemstack1 == null ? true : (itemstack != null && itemstack1 != null ? itemstack.d(itemstack1) : false);
+        if(itemstack == null && itemstack1 == null ) return true;
+        if(itemstack == null || itemstack1 == null) return false;
+        return itemstack.d(itemstack1);
     }
 
     private boolean d(ItemStack itemstack) {
-        return this.count != itemstack.count ? false : (this.item != itemstack.item ? false : (this.damage != itemstack.damage ? false : (this.tag == null && itemstack.tag != null ? false : this.tag == null || this.tag.equals(itemstack.tag))));
+
+        if(this.count != itemstack.count) return false;
+        if(this.item != itemstack.item) return false;
+        if(this.damage != itemstack.damage) return false;
+        if(this.tag == null && itemstack.tag != null) return false;
+
+        return (this.tag == null || this.tag.equals(itemstack.tag);
     }
 
     public static boolean c(ItemStack itemstack, ItemStack itemstack1) {
