@@ -486,7 +486,7 @@ public final class ItemStack {
         if(this.damage != itemstack.damage) return false;
         if(this.tag == null && itemstack.tag != null) return false;
 
-        return (this.tag == null || this.tag.equals(itemstack.tag);
+        return (this.tag == null || this.tag.equals(itemstack.tag));
     }
 
     public static boolean c(ItemStack itemstack, ItemStack itemstack1) {
