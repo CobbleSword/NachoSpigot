@@ -1487,8 +1487,9 @@ public abstract class EntityLiving extends Entity {
                 ItemStack itemstack = this.h[j];
                 ItemStack itemstack1 = this.getEquipment(j);
 
-                if (!ItemStack.matches(itemstack1, itemstack)) {
-                    ((WorldServer) this.world).getTracker().a((Entity) this, (Packet) (new PacketPlayOutEntityEquipment(this.getId(), j, itemstack1)));
+                if (!ItemStack.matches(itemstack1, itemstack))
+                {
+                    ((WorldServer) this.world).getTracker().a(this, new PacketPlayOutEntityEquipment(this.getId(), j, itemstack1));
                     if (itemstack != null) {
                         this.c.a(itemstack.B());
                     }
