@@ -48,6 +48,7 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 [Paper-0353] Send nearby packets from world player list not server list by Mystiflow
 [Paper-0389] performance improvement for Chunk.getEntities by wea_ondara
 [Paper-0539] Optimize NetworkManager Exception Handling by Andrew Steinborn
+[Paper-0451] Reduce memory footprint of NBTTagCompound by spottedleaf
 
 [Nacho-0001] Remove stream usage when counting entities
 [Nacho-0002] Check if the fuel is coal first before checking others
