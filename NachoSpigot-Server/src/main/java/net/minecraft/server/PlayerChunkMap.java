@@ -215,17 +215,20 @@ public class PlayerChunkMap {
         int j1 = i - k;
         int k1 = j - l;
 
-        return j1 >= -i1 && j1 <= i1 ? k1 >= -i1 && k1 <= i1 : false;
+        if(j1 >= -i1 && j1 <= i1) return k1 >= -i1 && k1 <= i1;
+        return false;
     }
 
-    public void movePlayer(EntityPlayer entityplayer) {
+    public void movePlayer(EntityPlayer entityplayer)
+    {
         int i = (int) entityplayer.locX >> 4;
         int j = (int) entityplayer.locZ >> 4;
-        double d0 = entityplayer.d - entityplayer.locX;
-        double d1 = entityplayer.e - entityplayer.locZ;
-        double d2 = d0 * d0 + d1 * d1;
+        double diffX = entityplayer.d - entityplayer.locX;
+        double diffZ = entityplayer.e - entityplayer.locZ;
+        double length2D = diffX * diffX + diffZ * diffZ;
 
-        if (d2 >= 64.0D) {
+        if (length2D >= 64.0D)
+        {
             int k = (int) entityplayer.d >> 4;
             int l = (int) entityplayer.e >> 4;
             int i1 = entityplayer.viewDistance; // PaperSpigot - Player view distance API
@@ -233,17 +236,23 @@ public class PlayerChunkMap {
             int k1 = j - l;
             List<ChunkCoordIntPair> chunksToLoad = new LinkedList<ChunkCoordIntPair>(); // CraftBukkit
 
-            if (j1 != 0 || k1 != 0) {
-                for (int l1 = i - i1; l1 <= i + i1; ++l1) {
-                    for (int i2 = j - i1; i2 <= j + i1; ++i2) {
-                        if (!this.a(l1, i2, k, l, i1)) {
+            if (j1 != 0 || k1 != 0)
+            {
+                for (int l1 = i - i1; l1 <= i + i1; ++l1)
+                {
+                    for (int i2 = j - i1; i2 <= j + i1; ++i2)
+                    {
+                        if (!this.a(l1, i2, k, l, i1))
+                        {
                             chunksToLoad.add(new ChunkCoordIntPair(l1, i2)); // CraftBukkit
                         }
 
-                        if (!this.a(l1 - j1, i2 - k1, i, j, i1)) {
+                        if (!this.a(l1 - j1, i2 - k1, i, j, i1))
+                        {
                             PlayerChunkMap.PlayerChunk playerchunkmap_playerchunk = this.a(l1 - j1, i2 - k1, false);
 
-                            if (playerchunkmap_playerchunk != null) {
+                            if (playerchunkmap_playerchunk != null)
+                            {
                                 playerchunkmap_playerchunk.b(entityplayer);
                             }
                         }
