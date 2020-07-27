@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
-import com.sun.istack.internal.Nullable;
 import io.netty.buffer.Unpooled;
 import java.io.File;
 import java.net.SocketAddress;
@@ -1059,11 +1058,11 @@ public abstract class PlayerList {
         sendPacketNearby(entityhuman, d0, d1, d2, d3, i, null, packet); // Retained for compatibility
     }
 
-    public void sendPacketNearby(@Nullable EntityHuman entityhuman, double d0, double d1, double d2, double d3, WorldServer world, Packet<?> packet) {
+    public void sendPacketNearby(EntityHuman entityhuman, double d0, double d1, double d2, double d3, WorldServer world, Packet<?> packet) {
         sendPacketNearby(entityhuman, d0, d1, d2, d3, world.dimension, world, packet);
     }
 
-    public void sendPacketNearby(@Nullable EntityHuman entityhuman, double d0, double d1, double d2, double d3, int i, @Nullable WorldServer world, Packet<?> packet) {
+    public void sendPacketNearby(EntityHuman entityhuman, double d0, double d1, double d2, double d3, int i, WorldServer world, Packet<?> packet) {
         if (world == null && entityhuman != null && entityhuman.world instanceof WorldServer) {
             world = (WorldServer) entityhuman.world;
         }
