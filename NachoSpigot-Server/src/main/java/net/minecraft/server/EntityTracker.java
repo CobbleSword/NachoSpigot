@@ -251,10 +251,17 @@ public class EntityTracker {
 
     }
 
+    public Iterator<EntityTrackerEntry> getEntityTrackerEntries()
+    {
+        return this.c.iterator();
+    }
+
     public void updatePlayerChunk(EntityPlayer entityplayer, Chunk chunk)
     {
         this.a(entityplayer, chunk);
     }
+
+
 
     public void a(EntityPlayer entityplayer, Chunk chunk)
     {
