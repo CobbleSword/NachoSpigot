@@ -1328,8 +1328,9 @@ public abstract class World implements IBlockAccess {
         int i = entity.ae;
         int j = entity.ag;
 
-        if (entity.ad && this.isChunkLoaded(i, j, true)) {
-            this.getChunkAt(i, j).b(entity);
+        Chunk chunk = this.getChunkIfLoaded(i, j);
+        if (entity.ad && chunk != null) {
+            chunk.b(entity);
         }
 
         if (!guardEntityList) { // Spigot - It will get removed after the tick if we are ticking // Paper - always remove from current chunk above
