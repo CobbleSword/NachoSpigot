@@ -232,22 +232,24 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
             this.playerConnection.sendPacket(new PacketPlayOutEntityDestroy(aint));
         }
 
-        if (!this.chunkCoordIntPairQueue.isEmpty()) {
+        if (!this.chunkCoordIntPairQueue.isEmpty())
+        {
             ArrayList<Chunk> chunkList = Lists.newArrayList();
             Iterator iterator1 = this.chunkCoordIntPairQueue.iterator();
-            ArrayList arraylist1 = Lists.newArrayList();
+            ArrayList<TileEntity> tileEntities = Lists.newArrayList();
 
             Chunk chunk = null;
 
-            while (iterator1.hasNext() && chunkList.size() < this.world.spigotConfig.maxBulkChunk) { // Spigot
+            while (iterator1.hasNext() && chunkList.size() < this.world.spigotConfig.maxBulkChunk)
+            { // Spigot
                 ChunkCoordIntPair chunkcoordintpair = (ChunkCoordIntPair) iterator1.next();
 
                 if (chunkcoordintpair != null) {
-                    if (this.world.isLoaded(new BlockPosition(chunkcoordintpair.x << 4, 0, chunkcoordintpair.z << 4))) {
+                    if (this.world.isLoaded(chunkcoordintpair.x << 4, 0, chunkcoordintpair.z << 4)) {// [Nacho-0024] Do not create new BlockPosition when loading chunk
                         chunk = this.world.getChunkAt(chunkcoordintpair.x, chunkcoordintpair.z);
                         if (chunk.isReady()) {
                             chunkList.add(chunk);
-                            arraylist1.addAll(chunk.tileEntities.values()); // CraftBukkit - Get tile entities directly from the chunk instead of the world
+                            tileEntities.addAll(chunk.tileEntities.values()); // CraftBukkit - Get tile entities directly from the chunk instead of the world
                             iterator1.remove();
                         }
                     }
@@ -258,17 +260,16 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
 
             if (!chunkList.isEmpty()) {
                 if (chunkList.size() == 1) {
-                    this.playerConnection.sendPacket(new PacketPlayOutMapChunk((Chunk) chunkList.get(0), true, '\uffff'));
+                    this.playerConnection.sendPacket(new PacketPlayOutMapChunk(chunkList.get(0), true, '\uffff'));
                 } else {
                     this.playerConnection.sendPacket(new PacketPlayOutMapChunkBulk(chunkList));
                 }
 
-                Iterator iterator2 = arraylist1.iterator();
+                Iterator<TileEntity> tileEntitiesIterator = tileEntities.iterator();
 
-                while (iterator2.hasNext())
+                while (tileEntitiesIterator.hasNext())
                 {
-                    TileEntity tileentity = (TileEntity) iterator2.next();
-
+                    TileEntity tileentity = tileEntitiesIterator.next();
                     this.a(tileentity);
                 }
 
