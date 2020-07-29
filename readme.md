@@ -81,6 +81,11 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 [Tuinity-????] Skip updating entity tracker without players
 ```
 
+## Removed
+``` 
+[Nacho-0022] Sync is maintained higher up and is causing issues
+```
+
 ## Discord
 [Join Discord group](https://discord.gg/SBTEbSx)
 
