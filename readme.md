@@ -72,6 +72,7 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 [Nacho-0020] Packet Listener Api
 [Nacho-0021] Add setMaxPlayers within Bukkit.getServer() and SetMaxSlot Command
 [Nacho-0022] Stop raytracing loading chunks
+[Nacho-0023] Optimize EntityTracker for the chunk updater
 
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 
