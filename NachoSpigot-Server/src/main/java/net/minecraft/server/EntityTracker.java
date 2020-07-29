@@ -261,8 +261,7 @@ public class EntityTracker {
         this.a(entityplayer, chunk);
     }
 
-
-
+    //Nacho never really  called anymore, We inlined this in PlayerEntity
     public void a(EntityPlayer entityplayer, Chunk chunk)
     {
         Iterator<EntityTrackerEntry> iterator = this.c.iterator();
