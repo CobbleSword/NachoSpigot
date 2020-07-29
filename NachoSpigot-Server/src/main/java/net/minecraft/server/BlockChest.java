@@ -344,7 +344,7 @@ public class BlockChest extends BlockContainer {
     }
 
     public ITileInventory f(World world, BlockPosition blockposition) {
-        return f(world, blockposition, false);
+        return f(world, blockposition, true);
     }
 
     public ITileInventory f(World world, BlockPosition blockposition, boolean flag) {
@@ -369,7 +369,7 @@ public class BlockChest extends BlockContainer {
                 continue;
             Block block = typeIfLoaded.getBlock();
 
-            if (flag && block == this) {
+            if (block == this) {
                 if (this.n(world, blockposition1)) {
                     return null;
                 }
