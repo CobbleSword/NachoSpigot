@@ -91,7 +91,7 @@ public class RegionFile {
     }
 
     // CraftBukkit start - This is a copy (sort of) of the method below it, make sure they stay in sync
-    public boolean chunkExists(int i, int j) // [Nacho-0022] Sync is maintained higher up and is causing issues
+    public synchronized boolean chunkExists(int i, int j) // [Nacho-0022] Sync is maintained higher up and is causing issues
     {
         if (this.d(i, j))
         {
@@ -136,7 +136,7 @@ public class RegionFile {
     // CraftBukkit end
 
     //read
-    public DataInputStream a(int i, int j) {
+    public synchronized DataInputStream a(int i, int j) {
         if (this.d(i, j)) {
             return null;
         } else {
@@ -189,7 +189,7 @@ public class RegionFile {
     }
 
     //write
-    protected void a(int i, int j, byte[] abyte, int k) { // [Nacho-0022] Sync is maintained higher up and is causing issues
+    protected synchronized void a(int i, int j, byte[] abyte, int k) { // [Nacho-0022] Sync is maintained higher up and is causing issues
         try {
             int l = this.e(i, j);
             int i1 = l >> 8;
