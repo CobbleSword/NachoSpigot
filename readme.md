@@ -74,6 +74,7 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 [Nacho-0022] Stop raytracing loading chunks
 [Nacho-0023] Optimize EntityTracker for the chunk updater
 [Nacho-0024] Do not create new BlockPosition when loading chunk
+[Nacho-0025] Disable random tickSpeed being modified (Every call it had to convert String into int via a string key which is costly)
 
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 
