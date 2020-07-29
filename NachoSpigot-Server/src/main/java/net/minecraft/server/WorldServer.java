@@ -472,16 +472,19 @@ public class WorldServer extends World implements IAsyncTaskHandler {
 
                 this.methodProfiler.c("tickBlocks");
                 timings.chunkTicksBlocks.startTiming(); // Spigot
-                i1 = this.getGameRules().c("randomTickSpeed");
-                if (i1 > 0) {
+                int randomTickSpeed = 3;// this.getGameRules().c("randomTickSpeed"); // Nacho :: Disable random tickSpeed being modified
+                if (randomTickSpeed > 0)
+                {
                     ChunkSection[] achunksection = chunk.getSections();
                     int j1 = achunksection.length;
 
                     for (int k1 = 0; k1 < j1; ++k1) {
                         ChunkSection chunksection = achunksection[k1];
 
-                        if (chunksection != null && chunksection.shouldTick()) {
-                            for (int l1 = 0; l1 < i1; ++l1) {
+                        if (chunksection != null && chunksection.shouldTick())
+                        {
+                            for (int l1 = 0; l1 < randomTickSpeed; ++l1)
+                            {
                                 this.m = this.m * 3 + 1013904223;
                                 int i2 = this.m >> 2;
                                 int j2 = i2 & 15;
@@ -492,7 +495,8 @@ public class WorldServer extends World implements IAsyncTaskHandler {
                                 IBlockData iblockdata = chunksection.getType(j2, l2, k2);
                                 Block block = iblockdata.getBlock();
 
-                                if (block.isTicking()) {
+                                if (block.isTicking())
+                                {
                                     ++i;
                                     block.a((World) this, new BlockPosition(j2 + k, l2 + chunksection.getYPosition(), k2 + l), iblockdata, this.random);
                                 }

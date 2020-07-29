@@ -218,14 +218,16 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
             this.activeContainer = this.defaultContainer;
         }
 
-        while (!this.removeQueue.isEmpty()) {
+        while (!this.removeQueue.isEmpty())
+        {
             int i = Math.min(this.removeQueue.size(), Integer.MAX_VALUE);
             int[] aint = new int[i];
-            Iterator iterator = this.removeQueue.iterator();
+            Iterator<Integer> iterator = this.removeQueue.iterator();
             int j = 0;
 
-            while (iterator.hasNext() && j < i) {
-                aint[j++] = ((Integer) iterator.next()).intValue();
+            while (iterator.hasNext() && j < i)
+            {
+                aint[j++] = (iterator.next()).intValue();
                 iterator.remove();
             }
 
@@ -235,33 +237,39 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
         if (!this.chunkCoordIntPairQueue.isEmpty())
         {
             ArrayList<Chunk> chunkList = Lists.newArrayList();
-            Iterator iterator1 = this.chunkCoordIntPairQueue.iterator();
+            Iterator<ChunkCoordIntPair> chunksToLoad = this.chunkCoordIntPairQueue.iterator();
             ArrayList<TileEntity> tileEntities = Lists.newArrayList();
 
             Chunk chunk = null;
 
-            while (iterator1.hasNext() && chunkList.size() < this.world.spigotConfig.maxBulkChunk)
+            while (chunksToLoad.hasNext() && chunkList.size() < this.world.spigotConfig.maxBulkChunk)
             { // Spigot
-                ChunkCoordIntPair chunkcoordintpair = (ChunkCoordIntPair) iterator1.next();
+                ChunkCoordIntPair chunkcoordintpair = chunksToLoad.next();
 
-                if (chunkcoordintpair != null) {
+                if (chunkcoordintpair != null)
+                {
                     if (this.world.isLoaded(chunkcoordintpair.x << 4, 0, chunkcoordintpair.z << 4)) {// [Nacho-0024] Do not create new BlockPosition when loading chunk
                         chunk = this.world.getChunkAt(chunkcoordintpair.x, chunkcoordintpair.z);
-                        if (chunk.isReady()) {
+                        if (chunk.isReady())
+                        {
                             chunkList.add(chunk);
                             tileEntities.addAll(chunk.tileEntities.values()); // CraftBukkit - Get tile entities directly from the chunk instead of the world
-                            iterator1.remove();
+                            chunksToLoad.remove();
                         }
                     }
                 } else {
-                    iterator1.remove();
+                    chunksToLoad.remove();
                 }
             }
 
-            if (!chunkList.isEmpty()) {
-                if (chunkList.size() == 1) {
+            if (!chunkList.isEmpty())
+            {
+                if (chunkList.size() == 1)
+                {
                     this.playerConnection.sendPacket(new PacketPlayOutMapChunk(chunkList.get(0), true, '\uffff'));
-                } else {
+                }
+                else
+                {
                     this.playerConnection.sendPacket(new PacketPlayOutMapChunkBulk(chunkList));
                 }
 
