@@ -17,6 +17,11 @@ public class NBTTagCompound extends NBTBase {
     public NBTTagCompound() {
     }
 
+    public NBTTagCompound(it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap<String, NBTBase> map)
+    {
+        this.map = map;
+    }
+
     void write(DataOutput var1) throws IOException {
         Iterator var2 = this.map.keySet().iterator();
 
@@ -265,15 +270,14 @@ public class NBTTagCompound extends NBTBase {
     }
 
     public NBTBase clone() {
-        NBTTagCompound var1 = new NBTTagCompound();
-        Iterator var2 = (this.map instanceof Object2ObjectOpenHashMap) ? ((Object2ObjectOpenHashMap)this.map).object2ObjectEntrySet().fastIterator() : this.map.entrySet().iterator();
-
-        while(var2.hasNext()) {
-            String var3 = (String)var2.next();
-            var1.set(var3, (this.map.get(var3)).clone());
+        it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap<String, NBTBase> ret = new it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap<>(this.map.size(), 0.8f);
+        Iterator<Map.Entry<String, NBTBase>> iterator = (this.map instanceof it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap) ? ((it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap)this.map).object2ObjectEntrySet().fastIterator() : this.map.entrySet().iterator();
+        while (iterator.hasNext())
+        {
+            Map.Entry<String, NBTBase> entry = iterator.next();
+            ret.put(entry.getKey(), entry.getValue().clone());
         }
-
-        return var1;
+        return new NBTTagCompound(ret);
     }
 
     public boolean equals(Object var1) {
