@@ -219,8 +219,8 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
             this.channel.config().setAutoRead(false);
         }
 
-        if (this.channel.eventLoop().inEventLoop()) {
-
+        if (this.channel.eventLoop().inEventLoop())
+        {
             if (enumprotocol != enumprotocol1)
             {
                 this.a(enumprotocol);

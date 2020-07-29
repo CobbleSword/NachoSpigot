@@ -61,7 +61,9 @@ public class EntityTrackerEntry {
     }
 
     public boolean equals(Object object) {
-        return object instanceof EntityTrackerEntry ? ((EntityTrackerEntry) object).tracker.getId() == this.tracker.getId() : false;
+        if(object instanceof EntityTrackerEntry )
+            return ((EntityTrackerEntry) object).tracker.getId() == this.tracker.getId();
+        return false;
     }
 
     public int hashCode() {
