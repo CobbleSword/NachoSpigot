@@ -1010,7 +1010,8 @@ public abstract class World implements IBlockAccess {
                 int i1 = MathHelper.floor(vec3d.b);
                 int j1 = MathHelper.floor(vec3d.c);
                 BlockPosition blockposition = new BlockPosition(l, i1, j1);
-                IBlockData iblockdata = this.getType(blockposition);
+                IBlockData iblockdata = this.getTypeIfLoaded(blockposition); //[Nacho-0022] Stop raytracing loading chunks
+                if (iblockdata == null) return null; //[Nacho-0022] Stop raytracing loading chunks
                 Block block = iblockdata.getBlock();
 
                 if ((!flag1 || block.a(this, blockposition, iblockdata) != null) && block.a(iblockdata, flag)) {
