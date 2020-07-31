@@ -2,53 +2,77 @@ package net.minecraft.server;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.CorruptedFrameException;
 import java.util.List;
 
+/*
+[Nacho-0025] Optimize Packet Splitter
+Every packet we recieve, we are forced to
+create PacketDataSerializer to decode 3 bytes of data
+then we just release the object....
+
+why don't we just move that function over here?
+
+Now, we this handler is stateless we can easily share it across all handlers,
+using less PacketSplitter objects, willn't affect much tho
+ */
+@ChannelHandler.Sharable
 public class PacketSplitter extends ByteToMessageDecoder {
+    public static final PacketSplitter INSTANCE = new PacketSplitter();
 
-    private final byte[] lenBuf = new byte[3]; // Paper
+    // private final byte[] lenBuf = new byte[3]; // Paper // Nacho
 
-    public PacketSplitter() {
+    public PacketSplitter()
+    {
     }
 
-    protected void decode(ChannelHandlerContext channelhandlercontext, ByteBuf bytebuf, List<Object> list) throws Exception {
-        // Paper start - if channel is not active just discard the packet
-        if (!channelhandlercontext.channel().isActive()) {
-            bytebuf.skipBytes(bytebuf.readableBytes());
-            return;
-        }
-        bytebuf.markReaderIndex();
+    // [Vanilla Copy] Pulled from PacketDataSerializer:e()
+    public int readVarInt(ByteBuf byteBuf)
+    {
+        byte b0;
+        int i = 0;
+        int j = 0;
+        do {
+            b0 = byteBuf.readByte();
+            i |= (b0 & Byte.MAX_VALUE) << j++ * 7;
+            if (j > 5)
+                throw new RuntimeException("VarInt too big");
+        } while ((b0 & 0x80) == 128);
+        return i;
+    }
 
-        // Paper start - reuse temporary length buffer
-        byte[] abyte = lenBuf;
-        java.util.Arrays.fill(abyte, (byte) 0);
-        // Paper end
+    /*
+    [Nacho-0025]
+    We re wrote this method to use 1 less object per packet
+     */
+    protected void decode(ChannelHandlerContext channelhandlercontext, ByteBuf in, List<Object> out) throws Exception {
+        if (!in.isReadable()) return;
+        int origReaderIndex = in.readerIndex();
 
-        for(int var5 = 0; var5 < abyte.length; ++var5) {
-            if (!bytebuf.isReadable()) {
-                bytebuf.resetReaderIndex();
+        for (int i = 0; i < 3; i++)
+        {
+            if (!in.isReadable())
+            {
+                in.readerIndex(origReaderIndex);
                 return;
             }
 
-            abyte[var5] = bytebuf.readByte();
-            if (abyte[var5] >= 0) {
-                PacketDataSerializer var6 = new PacketDataSerializer(Unpooled.wrappedBuffer(abyte));
+            byte read = in.readByte();
+            if (read >= 0) {
+                in.readerIndex(origReaderIndex);
+                int length = readVarInt(in);
+                if (length == 0) return;
 
-                try {
-                    int var7 = var6.e();
-                    if (bytebuf.readableBytes() < var7) {
-                        bytebuf.resetReaderIndex();
-                        return;
-                    }
-
-                    list.add(bytebuf.readBytes(var7));
-                } finally {
-                    var6.release();
+                if (in.readableBytes() < length)
+                {
+                    in.readerIndex(origReaderIndex);
+                    return;
                 }
 
+                out.add(in.readRetainedSlice(length));
                 return;
             }
         }

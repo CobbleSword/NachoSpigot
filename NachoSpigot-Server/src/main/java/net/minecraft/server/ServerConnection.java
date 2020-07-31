@@ -105,7 +105,7 @@ public class ServerConnection {
 
                     channel.pipeline().addLast("timeout", new ReadTimeoutHandler(30))
                                       .addLast("legacy_query", new LegacyPingHandler(ServerConnection.this))
-                                      .addLast("splitter", new PacketSplitter())
+                                      .addLast("splitter", PacketSplitter.INSTANCE)
                                       .addLast("decoder", new PacketDecoder(EnumProtocolDirection.SERVERBOUND))
                                       .addLast("prepender", new PacketPrepender())
                                       .addLast("encoder", new PacketEncoder(EnumProtocolDirection.CLIENTBOUND));
