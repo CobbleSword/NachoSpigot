@@ -22,7 +22,13 @@ public class MinecraftPipeline extends ChannelInitializer<SocketChannel>
         try {
             channel.config().setOption(ChannelOption.TCP_NODELAY, true);
         } catch (ChannelException channelexception) {
-            ;
+            // Ignore
+        }
+
+        try {
+            channel.config().setOption(ChannelOption.IP_TOS, 0x18);
+        } catch (ChannelException e) {
+            // Ignore
         }
 
         channel.pipeline()
