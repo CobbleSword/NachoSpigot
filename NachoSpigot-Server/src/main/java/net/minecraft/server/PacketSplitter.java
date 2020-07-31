@@ -19,9 +19,7 @@ why don't we just move that function over here?
 Now, we this handler is stateless we can easily share it across all handlers,
 using less PacketSplitter objects, willn't affect much tho
  */
-@ChannelHandler.Sharable
 public class PacketSplitter extends ByteToMessageDecoder {
-    public static final PacketSplitter INSTANCE = new PacketSplitter();
 
     // private final byte[] lenBuf = new byte[3]; // Paper // Nacho
 

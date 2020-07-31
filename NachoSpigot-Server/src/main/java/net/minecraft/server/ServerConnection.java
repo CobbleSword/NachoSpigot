@@ -2,6 +2,7 @@ package net.minecraft.server;
 
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import dev.cobblesword.nachospigot.protocol.MinecraftPipeline;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelException;
@@ -57,12 +58,12 @@ public class ServerConnection {
             return this.a();
         }
     };
-    private final MinecraftServer f;
+    public final MinecraftServer f;
     public volatile boolean d;
     private final List<ChannelFuture> g = Collections.synchronizedList(Lists.<ChannelFuture>newArrayList()); public List<ChannelFuture> getListeningChannels() { return this.g; } //OBFHELPER
     private final List<NetworkManager> h = Collections.synchronizedList(Lists.<NetworkManager>newArrayList()); public List<NetworkManager> getConnectedChannels() { return this.h; } //OBFHELPER
     // Paper start - prevent blocking on adding a new network manager while the server is ticking
-    private final java.util.Queue<NetworkManager> pending = new java.util.concurrent.ConcurrentLinkedQueue<>();
+    public final java.util.Queue<NetworkManager> pending = new java.util.concurrent.ConcurrentLinkedQueue<>();
     private void addPending() {
         NetworkManager manager = null;
         while ((manager = pending.poll()) != null) {
@@ -94,7 +95,15 @@ public class ServerConnection {
                 ServerConnection.e.info("Using default channel type");
             }
 
-            this.g.add(((ServerBootstrap) ((ServerBootstrap) (new ServerBootstrap()).channel(oclass)).childHandler(new ChannelInitializer()
+            this.g.add(((new ServerBootstrap()
+                    .channel(oclass))
+                    .childHandler(new MinecraftPipeline(this))
+                    .group((EventLoopGroup) lazyinitvar.c())
+                    .localAddress(inetaddress, i))
+                    .bind()
+                    .syncUninterruptibly());
+
+                        /*    new ChannelInitializer()
             {
                 protected void initChannel(Channel channel) throws Exception {
                     try {
@@ -107,7 +116,7 @@ public class ServerConnection {
                                       .addLast("legacy_query", new LegacyPingHandler(ServerConnection.this))
                                       .addLast("splitter", PacketSplitter.INSTANCE)
                                       .addLast("decoder", new PacketDecoder(EnumProtocolDirection.SERVERBOUND))
-                                      .addLast("prepender", new PacketPrepender())
+                                      .addLast("prepender", PacketPrepender.INSTANCE)
                                       .addLast("encoder", new PacketEncoder(EnumProtocolDirection.CLIENTBOUND));
                     NetworkManager networkmanager = new NetworkManager(EnumProtocolDirection.SERVERBOUND);
 
@@ -115,7 +124,7 @@ public class ServerConnection {
                     channel.pipeline().addLast("packet_handler", networkmanager);
                     networkmanager.a((PacketListener) (new HandshakeListener(ServerConnection.this.f, networkmanager)));
                 }
-            }).group((EventLoopGroup) lazyinitvar.c()).localAddress(inetaddress, i)).bind().syncUninterruptibly());
+            }*/
         }
     }
 
