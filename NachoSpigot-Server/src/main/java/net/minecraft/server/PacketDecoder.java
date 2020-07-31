@@ -19,26 +19,21 @@ public class PacketDecoder extends ByteToMessageDecoder {
         this.c = var1;
     }
 
-    protected void decode(ChannelHandlerContext var1, ByteBuf var2, List<Object> var3) throws Exception {
-        if (var2.readableBytes() != 0) {
-            PacketDataSerializer var4 = new PacketDataSerializer(var2);
-            int var5 = var4.e();
-            Packet var6 = ((EnumProtocol)var1.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get()).a(this.c, var5);
-            if (var6 == null) {
-                throw new IOException("Bad packet id " + var5);
-            } else {
-                var6.a(var4);
-                if (var4.readableBytes() > 0) {
-                    throw new IOException("Packet " + ((EnumProtocol)var1.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get()).a() + "/" + var5 + " (" + var6.getClass().getSimpleName() + ") was larger than I expected, found " + var4.readableBytes() + " bytes extra whilst reading packet " + var5);
-                } else {
-                    var3.add(var6);
-                    if (a.isDebugEnabled()) {
-                        a.debug(b, " IN: [{}:{}] {}", new Object[]{var1.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get(), var5, var6.getClass().getName()});
-                    }
+    protected void decode(ChannelHandlerContext ctx , ByteBuf in, List<Object> out) throws Exception
+    {
+        if (!in.isReadable()) return;
 
-                }
-            }
-        }
+        PacketDataSerializer packetDataHelper = new PacketDataSerializer(in);
+        int packetId = packetDataHelper.e();
+        Packet packet = ((EnumProtocol) ctx.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get()).a(this.c, packetId);
+        if (packet == null)
+            throw new IOException("Bad packet id " + packetId);
+
+        packet.a(packetDataHelper);
+
+        if (packetDataHelper.isReadable())
+            throw new IOException("Packet " + ((EnumProtocol)ctx.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get()).a() + "/" + packetId + " (" + packet.getClass().getSimpleName() + ") was larger than I expected, found " + packetDataHelper.readableBytes() + " bytes extra whilst reading packet " + packetId);
+        out.add(packet);
     }
 
     static {
