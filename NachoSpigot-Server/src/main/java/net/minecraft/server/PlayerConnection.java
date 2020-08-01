@@ -1479,6 +1479,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
         if (this.player.dead) return; // CraftBukkit
         PlayerConnectionUtils.ensureMainThread(packetplayinclosewindow, this, this.player.u());
 
+        // Nacho: only fire InventoryCloseEvent if inventory is open
         if (packetplayinclosewindow.getId() == player.activeContainer.windowId) {
             CraftEventFactory.handleInventoryCloseEvent(this.player); // CraftBukkit
             this.player.p();

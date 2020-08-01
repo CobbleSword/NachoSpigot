@@ -77,6 +77,7 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 [Nacho-0025] Disable random tickSpeed being modified (Every call it had to convert String into int via a string key which is costly)
 [Nacho-0026] Optimize packet Split by Velocity
 [Nacho-0027] Netty IP_TOS 0x18
+[Nacho-0028] only fire InventoryCloseEvent if inventory is open
 
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 
