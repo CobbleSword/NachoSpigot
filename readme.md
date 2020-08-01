@@ -82,6 +82,7 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 [Nacho-0030] add a ChunkPreLoadEvent
 [Nacho-0031] remove unused vars
 
+
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 
 [Akarin-0001] Avoid double I/O operation on load player file by tsao chi
@@ -89,6 +90,9 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 [Tuinity-????] Skip updating entity tracker without players
 [Tuinity-0017] Allow controlled flushing for network manager by Spottedleaf
 [Tuinity-0018] Consolidate flush calls for entity tracker packets
+
+[SportPaper-0043] get blocks in chunk api
+[SportPaper-0162] Fix PlayerInteractEvent not cancelling properly
 ```
 
 ## Removed
