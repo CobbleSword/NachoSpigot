@@ -160,6 +160,7 @@ public class EntityTrackerEntry {
                         this.v = 0;
                         // CraftBukkit start - Refresh list of who can see a player before sending teleport packet
                         if (this.tracker instanceof EntityPlayer) {
+                            // Nacho start
                             // No need to create a whole new list every teleport
                             Iterator<EntityPlayer> iterator = trackedPlayers.iterator();
                             while (iterator.hasNext()) {
@@ -167,6 +168,7 @@ public class EntityTrackerEntry {
                                 this.updatePlayer(next);
                             }
 //                            this.scanPlayers(new java.util.ArrayList(this.trackedPlayers));
+                            // Nacho end
                         }
                         // CraftBukkit end
                         object = new PacketPlayOutEntityTeleport(this.tracker.getId(), i, j, k, (byte) l, (byte) i1, this.tracker.onGround);
