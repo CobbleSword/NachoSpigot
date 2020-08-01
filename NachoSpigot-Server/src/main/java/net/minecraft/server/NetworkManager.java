@@ -22,6 +22,7 @@ import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import java.net.SocketAddress;
+import java.util.Iterator;
 import java.util.Queue;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.crypto.SecretKey;
@@ -84,6 +85,41 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     private boolean o; public boolean isEncrypted() { return this.o; } // Nacho - OBFHELPER
     private boolean p; public boolean isDisconnectionHandled() { return this.p; } // Nacho - OBFHELPER
     public void setDisconnectionHandled(boolean handled) { this.p = handled;} // Nacho - OBFHELPER
+
+    // Tuinity start - allow controlled flushing
+    volatile boolean canFlush = true;
+    private final java.util.concurrent.atomic.AtomicInteger packetWrites = new java.util.concurrent.atomic.AtomicInteger();
+    private int flushPacketsStart;
+    private final Object flushLock = new Object();
+
+    void disableAutomaticFlush() {
+        synchronized (this.flushLock) {
+            this.flushPacketsStart = this.packetWrites.get(); // must be volatile and before canFlush = false
+            this.canFlush = false;
+        }
+    }
+
+    void enableAutomaticFlush() {
+        synchronized (this.flushLock)
+        {
+            this.canFlush = true;
+            if (this.packetWrites.get() != this.flushPacketsStart) { // must be after canFlush = true
+                this.flush(); // only make the flush call if we need to
+            }
+        }
+    }
+
+    private final void flush()
+    {
+        if (this.channel.eventLoop().inEventLoop()) {
+                this.channel.flush();
+            } else {
+                this.channel.eventLoop().execute(() -> {
+                    this.channel.flush();
+                });
+            }
+    }
+    // Tuinity end - allow controlled flushing
 
     public NetworkManager(EnumProtocolDirection enumprotocoldirection) {
         this.h = enumprotocoldirection;
@@ -178,7 +214,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     public void handle(Packet packet) {
         if (this.isConnected()) {
             this.sendPacketQueue();
-            this.dispatchPacket(packet, null);
+            this.dispatchPacket(packet, null, Boolean.TRUE);
         } else {
             this.j.writeLock().lock();
 
@@ -195,7 +231,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     public void a(Packet packet, GenericFutureListener<? extends Future<? super Void>> genericfuturelistener, GenericFutureListener<? extends Future<? super Void>>... agenericfuturelistener) {
         if (this.isConnected()) {
             this.sendPacketQueue();
-            this.dispatchPacket(packet, (GenericFutureListener[]) ArrayUtils.add(agenericfuturelistener, 0, genericfuturelistener));
+            this.dispatchPacket(packet, (GenericFutureListener[]) ArrayUtils.add(agenericfuturelistener, 0, genericfuturelistener), Boolean.TRUE);
         } else {
             this.j.writeLock().lock();
 
@@ -209,10 +245,13 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     }
 
     //
-    public void dispatchPacket(final Packet packet, final GenericFutureListener<? extends Future<? super Void>>[] agenericfuturelistener)
+    public void dispatchPacket(final Packet packet, final GenericFutureListener<? extends Future<? super Void>>[] agenericfuturelistener, Boolean flushConditional)
     {
         final EnumProtocol enumprotocol = EnumProtocol.a(packet);
         final EnumProtocol enumprotocol1 = this.channel.attr(NetworkManager.ATTRIBUTE_PROTOCOL).get();
+
+        boolean effectiveFlush = (flushConditional == null) ? this.canFlush : flushConditional.booleanValue();
+        boolean flush = (effectiveFlush || packet instanceof PacketPlayOutKeepAlive || packet instanceof PacketPlayOutKickDisconnect);
 
         if (enumprotocol1 != enumprotocol) {
 //            NetworkManager.g.debug("Disabled auto read");
@@ -226,8 +265,8 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
                 this.a(enumprotocol);
             }
 
-            ChannelFuture channelfuture = this.channel.writeAndFlush(packet);
-
+//            ChannelFuture channelfuture = this.channel.writeAndFlush(packet);
+            ChannelFuture channelfuture = flush ? this.channel.writeAndFlush(packet) : this.channel.write(packet);
             if (agenericfuturelistener != null)
             {
                 channelfuture.addListeners(agenericfuturelistener);
@@ -243,7 +282,8 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
                     NetworkManager.this.a(enumprotocol);
                 }
 
-                ChannelFuture channelfuture = NetworkManager.this.channel.writeAndFlush(packet);
+                ChannelFuture channelfuture = flush ? this.channel.writeAndFlush(packet) : this.channel.write(packet);
+                //ChannelFuture channelfuture = NetworkManager.this.channel.writeAndFlush(packet);
 
                 if (agenericfuturelistener != null) {
                     channelfuture.addListeners(agenericfuturelistener);
@@ -256,7 +296,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
 
     private void a(final Packet packet, final GenericFutureListener<? extends Future<? super Void>>[] agenericfuturelistener)
     {
-        this.dispatchPacket(packet, agenericfuturelistener);
+        this.dispatchPacket(packet, agenericfuturelistener, Boolean.TRUE);
     }
 
     private void sendPacketQueue()
@@ -264,13 +304,22 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
             if(this.i.isEmpty()) return; // [Nacho-0019] :: Avoid lock every packet send
             if (this.channel != null && this.channel.isOpen()) {
             this.j.readLock().lock();
+            boolean needsFlush = this.canFlush;
+            boolean hasWrotePacket = false;
 
             try
             {
-                while (!this.i.isEmpty())
-                {
-                    NetworkManager.QueuedPacket networkmanager_queuedpacket = (NetworkManager.QueuedPacket) this.i.poll();
-                    this.dispatchPacket(networkmanager_queuedpacket.a, networkmanager_queuedpacket.b);
+                Iterator<QueuedPacket> iterator = this.i.iterator();
+                while (iterator.hasNext()) {
+                    QueuedPacket queued = iterator.next();
+                    Packet packet = queued.a;
+                    if (hasWrotePacket && (needsFlush || this.canFlush))
+                    {
+                        flush();
+                    }
+                    iterator.remove();
+                    this.dispatchPacket(packet, queued.b, (!iterator.hasNext() && (needsFlush || this.canFlush)) ? Boolean.TRUE : Boolean.FALSE);
+                    hasWrotePacket = true;
                 }
             }
             finally
