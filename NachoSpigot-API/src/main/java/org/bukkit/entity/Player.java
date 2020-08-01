@@ -1418,5 +1418,5 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
 
     public NachoPlayer nacho();
 
-
+    public double getBlockReach();
 }

@@ -1642,4 +1642,9 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         return null;
     }
     // Spigot end
+
+    @Override
+    public double getBlockReach() {
+        return getGameMode() == GameMode.CREATIVE ? 6 : 4.5;
+    }
 }
