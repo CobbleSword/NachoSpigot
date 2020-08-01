@@ -1,7 +1,9 @@
 package org.bukkit.craftbukkit;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import net.minecraft.server.*;
 
@@ -10,6 +12,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.block.CraftBlock;
+import org.bukkit.craftbukkit.util.CraftMagicNumbers;
 import org.bukkit.entity.Entity;
 import org.bukkit.ChunkSnapshot;
 
@@ -132,6 +135,30 @@ public class CraftChunk implements Chunk {
 
     public boolean unload() {
         return getWorld().unloadChunk(getX(), getZ());
+    }
+
+    @Override
+    public List<Block> getBlocks(org.bukkit.Material material) {
+        List<Block> blocks = new ArrayList<>();
+
+        net.minecraft.server.Block nmsBlock = CraftMagicNumbers.getBlock(material);
+        net.minecraft.server.Chunk chunk = getHandle();
+
+        for(ChunkSection section : chunk.getSections())
+        {
+            if(section == null || section.a()) continue; // ChunkSection.a() -> true if section is empty
+
+            char[] blockIds = section.getIdArray();
+            for(int i = 0; i < blockIds.length; i++)
+            {
+                // This does a lookup in the block registry, but does not create any objects, so should be pretty efficient
+                IBlockData blockData = (IBlockData) net.minecraft.server.Block.d.a(blockIds[i]);
+                if(blockData.getBlock() == nmsBlock) {
+                    blocks.add(getBlock(i & 0xf, section.getYPosition() | (i >> 8), (i >> 4) & 0xf));
+                }
+            }
+        }
+        return blocks;
     }
 
     public boolean unload(boolean save) {

@@ -4,6 +4,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 
+import java.util.List;
+
 /**
  * Represents a chunk of blocks
  */
@@ -121,4 +123,6 @@ public interface Chunk {
      * @return true if the chunk has unloaded successfully, otherwise false
      */
     boolean unload();
+
+    public List<Block> getBlocks(Material material);
 }
