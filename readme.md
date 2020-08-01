@@ -83,6 +83,7 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 [Akarin-0001] Avoid double I/O operation on load player file by tsao chi
 
 [Tuinity-????] Skip updating entity tracker without players
+[Tuinity-0017] Allow controlled flushing for network manager by Spottedleaf
 ```
 
 ## Removed
