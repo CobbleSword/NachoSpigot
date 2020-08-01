@@ -1479,9 +1479,10 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
         if (this.player.dead) return; // CraftBukkit
         PlayerConnectionUtils.ensureMainThread(packetplayinclosewindow, this, this.player.u());
 
-        CraftEventFactory.handleInventoryCloseEvent(this.player); // CraftBukkit
-
-        this.player.p();
+        if (packetplayinclosewindow.getId() == player.activeContainer.windowId) {
+            CraftEventFactory.handleInventoryCloseEvent(this.player); // CraftBukkit
+            this.player.p();
+        }
     }
 
     public void a(PacketPlayInWindowClick packetplayinwindowclick) {
