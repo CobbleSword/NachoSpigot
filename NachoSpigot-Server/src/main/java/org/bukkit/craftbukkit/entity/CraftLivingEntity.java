@@ -512,5 +512,31 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
     public void setArrowsStuck(int arrows) {
         getHandle().setArrowsStuck(arrows);
     }
+
+    @Override
+    public boolean shouldBreakLeash() {
+        if(this.getHandle() instanceof EntityInsentient)
+            return ((EntityInsentient) getHandle()).shouldBreakLeash();
+        return true;
+    }
+
+    @Override
+    public void setShouldBreakLeash(boolean shouldBreakLeash) {
+        if(this.getHandle() instanceof EntityInsentient)
+            ((EntityInsentient) getHandle()).setShouldBreakLeash(shouldBreakLeash);
+    }
+
+    @Override
+    public boolean shouldPullWhileLeashed() {
+        if(this.getHandle() instanceof EntityInsentient)
+            return ((EntityInsentient) getHandle()).shouldPullWhileLeashed();
+        return true;
+    }
+
+    @Override
+    public void setPullWhileLeashed(boolean pullWhileLeashed) {
+        if(this.getHandle() instanceof EntityInsentient)
+            ((EntityInsentient) getHandle()).setPullWhileLeashed(pullWhileLeashed);
+    }
     // TacoSpigot end
 }

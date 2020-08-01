@@ -35,6 +35,9 @@ public abstract class EntityInsentient extends EntityLiving {
     private NBTTagCompound bq;
     public PathfinderGoalFloat goalFloat; // PaperSpigot
 
+    private boolean shouldBreakLeash = true; // Nacho
+    private boolean pullWhileLeashed = true; // Nacho
+
     public EntityInsentient(World world) {
         super(world);
         this.goalSelector = new PathfinderGoalSelector(world != null && world.methodProfiler != null ? world.methodProfiler : null);
@@ -58,6 +61,25 @@ public abstract class EntityInsentient extends EntityLiving {
     protected void initAttributes() {
         super.initAttributes();
         this.getAttributeMap().b(GenericAttributes.FOLLOW_RANGE).setValue(16.0D);
+    }
+
+    public void setShouldBreakLeash(boolean shouldBreakLeash)
+    {
+        this.shouldBreakLeash = shouldBreakLeash;
+    }
+
+    public void setPullWhileLeashed(boolean pullWhileLeashed)
+    {
+        this.pullWhileLeashed = pullWhileLeashed;
+    }
+
+    public boolean shouldBreakLeash()
+    {
+        return this.shouldBreakLeash;
+    }
+
+    public boolean shouldPullWhileLeashed() {
+        return this.pullWhileLeashed;
     }
 
     protected NavigationAbstract b(World world) {
@@ -777,7 +799,7 @@ public abstract class EntityInsentient extends EntityLiving {
     }
 
     public final boolean e(EntityHuman entityhuman) {
-        if (this.cc() && this.getLeashHolder() == entityhuman) {
+        if (this.cc() && this.getLeashHolder() == entityhuman && this.shouldBreakLeash) {
             // CraftBukkit start - fire PlayerUnleashEntityEvent
             if (CraftEventFactory.callPlayerUnleashEntityEvent(this, entityhuman).isCancelled()) {
                 ((EntityPlayer) entityhuman).playerConnection.sendPacket(new PacketPlayOutAttachEntity(1, this, this.getLeashHolder()));
@@ -828,7 +850,7 @@ public abstract class EntityInsentient extends EntityLiving {
             this.n();
         }
 
-        if (this.bo) {
+        if (this.bo && this.shouldBreakLeash) {
             if (!this.isAlive()) {
                 this.world.getServer().getPluginManager().callEvent(new EntityUnleashEvent(this.getBukkitEntity(), UnleashReason.PLAYER_UNLEASH)); // CraftBukkit
                 this.unleash(true, true);

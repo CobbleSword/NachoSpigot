@@ -408,4 +408,14 @@ public interface LivingEntity extends Entity, Damageable, ProjectileSource {
      */
     void setArrowsStuck(int arrows);
     // Paper end
+
+    // Nacho start
+    public boolean shouldBreakLeash();
+
+    public void setShouldBreakLeash(boolean shouldBreakLeash);
+
+    public boolean shouldPullWhileLeashed();
+
+    public void setPullWhileLeashed(boolean pullWhileLeashed);
+    // Nacho end
 }
