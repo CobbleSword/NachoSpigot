@@ -26,7 +26,7 @@ public class MinecraftPipeline extends ChannelInitializer<SocketChannel>
         }
 
         try {
-            channel.config().setOption(ChannelOption.IP_TOS, 0x18);
+            channel.config().setOption(ChannelOption.IP_TOS, 0x18); // [Nacho-0027] :: Optimize networking
         } catch (ChannelException e) {
             // Ignore
         }

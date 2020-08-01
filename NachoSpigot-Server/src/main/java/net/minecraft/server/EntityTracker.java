@@ -175,27 +175,32 @@ public class EntityTracker {
 
     public void updatePlayers()
     {
-        ArrayList<EntityPlayer> arraylist = Lists.newArrayList();
+        ArrayList<EntityPlayer> playersToUpdate = Lists.newArrayList();
         Iterator<EntityTrackerEntry> iterator = this.c.iterator();
 
-        while (iterator.hasNext()) {
-            EntityTrackerEntry entitytrackerentry = (EntityTrackerEntry) iterator.next();
+        while (iterator.hasNext())
+        {
+            EntityTrackerEntry entitytrackerentry = iterator.next();
 
             entitytrackerentry.track(this.world.players);
-            if (entitytrackerentry.n && entitytrackerentry.tracker instanceof EntityPlayer) {
-                arraylist.add((EntityPlayer) entitytrackerentry.tracker);
+
+            if (entitytrackerentry.n && entitytrackerentry.tracker instanceof EntityPlayer)
+            {
+                playersToUpdate.add((EntityPlayer) entitytrackerentry.tracker);
             }
         }
 
-        for (int i = 0; i < arraylist.size(); ++i)
+        for (int i = 0; i < playersToUpdate.size(); ++i)
         {
-            EntityPlayer entityplayer = (EntityPlayer) arraylist.get(i);
-            Iterator iterator1 = this.c.iterator();
+            EntityPlayer entityplayer = playersToUpdate.get(i);
+            Iterator<EntityTrackerEntry> iterator1 = this.c.iterator();
 
-            while (iterator1.hasNext()) {
-                EntityTrackerEntry entitytrackerentry1 = (EntityTrackerEntry) iterator1.next();
+            while (iterator1.hasNext())
+            {
+                EntityTrackerEntry entitytrackerentry1 = iterator1.next();
 
-                if (entitytrackerentry1.tracker != entityplayer) {
+                if (entitytrackerentry1.tracker != entityplayer)
+                {
                     entitytrackerentry1.updatePlayer(entityplayer);
                 }
             }

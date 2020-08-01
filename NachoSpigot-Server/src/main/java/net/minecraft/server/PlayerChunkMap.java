@@ -21,8 +21,8 @@ public class PlayerChunkMap {
     private final WorldServer world;
     private final List<EntityPlayer> managedPlayers = Lists.newArrayList();
     private final LongHashMap<PlayerChunkMap.PlayerChunk> d = new LongHashMap();
-    private final Queue<PlayerChunkMap.PlayerChunk> e = new java.util.concurrent.ConcurrentLinkedQueue<PlayerChunkMap.PlayerChunk>(); // CraftBukkit ArrayList -> ConcurrentLinkedQueue
-    private final Queue<PlayerChunkMap.PlayerChunk> f = new java.util.concurrent.ConcurrentLinkedQueue<PlayerChunkMap.PlayerChunk>(); // CraftBukkit ArrayList -> ConcurrentLinkedQueue
+    private final Queue<PlayerChunkMap.PlayerChunk> e = new java.util.concurrent.ConcurrentLinkedQueue<PlayerChunkMap.PlayerChunk>(); // updatingChunks // CraftBukkit ArrayList -> ConcurrentLinkedQueue
+    private final Queue<PlayerChunkMap.PlayerChunk> f = new java.util.concurrent.ConcurrentLinkedQueue<PlayerChunkMap.PlayerChunk>(); //  visibleChunks // CraftBukkit ArrayList -> ConcurrentLinkedQueue
     private int g;
     private long h;
     private final int[][] i = new int[][] { { 1, 0}, { 0, 1}, { -1, 0}, { 0, -1}};
