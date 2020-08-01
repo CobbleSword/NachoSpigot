@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
+import dev.cobblesword.nachospigot.events.ChunkPreLoadEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -112,6 +114,13 @@ public class ChunkProviderServer implements IChunkProvider {
 
     }
 
+    private boolean callChunkPreLoad(int i, int j)
+    {
+        ChunkPreLoadEvent event = new ChunkPreLoadEvent(world.getWorld(), i, j);
+        world.getServer().getPluginManager().callEvent(event);
+        return event.isCancelled();
+    }
+
     // CraftBukkit start - Add async variant, provide compatibility
     public Chunk getChunkIfLoaded(int x, int z) {
         return chunks.get(LongHash.toLong(x, z));
@@ -133,10 +142,29 @@ public class ChunkProviderServer implements IChunkProvider {
         // We can only use the queue for already generated chunks
         if (chunk == null && loader != null && loader.chunkExists(world, i, j)) {
             if (runnable != null) {
-                ChunkIOExecutor.queueChunkLoad(world, loader, this, i, j, runnable);
+                if (callChunkPreLoad(i, j))
+                {
+                    runnable.run();
+                    chunk = new EmptyChunk(world, i, j);
+                    chunk.setDone(true);
+                    chunks.put(LongHash.toLong(i, j), chunk);
+                }
+                else
+                {
+                    ChunkIOExecutor.queueChunkLoad(world, loader, this, i, j, runnable);
+                }
                 return null;
             } else {
-                chunk = ChunkIOExecutor.syncChunkLoad(world, loader, this, i, j);
+                if (callChunkPreLoad(i, j))
+                {
+                    chunk = new EmptyChunk(world, i, j);
+                    chunk.setDone(true);
+                    chunks.put(LongHash.toLong(i, j), chunk);
+                }
+                else
+                {
+                    chunk = ChunkIOExecutor.syncChunkLoad(world, loader, this, i, j);
+                }
             }
         } else if (chunk == null) {
             chunk = originalGetChunkAt(i, j);
@@ -154,6 +182,20 @@ public class ChunkProviderServer implements IChunkProvider {
         Chunk chunk = (Chunk) this.chunks.get(LongHash.toLong(i, j));
         boolean newChunk = false;
         // CraftBukkit end
+
+        Server server = world.getServer();
+
+        if (chunk == null && server != null)
+        {
+            if (callChunkPreLoad(i, j))
+            {
+                chunk = new EmptyChunk(world, i, j);
+                chunk.setDone(true);
+                chunks.put(LongHash.toLong(i, j), chunk);
+
+                return chunk;
+            }
+        }
 
         if (chunk == null) {
             world.timings.syncChunkLoadTimer.startTiming(); // Spigot
@@ -182,7 +224,6 @@ public class ChunkProviderServer implements IChunkProvider {
             chunk.addEntities();
             
             // CraftBukkit start
-            Server server = world.getServer();
             if (server != null) {
                 /*
                  * If it's a new world, the first few chunks are generated inside

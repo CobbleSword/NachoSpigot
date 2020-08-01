@@ -774,6 +774,10 @@ public class Chunk {
         }
     }
 
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
     public void a(Entity entity) {
         this.r = true;
         int i = MathHelper.floor(entity.locX / 16.0D);
@@ -787,6 +791,7 @@ public class Chunk {
             // CraftBukkit end
             entity.die();
         }
+
 
         int k = MathHelper.floor(entity.locY / 16.0D);
 
