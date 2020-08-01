@@ -5,8 +5,8 @@ import java.util.List;
 
 public class PacketPlayOutMapChunkBulk implements Packet<PacketListenerPlayOut> {
 
-    private int[] a;
-    private int[] b;
+    private int[] a; public int[] getXArray() { return this.a; }
+    private int[] b; public int[] getZArray() { return this.b; }
     private PacketPlayOutMapChunk.ChunkMap[] c;
     private boolean d;
     private World world; // Spigot

@@ -19,6 +19,33 @@ public class Int3PacketPlayOutWorldEvent extends PacketPlayOutWorldEvent {
         this.d = var4;
     }
 
+    public void setX(int x)
+    {
+        this.blockPosition_x = x;
+    }
+
+    public void setY(int y)
+    {
+        this.blockPosition_y = y;
+    }
+
+    public void setZ(int z)
+    {
+        this.blockPosition_z = z;
+    }
+
+    public int getX() {
+        return blockPosition_x;
+    }
+
+    public int getY() {
+        return blockPosition_y;
+    }
+
+    public int getZ() {
+        return blockPosition_z;
+    }
+
     @Override
     public void a(PacketDataSerializer var1) throws IOException {
         this.a = var1.readInt();

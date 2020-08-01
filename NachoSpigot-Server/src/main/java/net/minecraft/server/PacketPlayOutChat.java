@@ -19,6 +19,16 @@ public class PacketPlayOutChat implements Packet<PacketListenerPlayOut> {
         this.b = b0;
     }
 
+    public IChatBaseComponent getChatComponet()
+    {
+        return this.a;
+    }
+
+    public byte getChatType()
+    {
+        return b;
+    }
+
     public void a(PacketDataSerializer packetdataserializer) throws IOException {
         this.a = packetdataserializer.d();
         this.b = packetdataserializer.readByte();

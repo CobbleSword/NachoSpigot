@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class PacketPlayOutOpenWindow implements Packet<PacketListenerPlayOut> {
 
-    private int a;
+    private int a; public int getId() { return this.a; }
     private String b;
     private IChatBaseComponent c;
     private int d;
@@ -27,6 +27,9 @@ public class PacketPlayOutOpenWindow implements Packet<PacketListenerPlayOut> {
         this(i, s, ichatbasecomponent, j);
         this.e = k;
     }
+
+    public String getTitle() { return this.b; }
+    public void setTitle(String title) { this.b = title; }
 
     public void a(PacketListenerPlayOut packetlistenerplayout) {
         packetlistenerplayout.a(this);

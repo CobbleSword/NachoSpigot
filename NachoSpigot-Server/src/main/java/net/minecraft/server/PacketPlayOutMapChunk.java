@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class PacketPlayOutMapChunk implements Packet<PacketListenerPlayOut> {
-
-    private int a;
-    private int b;
+public class PacketPlayOutMapChunk implements Packet<PacketListenerPlayOut>
+{
+    private int a; public int getChunkX() { return this.a; }
+    private int b; public int getChunkZ() { return this.b; }
     private PacketPlayOutMapChunk.ChunkMap c;
     private boolean d;
 

@@ -6,6 +6,16 @@ public class PacketPlayInChat implements Packet<PacketListenerPlayIn> {
 
     private String a;
 
+    public String getMessage()
+    {
+        return this.a;
+    }
+
+    public void setMessage(String message)
+    {
+        this.a = message;
+    }
+
     public PacketPlayInChat() {}
 
     public PacketPlayInChat(String s) {

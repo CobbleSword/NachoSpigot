@@ -14,6 +14,12 @@ public class PacketPlayInCloseWindow implements Packet<PacketListenerPlayIn> {
     }
     // CraftBukkit end
 
+
+    public int getId()
+    {
+        return id;
+    }
+
     public void a(PacketListenerPlayIn packetlistenerplayin) {
         packetlistenerplayin.a(this);
     }

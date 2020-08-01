@@ -31,6 +31,7 @@ public class PacketPlayInSetCreativeSlot implements Packet<PacketListenerPlayIn>
     public int a() {
         return this.slot;
     }
+    public int getSlot() { return this.slot; }
 
     public ItemStack getItemStack() {
         return this.b;
