@@ -1110,6 +1110,14 @@ public abstract class Entity implements ICommandListener {
         return MathHelper.c(f * f + f1 * f1 + f2 * f2);
     }
 
+    public double distanceSqured(double d0, double d1, double d2) {
+        double d3 = this.locX - d0;
+        double d4 = this.locY - d1;
+        double d5 = this.locZ - d2;
+
+        return d3 * d3 + d4 * d4 + d5 * d5;
+    }
+
     public double e(double d0, double d1, double d2) {
         double d3 = this.locX - d0;
         double d4 = this.locY - d1;

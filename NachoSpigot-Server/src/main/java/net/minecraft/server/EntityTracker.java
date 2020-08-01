@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import org.apache.logging.log4j.LogManager;
@@ -188,7 +187,7 @@ public class EntityTracker {
 
             entitytrackerentry.track(this.world.players); // Updates the location of entities
 
-            if (entitytrackerentry.n && entitytrackerentry.tracker instanceof EntityPlayer)
+            if (entitytrackerentry.playerEntitiesUpdated && entitytrackerentry.tracker instanceof EntityPlayer)
             {
                 playersToUpdate.add((EntityPlayer) entitytrackerentry.tracker);
             }
