@@ -139,7 +139,7 @@ public class EntityTracker {
             entity.appendEntityCrashDetails(crashreportsystemdetails);
             CrashReportSystemDetails crashreportsystemdetails1 = crashreport.a("Entity That Is Already Tracked");
 
-            ((EntityTrackerEntry) this.trackedEntities.get(entity.getId())).tracker.appendEntityCrashDetails(crashreportsystemdetails1);
+            this.trackedEntities.get(entity.getId()).tracker.appendEntityCrashDetails(crashreportsystemdetails1);
 
             try {
                 throw new ReportedException(crashreport);
@@ -153,11 +153,13 @@ public class EntityTracker {
     public void untrackEntity(Entity entity)
     {
         org.spigotmc.AsyncCatcher.catchOp( "entity untrack"); // Spigot
-        if (entity instanceof EntityPlayer) {
+        if (entity instanceof EntityPlayer)
+        {
             EntityPlayer entityplayer = (EntityPlayer) entity;
             Iterator<EntityTrackerEntry> iterator = this.c.iterator();
 
-            while (iterator.hasNext()) {
+            while (iterator.hasNext())
+            {
                 EntityTrackerEntry entitytrackerentry = iterator.next();
 
                 entitytrackerentry.a(entityplayer);
@@ -166,7 +168,8 @@ public class EntityTracker {
 
         EntityTrackerEntry entitytrackerentry1 = this.trackedEntities.d(entity.getId());
 
-        if (entitytrackerentry1 != null) {
+        if (entitytrackerentry1 != null)
+        {
             this.c.remove(entitytrackerentry1);
             entitytrackerentry1.a();
         }
@@ -244,7 +247,7 @@ public class EntityTracker {
 
     public void sendPacketToEntity(Entity entity, Packet packet)
     {
-        EntityTrackerEntry entitytrackerentry = (EntityTrackerEntry) this.trackedEntities.get(entity.getId());
+        EntityTrackerEntry entitytrackerentry = this.trackedEntities.get(entity.getId());
 
         if (entitytrackerentry != null) {
             entitytrackerentry.broadcastIncludingSelf(packet);

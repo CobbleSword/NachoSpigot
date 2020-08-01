@@ -66,13 +66,16 @@ public class EntityTrackerEntry {
         return false;
     }
 
-    public int hashCode() {
+    public int hashCode()
+    {
         return this.tracker.getId();
     }
 
-    public void track(List<EntityHuman> list) {
+    public void track(List<EntityHuman> list)
+    {
         this.n = false;
-        if (!this.isMoving || this.tracker.e(this.q, this.r, this.s) > 16.0D) {
+        if (!this.isMoving || this.tracker.e(this.q, this.r, this.s) > 16.0D)
+        {
             this.q = this.tracker.locX;
             this.r = this.tracker.locY;
             this.s = this.tracker.locZ;
@@ -157,7 +160,13 @@ public class EntityTrackerEntry {
                         this.v = 0;
                         // CraftBukkit start - Refresh list of who can see a player before sending teleport packet
                         if (this.tracker instanceof EntityPlayer) {
-                            this.scanPlayers(new java.util.ArrayList(this.trackedPlayers));
+                            // No need to create a whole new list every teleport
+                            Iterator<EntityPlayer> iterator = trackedPlayers.iterator();
+                            while (iterator.hasNext()) {
+                                EntityPlayer next = iterator.next();
+                                this.updatePlayer(next);
+                            }
+//                            this.scanPlayers(new java.util.ArrayList(this.trackedPlayers));
                         }
                         // CraftBukkit end
                         object = new PacketPlayOutEntityTeleport(this.tracker.getId(), i, j, k, (byte) l, (byte) i1, this.tracker.onGround);
