@@ -33,6 +33,21 @@ public class PacketPlayOutNamedEntitySpawn implements Packet<PacketListenerPlayO
         this.i = var1.getDataWatcher();
     }
 
+    public void setX(double x)
+    {
+        this.c = MathHelper.floor(x * 32.0D);;
+    }
+
+    public void setY(double y)
+    {
+        this.d = MathHelper.floor(y * 32.0D);;
+    }
+
+    public void setZ(double z)
+    {
+        this.e = MathHelper.floor(z * 32.0D);;
+    }
+
     public void a(PacketDataSerializer var1) throws IOException {
         this.a = var1.e();
         this.b = var1.g();
