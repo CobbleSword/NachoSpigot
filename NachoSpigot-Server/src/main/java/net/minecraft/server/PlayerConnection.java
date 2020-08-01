@@ -729,41 +729,67 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
             int itemstackAmount = itemstack.count;
             // Spigot start - skip the event if throttled
             if (!throttled) {            
-            // Raytrace to look for 'rogue armswings'
-            float f1 = this.player.pitch;
-            float f2 = this.player.yaw;
-            double d0 = this.player.locX;
-            double d1 = this.player.locY + (double) this.player.getHeadHeight();
-            double d2 = this.player.locZ;
-            Vec3D vec3d = new Vec3D(d0, d1, d2);
+                // Raytrace to look for 'rogue armswings'
+                float f1 = this.player.pitch;
+                float f2 = this.player.yaw;
+                double d0 = this.player.locX;
+                double d1 = this.player.locY + (double) this.player.getHeadHeight();
+                double d2 = this.player.locZ;
+                Vec3D vec3d = new Vec3D(d0, d1, d2);
 
-            float f3 = MathHelper.cos(-f2 * 0.017453292F - 3.1415927F);
-            float f4 = MathHelper.sin(-f2 * 0.017453292F - 3.1415927F);
-            float f5 = -MathHelper.cos(-f1 * 0.017453292F);
-            float f6 = MathHelper.sin(-f1 * 0.017453292F);
-            float f7 = f4 * f5;
-            float f8 = f3 * f5;
-            double d3 = player.playerInteractManager.getGameMode() == WorldSettings.EnumGamemode.CREATIVE ? 5.0D : 4.5D;
-            Vec3D vec3d1 = vec3d.add((double) f7 * d3, (double) f6 * d3, (double) f8 * d3);
-            MovingObjectPosition movingobjectposition = this.player.world.rayTrace(vec3d, vec3d1, false);
+                float f3 = MathHelper.cos(-f2 * 0.017453292F - 3.1415927F);
+                float f4 = MathHelper.sin(-f2 * 0.017453292F - 3.1415927F);
+                float f5 = -MathHelper.cos(-f1 * 0.017453292F);
+                float f6 = MathHelper.sin(-f1 * 0.017453292F);
+                float f7 = f4 * f5;
+                float f8 = f3 * f5;
+                double d3 = player.playerInteractManager.getGameMode() == WorldSettings.EnumGamemode.CREATIVE ? 5.0D : 4.5D;
+                Vec3D vec3d1 = vec3d.add((double) f7 * d3, (double) f6 * d3, (double) f8 * d3);
+                MovingObjectPosition movingobjectposition = this.player.world.rayTrace(vec3d, vec3d1, false);
 
-            boolean cancelled = false;
-            if (movingobjectposition == null || movingobjectposition.type != MovingObjectPosition.EnumMovingObjectType.BLOCK) {
-                org.bukkit.event.player.PlayerInteractEvent event = CraftEventFactory.callPlayerInteractEvent(this.player, Action.RIGHT_CLICK_AIR, itemstack);
-                cancelled = event.useItemInHand() == Event.Result.DENY;
-            } else {
-                if (player.playerInteractManager.firedInteract) {
-                    player.playerInteractManager.firedInteract = false;
-                    cancelled = player.playerInteractManager.interactResult;
-                } else {
-                    org.bukkit.event.player.PlayerInteractEvent event = CraftEventFactory.callPlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, movingobjectposition.a(), movingobjectposition.direction, itemstack, true);
+                boolean cancelled = false;
+                if (movingobjectposition == null || movingobjectposition.type != MovingObjectPosition.EnumMovingObjectType.BLOCK) {
+                    org.bukkit.event.player.PlayerInteractEvent event = CraftEventFactory.callPlayerInteractEvent(this.player, Action.RIGHT_CLICK_AIR, itemstack);
                     cancelled = event.useItemInHand() == Event.Result.DENY;
+                } else {
+                    if (player.playerInteractManager.firedInteract) {
+                        player.playerInteractManager.firedInteract = false;
+                        cancelled = player.playerInteractManager.interactResult;
+                    } else {
+                        org.bukkit.event.player.PlayerInteractEvent event = CraftEventFactory.callPlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, movingobjectposition.a(), movingobjectposition.direction, itemstack, true);
+                        cancelled = event.useItemInHand() == Event.Result.DENY;
+                    }
                 }
-            }
 
-            if (!cancelled) {
-                this.player.playerInteractManager.useItem(this.player, this.player.world, itemstack);
-            }
+                if (!cancelled)
+                {
+                    this.player.playerInteractManager.useItem(this.player, this.player.world, itemstack);
+                }
+                else
+                {
+                    this.player.getBukkitEntity().updateInventory(); // SPIGOT-2524
+                    // SportPaper start - Fix client desync
+                    if (itemstack.getItem() == Item.getItemOf(Blocks.WATERLILY))
+                    {
+                        MovingObjectPosition movingObjectPosition1 = this.player.world.rayTrace(vec3d, vec3d1, true, false, false);
+                        if (movingObjectPosition1 != null)
+                        {
+                            BlockPosition blockPosition = movingObjectPosition1.a().up();
+                            org.bukkit.craftbukkit.block.CraftBlockState.getBlockState(worldserver, blockPosition.getX(), blockPosition.getY(), blockPosition.getZ()).update(true, false);
+                        }
+
+                    }
+                    else if (itemstack.getItem() == Items.BUCKET)
+                    {
+                        MovingObjectPosition movingObjectPosition1 = this.player.world.rayTrace(vec3d, vec3d1, true, false, false);
+                        if (movingObjectPosition1 != null) {
+                            BlockPosition blockPosition = movingObjectPosition1.a();
+                            org.bukkit.craftbukkit.block.CraftBlockState.getBlockState(worldserver, blockPosition.getX(), blockPosition.getY(), blockPosition.getZ()).update(true, false);
+                        }
+                    }
+                }
+
+                // SportPaper end
             }
             // Spigot end
 
