@@ -206,7 +206,7 @@ public class EntityTracker {
 
                 if (entitytrackerentry1.tracker != entityplayer)
                 {
-                    System.out.println(" I have been called");
+//                    System.out.println(" I have been called");
                     entitytrackerentry1.updatePlayer(entityplayer);
                 }
             }

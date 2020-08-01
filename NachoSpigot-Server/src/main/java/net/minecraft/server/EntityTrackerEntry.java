@@ -48,7 +48,7 @@ public class EntityTrackerEntry {
 
     public EntityTrackerEntry(Entity entity, int i, int j, boolean flag) {
         this.tracker = entity;
-        this.b = i;
+        this.b = 2;
         this.c = j;
         this.u = flag;
         this.xLoc = MathHelper.floor(entity.locX * 32.0D);
@@ -347,9 +347,11 @@ public class EntityTrackerEntry {
 
     }
 
-    public void updatePlayer(EntityPlayer entityplayer) {
+    public void updatePlayer(EntityPlayer entityplayer)
+    {
         org.spigotmc.AsyncCatcher.catchOp( "player tracker update"); // Spigot
-        if (entityplayer != this.tracker) {
+        if (entityplayer != this.tracker)
+        {
             if (this.c(entityplayer)) {
                 if (!this.trackedPlayers.contains(entityplayer) && (this.e(entityplayer) || this.tracker.attachedToPlayer)) {
                     // CraftBukkit start - respect vanish API
@@ -366,27 +368,32 @@ public class EntityTrackerEntry {
                     Packet packet = this.c();
 
                     entityplayer.playerConnection.sendPacket(packet);
-                    if (!this.tracker.getDataWatcher().d()) {
+                    if (!this.tracker.getDataWatcher().d())
+                    {
                         entityplayer.playerConnection.sendPacket(new PacketPlayOutEntityMetadata(this.tracker.getId(), this.tracker.getDataWatcher(), true));
                     }
 
                     NBTTagCompound nbttagcompound = this.tracker.getNBTTag();
 
-                    if (nbttagcompound != null) {
+                    if (nbttagcompound != null)
+                    {
                         entityplayer.playerConnection.sendPacket(new PacketPlayOutUpdateEntityNBT(this.tracker.getId(), nbttagcompound));
                     }
 
-                    if (this.tracker instanceof EntityLiving) {
+                    if (this.tracker instanceof EntityLiving)
+                    {
                         AttributeMapServer attributemapserver = (AttributeMapServer) ((EntityLiving) this.tracker).getAttributeMap();
                         Collection collection = attributemapserver.c();
 
                         // CraftBukkit start - If sending own attributes send scaled health instead of current maximum health
-                        if (this.tracker.getId() == entityplayer.getId()) {
+                        if (this.tracker.getId() == entityplayer.getId())
+                        {
                             ((EntityPlayer) this.tracker).getBukkitEntity().injectScaledMaxHealth(collection, false);
                         }
                         // CraftBukkit end
 
-                        if (!collection.isEmpty()) {
+                        if (!collection.isEmpty())
+                        {
                             entityplayer.playerConnection.sendPacket(new PacketPlayOutUpdateAttributes(this.tracker.getId(), collection));
                         }
                     }
@@ -454,7 +461,9 @@ public class EntityTrackerEntry {
         double d1 = entityplayer.locZ - this.tracker.locZ;
         // CraftBukkit end
 
-        return d0 >= (double) (-this.b) && d0 <= (double) this.b && d1 >= (double) (-this.b) && d1 <= (double) this.b && this.tracker.a(entityplayer);
+        return d0 >= (double) (-this.b) && d0 <= (double) this.b
+            && d1 >= (double) (-this.b) && d1 <= (double) this.b
+            && this.tracker.a(entityplayer);
     }
 
     private boolean e(EntityPlayer entityplayer) {
