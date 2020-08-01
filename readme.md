@@ -84,6 +84,7 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 
 [Tuinity-????] Skip updating entity tracker without players
 [Tuinity-0017] Allow controlled flushing for network manager by Spottedleaf
+[Tuinity-0018] Consolidate flush calls for entity tracker packets
 ```
 
 ## Removed
