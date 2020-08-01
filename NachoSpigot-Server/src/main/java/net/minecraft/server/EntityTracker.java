@@ -158,13 +158,13 @@ public class EntityTracker {
             Iterator<EntityTrackerEntry> iterator = this.c.iterator();
 
             while (iterator.hasNext()) {
-                EntityTrackerEntry entitytrackerentry = (EntityTrackerEntry) iterator.next();
+                EntityTrackerEntry entitytrackerentry = iterator.next();
 
                 entitytrackerentry.a(entityplayer);
             }
         }
 
-        EntityTrackerEntry entitytrackerentry1 = (EntityTrackerEntry) this.trackedEntities.d(entity.getId());
+        EntityTrackerEntry entitytrackerentry1 = this.trackedEntities.d(entity.getId());
 
         if (entitytrackerentry1 != null) {
             this.c.remove(entitytrackerentry1);
@@ -175,6 +175,7 @@ public class EntityTracker {
 
     public void updatePlayers()
     {
+
         ArrayList<EntityPlayer> playersToUpdate = Lists.newArrayList();
         Iterator<EntityTrackerEntry> iterator = this.c.iterator();
 
@@ -182,7 +183,7 @@ public class EntityTracker {
         {
             EntityTrackerEntry entitytrackerentry = iterator.next();
 
-            entitytrackerentry.track(this.world.players);
+            entitytrackerentry.track(this.world.players); // Updates the location of entities
 
             if (entitytrackerentry.n && entitytrackerentry.tracker instanceof EntityPlayer)
             {
@@ -193,7 +194,8 @@ public class EntityTracker {
         for (int i = 0; i < playersToUpdate.size(); ++i)
         {
             EntityPlayer entityplayer = playersToUpdate.get(i);
-            Iterator<EntityTrackerEntry> iterator1 = this.c.iterator();
+            Iterator<EntityTrackerEntry> iterator1 = this.c.iterator();// currently all entities in a world
+            //TODO: We only need to update local entities ^
 
             while (iterator1.hasNext())
             {
@@ -201,6 +203,7 @@ public class EntityTracker {
 
                 if (entitytrackerentry1.tracker != entityplayer)
                 {
+                    System.out.println(" I have been called");
                     entitytrackerentry1.updatePlayer(entityplayer);
                 }
             }
@@ -208,25 +211,30 @@ public class EntityTracker {
 
     }
 
+    //Fired once on login, anytime a potion is applied and on gamemode changes
+    // and on option unloads
     public void a(EntityPlayer entityplayer)
     {
         Iterator<EntityTrackerEntry> iterator = this.c.iterator();
-
-        while (iterator.hasNext()) {
-            EntityTrackerEntry entitytrackerentry = (EntityTrackerEntry) iterator.next();
-
-            if (entitytrackerentry.tracker == entityplayer) {
+        while (iterator.hasNext())
+        {
+            EntityTrackerEntry entitytrackerentry = iterator.next();
+            if (entitytrackerentry.tracker == entityplayer)
+            {
                 entitytrackerentry.scanPlayers(this.world.players);
-            } else {
+            }
+            else
+            {
                 entitytrackerentry.updatePlayer(entityplayer);
             }
         }
 
     }
 
+    // Fired every arm swing and item slot swap (hotbar slot change), Mount, sleep
     public void a(Entity entity, Packet packet)
     {
-        EntityTrackerEntry entitytrackerentry = (EntityTrackerEntry) this.trackedEntities.get(entity.getId());
+        EntityTrackerEntry entitytrackerentry = this.trackedEntities.get(entity.getId());
 
         if (entitytrackerentry != null) {
             entitytrackerentry.broadcast(packet);
