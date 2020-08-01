@@ -247,11 +247,12 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     //
     public void dispatchPacket(final Packet packet, final GenericFutureListener<? extends Future<? super Void>>[] agenericfuturelistener, Boolean flushConditional)
     {
+        this.packetWrites.getAndIncrement(); // must be befeore using canFlush
+        boolean effectiveFlush = flushConditional == null ? this.canFlush : flushConditional.booleanValue();
+        final boolean flush = effectiveFlush || packet instanceof PacketPlayOutKeepAlive || packet instanceof PacketPlayOutKickDisconnect; // no delay for certain packets
+
         final EnumProtocol enumprotocol = EnumProtocol.a(packet);
         final EnumProtocol enumprotocol1 = this.channel.attr(NetworkManager.ATTRIBUTE_PROTOCOL).get();
-
-        boolean effectiveFlush = (flushConditional == null) ? this.canFlush : flushConditional.booleanValue();
-        boolean flush = (effectiveFlush || packet instanceof PacketPlayOutKeepAlive || packet instanceof PacketPlayOutKickDisconnect);
 
         if (enumprotocol1 != enumprotocol) {
 //            NetworkManager.g.debug("Disabled auto read");

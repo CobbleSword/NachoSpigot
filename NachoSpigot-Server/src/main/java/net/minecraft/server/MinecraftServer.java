@@ -890,7 +890,25 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
                 this.methodProfiler.a("tracker");
                 worldserver.timings.tracker.startTiming(); // Spigot
                 if(this.getPlayerList().getPlayerCount() != 0) // Tuinity
-                    worldserver.getTracker().updatePlayers();
+                {
+                    // Tuinity start - controlled flush for entity tracker packets
+                    List<NetworkManager> disabledFlushes = new java.util.ArrayList<>(this.getPlayerList().getPlayerCount());
+                    for (EntityPlayer player : this.getPlayerList().players) {
+                        PlayerConnection connection = player.playerConnection;
+                        if (connection != null) {
+                            connection.networkManager.disableAutomaticFlush();
+                            disabledFlushes.add(connection.networkManager);
+                        }
+                    }
+                    try {
+                        worldserver.getTracker().updatePlayers();
+                    } finally {
+                        for (NetworkManager networkManager : disabledFlushes) {
+                            networkManager.enableAutomaticFlush();
+                        }
+                    }
+                    // Tuinity end - controlled flush for entity tracker packets
+                }
                 worldserver.timings.tracker.stopTiming(); // Spigot
 //                if(this.)
                 this.methodProfiler.b();
