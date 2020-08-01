@@ -1555,7 +1555,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                     }
                     if (packetplayinwindowclick.c() == 0 || packetplayinwindowclick.c() == 1) {
                         action = InventoryAction.NOTHING; // Don't want to repeat ourselves
-                        if (packetplayinwindowclick.b() == -999) {
+                        if (packetplayinwindowclick.b() < 0) {
                             if (player.inventory.getCarried() != null) {
                                 action = packetplayinwindowclick.c() == 0 ? InventoryAction.DROP_ALL_CURSOR : InventoryAction.DROP_ONE_CURSOR;
                             }
