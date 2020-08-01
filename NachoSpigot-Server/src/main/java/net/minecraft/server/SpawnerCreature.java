@@ -137,8 +137,10 @@ public final class SpawnerCreature {
                 // CraftBukkit end
 
                 if ((!enumcreaturetype.d() || flag1) && (enumcreaturetype.d() || flag) && (!enumcreaturetype.e() || flag2)) {
+                    /*
                     k = worldserver.a(enumcreaturetype.a());
                     int l1 = limit * i / a; // CraftBukkit - use per-world limits
+                    */
 
                     if ((mobcnt = getEntityCount(worldserver, enumcreaturetype.a())) <= limit * i / 289) { // TacoSpigot - use 17x17 like vanilla (a at top of file)
                         Iterator iterator1 = this.b.iterator();
