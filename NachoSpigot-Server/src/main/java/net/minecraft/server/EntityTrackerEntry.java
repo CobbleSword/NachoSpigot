@@ -161,14 +161,19 @@ public class EntityTrackerEntry {
                         this.lastOnGround = this.tracker.onGround;
                         this.ticksSinceLastForcedTeleport = 0;
                         // CraftBukkit start - Refresh list of who can see a player before sending teleport packet
-                        if (this.tracker instanceof EntityPlayer) {
+                        if (this.tracker instanceof EntityPlayer)
+                        {
+                            this.scanPlayers(new java.util.ArrayList(this.trackedPlayers));
+
+                            // EDIT: Learning the list makes it thread safe... lol
                             // Nacho start
                             // No need to create a whole new list every teleport
-                            Iterator<EntityPlayer> iterator = trackedPlayers.iterator();
-                            while (iterator.hasNext()) {
-                                EntityPlayer next = iterator.next();
-                                this.updatePlayer(next);
-                            }
+//                            Iterator<EntityPlayer> iterator = trackedPlayers.iterator();
+//                            while (iterator.hasNext())
+//                            {
+//                                EntityPlayer next = iterator.next();
+//                                this.updatePlayer(next);
+//                            }
 //                            this.scanPlayers(new java.util.ArrayList(this.trackedPlayers));
                             // Nacho end
                         }
