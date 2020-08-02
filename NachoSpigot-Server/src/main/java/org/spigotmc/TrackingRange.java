@@ -28,7 +28,8 @@ public class TrackingRange
         }  else if ( entity.activationType == 1 )
         {
             return config.monsterTrackingRange;
-        } else if ( entity instanceof EntityGhast )
+        }
+        else if ( entity instanceof EntityGhast )
         {
             if ( config.monsterTrackingRange > config.monsterActivationRange )
             {

@@ -222,6 +222,10 @@
                                         <exclude>org.bukkit.craftbukkit.Main*</exclude>
                                     </excludes>
                                 </relocation>
+                                <relocation>
+                                    <pattern>com.github.benmanes.caffeine</pattern>
+                                    <shadedPattern>org.bukkit.craftbukkit.libs.caffeine</shadedPattern>
+                                </relocation>
 
 
 
