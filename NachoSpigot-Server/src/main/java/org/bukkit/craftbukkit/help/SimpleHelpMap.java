@@ -42,7 +42,7 @@ public class SimpleHelpMap implements HelpMap {
     }
 
     public synchronized HelpTopic getHelpTopic(String topicName) {
-        if (topicName.equals("")) {
+        if (topicName != null && topicName.isEmpty()) {
             return defaultTopic;
         }
 

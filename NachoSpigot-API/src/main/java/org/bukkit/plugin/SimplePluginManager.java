@@ -107,7 +107,7 @@ public final class SimplePluginManager implements PluginManager {
         List<Plugin> result = new ArrayList<Plugin>();
         Set<Pattern> filters = fileAssociations.keySet();
 
-        if (!(server.getUpdateFolder().equals(""))) {
+        if (!(server.getUpdateFolder().isEmpty())) {
             updateDirectory = new File(directory, server.getUpdateFolder());
         }
 

@@ -242,7 +242,7 @@ public abstract class JavaPlugin extends PluginBase {
 
     @Override
     public void saveResource(String resourcePath, boolean replace) {
-        if (resourcePath == null || resourcePath.equals("")) {
+        if (resourcePath == null || resourcePath.length() == 0) {
             throw new IllegalArgumentException("ResourcePath cannot be null or empty");
         }
 
