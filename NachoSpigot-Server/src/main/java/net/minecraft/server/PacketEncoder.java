@@ -35,10 +35,6 @@ public class PacketEncoder extends MessageToByteEncoder<Packet> {
             packetdataserializer.b(integer.intValue());
 
             try {
-                if (packet instanceof PacketPlayOutNamedEntitySpawn) {
-                    packet = packet;
-                }
-
                 try {
                     packet.b(packetdataserializer);
                 } catch (ExploitException ex) {
