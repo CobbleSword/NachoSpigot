@@ -70,6 +70,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
             return this.a();
         }
     };
+
     private final EnumProtocolDirection h;
     private final Queue<NetworkManager.QueuedPacket> i = Queues.newConcurrentLinkedQueue();
     private final ReentrantReadWriteLock j = new ReentrantReadWriteLock();
@@ -187,7 +188,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
                 try {
                     for (dev.cobblesword.nachospigot.protocol.PacketListener packetListener : Nacho.get().getPacketListeners())
                     {
-                        if(!packetListener.onSentPacket((PlayerConnection) this.m, packet))
+                        if(!packetListener.onReceivedPacket((PlayerConnection) this.m, packet))
                             return;
                     }
                 } catch (Exception e) {
@@ -201,7 +202,6 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
                 ;
             }
         }
-
     }
 
     public void a(PacketListener packetlistener) {
