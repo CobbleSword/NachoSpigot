@@ -4,17 +4,13 @@ import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import dev.cobblesword.nachospigot.protocol.MinecraftPipeline;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelException;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.epoll.Epoll;
 import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.epoll.EpollServerSocketChannel;
 import io.netty.channel.local.LocalEventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.ServerSocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.util.concurrent.Future;
@@ -49,9 +45,9 @@ public class ServerConnection {
             return this.a();
         }
     };
-    public static final LazyInitVar<LocalEventLoopGroup> c = new LazyInitVar() {
-        protected LocalEventLoopGroup a() {
-            return new LocalEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Local Server IO #%d").setDaemon(true).build());
+    public static final LazyInitVar<DefaultEventLoopGroup> c = new LazyInitVar() {
+        protected DefaultEventLoopGroup a() {
+            return new DefaultEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Local Server IO #%d").setDaemon(true).build());
         }
 
         protected Object init() {
@@ -65,7 +61,7 @@ public class ServerConnection {
     // Paper start - prevent blocking on adding a new network manager while the server is ticking
     public final java.util.Queue<NetworkManager> pending = new java.util.concurrent.ConcurrentLinkedQueue<>();
     private void addPending() {
-        NetworkManager manager = null;
+        NetworkManager manager;
         while ((manager = pending.poll()) != null) {
             this.getConnectedChannels().add(manager);
         }
@@ -79,8 +75,6 @@ public class ServerConnection {
     }
 
     public void a(InetAddress inetaddress, int i) throws IOException {
-        List list = this.g;
-
         synchronized (this.g) {
             Class oclass;
             LazyInitVar lazyinitvar;
@@ -128,7 +122,7 @@ public class ServerConnection {
         }
     }
 
-    public void b() {
+    public void b() throws InterruptedException {
         this.d = false;
         Iterator iterator = this.g.iterator();
 
@@ -137,16 +131,16 @@ public class ServerConnection {
 
             try {
                 channelfuture.channel().close().sync();
-            } catch (InterruptedException interruptedexception) {
-                ServerConnection.e.error("Interrupted whilst closing channel");
+            } finally {
+                a.c().shutdownGracefully();
+                b.c().shutdownGracefully();
+                c.c().shutdownGracefully();
             }
         }
 
     }
 
     public void c() {
-        List list = this.getConnectedChannels();
-
         synchronized (this.getConnectedChannels()) {
             // Spigot Start
             this.addPending(); // Paper
@@ -178,11 +172,11 @@ public class ServerConnection {
                                 CrashReportSystemDetails crashreportsystemdetails = crashreport.a("Ticking connection");
 
                                 crashreportsystemdetails.a("Connection", new Callable() {
-                                    public String a() throws Exception {
+                                    public String a() {
                                         return networkmanager.toString();
                                     }
 
-                                    public Object call() throws Exception {
+                                    public Object call() {
                                         return this.a();
                                     }
                                 });
@@ -192,11 +186,7 @@ public class ServerConnection {
                             ServerConnection.e.warn("Failed to handle packet for " + networkmanager.getSocketAddress(), exception);
                             final ChatComponentText chatcomponenttext = new ChatComponentText("Internal server error");
 
-                            networkmanager.a(new PacketPlayOutKickDisconnect(chatcomponenttext), new GenericFutureListener() {
-                                public void operationComplete(Future future) throws Exception {
-                                    networkmanager.close(chatcomponenttext);
-                                }
-                            }, new GenericFutureListener[0]);
+                            networkmanager.a(new PacketPlayOutKickDisconnect(chatcomponenttext), (GenericFutureListener) future -> networkmanager.close(chatcomponenttext), new GenericFutureListener[0]);
                             networkmanager.k();
                         }
                     }
