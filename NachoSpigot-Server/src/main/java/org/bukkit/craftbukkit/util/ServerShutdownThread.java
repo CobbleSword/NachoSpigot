@@ -14,7 +14,7 @@ public class ServerShutdownThread extends Thread {
     public void run() {
         try {
             server.stop();
-        } catch (ExceptionWorldConflict ex) {
+        } catch (ExceptionWorldConflict | InterruptedException ex) {
             ex.printStackTrace();
         } finally {
             try {

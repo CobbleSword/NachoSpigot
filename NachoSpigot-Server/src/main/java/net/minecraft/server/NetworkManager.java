@@ -6,11 +6,7 @@ import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.exception.ExploitException;
 import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.*;
 import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.local.LocalChannel;
 import io.netty.channel.local.LocalEventLoopGroup;
@@ -61,9 +57,10 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
             return this.a();
         }
     };
+    //TODO: Should we rename this?
     public static final LazyInitVar LOCAL_WORKER_GROUP = new LazyInitVar() {
-        protected LocalEventLoopGroup a() {
-            return new LocalEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Local Client IO #%d").setDaemon(true).build());
+        protected DefaultEventLoopGroup a() {
+            return new DefaultEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Local Client IO #%d").setDaemon(true).build());
         }
 
         protected Object init() {
