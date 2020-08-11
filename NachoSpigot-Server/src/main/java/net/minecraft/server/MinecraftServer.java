@@ -440,7 +440,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     private final Object stopLock = new Object();
     // CraftBukkit end
 
-    public void stop() throws ExceptionWorldConflict { // CraftBukkit - added throws
+    public void stop() throws ExceptionWorldConflict, InterruptedException { // CraftBukkit - added throws
         // CraftBukkit start - prevent double stopping on multiple threads
         synchronized(stopLock) {
             if (hasStopped) return;
