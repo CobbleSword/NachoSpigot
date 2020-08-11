@@ -3,6 +3,7 @@ package net.minecraft.server;
 import com.google.common.collect.Lists;
 
 import java.io.*;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.List;
@@ -66,7 +67,7 @@ public class RegionFile {
             while (header.hasRemaining())  {
                 if (this.c.getChannel().read(header) == -1) throw new EOFException();
             }
-            header.clear();
+            ((Buffer) header).clear();
             IntBuffer headerAsInts = header.asIntBuffer();
             // Paper end
 
