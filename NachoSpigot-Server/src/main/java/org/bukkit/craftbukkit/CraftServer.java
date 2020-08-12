@@ -186,7 +186,7 @@ public final class CraftServer implements Server {
                 return player.getBukkitEntity();
             }
         }));
-        this.serverVersion = CraftServer.class.getPackage().getImplementationVersion();
+        this.serverVersion = "NachoSpigot";
         online.value = console.getPropertyManager().getBoolean("online-mode", true);
 
         Bukkit.setServer(this);
