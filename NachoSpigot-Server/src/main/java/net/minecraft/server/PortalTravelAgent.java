@@ -94,10 +94,17 @@ public class PortalTravelAgent {
 
     public boolean b(Entity entity, float f) {
         // CraftBukkit start - Modularize portal search process and entity teleportation
-        BlockPosition found = this.findPortal(entity.locX, entity.locY, entity.locZ, 128);
+//        BlockPosition found = this.findPortal(entity.locX, entity.locY, entity.locZ, 128);
+        // MinetickMod start
+        BlockPosition found = this.findPortal(entity.locX, entity.locY, entity.locZ, 10);
+        if (found == null) {
+            found = this.findPortal(entity.locX, entity.locY, entity.locZ, 128);
+        }
+
         if (found == null) {
             return false;
         }
+        // MinetickMod end
 
         Location exit = new Location(this.a.getWorld(), found.getX(), found.getY(), found.getZ(), f, entity.pitch);
         Vector velocity = entity.getBukkitEntity().getVelocity();
@@ -132,6 +139,8 @@ public class PortalTravelAgent {
             flag1 = false;
         } else {
             BlockPosition blockposition = new BlockPosition(x, y, z);
+
+            // MinetickMod start
 
             for (int l = -searchRadius; l <= searchRadius; ++l) {   // Paper - actually use search radius
                 BlockPosition blockposition1;

@@ -44,7 +44,14 @@ public class CraftTravelAgent extends PortalTravelAgent implements TravelAgent {
     @Override
     public Location findPortal(Location location) {
         PortalTravelAgent pta = ((CraftWorld) location.getWorld()).getHandle().getTravelAgent();
-        BlockPosition found = pta.findPortal(location.getX(), location.getY(), location.getZ(), this.getSearchRadius());
+
+        // MinetickMod start
+        BlockPosition found = pta.findPortal(location.getX(), location.getY(), location.getZ(), 10);
+        if (found == null) {
+            found = pta.findPortal(location.getX(), location.getY(), location.getZ(), this.getSearchRadius());
+        }
+        // MinetickMod end
+
         return found != null ? new Location(location.getWorld(), found.getX(), found.getY(), found.getZ(), location.getYaw(), location.getPitch()) : null;
     }
 
