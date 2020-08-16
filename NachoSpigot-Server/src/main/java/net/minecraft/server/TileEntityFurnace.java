@@ -206,7 +206,7 @@ public class TileEntityFurnace extends TileEntityContainer implements IUpdatePla
                 if (!this.isBurning() && this.cookTime > 0) {
                     this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.cookTimeTotal);
                 }
-            } else {
+            } else if(this.items[1] != null && this.items[1].getItem() != Items.BUCKET) {
                 // CraftBukkit start - Handle multiple elapsed ticks
                 if (this.burnTime <= 0 && this.canBurn()) { // CraftBukkit - == to <=
                     CraftItemStack fuel = CraftItemStack.asCraftMirror(this.items[1]);
