@@ -298,7 +298,7 @@ public abstract class Entity implements ICommandListener {
         this.lastZ = this.locZ;
         this.lastPitch = this.pitch;
         this.lastYaw = this.yaw;
-        if (!this.world.isClientSide && this.world instanceof WorldServer) {
+        if (!this.world.isClientSide && this.world instanceof WorldServer && !(this instanceof EntityProjectile) && !(this instanceof EntityArrow) && !(this instanceof EntityFireball)) { // Migot
             this.world.methodProfiler.a("portal");
             MinecraftServer minecraftserver = ((WorldServer) this.world).getMinecraftServer();
             int i = this.L();
