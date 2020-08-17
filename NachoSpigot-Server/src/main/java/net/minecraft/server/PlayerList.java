@@ -9,13 +9,8 @@ import io.netty.buffer.Unpooled;
 import java.io.File;
 import java.net.SocketAddress;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -54,6 +49,7 @@ public abstract class PlayerList {
     private final GameProfileBanList k;
     private final IpBanList l;
     private final OpList operators;
+    private Set<UUID> fastOperator = new HashSet<>();
     private final WhiteList whitelist;
     private final Map<UUID, ServerStatisticManager> o;
     public IPlayerFileData playerFileData;
@@ -77,6 +73,9 @@ public abstract class PlayerList {
         this.k = new GameProfileBanList(PlayerList.a);
         this.l = new IpBanList(PlayerList.b);
         this.operators = new OpList(PlayerList.c);
+        for (OpListEntry value : this.operators.getValues()) {
+            this.fastOperator.add(value.getKey().getId());
+        }
         this.whitelist = new WhiteList(PlayerList.d);
         this.o = Maps.newHashMap();
         this.server = minecraftserver;
@@ -1016,7 +1015,7 @@ public abstract class PlayerList {
 
     public void addOp(GameProfile gameprofile) {
         this.operators.add(new OpListEntry(gameprofile, this.server.p(), this.operators.b(gameprofile)));
-
+        this.fastOperator.add(gameprofile.getId());
         // CraftBukkit start
         Player player = server.server.getPlayer(gameprofile.getId());
         if (player != null) {
@@ -1027,6 +1026,7 @@ public abstract class PlayerList {
 
     public void removeOp(GameProfile gameprofile) {
         this.operators.remove(gameprofile);
+        this.fastOperator.remove(gameprofile.getId());
 
         // CraftBukkit start
         Player player = server.server.getPlayer(gameprofile.getId());
@@ -1037,11 +1037,11 @@ public abstract class PlayerList {
     }
 
     public boolean isWhitelisted(GameProfile gameprofile) {
-        return !this.hasWhitelist || this.operators.d(gameprofile) || this.whitelist.d(gameprofile);
+        return !this.hasWhitelist || this.fastOperator.contains(gameprofile.getId()) || this.whitelist.d(gameprofile);
     }
 
     public boolean isOp(GameProfile gameprofile) {
-        return this.operators.d(gameprofile) || this.server.T() && this.server.worlds.get(0).getWorldData().v() && this.server.S().equalsIgnoreCase(gameprofile.getName()) || this.t; // CraftBukkit
+        return this.fastOperator.contains(gameprofile.getId()) || this.server.T() && this.server.worlds.get(0).getWorldData().v() && this.server.S().equalsIgnoreCase(gameprofile.getName()) || this.t; // CraftBukkit
     }
 
     public EntityPlayer getPlayer(String s) {
