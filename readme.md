@@ -81,6 +81,7 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 [Nacho-0029] add leash api
 [Nacho-0030] add a ChunkPreLoadEvent
 [Nacho-0031] remove unused vars
+[Nacho-0033] Faster Operator search method
 
 
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)

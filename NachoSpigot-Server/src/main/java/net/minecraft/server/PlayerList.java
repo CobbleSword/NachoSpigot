@@ -1067,13 +1067,15 @@ public abstract class PlayerList {
             world = (WorldServer) entityhuman.world;
         }
 
+        double squared = d3 * d3;
         List<? extends EntityHuman> players1 = world == null ? players : world.players;
         for (int j = 0; j < players1.size(); ++j) {
             EntityHuman entity = players1.get(j);
             if (!(entity instanceof EntityPlayer)) continue;
             EntityPlayer entityplayer = (EntityPlayer) players1.get(j);
             // CraftBukkit start - Test if player receiving packet can see the source of the packet
-            if (entityhuman != null && entityhuman instanceof EntityPlayer && !entityplayer.getBukkitEntity().canSee(((EntityPlayer) entityhuman).getBukkitEntity())) {
+            if (entityhuman != null && entityhuman instanceof EntityPlayer && !entityplayer.getBukkitEntity().canSee(((EntityPlayer) entityhuman).getBukkitEntity()))
+            {
                continue;
             }
             // CraftBukkit end
@@ -1083,7 +1085,7 @@ public abstract class PlayerList {
                 double d5 = d1 - entityplayer.locY;
                 double d6 = d2 - entityplayer.locZ;
 
-                if (d4 * d4 + d5 * d5 + d6 * d6 < d3 * d3) {
+                if (d4 * d4 + d5 * d5 + d6 * d6 < squared) {
                     entityplayer.playerConnection.sendPacket(packet);
                 }
             }
