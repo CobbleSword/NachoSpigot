@@ -1,12 +1,11 @@
 # NachoSpigot
-A 1.8 fork of paper which aims to optimize, give long term support for 1.8.9 and add useful apis, 
-Since both Paper and Spigot no longer support the version.
+A fork of PaperSpigot 1.8.8 (build 443) which aims to optimize, give long term support for 1.8x, and add useful APIs, since both Paper and Spigot no longer support the version.
 
-**The most up to date, optimized 1.8.9 on the market**
+**The most up to date, optimized 1.8.8 jar on the market**
 
 ## Features
-Since 1.8 is ~5 years old now, it has missed out on a lot of critial fixes, updates and optimizations,
-So we plan on offering those much needed updates to 1.8!
+Since 1.8x is ~5 years old now, it has missed out on a lot of critial fixes, updates and optimizations,
+So we plan on offering those much needed updates to 1.8x!
 By the end, we plan to support Java 14, Netty 4.1, allow higher player counts and still support a large number of plugins
 
 ## Backported Patches
@@ -102,7 +101,7 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 ```
 
 ## Discord
-[Join Discord group](https://discord.gg/SBTEbSx)
+[Join Discord server](https://discord.gg/SBTEbSx)
 
 ## Supporters 
 
