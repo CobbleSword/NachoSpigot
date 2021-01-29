@@ -48,4 +48,11 @@ public class EnchantmentWrapper extends Enchantment {
     public boolean conflictsWith(Enchantment other) {
         return getEnchantment().conflictsWith(other);
     }
+    // Paper start
+    @NotNull
+    @Override
+    public net.kyori.adventure.text.Component displayName(int level) {
+        return getEnchantment().displayName(level);
+    }
+    // Paper end
 }

@@ -8,9 +8,23 @@ import org.bukkit.event.HandlerList;
  */
 public class PlayerQuitEvent extends PlayerEvent {
     private static final HandlerList handlers = new HandlerList();
-    private String quitMessage;
+    private net.kyori.adventure.text.Component quitMessage; // Paper
+<<<<<<< found
 
     public PlayerQuitEvent(final Player who, final String quitMessage) {
+||||||| expected
+
+    public PlayerQuitEvent(@NotNull final Player who, @Nullable final String quitMessage) {
+=======
+
+    @Deprecated // Paper
+    public PlayerQuitEvent(@NotNull final Player who, @Nullable final String quitMessage) {
+        super(who);
+        this.quitMessage = quitMessage != null ? org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(quitMessage) : null; // Paper
+    }
+    // Paper start
+    public PlayerQuitEvent(@NotNull final Player who, @Nullable final net.kyori.adventure.text.Component quitMessage) {
+>>>>>>> replacement
         super(who);
         this.quitMessage = quitMessage;
     }
@@ -20,7 +34,7 @@ public class PlayerQuitEvent extends PlayerEvent {
      *
      * @return string quit message
      */
-    public String getQuitMessage() {
+    public @Nullable net.kyori.adventure.text.Component quitMessage() {
         return quitMessage;
     }
 
@@ -29,8 +43,39 @@ public class PlayerQuitEvent extends PlayerEvent {
      *
      * @param quitMessage quit message
      */
-    public void setQuitMessage(String quitMessage) {
+    public void quitMessage(@Nullable net.kyori.adventure.text.Component quitMessage) {
         this.quitMessage = quitMessage;
+    }
+    // Paper end
+
+    /**
+     * Gets the quit message to send to all online players
+     *
+     * @return string quit message
+     * @deprecated in favour of {@link #quitMessage()}
+     */
+    @Deprecated // Paper
+    public String getQuitMessage() {
+        return this.quitMessage == null ? null : org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().serialize(this.quitMessage); // Paper
+    }
+
+    /**
+     * Sets the quit message to send to all online players
+     *
+     * @param quitMessage quit message
+     * @deprecated in favour of {@link #quitMessage(net.kyori.adventure.text.Component)}
+<<<<<<< found
+     */
+    public void setQuitMessage(String quitMessage) {
+||||||| expected
+     */
+    public void setQuitMessage(@Nullable String quitMessage) {
+=======
+     */
+    @Deprecated // Paper
+    public void setQuitMessage(@Nullable String quitMessage) {
+        this.quitMessage = quitMessage != null ? org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(quitMessage) : null; // Paper
+>>>>>>> replacement
     }
 
     @Override

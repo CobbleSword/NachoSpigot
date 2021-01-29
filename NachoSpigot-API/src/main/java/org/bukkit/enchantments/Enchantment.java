@@ -203,6 +203,19 @@ public abstract class Enchantment {
      * @return True if the enchantment may be applied, otherwise False
      */
     public abstract boolean canEnchantItem(ItemStack item);
+    // Paper start
+    /**
+     * Get the name of the enchantment with its applied level.
+     * <p>
+     * If the given {@code level} is either less than the {@link #getStartLevel()} or greater than the {@link #getMaxLevel()},
+     * the level may not be shown in the numeral format one may otherwise expect.
+     * </p>
+     *
+     * @param level the level of the enchantment to show
+     * @return the name of the enchantment with {@code level} applied
+     */
+    public abstract @NotNull net.kyori.adventure.text.Component displayName(int level);
+    // Paper end
 
     @Override
     public boolean equals(Object obj) {

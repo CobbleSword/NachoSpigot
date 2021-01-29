@@ -73,16 +73,42 @@ public enum InventoryType {
 
     private final int size;
     private final String title;
+<<<<<<< found
 
     private InventoryType(int defaultSize, String defaultTitle) {
+||||||| expected
+
+    private InventoryType(int defaultSize, /*@NotNull*/ String defaultTitle) {
+        this(defaultSize, defaultTitle, true);
+    }
+=======
+
+    // Paper start
+    private final net.kyori.adventure.text.Component defaultTitleComponent;
+
+    /**
+     * Gets the inventory's default title.
+     *
+     * @return the inventory's default title
+     */
+    public @NotNull net.kyori.adventure.text.Component defaultTitle() {
+        return defaultTitleComponent;
+    }
+    // Paper end
+    private InventoryType(int defaultSize, /*@NotNull*/ String defaultTitle) {
+        this(defaultSize, defaultTitle, true);
+    }
+>>>>>>> replacement
         size = defaultSize;
         title = defaultTitle;
+        this.defaultTitleComponent = net.kyori.adventure.text.Component.text(defaultTitle); // Paper - Adventure
     }
 
     public int getDefaultSize() {
         return size;
     }
 
+    @Deprecated // Paper
     public String getDefaultTitle() {
         return title;
     }

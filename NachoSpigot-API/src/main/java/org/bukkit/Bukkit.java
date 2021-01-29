@@ -296,7 +296,10 @@ public final class Bukkit {
      *
      * @param message the message
      * @return the number of players
+     // Paper
+     * @deprecated in favour of {@link Server#broadcast(net.kyori.adventure.text.Component)}
      */
+    @Deprecated // Paper
     public static int broadcastMessage(String message) {
         return server.broadcastMessage(message);
     }
@@ -740,6 +743,20 @@ public final class Bukkit {
         server.shutdown();
     }
 
+    // Paper start
+    /**
+     * Broadcast a message to all players.
+     * <p>
+     * This is the same as calling {@link #broadcast(net.kyori.adventure.text.Component,
+     * java.lang.String)} with the {@link Server#BROADCAST_CHANNEL_USERS} permission.
+     *
+     * @param message the message
+     * @return the number of players
+     */
+    public static int broadcast(@NotNull net.kyori.adventure.text.Component message) {
+        return server.broadcast(message);
+    }
+
     /**
      * Broadcasts the specified message to every user with the given
      * permission name.
@@ -749,6 +766,21 @@ public final class Bukkit {
      *     permissibles} must have to receive the broadcast
      * @return number of message recipients
      */
+    public static int broadcast(@NotNull net.kyori.adventure.text.Component message, @NotNull String permission) {
+        return server.broadcast(message, permission);
+    }
+    /**
+     * Broadcasts the specified message to every user with the given
+     * permission name.
+     *
+     * @param message message to broadcast
+     * @param permission the required permission {@link Permissible
+     *     permissibles} must have to receive the broadcast
+     * @return number of message recipients
+     * @deprecated in favour of {@link #broadcast(net.kyori.adventure.text.Component, String)}
+     */
+    @Deprecated
+    // Paper end
     public static int broadcast(String message, String permission) {
         return server.broadcast(message, permission);
     }
@@ -985,6 +1017,28 @@ public final class Bukkit {
      * @param title The title of the inventory, to be displayed when it is viewed.
      * @return The new inventory.
      */
+    // Paper start
+    @NotNull
+    public static Inventory createInventory(@Nullable InventoryHolder owner, @NotNull InventoryType type, @NotNull net.kyori.adventure.text.Component title) {
+        return server.createInventory(owner, type, title);
+    }
+    // Paper end
+
+    /**
+     * Creates an empty inventory with the specified type and title. If the type
+     * is {@link InventoryType#CHEST}, the new inventory has a size of 27;
+     * otherwise the new inventory has the normal size for its type.<br>
+     * It should be noted that some inventory types do not support titles and
+     * may not render with said titles on the Minecraft client.
+     *
+     * @param owner The holder of the inventory; can be null if there's no holder.
+     * @param type The type of inventory to create.
+     * @param title The title of the inventory, to be displayed when it is viewed.
+     * @return The new inventory.
+     // Paper
+     * @deprecated in favour of {@link #createInventory(InventoryHolder, InventoryType, net.kyori.adventure.text.Component)}
+     */
+    @Deprecated // Paper
     public static Inventory createInventory(InventoryHolder owner, InventoryType type, String title) {
         return server.createInventory(owner, type, title);
     }
@@ -1013,6 +1067,27 @@ public final class Bukkit {
      * @return a new inventory
      * @throws IllegalArgumentException if the size is not a multiple of 9
      */
+    // Paper start
+    @NotNull
+    public static Inventory createInventory(@Nullable InventoryHolder owner, int size, @NotNull net.kyori.adventure.text.Component title) throws IllegalArgumentException {
+        return server.createInventory(owner, size, title);
+    }
+
+    /**
+     * Creates an empty inventory of type {@link InventoryType#CHEST} with the
+     * specified size and title.
+     *
+     * @param owner the holder of the inventory, or null to indicate no holder
+     * @param size a multiple of 9 as the size of inventory to create
+     * @param title the title of the inventory, displayed when inventory is
+     *     viewed
+     * @return a new inventory
+     * @throws IllegalArgumentException if the size is not a multiple of 9
+     * @deprecated in favour of {@link #createInventory(InventoryHolder, InventoryType, net.kyori.adventure.text.Component)}
+     */
+    @Deprecated
+    @NotNull
+    // Paper end
     public static Inventory createInventory(InventoryHolder owner, int size, String title) throws IllegalArgumentException {
         return server.createInventory(owner, size, title);
     }
@@ -1076,17 +1151,49 @@ public final class Bukkit {
     /**
      * Gets the message that is displayed on the server list.
      *
-     * @return the servers MOTD
+     * @return the server's MOTD
      */
+    // Paper start
+    @NotNull public static net.kyori.adventure.text.Component motd() {
+        return server.motd();
+    }
+
+
+    /**
+     * Gets the message that is displayed on the server list.
+     *
+     * @return the servers MOTD
+     // Paper start
+     * @deprecated in favour of {@link #motd()}
+     */
+    @NotNull
+    @Deprecated
+    // Paper end
     public static String getMotd() {
         return server.getMotd();
     }
 
+    // Paper start
     /**
      * Gets the default message that is displayed when the server is stopped.
      *
      * @return the shutdown message
      */
+    public static @Nullable net.kyori.adventure.text.Component shutdownMessage() {
+        return server.shutdownMessage();
+    }
+    // Paper end
+
+    /**
+     * Gets the default message that is displayed when the server is stopped.
+     *
+     * @return the shutdown message
+     // Paper start
+     * @deprecated in favour of {@link #shutdownMessage()}
+     */
+    @Nullable
+    @Deprecated
+    // Paper end
     public static String getShutdownMessage() {
         return server.getShutdownMessage();
     }

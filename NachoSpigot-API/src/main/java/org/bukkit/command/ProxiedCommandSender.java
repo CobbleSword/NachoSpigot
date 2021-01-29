@@ -1,7 +1,7 @@
 
 package org.bukkit.command;
 
-public interface ProxiedCommandSender extends CommandSender {
+public interface ProxiedCommandSender extends CommandSender, net.kyori.adventure.audience.ForwardingAudience.Single { // Paper
 
     /**
      * Returns the CommandSender which triggered this proxied command
@@ -17,4 +17,16 @@ public interface ProxiedCommandSender extends CommandSender {
      */
     CommandSender getCallee();
 
+    // Paper start
+    @Override
+    default void sendMessage(final @NotNull net.kyori.adventure.identity.Identity source, final @NotNull net.kyori.adventure.text.Component message, final @NotNull net.kyori.adventure.audience.MessageType type) {
+        net.kyori.adventure.audience.ForwardingAudience.Single.super.sendMessage(source, message, type);
+    }
+
+    @NotNull
+    @Override
+    default net.kyori.adventure.audience.Audience audience() {
+        return this.getCaller();
+    }
+    // Paper end
 }

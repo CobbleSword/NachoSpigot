@@ -19,7 +19,7 @@ import org.bukkit.event.HandlerList;
 public class PlayerPreLoginEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     private Result result;
-    private String message;
+    private net.kyori.adventure.text.Component message; // Paper
     private final String name;
     private final InetAddress ipAddress;
     private final UUID uniqueId;
@@ -31,7 +31,7 @@ public class PlayerPreLoginEvent extends Event {
 
     public PlayerPreLoginEvent(final String name, final InetAddress ipAddress, final UUID uniqueId) {
         this.result = Result.ALLOWED;
-        this.message = "";
+        this.message = net.kyori.adventure.text.Component.empty(); // Paper
         this.name = name;
         this.ipAddress = ipAddress;
         this.uniqueId = uniqueId;
@@ -55,13 +55,14 @@ public class PlayerPreLoginEvent extends Event {
         this.result = result;
     }
 
+    // Paper start
     /**
      * Gets the current kick message that will be used if getResult() !=
      * Result.ALLOWED
      *
      * @return Current kick message
      */
-    public String getKickMessage() {
+    public net.kyori.adventure.text.Component kickMessage() {
         return message;
     }
 
@@ -70,16 +71,14 @@ public class PlayerPreLoginEvent extends Event {
      *
      * @param message New kick message
      */
+<<<<<<< found
     public void setKickMessage(final String message) {
+||||||| expected
+    public void setKickMessage(@NotNull final String message) {
+=======
+    public void kickMessage(@NotNull final net.kyori.adventure.text.Component message) {
+>>>>>>> replacement
         this.message = message;
-    }
-
-    /**
-     * Allows the player to log in
-     */
-    public void allow() {
-        result = Result.ALLOWED;
-        message = "";
     }
 
     /**
@@ -88,9 +87,62 @@ public class PlayerPreLoginEvent extends Event {
      * @param result New result for disallowing the player
      * @param message Kick message to display to the user
      */
-    public void disallow(final Result result, final String message) {
+    public void disallow(@NotNull final Result result, @NotNull final net.kyori.adventure.text.Component message) {
         this.result = result;
         this.message = message;
+    }
+    // Paper end
+    /**
+     * Gets the current kick message that will be used if getResult() !=
+     * Result.ALLOWED
+     *
+     * @return Current kick message
+     * @deprecated in favour of {@link #kickMessage()}
+     */
+    @Deprecated // Paper
+    @NotNull
+    public String getKickMessage() {
+        return org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().serialize(this.message); // Paper
+    }
+
+    /**
+     * Sets the kick message to display if getResult() != Result.ALLOWED
+     *
+     * @param message New kick message
+     * @deprecated in favour of {@link #kickMessage(net.kyori.adventure.text.Component)}
+     */
+    @Deprecated // Paper
+    public void setKickMessage(@NotNull final String message) {
+        this.message = org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(message); // Paper
+    }
+
+    /**
+     * Allows the player to log in
+     */
+    public void allow() {
+        result = Result.ALLOWED;
+        message = net.kyori.adventure.text.Component.empty(); // Paper
+    }
+
+    /**
+     * Disallows the player from logging in, with the given reason
+     *
+     * @param result New result for disallowing the player
+     * @param message Kick message to display to the user
+     * @deprecated in favour of {@link #disallow(org.bukkit.event.player.PlayerPreLoginEvent.Result, net.kyori.adventure.text.Component)}
+<<<<<<< found
+     */
+    public void disallow(final Result result, final String message) {
+||||||| expected
+     */
+    public void disallow(@NotNull final Result result, @NotNull final String message) {
+=======
+     */
+    @Deprecated // Paper
+    public void disallow(@NotNull final Result result, @NotNull final String message) {
+>>>>>>> replacement
+        this.result = result;
+        this.message = org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(message); // Paper
     }
 
     /**

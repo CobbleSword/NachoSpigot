@@ -18,6 +18,14 @@ import org.bukkit.inventory.ItemStack;
  */
 @Deprecated
 public interface UnsafeValues {
+    // Paper start
+    net.kyori.adventure.text.flattener.ComponentFlattener componentFlattener();
+    net.kyori.adventure.text.serializer.plain.PlainComponentSerializer plainComponentSerializer();
+    net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer plainTextSerializer();
+    net.kyori.adventure.text.serializer.gson.GsonComponentSerializer gsonComponentSerializer();
+    net.kyori.adventure.text.serializer.gson.GsonComponentSerializer colorDownsamplingGsonComponentSerializer();
+    net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer legacyComponentSerializer();
+    // Paper end
 
     Material getMaterialFromInternalName(String name);
 

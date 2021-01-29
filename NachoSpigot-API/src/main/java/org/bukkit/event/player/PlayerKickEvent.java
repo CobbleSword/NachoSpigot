@@ -9,11 +9,29 @@ import org.bukkit.event.HandlerList;
  */
 public class PlayerKickEvent extends PlayerEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
-    private String leaveMessage;
-    private String kickReason;
+    private net.kyori.adventure.text.Component leaveMessage; // Paper
+    private net.kyori.adventure.text.Component kickReason; // Paper
+<<<<<<< found
     private Boolean cancel;
 
     public PlayerKickEvent(final Player playerKicked, final String kickReason, final String leaveMessage) {
+||||||| expected
+    private Boolean cancel;
+
+    public PlayerKickEvent(@NotNull final Player playerKicked, @NotNull final String kickReason, @NotNull final String leaveMessage) {
+=======
+    private Boolean cancel;
+
+    @Deprecated // Paper
+    public PlayerKickEvent(@NotNull final Player playerKicked, @NotNull final String kickReason, @NotNull final String leaveMessage) {
+        super(playerKicked);
+        this.kickReason = org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(kickReason); // Paper
+        this.leaveMessage = org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(leaveMessage); // Paper
+        this.cancel = false;
+    }
+    // Paper start
+    public PlayerKickEvent(@NotNull final Player playerKicked, @NotNull final net.kyori.adventure.text.Component kickReason, @NotNull final net.kyori.adventure.text.Component leaveMessage) {
+>>>>>>> replacement
         super(playerKicked);
         this.kickReason = kickReason;
         this.leaveMessage = leaveMessage;
@@ -21,21 +39,62 @@ public class PlayerKickEvent extends PlayerEvent implements Cancellable {
     }
 
     /**
+     * Gets the leave message send to all online players
+     *
+     * @return string kick reason
+     */
+    public @NotNull net.kyori.adventure.text.Component leaveMessage() {
+        return this.leaveMessage;
+    }
+
+    /**
+     * Sets the leave message send to all online players
+     *
+     * @param leaveMessage leave message
+     */
+    public void leaveMessage(@NotNull net.kyori.adventure.text.Component leaveMessage) {
+        this.leaveMessage = leaveMessage;
+    }
+
+    /**
      * Gets the reason why the player is getting kicked
      *
      * @return string kick reason
      */
+    public @NotNull net.kyori.adventure.text.Component reason() {
+        return this.kickReason;
+    }
+
+    /**
+     * Sets the reason why the player is getting kicked
+     *
+     * @param kickReason kick reason
+     */
+    public void reason(@NotNull net.kyori.adventure.text.Component kickReason) {
+        this.kickReason = kickReason;
+    }
+    // Paper end
+
+    /**
+     * Gets the reason why the player is getting kicked
+     *
+     * @return string kick reason
+     * @deprecated in favour of {@link #reason()}
+     */
+    @Deprecated // Paper
     public String getReason() {
-        return kickReason;
+        return org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().serialize(this.kickReason); // Paper
     }
 
     /**
      * Gets the leave message send to all online players
      *
      * @return string kick reason
+     * @deprecated in favour of {@link #leaveMessage()}
      */
+    @Deprecated // Paper
     public String getLeaveMessage() {
-        return leaveMessage;
+        return org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().serialize(this.leaveMessage); // Paper
     }
 
     public boolean isCancelled() {
@@ -50,18 +109,38 @@ public class PlayerKickEvent extends PlayerEvent implements Cancellable {
      * Sets the reason why the player is getting kicked
      *
      * @param kickReason kick reason
+     * @deprecated in favour of {@link #reason(net.kyori.adventure.text.Component)}
+<<<<<<< found
      */
     public void setReason(String kickReason) {
-        this.kickReason = kickReason;
+||||||| expected
+     */
+    public void setReason(@NotNull String kickReason) {
+=======
+     */
+    @Deprecated // Paper
+    public void setReason(@NotNull String kickReason) {
+        this.kickReason = org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(kickReason); // Paper
+>>>>>>> replacement
     }
 
     /**
      * Sets the leave message send to all online players
      *
      * @param leaveMessage leave message
+     * @deprecated in favour of {@link #leaveMessage(net.kyori.adventure.text.Component)}
+<<<<<<< found
      */
     public void setLeaveMessage(String leaveMessage) {
-        this.leaveMessage = leaveMessage;
+||||||| expected
+     */
+    public void setLeaveMessage(@NotNull String leaveMessage) {
+=======
+     */
+    @Deprecated // Paper
+    public void setLeaveMessage(@NotNull String leaveMessage) {
+        this.leaveMessage = org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(leaveMessage); // Paper
+>>>>>>> replacement
     }
 
     @Override

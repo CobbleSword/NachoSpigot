@@ -23,6 +23,24 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable {
      */
     boolean hasDisplayName();
 
+    // Paper start
+    /**
+     * Gets the display name.
+     *
+     * <p>Plugins should check that {@link #hasDisplayName()} returns <code>true</code> before calling this method.</p>
+     *
+     * @return the display name
+     */
+    @Nullable net.kyori.adventure.text.Component displayName();
+
+    /**
+     * Sets the display name.
+     *
+     * @param displayName the display name to set
+     */
+    void displayName(final @Nullable net.kyori.adventure.text.Component displayName);
+    // Paper end
+
     /**
      * Gets the display name that is set.
      * <p>
@@ -30,15 +48,35 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable {
      * before calling this method.
      *
      * @return the display name that is set
+     * @deprecated in favour of {@link #displayName()}
+<<<<<<< found
      */
+||||||| expected
+     */
+    @NotNull
+=======
+     */
+    @Deprecated // Paper
+    @NotNull
+>>>>>>> replacement
     String getDisplayName();
 
     /**
      * Sets the display name.
      *
      * @param name the name to set
+     * @deprecated in favour of {@link #displayName(net.kyori.adventure.text.Component)}
+<<<<<<< found
      */
     void setDisplayName(String name);
+||||||| expected
+     */
+    void setDisplayName(@Nullable String name);
+=======
+     */
+    @Deprecated // Paper
+    void setDisplayName(@Nullable String name);
+>>>>>>> replacement
 
     /**
      * Checks for existence of lore.
@@ -47,6 +85,24 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable {
      */
     boolean hasLore();
 
+    // Paper start
+    /**
+     * Gets the lore.
+     *
+     * <p>Plugins should check that {@link #hasLore()} returns <code>true</code> before calling this method.</p>
+     *
+     * @return the display name
+     */
+    @Nullable List<net.kyori.adventure.text.Component> lore();
+
+    /**
+     * Sets the lore.
+     *
+     * @param lore the lore to set
+     */
+    void lore(final @Nullable List<net.kyori.adventure.text.Component> lore);
+    // Paper end
+
     /**
      * Gets the lore that is set.
      * <p>
@@ -54,7 +110,17 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable {
      * calling this method.
      * 
      * @return a list of lore that is set
+     * @deprecated in favour of {@link #lore()}
+<<<<<<< found
      */
+||||||| expected
+     */
+    @Nullable
+=======
+     */
+    @Deprecated // Paper
+    @Nullable
+>>>>>>> replacement
     List<String> getLore();
 
     /**
@@ -62,8 +128,18 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable {
      * Removes lore when given null.
      *
      * @param lore the lore that will be set
+     * @deprecated in favour of {@link #lore(List)}
+<<<<<<< found
      */
     void setLore(List<String> lore);
+||||||| expected
+     */
+    void setLore(@Nullable List<String> lore);
+=======
+     */
+    @Deprecated // Paper
+    void setLore(@Nullable List<String> lore);
+>>>>>>> replacement
 
     /**
      * Checks for the existence of any enchantments.

@@ -47,13 +47,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 /**
  * Represents a server implementation.
  */
-public interface Server extends PluginMessageRecipient {
+public interface Server extends PluginMessageRecipient, net.kyori.adventure.audience.ForwardingAudience { // Paper
 
     /**
      * Used for all administrative messages, such as an operator using a
      * command.
      * <p>
-     * For use in {@link #broadcast(java.lang.String, java.lang.String)}.
+     * For use in {@link #broadcast(net.kyori.adventure.text.Component, java.lang.String)}.
      */
     public static final String BROADCAST_CHANNEL_ADMINISTRATIVE = "bukkit.broadcast.admin";
 
@@ -61,7 +61,7 @@ public interface Server extends PluginMessageRecipient {
      * Used for all announcement messages, such as informing users that a
      * player has joined.
      * <p>
-     * For use in {@link #broadcast(java.lang.String, java.lang.String)}.
+     * For use in {@link #broadcast(net.kyori.adventure.text.Component, java.lang.String)}.
      */
     public static final String BROADCAST_CHANNEL_USERS = "bukkit.broadcast.user";
 
@@ -237,8 +237,18 @@ public interface Server extends PluginMessageRecipient {
      *
      * @param message the message
      * @return the number of players
+     * @deprecated use {@link #broadcast(net.kyori.adventure.text.Component)}
+<<<<<<< found
      */
     public int broadcastMessage(String message);
+||||||| expected
+     */
+    public int broadcastMessage(@NotNull String message);
+=======
+     */
+    @Deprecated // Paper
+    public int broadcastMessage(@NotNull String message);
+>>>>>>> replacement
 
     // Paper start
     /**
@@ -605,8 +615,41 @@ public interface Server extends PluginMessageRecipient {
      * @param permission the required permission {@link Permissible
      *     permissibles} must have to receive the broadcast
      * @return number of message recipients
+     * @deprecated in favour of {@link #broadcast(net.kyori.adventure.text.Component, String)}
+<<<<<<< found
      */
     public int broadcast(String message, String permission);
+||||||| expected
+     */
+    public int broadcast(@NotNull String message, @NotNull String permission);
+=======
+     */
+    @Deprecated // Paper
+    public int broadcast(@NotNull String message, @NotNull String permission);
+    // Paper start
+    /**
+     * Broadcast a message to all players.
+     * <p>
+     * This is the same as calling {@link #broadcast(net.kyori.adventure.text.Component,
+     * java.lang.String)} with the {@link #BROADCAST_CHANNEL_USERS} permission.
+     *
+     * @param message the message
+     * @return the number of players
+     */
+    int broadcast(@NotNull net.kyori.adventure.text.Component message);
+
+    /**
+     * Broadcasts the specified message to every user with the given
+     * permission name.
+     *
+     * @param message message to broadcast
+     * @param permission the required permission {@link Permissible
+     *     permissibles} must have to receive the broadcast
+     * @return number of message recipients
+     */
+    int broadcast(@NotNull net.kyori.adventure.text.Component message, @NotNull String permission);
+    // Paper end
+>>>>>>> replacement
 
     /**
      * Gets the player by the given name, regardless if they are offline or
@@ -796,6 +839,7 @@ public interface Server extends PluginMessageRecipient {
      */
     Inventory createInventory(InventoryHolder owner, InventoryType type);
 
+    // Paper start
     /**
      * Creates an empty inventory with the specified type and title. If the type
      * is {@link InventoryType#CHEST}, the new inventory has a size of 27;
@@ -807,8 +851,48 @@ public interface Server extends PluginMessageRecipient {
      * @param type The type of inventory to create.
      * @param title The title of the inventory, to be displayed when it is viewed.
      * @return The new inventory.
+<<<<<<< found
      */
     Inventory createInventory(InventoryHolder owner, InventoryType type, String title);
+||||||| expected
+     */
+    @NotNull
+    Inventory createInventory(@Nullable InventoryHolder owner, @NotNull InventoryType type, @NotNull String title);
+=======
+     */
+    @NotNull
+    Inventory createInventory(@Nullable InventoryHolder owner, @NotNull InventoryType type, @NotNull net.kyori.adventure.text.Component title);
+    // Paper end
+
+    /**
+     * Creates an empty inventory with the specified type and title. If the type
+     * is {@link InventoryType#CHEST}, the new inventory has a size of 27;
+     * otherwise the new inventory has the normal size for its type.<br>
+     * It should be noted that some inventory types do not support titles and
+     * may not render with said titles on the Minecraft client.
+     * <br>
+     * {@link InventoryType#WORKBENCH} will not process crafting recipes if
+     * created with this method. Use
+     * {@link Player#openWorkbench(Location, boolean)} instead.
+     * <br>
+     * {@link InventoryType#ENCHANTING} will not process {@link ItemStack}s
+     * for possible enchanting results. Use
+     * {@link Player#openEnchanting(Location, boolean)} instead.
+     *
+     * @param owner The holder of the inventory; can be null if there's no holder.
+     * @param type The type of inventory to create.
+     * @param title The title of the inventory, to be displayed when it is viewed.
+     * @return The new inventory.
+     * @throws IllegalArgumentException if the {@link InventoryType} cannot be
+     * viewed.
+     * @deprecated in favour of {@link #createInventory(InventoryHolder, InventoryType, net.kyori.adventure.text.Component)}
+     *
+     * @see InventoryType#isCreatable()
+     */
+    @Deprecated // Paper
+    @NotNull
+    Inventory createInventory(@Nullable InventoryHolder owner, @NotNull InventoryType type, @NotNull String title);
+>>>>>>> replacement
 
     /**
      * Creates an empty inventory of type {@link InventoryType#CHEST} with the
@@ -821,6 +905,7 @@ public interface Server extends PluginMessageRecipient {
      */
     Inventory createInventory(InventoryHolder owner, int size) throws IllegalArgumentException;
 
+    // Paper start
     /**
      * Creates an empty inventory of type {@link InventoryType#CHEST} with the
      * specified size and title.
@@ -832,15 +917,64 @@ public interface Server extends PluginMessageRecipient {
      * @return a new inventory
      * @throws IllegalArgumentException if the size is not a multiple of 9
      */
-    Inventory createInventory(InventoryHolder owner, int size, String title) throws IllegalArgumentException;
+    @NotNull
+    Inventory createInventory(@Nullable InventoryHolder owner, int size, @NotNull net.kyori.adventure.text.Component title) throws IllegalArgumentException;
+    // Paper end
 
+    /**
+     * Creates an empty inventory of type {@link InventoryType#CHEST} with the
+     * specified size and title.
+     *
+     * @param owner the holder of the inventory, or null to indicate no holder
+     * @param size a multiple of 9 as the size of inventory to create
+     * @param title the title of the inventory, displayed when inventory is
+     *     viewed
+     * @return a new inventory
+     * @throws IllegalArgumentException if the size is not a multiple of 9
+     * @deprecated in favour of {@link #createInventory(InventoryHolder, int, net.kyori.adventure.text.Component)}
+<<<<<<< found
+     */
+    Inventory createInventory(InventoryHolder owner, int size, String title) throws IllegalArgumentException;
+||||||| expected
+     */
+    @NotNull
+    Inventory createInventory(@Nullable InventoryHolder owner, int size, @NotNull String title) throws IllegalArgumentException;
+=======
+     */
+    @Deprecated // Paper
+    @NotNull
+    Inventory createInventory(@Nullable InventoryHolder owner, int size, @NotNull String title) throws IllegalArgumentException;
+>>>>>>> replacement
+
+    // Paper start
     /**
      * Gets user-specified limit for number of monsters that can spawn in a
      * chunk.
      *
      * @return the monster spawn limit
      */
+    @NotNull Merchant createMerchant(@Nullable net.kyori.adventure.text.Component title);
+    // Paper start
+    /**
+     * Creates an empty merchant.
+     *
+     * @param title the title of the corresponding merchant inventory, displayed
+     * when the merchant inventory is viewed
+     * @return a new merchant
+     * @deprecated in favour of {@link #createMerchant(net.kyori.adventure.text.Component)}
+<<<<<<< found
+     */
     int getMonsterSpawnLimit();
+||||||| expected
+     */
+    @NotNull
+    Merchant createMerchant(@Nullable String title);
+=======
+     */
+    @NotNull
+    @Deprecated // Paper
+    Merchant createMerchant(@Nullable String title);
+>>>>>>> replacement
 
     /**
      * Gets user-specified limit for number of animals that can spawn in a
@@ -880,18 +1014,39 @@ public interface Server extends PluginMessageRecipient {
      */
     boolean isPrimaryThread();
 
+    // Paper start
+    /**
+     * Gets the message that is displayed on the server list.
+     *
+     * @return the server's MOTD
+     */
+    @NotNull net.kyori.adventure.text.Component motd();
+    // Paper end
+
     /**
      * Gets the message that is displayed on the server list.
      *
      * @return the servers MOTD
+     * @deprecated in favour of {@link #motd()}
      */
+    @Deprecated // Paper
     String getMotd();
 
+    // Paper start
     /**
      * Gets the default message that is displayed when the server is stopped.
      *
      * @return the shutdown message
      */
+    @Nullable net.kyori.adventure.text.Component shutdownMessage();
+    // Paper end
+    /**
+     * Gets the default message that is displayed when the server is stopped.
+     *
+     * @return the shutdown message
+     * @deprecated in favour of {@link #shutdownMessage()}
+     */
+    @Deprecated // Paper
     String getShutdownMessage();
 
     /**
@@ -1049,8 +1204,18 @@ public interface Server extends PluginMessageRecipient {
          * Sends the component to the player
          *
          * @param component the components to send
+         * @deprecated use {@link #broadcast(net.kyori.adventure.text.Component)}
+<<<<<<< found
          */
         public void broadcast(net.md_5.bungee.api.chat.BaseComponent component) {
+||||||| expected
+         */
+        public void broadcast(@NotNull net.md_5.bungee.api.chat.BaseComponent component) {
+=======
+         */
+        @Deprecated // Paper
+        public void broadcast(@NotNull net.md_5.bungee.api.chat.BaseComponent component) {
+>>>>>>> replacement
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
@@ -1058,8 +1223,18 @@ public interface Server extends PluginMessageRecipient {
          * Sends an array of components as a single message to the player
          *
          * @param components the components to send
+         * @deprecated use {@link #broadcast(net.kyori.adventure.text.Component)}
+<<<<<<< found
          */
         public void broadcast(net.md_5.bungee.api.chat.BaseComponent... components) {
+||||||| expected
+         */
+        public void broadcast(@NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
+=======
+         */
+        @Deprecated // Paper
+        public void broadcast(@NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
+>>>>>>> replacement
             throw new UnsupportedOperationException("Not supported yet.");
         }
 

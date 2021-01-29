@@ -8,6 +8,48 @@ import org.bukkit.OfflinePlayer;
  * A scoreboard
  */
 public interface Scoreboard {
+    // Paper start
+    /**
+     * Registers an Objective on this Scoreboard
+     *
+     * @param name Name of the Objective
+     * @param criteria Criteria for the Objective
+     * @param displayName Name displayed to players for the Objective.
+     * @return The registered Objective
+     * @throws IllegalArgumentException if name is null
+     * @throws IllegalArgumentException if name is longer than 16
+     *     characters.
+     * @throws IllegalArgumentException if criteria is null
+     * @throws IllegalArgumentException if displayName is null
+     * @throws IllegalArgumentException if displayName is longer than 128
+     *     characters.
+     * @throws IllegalArgumentException if an objective by that name already
+     *     exists
+     */
+    @NotNull
+    Objective registerNewObjective(@NotNull String name, @NotNull String criteria, @Nullable net.kyori.adventure.text.Component displayName) throws IllegalArgumentException;
+    /**
+     * Registers an Objective on this Scoreboard
+     *
+     * @param name Name of the Objective
+     * @param criteria Criteria for the Objective
+     * @param displayName Name displayed to players for the Objective.
+     * @param renderType Manner of rendering the Objective
+     * @return The registered Objective
+     * @throws IllegalArgumentException if name is null
+     * @throws IllegalArgumentException if name is longer than 16
+     *     characters.
+     * @throws IllegalArgumentException if criteria is null
+     * @throws IllegalArgumentException if displayName is null
+     * @throws IllegalArgumentException if displayName is longer than 128
+     *     characters.
+     * @throws IllegalArgumentException if renderType is null
+     * @throws IllegalArgumentException if an objective by that name already
+     *     exists
+     */
+    @NotNull
+    Objective registerNewObjective(@NotNull String name, @NotNull String criteria, @Nullable net.kyori.adventure.text.Component displayName, @NotNull RenderType renderType) throws IllegalArgumentException;
+    // Paper end
 
     /**
      * Registers an Objective on this Scoreboard
@@ -19,8 +61,20 @@ public interface Scoreboard {
      * @throws IllegalArgumentException if criteria is null
      * @throws IllegalArgumentException if an objective by that name already
      *     exists
+     * @deprecated in favour of {@link #registerNewObjective(String, String, net.kyori.adventure.text.Component)}
+<<<<<<< found
      */
     Objective registerNewObjective(String name, String criteria) throws IllegalArgumentException;
+||||||| expected
+     */
+    @NotNull
+    Objective registerNewObjective(@NotNull String name, @NotNull String criteria, @NotNull String displayName) throws IllegalArgumentException;
+=======
+     */
+    @NotNull
+    @Deprecated // Paper
+    Objective registerNewObjective(@NotNull String name, @NotNull String criteria, @NotNull String displayName) throws IllegalArgumentException;
+>>>>>>> replacement
 
     /**
      * Gets an Objective on this Scoreboard by name
@@ -28,8 +82,20 @@ public interface Scoreboard {
      * @param name Name of the Objective
      * @return the Objective or null if it does not exist
      * @throws IllegalArgumentException if name is null
+     * @deprecated in favour of {@link #registerNewObjective(String, String, net.kyori.adventure.text.Component, RenderType)}
+<<<<<<< found
      */
     Objective getObjective(String name) throws IllegalArgumentException;
+||||||| expected
+     */
+    @NotNull
+    Objective registerNewObjective(@NotNull String name, @NotNull String criteria, @NotNull String displayName, @NotNull RenderType renderType) throws IllegalArgumentException;
+=======
+     */
+    @NotNull
+    @Deprecated // Paper
+    Objective registerNewObjective(@NotNull String name, @NotNull String criteria, @NotNull String displayName, @NotNull RenderType renderType) throws IllegalArgumentException;
+>>>>>>> replacement
 
     /**
      * Gets all Objectives of a Criteria on the Scoreboard

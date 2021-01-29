@@ -13,7 +13,13 @@ public abstract class PlayerEvent extends Event {
         player = who;
     }
 
+<<<<<<< found
     public PlayerEvent(final Player who, boolean async) {
+||||||| expected
+    PlayerEvent(@NotNull final Player who, boolean async) {
+=======
+    public PlayerEvent(@NotNull final Player who, boolean async) { // Paper - public
+>>>>>>> replacement
         super(async);
         player = who;
 

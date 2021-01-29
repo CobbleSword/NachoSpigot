@@ -31,7 +31,7 @@ public abstract class Command {
     protected String description = "";
     protected String usageMessage;
     private String permission;
-    private String permissionMessage;
+    private net.kyori.adventure.text.Component permissionMessage; // Paper
     public co.aikar.timings.Timing timings; // Spigot
     public String getTimingName() {return getName();} // Spigot
 
@@ -199,10 +199,10 @@ public abstract class Command {
 
         if (permissionMessage == null) {
             target.sendMessage(ChatColor.RED + "I'm sorry, but you do not have permission to perform this command. Please contact the server administrators if you believe that this is in error.");
-        } else if (permissionMessage.length() != 0) {
-            for (String line : permissionMessage.replace("<permission>", permission).split("\n")) {
-                target.sendMessage(line);
-            }
+            // Paper start - use components for permissionMessage
+        } else if (!permissionMessage.equals(net.kyori.adventure.text.Component.empty())) {
+            target.sendMessage(permissionMessage.replaceText(net.kyori.adventure.text.TextReplacementConfig.builder().matchLiteral("<permission>").replacement(permission).build()));
+            // Paper end
         }
 
         return false;
@@ -324,9 +324,11 @@ public abstract class Command {
      * command
      *
      * @return Permission check failed message
+     * @deprecated use {@link #permissionMessage()}
      */
+    @Deprecated // Paper
     public String getPermissionMessage() {
-        return permissionMessage;
+        return io.papermc.paper.text.PaperComponents.legacySectionSerializer().serializeOrNull(permissionMessage); // Paper
     }
 
     /**
@@ -383,9 +385,21 @@ public abstract class Command {
      * @param permissionMessage new permission message, null to indicate
      *     default message, or an empty string to indicate no message
      * @return this command object, for chaining
+     * @deprecated use {@link #permissionMessage(net.kyori.adventure.text.Component)}
+<<<<<<< found
      */
     public Command setPermissionMessage(String permissionMessage) {
-        this.permissionMessage = permissionMessage;
+||||||| expected
+     */
+    @NotNull
+    public Command setPermissionMessage(@Nullable String permissionMessage) {
+=======
+     */
+    @NotNull
+    @Deprecated // Paper
+    public Command setPermissionMessage(@Nullable String permissionMessage) {
+        this.permissionMessage = io.papermc.paper.text.PaperComponents.legacySectionSerializer().deserializeOrNull(permissionMessage); // Paper
+>>>>>>> replacement
         return this;
     }
 
@@ -399,8 +413,37 @@ public abstract class Command {
         this.usageMessage = usage;
         return this;
     }
+    // Paper start
+    /**
+     * Gets the permission message.
+     *
+     * @return the permission message
+     */
+    public @Nullable net.kyori.adventure.text.Component permissionMessage() {
+        return this.permissionMessage;
+<<<<<<< found
+    }
 
     public static void broadcastCommandMessage(CommandSender source, String message) {
+||||||| expected
+    }
+
+    public static void broadcastCommandMessage(@NotNull CommandSender source, @NotNull String message) {
+=======
+    }
+
+    /**
+     * Sets the permission message.
+     *
+     * @param permissionMessage the permission message
+     */
+    public void permissionMessage(@Nullable net.kyori.adventure.text.Component permissionMessage) {
+        this.permissionMessage = permissionMessage;
+    }
+    // Paper end
+
+    public static void broadcastCommandMessage(@NotNull CommandSender source, @NotNull String message) {
+>>>>>>> replacement
         broadcastCommandMessage(source, message, true);
     }
 

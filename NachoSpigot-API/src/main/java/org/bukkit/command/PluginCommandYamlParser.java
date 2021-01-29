@@ -66,7 +66,7 @@ public class PluginCommandYamlParser {
             }
 
             if (permissionMessage != null) {
-                newCmd.setPermissionMessage(permissionMessage.toString());
+                newCmd.permissionMessage(io.papermc.paper.text.PaperComponents.legacySectionSerializer().deserialize(permissionMessage.toString())); // Paper
             }
 
             pluginCmds.add(newCmd);
