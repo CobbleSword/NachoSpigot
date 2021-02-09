@@ -1158,13 +1158,15 @@ public class WorldServer extends World implements IAsyncTaskHandler {
         // */
         if (flag != this.S()) {
             // Only send weather packets to those affected
-            for (EntityHuman player : this.players)
-            {
-                if (player.world == this)
-                {
+            for (EntityHuman player : this.players) {
+                if (player.world == this) {
                     ((EntityPlayer) player).setPlayerWeather((!flag ? WeatherType.DOWNFALL : WeatherType.CLEAR), false);
-                    ((EntityPlayer) player).updateWeather(this.o, this.p, this.q, this.r);
                 }
+            }
+        }
+        for (EntityHuman player : this.players) {
+            if (player.world == this) {
+                ((EntityPlayer) player).updateWeather(this.o, this.p, this.q, this.r);
             }
         }
         // CraftBukkit end
