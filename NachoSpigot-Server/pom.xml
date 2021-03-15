@@ -127,6 +127,7 @@
 
     <!-- This builds a completely 'ready to start' jar with all dependencies inside -->
     <build>
+        <finalName>NachoSpigot-Server</finalName>
         <defaultGoal>install</defaultGoal>
         <plugins>
             <plugin>
