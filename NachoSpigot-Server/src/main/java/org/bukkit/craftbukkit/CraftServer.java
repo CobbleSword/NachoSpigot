@@ -1488,6 +1488,21 @@ public final class CraftServer implements Server {
         return console.console;
     }
 
+    @Override
+    public boolean versionCommandEnabled() {
+        return Nacho.get().getConfig().enableVersionCommand;
+    }
+
+    @Override
+    public boolean reloadCommandEnabled() {
+        return Nacho.get().getConfig().enableReloadCommand;
+    }
+
+    @Override
+    public boolean pluginsCommandEnabled() {
+        return Nacho.get().getConfig().enablePluginsCommand;
+    }
+
     public EntityMetadataStore getEntityMetadata() {
         return entityMetadata;
     }
@@ -1815,21 +1830,6 @@ public final class CraftServer implements Server {
         public YamlConfiguration getPaperSpigotConfig()
         {
             return org.github.paperspigot.PaperSpigotConfig.config;
-        }
-
-        @Override
-        public boolean versionCommandEnabled() {
-            return Nacho.get().getConfig().enableVersionCommand;
-        }
-
-        @Override
-        public boolean reloadCommandEnabled() {
-            return Nacho.get().getConfig().enableReloadCommand;
-        }
-
-        @Override
-        public boolean pluginsCommandEnabled() {
-            return Nacho.get().getConfig().enablePluginsCommand;
         }
 
         @Override

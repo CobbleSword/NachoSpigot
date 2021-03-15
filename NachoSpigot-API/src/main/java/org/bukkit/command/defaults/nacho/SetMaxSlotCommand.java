@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 
-// [Nacho-0021] Add setMaxPlayers within Bukkit.getServer() and SetMaxSlot Command
+//[Nacho-0021] Add setMaxPlayers within Bukkit.getServer() and SetMaxSlot Command
 public class SetMaxSlotCommand extends Command {
     public SetMaxSlotCommand(String name) {
         super(name);

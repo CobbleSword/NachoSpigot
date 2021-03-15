@@ -79,7 +79,7 @@ If you know any patches that will help out, please create an issue or better cre
 [Nacho-0031] remove unused vars
 [Nacho-0033] Faster Operator search method
 [Nacho-0034] Remove Java 8 message from TacoSpigot which made it so you couldn't run Java 8 or higher
-[Nacho-0035] Change server brand name from 
+[Nacho-0035] Made it so you can switch the brand name in nacho.json
 [Nacho-0036] Add toggles for commands "reload", "version" and "plugins"
 [Nacho-0037] Add toggle for "Faster Operator"
 [Nacho-0038] Fix weather desync

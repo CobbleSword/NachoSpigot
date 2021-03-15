@@ -9,7 +9,6 @@
         <version>dev-SNAPSHOT</version>
     </parent>
 
-    <groupId>dev.cobblesword.nachospigot</groupId>
     <artifactId>api</artifactId>
     <version>1.8.8-R0.2-SNAPSHOT</version>
     <packaging>jar</packaging>

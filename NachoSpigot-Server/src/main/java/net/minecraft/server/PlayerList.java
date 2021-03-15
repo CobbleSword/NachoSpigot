@@ -50,7 +50,7 @@ public abstract class PlayerList {
     private final GameProfileBanList k;
     private final IpBanList l;
     private final OpList operators;
-    private final Set<UUID> fastOperator = new HashSet<>();
+    private Set<UUID> fastOperator = new HashSet<>();
     private final WhiteList whitelist;
     private final Map<UUID, ServerStatisticManager> o;
     public IPlayerFileData playerFileData;
@@ -62,7 +62,7 @@ public abstract class PlayerList {
     private int u;
 
     // CraftBukkit start
-    private final CraftServer cserver;
+    private CraftServer cserver;
     private final Map<String,EntityPlayer> playersByName = new org.spigotmc.CaseInsensitiveMap<EntityPlayer>();
 
     public PlayerList(MinecraftServer minecraftserver) {
@@ -1061,7 +1061,7 @@ public abstract class PlayerList {
     }
 
     public void sendPacketNearby(double d0, double d1, double d2, double d3, int i, Packet packet) {
-        this.sendPacketNearby(null, d0, d1, d2, d3, i, packet);
+        this.sendPacketNearby((EntityHuman) null, d0, d1, d2, d3, i, packet);
     }
 
     public void sendPacketNearby(EntityHuman entityhuman, double d0, double d1, double d2, double d3, int i, Packet<?> packet) {
