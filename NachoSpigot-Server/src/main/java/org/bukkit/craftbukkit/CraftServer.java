@@ -1818,6 +1818,21 @@ public final class CraftServer implements Server {
         }
 
         @Override
+        public boolean versionCommandEnabled() {
+            return Nacho.get().getConfig().enableVersionCommand;
+        }
+
+        @Override
+        public boolean reloadCommandEnabled() {
+            return Nacho.get().getConfig().enableReloadCommand;
+        }
+
+        @Override
+        public boolean pluginsCommandEnabled() {
+            return Nacho.get().getConfig().enablePluginsCommand;
+        }
+
+        @Override
         public void restart() {
             org.spigotmc.RestartCommand.restart();
         }

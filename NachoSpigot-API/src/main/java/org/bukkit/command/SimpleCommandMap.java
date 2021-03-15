@@ -29,9 +29,10 @@ public class SimpleCommandMap implements CommandMap {
     }
 
     private void setDefaultCommands() {
-        register("bukkit", new VersionCommand("version"));
-        register("bukkit", new ReloadCommand("reload"));
-        register("bukkit", new PluginsCommand("plugins"));
+        // [Nacho-0036] Add toggles for commands
+        if(server.spigot().versionCommandEnabled()) register("bukkit", new VersionCommand("version"));
+        if(server.spigot().reloadCommandEnabled()) register("bukkit", new ReloadCommand("reload"));
+        if(server.spigot().pluginsCommandEnabled()) register("bukkit", new PluginsCommand("plugins"));
         register("bukkit", new co.aikar.timings.TimingsCommand("timings")); // Spigot
     }
 
@@ -104,8 +105,6 @@ public class SimpleCommandMap implements CommandMap {
             return false;
         }
 
-        boolean registered = true;
-
         // If the command exists but is an alias we overwrite it, otherwise we return
         Command conflict = knownCommands.get(label);
         if (conflict != null && conflict.getLabel().equals(label)) {
@@ -117,7 +116,7 @@ public class SimpleCommandMap implements CommandMap {
         }
         knownCommands.put(label, command);
 
-        return registered;
+        return true;
     }
 
     /**

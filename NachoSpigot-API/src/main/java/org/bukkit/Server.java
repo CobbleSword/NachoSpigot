@@ -975,6 +975,18 @@ public interface Server extends PluginMessageRecipient {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
+        public boolean versionCommandEnabled() {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public boolean reloadCommandEnabled() {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public boolean pluginsCommandEnabled() {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
         /**
          * Sends the component to the player
          *

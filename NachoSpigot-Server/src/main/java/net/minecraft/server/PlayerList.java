@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
+import dev.cobblesword.nachospigot.Nacho;
 import io.netty.buffer.Unpooled;
 import java.io.File;
 import java.net.SocketAddress;
@@ -49,7 +50,7 @@ public abstract class PlayerList {
     private final GameProfileBanList k;
     private final IpBanList l;
     private final OpList operators;
-    private Set<UUID> fastOperator = new HashSet<>();
+    private final Set<UUID> fastOperator = new HashSet<>();
     private final WhiteList whitelist;
     private final Map<UUID, ServerStatisticManager> o;
     public IPlayerFileData playerFileData;
@@ -61,7 +62,7 @@ public abstract class PlayerList {
     private int u;
 
     // CraftBukkit start
-    private CraftServer cserver;
+    private final CraftServer cserver;
     private final Map<String,EntityPlayer> playersByName = new org.spigotmc.CaseInsensitiveMap<EntityPlayer>();
 
     public PlayerList(MinecraftServer minecraftserver) {
@@ -73,8 +74,11 @@ public abstract class PlayerList {
         this.k = new GameProfileBanList(PlayerList.a);
         this.l = new IpBanList(PlayerList.b);
         this.operators = new OpList(PlayerList.c);
-        for (OpListEntry value : this.operators.getValues()) {
-            this.fastOperator.add(value.getKey().getId());
+        // [Nacho-0037] Add toggle for "Faster Operator"
+        if(Nacho.get().getConfig().useFastOperators) {
+            for (OpListEntry value : this.operators.getValues()) {
+                this.fastOperator.add(value.getKey().getId());
+            }
         }
         this.whitelist = new WhiteList(PlayerList.d);
         this.o = Maps.newHashMap();
@@ -1015,7 +1019,10 @@ public abstract class PlayerList {
 
     public void addOp(GameProfile gameprofile) {
         this.operators.add(new OpListEntry(gameprofile, this.server.p(), this.operators.b(gameprofile)));
-        this.fastOperator.add(gameprofile.getId());
+        // [Nacho-0037] Add toggle for "Faster Operator"
+        if(Nacho.get().getConfig().useFastOperators) {
+            this.fastOperator.add(gameprofile.getId());
+        }
         // CraftBukkit start
         Player player = server.server.getPlayer(gameprofile.getId());
         if (player != null) {
@@ -1026,7 +1033,10 @@ public abstract class PlayerList {
 
     public void removeOp(GameProfile gameprofile) {
         this.operators.remove(gameprofile);
-        this.fastOperator.remove(gameprofile.getId());
+        // [Nacho-0037] Add toggle for "Faster Operator"
+        if(Nacho.get().getConfig().useFastOperators) {
+            this.fastOperator.remove(gameprofile.getId());
+        }
 
         // CraftBukkit start
         Player player = server.server.getPlayer(gameprofile.getId());
@@ -1037,11 +1047,13 @@ public abstract class PlayerList {
     }
 
     public boolean isWhitelisted(GameProfile gameprofile) {
-        return !this.hasWhitelist || this.fastOperator.contains(gameprofile.getId()) || this.whitelist.d(gameprofile);
+        // [Nacho-0037] Add toggle for "Faster Operator"
+        return !this.hasWhitelist || (Nacho.get().getConfig().useFastOperators ? this.fastOperator.contains(gameprofile.getId()) : this.operators.d(gameprofile)) || this.whitelist.d(gameprofile);
     }
 
     public boolean isOp(GameProfile gameprofile) {
-        return this.fastOperator.contains(gameprofile.getId()) || this.server.T() && this.server.worlds.get(0).getWorldData().v() && this.server.S().equalsIgnoreCase(gameprofile.getName()) || this.t; // CraftBukkit
+        // [Nacho-0037] Add toggle for "Faster Operator"
+        return (Nacho.get().getConfig().useFastOperators ? this.fastOperator.contains(gameprofile.getId()) : this.operators.d(gameprofile)) || this.server.T() && this.server.worlds.get(0).getWorldData().v() && this.server.S().equalsIgnoreCase(gameprofile.getName()) || this.t; // CraftBukkit
     }
 
     public EntityPlayer getPlayer(String s) {
@@ -1049,7 +1061,7 @@ public abstract class PlayerList {
     }
 
     public void sendPacketNearby(double d0, double d1, double d2, double d3, int i, Packet packet) {
-        this.sendPacketNearby((EntityHuman) null, d0, d1, d2, d3, i, packet);
+        this.sendPacketNearby(null, d0, d1, d2, d3, i, packet);
     }
 
     public void sendPacketNearby(EntityHuman entityhuman, double d0, double d1, double d2, double d3, int i, Packet<?> packet) {
