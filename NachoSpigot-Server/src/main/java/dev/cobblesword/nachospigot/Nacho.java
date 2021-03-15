@@ -22,15 +22,15 @@ public class Nacho {
         this.config = new NachoConfig();
         while (!CONFIG_FILE.exists()) FileUtils.toFile(this.config, CONFIG_FILE);
         this.config = FileUtils.toObject(CONFIG_FILE, NachoConfig.class);
+        registerCommands();
     }
 
     public void reloadConfig() {
         this.config = FileUtils.toObject(CONFIG_FILE, NachoConfig.class);
     }
 
-    public static Nacho get()
-    {
-        return INSTANCE;
+    public static Nacho get() {
+        return INSTANCE == null ? new Nacho() : INSTANCE;
     }
 
     public NachoConfig getConfig()
