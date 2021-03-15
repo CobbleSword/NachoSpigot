@@ -1,13 +1,9 @@
 # NachoSpigot
-A 1.8 fork of paper which aims to optimize, give long term support for 1.8.9 and add useful apis, 
-Since both Paper and Spigot no longer support the version.
+A **maintained** version of NachoSpigot where some features have been removed or added to make sure the server is stable and works with most plugins but is also optimized.
+I am planning to support Java 15 but still support most plugins like ProtocolLib. Is this going to work out? We will see in the end.
 
-**The most up to date, optimized 1.8.9 on the market**
-
-## Features
-Since 1.8 is ~5 years old now, it has missed out on a lot of critial fixes, updates and optimizations,
-So we plan on offering those much needed updates to 1.8!
-By the end, we plan to support Java 14, Netty 4.1, allow higher player counts and still support a large number of plugins
+I will maintain this version, because the official NachoSpigot is no longer maintained.
+If you know any patches that will help out, please create an issue or better create a PR so I can merge it.
 
 ## Backported Patches
 ```
@@ -102,9 +98,9 @@ By the end, we plan to support Java 14, Netty 4.1, allow higher player counts an
 ```
 
 ## Discord
-[Join Discord group](https://discord.gg/SBTEbSx)
+[Join the Discord server!](https://discord.gg/SBTEbSx)
 
 ## Supporters 
 
 [Henry Lanier](youtube.com/channel/UCYKmXuEo1ZVMzvsWwaBeBwQ) (MILDJELLYo#9091)
-
+[Lucas (aka Sculas)](https://sculas.xyz/)
