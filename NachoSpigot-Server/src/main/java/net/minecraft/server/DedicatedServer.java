@@ -429,7 +429,8 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
     }
 
     public boolean ai() {
-        return this.propertyManager.getBoolean("use-native-transport", true);
+        // [Nacho-0039] Add a check to see if we are using Linux or not, if not ignore this.
+        return this.propertyManager.getBoolean("use-native-transport", true) && org.apache.commons.lang.SystemUtils.IS_OS_LINUX;
     }
 
     public DedicatedPlayerList aP() {
@@ -471,7 +472,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
         return this.s;
     }
 
-    public String a(WorldSettings.EnumGamemode worldsettings_enumgamemode, boolean flag) {
+    public String a(WorldSettings.EnumGamemode gamemode, boolean flag) {
         return "";
     }
 

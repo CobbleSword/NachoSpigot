@@ -83,6 +83,7 @@ If you know any patches that will help out, please create an issue or better cre
 [Nacho-0036] Add toggles for commands "reload", "version" and "plugins"
 [Nacho-0037] Add toggle for "Faster Operator"
 [Nacho-0038] Fix weather desync
+[Nacho-0039] Fixed a bug in Netty's epoll when using Windows
 
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 

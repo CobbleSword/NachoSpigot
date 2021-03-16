@@ -80,7 +80,10 @@ public class ServerConnection {
             LazyInitVar lazyinitvar;
 
             try {
-                if (Epoll.isAvailable() && this.f.ai()) {
+                // [Nacho-0039] Fixed a bug in Netty epoll, and by the way; shouldn't it first check if you even want to use native transport before checking if its available?
+                // I mean, why check if its available when in the end you don't even want to use it.
+                // Minecraft is weird :)
+                if (this.f.ai() && Epoll.isAvailable()) {
                     oclass = EpollServerSocketChannel.class;
                     lazyinitvar = ServerConnection.b;
                     ServerConnection.e.info("Using epoll channel type");
