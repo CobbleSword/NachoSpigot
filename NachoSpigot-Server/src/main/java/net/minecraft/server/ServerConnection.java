@@ -79,11 +79,18 @@ public class ServerConnection {
             Class oclass;
             LazyInitVar lazyinitvar;
 
-            if (Epoll.isAvailable() && this.f.ai()) {
-                oclass = EpollServerSocketChannel.class;
-                lazyinitvar = ServerConnection.b;
-                ServerConnection.e.info("Using epoll channel type");
-            } else {
+            try {
+                if (Epoll.isAvailable() && this.f.ai()) {
+                    oclass = EpollServerSocketChannel.class;
+                    lazyinitvar = ServerConnection.b;
+                    ServerConnection.e.info("Using epoll channel type");
+                } else {
+                    oclass = NioServerSocketChannel.class;
+                    lazyinitvar = ServerConnection.a;
+                    ServerConnection.e.info("Using default channel type");
+                }
+            } catch (Exception e) {
+                ServerConnection.e.warn("An error occurred trying to check if Epoll is available, falling back to default channel type.");
                 oclass = NioServerSocketChannel.class;
                 lazyinitvar = ServerConnection.a;
                 ServerConnection.e.info("Using default channel type");
