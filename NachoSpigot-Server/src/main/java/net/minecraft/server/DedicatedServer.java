@@ -11,6 +11,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import dev.cobblesword.nachospigot.Nacho;
+import dev.cobblesword.nachospigot.patches.RuntimePatches;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -312,45 +313,11 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 //                }
 
                 // Nacho start - [Nacho-0041] Fix block placement
-                try {
-                    if(
-                            Bukkit.getPluginManager().isPluginEnabled("ViaVersion") &&
-                                    !Nacho.get().getConfig().serverBrandName.contains("paper") &&
-                                    !Nacho.get().getConfig().serverBrandName.contains("taco") &&
-                                    !Nacho.get().getConfig().serverBrandName.contains("torch")
-                    ) {
-                        logger.warn("Patching block placement, please wait.");
-                        // This was the line of code I'm representing here in Reflection.
-                        // storeListener(new PaperPatch(plugin)).register();
-                        // Fun, isn't it?
+                RuntimePatches.applyViaVersionBlockPatch(logger);
+                // Nacho end
 
-                        new Thread(() -> {
-                            try {
-                                System.out.println("WAITING");
-                                Thread.sleep(10000);
-                                Class<?> refClass = Class.forName("us.myles.ViaVersion.ViaVersionPlugin");
-                                System.out.println("refClass exists");
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }).start();
-
-                        Class<?> bukkitViaLoader = Class.forName("us.myles.ViaVersion.bukkit.platform.BukkitViaLoader");
-                        Method storeListener = bukkitViaLoader.getMethod("storeListener");
-                        Class<?> paperPatchClass = Class.forName("us.myles.ViaVersion.bukkit.listeners.protocol1_9to1_8.PaperPatch");
-                        Field pluginField = bukkitViaLoader.getDeclaredField("plugin");
-                        pluginField.setAccessible(true);
-                        Object plugin = pluginField.get(bukkitViaLoader);
-                        Object paperPatch = paperPatchClass.getDeclaredConstructor().newInstance(plugin);
-                        Object listener = storeListener.invoke(bukkitViaLoader, paperPatch);
-                        Method register = listener.getClass().getMethod("register");
-                        register.invoke(listener);
-                        logger.warn("Successfully patched block placement!");
-                    }
-                } catch (Exception e) {
-                    logger.warn("Could not patch block placement.");
-                    e.printStackTrace();
-                }
+                // Nacho start - [Nacho-0043] Fix ProtocolLib
+                RuntimePatches.applyProtocolLibPatch(logger);
                 // Nacho end
 
                 return true;
