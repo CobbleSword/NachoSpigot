@@ -47,6 +47,7 @@ import java.io.IOException;
 import jline.console.ConsoleReader;
 import joptsimple.OptionSet;
 
+import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.Main;
 import co.aikar.timings.SpigotTimings; // Spigot
 // CraftBukkit end
@@ -331,14 +332,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     }
 
     protected void k() {
-        boolean flag = true;
-        boolean flag1 = true;
-        boolean flag2 = true;
-        boolean flag3 = true;
-        int i = 0;
-
         this.b("menu.generatingTerrain");
-        byte b0 = 0;
 
         // CraftBukkit start - fire WorldLoadEvent and handle whether or not to keep the spawn in memory
         for (int m = 0; m < worlds.size(); m++) {
@@ -351,7 +345,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
 
             BlockPosition blockposition = worldserver.getSpawn();
             long j = az();
-            i = 0;
+            int i = 0;
 
             for (int k = -192; k <= 192 && this.isRunning(); k += 16) {
                 for (int l = -192; l <= 192 && this.isRunning(); l += 16) {

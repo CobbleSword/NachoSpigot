@@ -1,6 +1,7 @@
 package dev.cobblesword.nachospigot;
 
 import dev.cobblesword.nachospigot.commons.FileUtils;
+import dev.cobblesword.nachospigot.patches.RuntimePatches;
 import dev.cobblesword.nachospigot.protocol.PacketListener;
 import net.minecraft.server.MinecraftServer;
 import org.bukkit.command.defaults.nacho.SetMaxSlotCommand;
@@ -53,5 +54,15 @@ public class Nacho {
     public List<PacketListener> getPacketListeners()
     {
         return packetListeners;
+    }
+
+    public void applyPatches() {
+        // Nacho start - [Nacho-0041] Fix block placement
+        RuntimePatches.applyViaVersionBlockPatch();
+        // Nacho end
+
+        // Nacho start - [Nacho-0043] Fix ProtocolLib
+        RuntimePatches.applyProtocolLibPatch();
+        // Nacho end
     }
 }

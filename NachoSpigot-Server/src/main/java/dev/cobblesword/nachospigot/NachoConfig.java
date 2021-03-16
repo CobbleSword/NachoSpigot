@@ -7,5 +7,6 @@ public class NachoConfig
     public boolean enablePluginsCommand = true;
     public boolean enableReloadCommand = true;
     public boolean useFastOperators = false;
+    public boolean patchProtocolLib = true;
     public String serverBrandName = "NachoSpigot";
 }

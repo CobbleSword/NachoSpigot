@@ -305,20 +305,14 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                 }
 
                 // [Nacho-0042] Remove Spigot Watchdog
-//                if (this.aS() > 0L) {  // Spigot - disable
-//                    Thread thread1 = new Thread(new ThreadWatchdog(this));
-//                    thread1.setName("Server Watchdog");
-//                    thread1.setDaemon(true);
-//                    thread1.start();
-//                }
+                /* if (this.aS() > 0L) {  // Spigot - disable
+                    Thread thread1 = new Thread(new ThreadWatchdog(this));
+                    thread1.setName("Server Watchdog");
+                    thread1.setDaemon(true);
+                    thread1.start();
+                } */
 
-                // Nacho start - [Nacho-0041] Fix block placement
-                RuntimePatches.applyViaVersionBlockPatch(logger);
-                // Nacho end
-
-                // Nacho start - [Nacho-0043] Fix ProtocolLib
-                RuntimePatches.applyProtocolLibPatch(logger);
-                // Nacho end
+                Nacho.get().applyPatches(); // Nacho
 
                 return true;
             }

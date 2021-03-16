@@ -111,10 +111,10 @@ public final class SimplePluginManager implements PluginManager {
             updateDirectory = new File(directory, server.getUpdateFolder());
         }
 
-        Map<String, File> plugins = new HashMap<String, File>();
-        Set<String> loadedPlugins = new HashSet<String>();
-        Map<String, Collection<String>> dependencies = new HashMap<String, Collection<String>>();
-        Map<String, Collection<String>> softDependencies = new HashMap<String, Collection<String>>();
+        Map<String, File> plugins = new HashMap<>();
+        Set<String> loadedPlugins = new HashSet<>();
+        Map<String, Collection<String>> dependencies = new HashMap<>();
+        Map<String, Collection<String>> softDependencies = new HashMap<>();
 
         // This is where it figures out all possible plugins
         for (File file : directory.listFiles()) {
