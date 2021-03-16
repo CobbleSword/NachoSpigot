@@ -27,24 +27,11 @@ import org.apache.logging.log4j.Logger;
 public class ServerConnection {
 
     private static final Logger e = LogManager.getLogger();
-    public static final LazyInitVar<NioEventLoopGroup> a = new LazyInitVar() {
-        protected NioEventLoopGroup a() {
-            return new NioEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Server IO #%d").setDaemon(true).build());
-        }
 
-        protected Object init() {
-            return this.a();
-        }
-    };
-    public static final LazyInitVar<EpollEventLoopGroup> b = new LazyInitVar() {
-        protected EpollEventLoopGroup a() {
-            return new EpollEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Epoll Server IO #%d").setDaemon(true).build());
-        }
+    private static boolean isUsingEpoll = false;
 
-        protected Object init() {
-            return this.a();
-        }
-    };
+    public static LazyInitVar<NioEventLoopGroup> a;
+    public static LazyInitVar<EpollEventLoopGroup> b;
     public static final LazyInitVar<DefaultEventLoopGroup> c = new LazyInitVar() {
         protected DefaultEventLoopGroup a() {
             return new DefaultEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Local Server IO #%d").setDaemon(true).build());
@@ -79,23 +66,38 @@ public class ServerConnection {
             Class oclass;
             LazyInitVar lazyinitvar;
 
-            try {
-                // [Nacho-0039] Fixed a bug in Netty epoll, and by the way; shouldn't it first check if you even want to use native transport before checking if its available?
-                // I mean, why check if its available when in the end you don't even want to use it.
-                // Minecraft is weird :)
-                if (this.f.ai() && Epoll.isAvailable()) {
-                    oclass = EpollServerSocketChannel.class;
-                    lazyinitvar = ServerConnection.b;
-                    ServerConnection.e.info("Using epoll channel type");
-                } else {
-                    oclass = NioServerSocketChannel.class;
-                    lazyinitvar = ServerConnection.a;
-                    ServerConnection.e.info("Using default channel type");
-                }
-            } catch (Exception e) {
-                ServerConnection.e.warn("An error occurred trying to check if Epoll is available, falling back to default channel type.");
+            // [Nacho-0039] Fixed a bug in Netty epoll, and by the way; shouldn't it first check if you even want to use native transport before checking if its available?
+            // I mean, why check if its available when in the end you don't even want to use it.
+            // Minecraft is weird :)
+            // ----------------------
+            // Added late init and only shuts it down when it is assigned to do so, maybe this will fix it?
+            // Yes, I keep the variables "a" and "b" because other classes might use these.
+            if (this.f.ai() && Epoll.isAvailable()) {
+                oclass = EpollServerSocketChannel.class;
+                ServerConnection.b = new LazyInitVar() {
+                    protected EpollEventLoopGroup a() {
+                        return new EpollEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Epoll Server IO #%d").setDaemon(true).build());
+                    }
+                    protected Object init() {
+                        return this.a();
+                    }
+                };
+                lazyinitvar = ServerConnection.b;
+                isUsingEpoll = true;
+                ServerConnection.e.info("Using epoll channel type");
+            } else {
                 oclass = NioServerSocketChannel.class;
+                ServerConnection.a = new LazyInitVar() {
+                    protected NioEventLoopGroup a() {
+                        return new NioEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Server IO #%d").setDaemon(true).build());
+                    }
+
+                    protected Object init() {
+                        return this.a();
+                    }
+                };
                 lazyinitvar = ServerConnection.a;
+                isUsingEpoll = false;
                 ServerConnection.e.info("Using default channel type");
             }
 
@@ -134,16 +136,12 @@ public class ServerConnection {
 
     public void b() throws InterruptedException {
         this.d = false;
-        Iterator iterator = this.g.iterator();
-
-        while (iterator.hasNext()) {
-            ChannelFuture channelfuture = (ChannelFuture) iterator.next();
-
+        for (ChannelFuture channelfuture : this.g) {
             try {
                 channelfuture.channel().close().sync();
             } finally {
-                a.c().shutdownGracefully();
-                b.c().shutdownGracefully();
+                if(isUsingEpoll) b.c().shutdownGracefully();
+                else a.c().shutdownGracefully();
                 c.c().shutdownGracefully();
             }
         }

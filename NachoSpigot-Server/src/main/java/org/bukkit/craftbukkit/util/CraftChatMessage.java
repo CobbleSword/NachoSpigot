@@ -147,7 +147,7 @@ public final class CraftChatMessage {
 
         long start = System.currentTimeMillis();
 
-        for (IChatBaseComponent c : (Iterable<IChatBaseComponent>) component)
+        for (IChatBaseComponent c : component)
         {
             ChatModifier modi = c.getChatModifier();
             out.append(modi.getColor() == null ? defaultColor : modi.getColor());

@@ -9,8 +9,11 @@ import java.util.Random;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.TreeType;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.block.CraftBlockState;
 import org.bukkit.craftbukkit.util.CraftMagicNumbers;
@@ -146,7 +149,7 @@ public final class ItemStack {
                 }
             }
 
-            return flag;
+            return true;
         }
         world.captureTreeGeneration = false;
 
@@ -154,14 +157,51 @@ public final class ItemStack {
             org.bukkit.event.block.BlockPlaceEvent placeEvent = null;
             List<BlockState> blocks = (List<BlockState>) world.capturedBlockStates.clone();
             world.capturedBlockStates.clear();
-            if (blocks.size() > 1) {
-                placeEvent = org.bukkit.craftbukkit.event.CraftEventFactory.callBlockMultiPlaceEvent(world, entityhuman, blocks, blockposition.getX(), blockposition.getY(), blockposition.getZ());
-            } else if (blocks.size() == 1) {
-                placeEvent = org.bukkit.craftbukkit.event.CraftEventFactory.callBlockPlaceEvent(world, entityhuman, blocks.get(0), blockposition.getX(), blockposition.getY(), blockposition.getZ());
+
+            // Nacho start - [Nacho-0041] Fix block placement (thanks ViaVersion!)
+            if(Bukkit.getPluginManager().isPluginEnabled("ViaVersion")) {
+                for (BlockState blockState : blocks) {
+                    Location location = entityhuman.bukkitEntity.getLocation();
+                    Location diff = location.clone().subtract(blockState.getBlock().getLocation().add(0.5D, 0, 0.5D));
+                    Material block = blockState.getType();
+                    if (isPlacable(block)) continue;
+                    if (location.getBlock().equals(blockState.getBlock())) {
+                        flag = false;
+                    } else {
+                        if (location.getBlock().getRelative(BlockFace.UP).equals(blockState.getBlock())) {
+                            flag = false;
+                        } else {
+                            // Within radius of block
+                            if (Math.abs(diff.getX()) <= 0.8 && Math.abs(diff.getZ()) <= 0.8D) {
+                                // Are they on the edge / shifting ish
+                                if (diff.getY() <= 0.1D && diff.getY() >= -0.1D) {
+                                    flag = false;
+                                    continue;
+                                }
+                                org.bukkit.block.Block blockAgainst = world.getWorld().getBlockAt(blockposition.getX(), blockposition.getY(), blockposition.getZ());
+                                BlockFace relative = blockAgainst.getFace(blockState.getBlock());
+                                // Are they towering up, (handles some latency)
+                                if (relative == BlockFace.UP) {
+                                    if (diff.getY() < 1D && diff.getY() >= 0D) {
+                                        flag = false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            // Nacho end
+
+            if(!flag) {
+                if (blocks.size() > 1) {
+                    placeEvent = org.bukkit.craftbukkit.event.CraftEventFactory.callBlockMultiPlaceEvent(world, entityhuman, blocks, blockposition.getX(), blockposition.getY(), blockposition.getZ());
+                } else if (blocks.size() == 1) {
+                    placeEvent = org.bukkit.craftbukkit.event.CraftEventFactory.callBlockPlaceEvent(world, entityhuman, blocks.get(0), blockposition.getX(), blockposition.getY(), blockposition.getZ());
+                }
             }
 
-            if (placeEvent != null && (placeEvent.isCancelled() || !placeEvent.canBuild())) {
-                flag = false; // cancel placement
+            if (!flag || (placeEvent != null && (placeEvent.isCancelled() || !placeEvent.canBuild()))) {
                 // revert back all captured blocks
                 for (BlockState blockstate : blocks) {
                     blockstate.update(true, false);
@@ -766,6 +806,20 @@ public final class ItemStack {
 
             this.k = false;
             return false;
+        }
+    }
+
+    private boolean isPlacable(Material material) {
+        if (!material.isSolid()) return true;
+        // signs and banners
+        switch (material.getId()) {
+            case 63:
+            case 68:
+            case 176:
+            case 177:
+                return true;
+            default:
+                return false;
         }
     }
 }

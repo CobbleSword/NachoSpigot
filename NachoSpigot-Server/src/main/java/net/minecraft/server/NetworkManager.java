@@ -146,7 +146,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     }
 
     public void channelInactive(ChannelHandlerContext channelhandlercontext) throws Exception {
-        this.close(new ChatMessage("disconnect.endOfStream", new Object[0]));
+        this.close(new ChatMessage("disconnect.endOfStream"));
     }
 
     public void exceptionCaught(ChannelHandlerContext channelhandlercontext, Throwable throwable) throws Exception {
@@ -169,9 +169,9 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         }
 
         if (throwable instanceof TimeoutException) {
-            chatmessage = new ChatMessage("disconnect.timeout", new Object[0]);
+            chatmessage = new ChatMessage("disconnect.timeout");
         } else {
-            chatmessage = new ChatMessage("disconnect.genericReason", new Object[] { "Internal Exception: " + throwable});
+            chatmessage = new ChatMessage("disconnect.genericReason", "Internal Exception: " + throwable);
         }
 
         this.close(chatmessage);
@@ -202,7 +202,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     }
 
     public void a(PacketListener packetlistener) {
-        Validate.notNull(packetlistener, "packetListener", new Object[0]);
+        Validate.notNull(packetlistener, "packetListener");
 //        NetworkManager.g.debug("Set listener of {} to {}", new Object[] { this, packetlistener});
         this.m = packetlistener;
     }
@@ -228,12 +228,12 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     public void a(Packet packet, GenericFutureListener<? extends Future<? super Void>> genericfuturelistener, GenericFutureListener<? extends Future<? super Void>>... agenericfuturelistener) {
         if (this.isConnected()) {
             this.sendPacketQueue();
-            this.dispatchPacket(packet, (GenericFutureListener[]) ArrayUtils.add(agenericfuturelistener, 0, genericfuturelistener), Boolean.TRUE);
+            this.dispatchPacket(packet, ArrayUtils.insert(0, agenericfuturelistener, genericfuturelistener), Boolean.TRUE);
         } else {
             this.j.writeLock().lock();
 
             try {
-                this.i.add(new NetworkManager.QueuedPacket(packet, (GenericFutureListener[]) ArrayUtils.add(agenericfuturelistener, 0, genericfuturelistener)));
+                this.i.add(new NetworkManager.QueuedPacket(packet, ArrayUtils.insert(0, agenericfuturelistener, genericfuturelistener)));
             } finally {
                 this.j.writeLock().unlock();
             }
@@ -244,8 +244,8 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     //
     public void dispatchPacket(final Packet packet, final GenericFutureListener<? extends Future<? super Void>>[] agenericfuturelistener, Boolean flushConditional)
     {
-        this.packetWrites.getAndIncrement(); // must be befeore using canFlush
-        boolean effectiveFlush = flushConditional == null ? this.canFlush : flushConditional.booleanValue();
+        this.packetWrites.getAndIncrement(); // must be before using canFlush
+        boolean effectiveFlush = flushConditional == null ? this.canFlush : flushConditional;
         final boolean flush = effectiveFlush || packet instanceof PacketPlayOutKeepAlive || packet instanceof PacketPlayOutKickDisconnect; // no delay for certain packets
 
         final EnumProtocol enumprotocol = EnumProtocol.a(packet);

@@ -35,6 +35,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import javax.imageio.ImageIO;
+
+import io.netty.util.ResourceLeakDetector;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -119,7 +121,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     // CraftBukkit end
 
     public MinecraftServer(OptionSet options, Proxy proxy, File file1) {
-        io.netty.util.ResourceLeakDetector.setEnabled( false ); // Spigot - disable
+        io.netty.util.ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.DISABLED); // [Nacho-0040] Change deprecated Netty parameter // Spigot - disable
         this.e = proxy;
         MinecraftServer.l = this;
         // this.universe = file; // CraftBukkit
