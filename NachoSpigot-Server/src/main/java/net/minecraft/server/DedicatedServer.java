@@ -1,16 +1,11 @@
 package net.minecraft.server;
 
-import com.google.common.collect.Lists;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.Proxy;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
@@ -308,12 +303,13 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                     }
                 }
 
-                if (this.aS() > 0L) {  // Spigot - disable
-                    Thread thread1 = new Thread(new ThreadWatchdog(this));
-                    thread1.setName("Server Watchdog");
-                    thread1.setDaemon(true);
-                    thread1.start();
-                }
+                // [Nacho-0042] Remove Spigot Watchdog
+//                if (this.aS() > 0L) {  // Spigot - disable
+//                    Thread thread1 = new Thread(new ThreadWatchdog(this));
+//                    thread1.setName("Server Watchdog");
+//                    thread1.setDaemon(true);
+//                    thread1.start();
+//                }
 
                 // Nacho start - [Nacho-0041] Fix block placement
                 try {
@@ -323,6 +319,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                                     !Nacho.get().getConfig().serverBrandName.contains("taco") &&
                                     !Nacho.get().getConfig().serverBrandName.contains("torch")
                     ) {
+                        logger.warn("Patching block placement, please wait.");
                         // This was the line of code I'm representing here in Reflection.
                         // storeListener(new PaperPatch(plugin)).register();
                         // Fun, isn't it?
@@ -336,9 +333,10 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                         Object listener = storeListener.invoke(bukkitViaLoader, paperPatch);
                         Method register = listener.getClass().getMethod("register");
                         register.invoke(listener);
+                        logger.warn("Successfully patched block placement!");
                     }
                 } catch (Exception e) {
-                    logger.warn("Could not enable hotfix for block placement.");
+                    logger.warn("Could not patch block placement.");
                     e.printStackTrace();
                 }
                 // Nacho end

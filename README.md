@@ -86,6 +86,8 @@ If you know any patches that will help out, please create an issue or better cre
 [Nacho-0039] Fixed a bug in Netty's epoll when using Windows
 [Nacho-0040] Change deprecated Netty parameter in ResourceLeakDetector
 [Nacho-0041] Fix block placement
+[Nacho-0042] Remove Spigot Watchdog
+[Nacho-0043] Fix ProtocolLib
 
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 

@@ -112,8 +112,12 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         if (this.channel.eventLoop().inEventLoop()) {
                 this.channel.flush();
             } else {
-                this.channel.eventLoop().execute(() -> {
-                    this.channel.flush();
+                // [Nacho-0043] Fix ProtocolLib
+                this.channel.eventLoop().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        NetworkManager.this.channel.flush();
+                    }
                 });
             }
     }
@@ -272,22 +276,24 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
 
             channelfuture.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
         }
-        else
-        {
-            this.channel.eventLoop().execute(() ->
-            {
-                if (enumprotocol != enumprotocol1) {
-                    NetworkManager.this.a(enumprotocol);
+        else {
+            // [Nacho-0043] Fix ProtocolLib
+            this.channel.eventLoop().execute(new Runnable() {
+                @Override
+                public void run() {
+                    if (enumprotocol != enumprotocol1) {
+                        NetworkManager.this.a(enumprotocol);
+                    }
+
+                    ChannelFuture channelfuture = flush ? NetworkManager.this.channel.writeAndFlush(packet) : NetworkManager.this.channel.write(packet);
+                    //ChannelFuture channelfuture = NetworkManager.this.channel.writeAndFlush(packet);
+
+                    if (agenericfuturelistener != null) {
+                        channelfuture.addListeners(agenericfuturelistener);
+                    }
+
+                    channelfuture.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
                 }
-
-                ChannelFuture channelfuture = flush ? this.channel.writeAndFlush(packet) : this.channel.write(packet);
-                //ChannelFuture channelfuture = NetworkManager.this.channel.writeAndFlush(packet);
-
-                if (agenericfuturelistener != null) {
-                    channelfuture.addListeners(agenericfuturelistener);
-                }
-
-                channelfuture.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
             });
         }
     }
