@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.PluginClassLoader;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
@@ -40,10 +41,10 @@ public class RuntimePatches {
                         .findFirst()
                         .orElse(null);
                 if(storeListener == null) throw new IllegalStateException("storeListener was not found in the BukkitViaLoader class");
-                Class<?> paperPatchClass = Class.forName("us.myles.ViaVersion.bukkit.listeners.protocol1_9to1_8.PaperPatch", false, cl);
+                Class<?> paperPatchClass = Class.forName("us.myles.ViaVersion.bukkit.listeners.protocol1_9to1_8.PaperPatch", true, cl);
                 Field pluginField = bukkitViaLoader.getDeclaredField("plugin");
                 pluginField.setAccessible(true);
-                Object plugin = pluginField.get(bukkitViaLoader);
+                Object plugin = pluginField.get(bukkitViaLoader); // fix this final modifier error
                 Object paperPatch = paperPatchClass.getDeclaredConstructor().newInstance(plugin);
                 Object listener = storeListener.invoke(bukkitViaLoader, paperPatch);
                 Method register = listener.getClass().getDeclaredMethod("register");
