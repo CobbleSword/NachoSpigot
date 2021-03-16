@@ -5,6 +5,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.Proxy;
 import java.util.Collections;
@@ -21,6 +23,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.PrintStream;
 import org.apache.logging.log4j.Level;
 
+import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.LoggerOutputStream;
 import co.aikar.timings.SpigotTimings; // Spigot
 import org.bukkit.event.server.ServerCommandEvent;
@@ -299,19 +302,46 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                         this.aq().a(inetaddress, this.R());
                     } catch (IOException ioexception) {
                         DedicatedServer.LOGGER.warn("**** FAILED TO BIND TO PORT!");
-                        DedicatedServer.LOGGER.warn("The exception was: {}", new Object[] { ioexception.toString()});
+                        DedicatedServer.LOGGER.warn("The exception was: {}", ioexception.toString());
                         DedicatedServer.LOGGER.warn("Perhaps a server is already running on that port?");
                         return false;
                     }
                 }
 
-                if (false && this.aS() > 0L) {  // Spigot - disable
+                if (this.aS() > 0L) {  // Spigot - disable
                     Thread thread1 = new Thread(new ThreadWatchdog(this));
-
                     thread1.setName("Server Watchdog");
                     thread1.setDaemon(true);
                     thread1.start();
                 }
+
+                // Nacho start - [Nacho-0041] Fix block placement
+                try {
+                    if(
+                            Bukkit.getPluginManager().isPluginEnabled("ViaVersion") &&
+                                    !Nacho.get().getConfig().serverBrandName.contains("paper") &&
+                                    !Nacho.get().getConfig().serverBrandName.contains("taco") &&
+                                    !Nacho.get().getConfig().serverBrandName.contains("torch")
+                    ) {
+                        // This was the line of code I'm representing here in Reflection.
+                        // storeListener(new PaperPatch(plugin)).register();
+                        // Fun, isn't it?
+                        Class<?> bukkitViaLoader = Class.forName("us.myles.ViaVersion.bukkit.platform.BukkitViaLoader");
+                        Method storeListener = bukkitViaLoader.getMethod("storeListener");
+                        Class<?> paperPatchClass = Class.forName("us.myles.ViaVersion.bukkit.listeners.protocol1_9to1_8.PaperPatch");
+                        Field pluginField = bukkitViaLoader.getDeclaredField("plugin");
+                        pluginField.setAccessible(true);
+                        Object plugin = pluginField.get(bukkitViaLoader);
+                        Object paperPatch = paperPatchClass.getDeclaredConstructor().newInstance(plugin);
+                        Object listener = storeListener.invoke(bukkitViaLoader, paperPatch);
+                        Method register = listener.getClass().getMethod("register");
+                        register.invoke(listener);
+                    }
+                } catch (Exception e) {
+                    logger.warn("Could not enable hotfix for block placement.");
+                    e.printStackTrace();
+                }
+                // Nacho end
 
                 return true;
             }
