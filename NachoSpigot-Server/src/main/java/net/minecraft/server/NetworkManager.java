@@ -107,7 +107,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         }
     }
 
-    private final void flush()
+    private void flush()
     {
         if (this.channel.eventLoop().inEventLoop()) {
                 this.channel.flush();

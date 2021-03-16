@@ -323,6 +323,18 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                         // This was the line of code I'm representing here in Reflection.
                         // storeListener(new PaperPatch(plugin)).register();
                         // Fun, isn't it?
+
+                        new Thread(() -> {
+                            try {
+                                System.out.println("WAITING");
+                                Thread.sleep(10000);
+                                Class<?> refClass = Class.forName("us.myles.ViaVersion.ViaVersionPlugin");
+                                System.out.println("refClass exists");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }).start();
+
                         Class<?> bukkitViaLoader = Class.forName("us.myles.ViaVersion.bukkit.platform.BukkitViaLoader");
                         Method storeListener = bukkitViaLoader.getMethod("storeListener");
                         Class<?> paperPatchClass = Class.forName("us.myles.ViaVersion.bukkit.listeners.protocol1_9to1_8.PaperPatch");
