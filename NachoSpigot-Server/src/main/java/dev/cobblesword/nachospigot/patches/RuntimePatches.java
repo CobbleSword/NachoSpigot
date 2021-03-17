@@ -8,11 +8,10 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelInboundHandler;
 import io.netty.channel.ChannelInitializer;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.PluginClassLoader;
+import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
@@ -32,22 +31,26 @@ public class RuntimePatches {
                 logger.info("Patching block placement, please wait.");
                 ClassLoader cl = Bukkit.getPluginManager().getPlugin("ViaVersion").getClass().getClassLoader();
                 // This was the line of code I'm representing here in Reflection.
-                // storeListener(new PaperPatch(plugin)).register();
+                // Via.getManager().getLoader().storeListener(new PaperPatch(plugin)).register();
                 // Fun, isn't it?
-                Class<?> bukkitViaLoader = Class.forName("us.myles.ViaVersion.bukkit.platform.BukkitViaLoader", false, cl);
-                Method storeListener = Arrays
-                        .stream(bukkitViaLoader.getDeclaredMethods())
-                        .filter(method -> method.getName().equalsIgnoreCase("storeListener"))
-                        .findFirst()
-                        .orElse(null);
+                Class<?> via = Class.forName("us.myles.ViaVersion.api.Via", true, cl);
+                Method getManager = via.getMethod("getManager");
+                Object viaManager = getManager.invoke(null);
+                Class<?> viaManagerClass = viaManager.getClass();
+                Method getLoader = getMethod(viaManagerClass, "getLoader");
+                if(getLoader == null) throw new IllegalStateException("getLoader was not found in the ViaManager class");
+                Object bukkitViaLoader = getLoader.invoke(viaManager);
+                Class<?> bukkitViaLoaderClass = bukkitViaLoader.getClass();
+                Method storeListener = getMethod(bukkitViaLoaderClass, "storeListener");
                 if(storeListener == null) throw new IllegalStateException("storeListener was not found in the BukkitViaLoader class");
                 Class<?> paperPatchClass = Class.forName("us.myles.ViaVersion.bukkit.listeners.protocol1_9to1_8.PaperPatch", true, cl);
-                Field pluginField = bukkitViaLoader.getDeclaredField("plugin");
-                pluginField.setAccessible(true);
-                Object plugin = pluginField.get(bukkitViaLoader); // fix this final modifier error
-                Object paperPatch = paperPatchClass.getDeclaredConstructor().newInstance(plugin);
+                Class<?> viaVersionPlugin = Class.forName("us.myles.ViaVersion.ViaVersionPlugin", true, cl);
+                Method getInstance = viaVersionPlugin.getDeclaredMethod("getInstance");
+                Object plugin = getInstance.invoke(viaVersionPlugin);
+                Object paperPatch = paperPatchClass.getDeclaredConstructor(Plugin.class).newInstance(plugin);
                 Object listener = storeListener.invoke(bukkitViaLoader, paperPatch);
-                Method register = listener.getClass().getDeclaredMethod("register");
+                Method register = getMethod(listener.getClass().getSuperclass(), "register");
+                if(register == null) throw new IllegalStateException("register was not found in the Listener class");
                 register.invoke(listener);
                 logger.info("Successfully patched block placement!");
             }
@@ -117,6 +120,14 @@ public class RuntimePatches {
             logger.warning("Could not patch ProtocolLib.");
             e.printStackTrace();
         }
+    }
+
+    private static Method getMethod(Class<?> clazz, String methodName) {
+         return Arrays
+                 .stream(clazz.getDeclaredMethods())
+                 .filter(method -> method.getName().equalsIgnoreCase(methodName))
+                 .findFirst()
+                 .orElse(null);
     }
 
 }
