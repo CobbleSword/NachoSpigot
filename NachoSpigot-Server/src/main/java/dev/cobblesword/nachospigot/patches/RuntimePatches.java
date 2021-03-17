@@ -1,8 +1,5 @@
 package dev.cobblesword.nachospigot.patches;
 
-import com.comphenix.protocol.injector.netty.InjectionFactory;
-import com.comphenix.protocol.injector.netty.ProtocolInjector;
-import com.comphenix.protocol.injector.server.TemporaryPlayerFactory;
 import dev.cobblesword.nachospigot.Nacho;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInboundHandler;
@@ -88,11 +85,11 @@ public class RuntimePatches {
 
                 Field injectionFactoryField = nettyInjector.getClass().getDeclaredField("injectionFactory");
                 injectionFactoryField.setAccessible(true);
-                InjectionFactory injectionFactory = (InjectionFactory) injectionFactoryField.get(nettyInjector);
+                Object injectionFactory = injectionFactoryField.get(nettyInjector);
 
                 Field temporaryPlayerFactoryField = nettyInjector.getClass().getDeclaredField("playerFactory");
                 temporaryPlayerFactoryField.setAccessible(true);
-                TemporaryPlayerFactory temporaryPlayerFactory = (TemporaryPlayerFactory) temporaryPlayerFactoryField.get(nettyInjector);
+                Object temporaryPlayerFactory = temporaryPlayerFactoryField.get(nettyInjector);
 
                 Field endInitProtocolField = nettyInjector.getClass().getDeclaredField("endInitProtocol");
                 endInitProtocolField.setAccessible(true);
@@ -103,7 +100,16 @@ public class RuntimePatches {
                     protected void initChannel(final Channel channel) {
                         try {
                             synchronized (networkManagers) {
-                                channel.eventLoop().submit(() -> injectionFactory.fromChannel(channel, (ProtocolInjector)nettyInjector, temporaryPlayerFactory).inject());
+                                channel.eventLoop().submit(() -> {
+                                    try {
+                                        Method fromChannel = getMethod(injectionFactory.getClass(), "fromChannel");
+                                        Object injector = fromChannel.invoke(injectionFactory.getClass(), channel, nettyInjector, temporaryPlayerFactory);
+                                        Method inject = injector.getClass().getDeclaredMethod("inject");
+                                        inject.invoke(injectionFactory.getClass());
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                });
                             }
                         } catch (Exception ex) {
                             ex.printStackTrace();
