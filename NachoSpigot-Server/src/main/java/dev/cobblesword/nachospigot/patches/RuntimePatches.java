@@ -91,6 +91,8 @@ public class RuntimePatches {
                 temporaryPlayerFactoryField.setAccessible(true);
                 Object temporaryPlayerFactory = temporaryPlayerFactoryField.get(nettyInjector);
 
+                System.out.println(Arrays.toString(nettyInjector.getClass().getDeclaredFields()));
+
                 Field endInitProtocolField = nettyInjector.getClass().getDeclaredField("endInitProtocol");
                 endInitProtocolField.setAccessible(true);
 
