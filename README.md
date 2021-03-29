@@ -3,7 +3,7 @@ A **maintained** version of NachoSpigot where some features have been removed or
 I am planning to support Java 15 but still support most plugins like ProtocolLib. Is this going to work out? We will see in the end.
 
 I will maintain this version, because the official NachoSpigot is no longer maintained.
-If you know any patches that will help out, please create an issue or better create a PR so I can merge it.
+If you know any patches that will help out, please create an issue or better create a PR so I can merge it. 
 
 ## Backported Patches
 ```

@@ -22,11 +22,11 @@ jobs:
     - name: Upload Server Artifact
       uses: actions/upload-artifact@v2.2.0
       with:
-        name: Server JAR
-        path: ${{ github.workspace }}/NachoSpigot-Server/target/NachoSpigot-Server.jar
+        name: NachoSpigot server JAR
+        path: ${{ github.workspace }}/NachoSpigot-Server/target/NachoSpigot.jar
 
     - name: Upload API Artifact
       uses: actions/upload-artifact@v2.2.0
       with:
-        name: Server API JAR
+        name: NachoSpigot API JAR
         path: ${{ github.workspace }}/NachoSpigot-API/target/NachoSpigot-API.jar
