@@ -2,6 +2,12 @@
 A **maintained** version of NachoSpigot where some features have been removed or added to make sure the server is stable and works with most plugins but is also optimized.
 I am planning to support Java 15 but still support most plugins like ProtocolLib. Is this going to work out? We will see in the end.
 
+## Current State
+Java 15 is now natively supported, and ProtocolLib and ViaVersion are patched at runtime to work with Nacho's patches.
+Unless other bugs are found, Nacho should now run stable.
+
+**Download:** [https://github.com/Sculas/NachoSpigot/releases/tag/2.0](https://github.com/Sculas/NachoSpigot/releases/tag/2.0)
+
 I will maintain this version, because the official NachoSpigot is no longer maintained.
 If you know any patches that will help out, please create an issue or better create a PR so I can merge it. 
 
