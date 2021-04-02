@@ -1,16 +1,13 @@
 package dev.cobblesword.nachospigot.patches;
 
 import dev.cobblesword.nachospigot.Nacho;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelInboundHandler;
-import io.netty.channel.ChannelInitializer;
+import javassist.*;
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.plugin.Plugin;
-
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
 public class RuntimePatches {
@@ -57,77 +54,38 @@ public class RuntimePatches {
         }
     }
 
-    public static void applyProtocolLibPatch() {
-        try {
-            if(
-                    Bukkit.getPluginManager().isPluginEnabled("ProtocolLib") &&
-                            Nacho.get().getConfig().patchProtocolLib
-            ) {
+    public static CompletableFuture<Boolean> applyProtocolLibPatch(Plugin plugin) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
                 logger.info("Patching ProtocolLib, please wait.");
-                ClassLoader cl = Bukkit.getPluginManager().getPlugin("ProtocolLib").getClass().getClassLoader();
-                // Big thanks to MacacoLew!
-                // Note to self: I am never doing this EVER again. This is not going to be fun.
 
-                // Requirements
-                Class<?> protocolLib = Class.forName("com.comphenix.protocol.ProtocolLib", false, cl);
+                // TODO Remove this message if you know a better way for this!
+                logger.warning(
+                        "This patch is a nasty way to patch ProtocolLib, since if an\n" +
+                                "breaking update is done to the ProtocolInjector this WILL break ProtocolLib.\n" +
+                                "If you know how to fix this, please make a PR at: https://github.com/Sculas/NachoSpigot"
+                );
 
-                Field protocolManagerField = protocolLib.getDeclaredField("protocolManager");
-                protocolManagerField.setAccessible(true);
-                Object protocolManager = protocolManagerField.get(protocolLib);
+                ClassPool pool = ClassPool.getDefault();
+                pool.insertClassPath(new LoaderClassPath(plugin.getClass().getClassLoader()));
 
-                Field nettyInjectorField = protocolManager.getClass().getDeclaredField("nettyInjector");
-                nettyInjectorField.setAccessible(true);
-                Object nettyInjector = nettyInjectorField.get(protocolManager);
+                CtClass defaultProtocolInjector = pool.get("com.comphenix.protocol.injector.netty.ProtocolInjector$1");
+                if (defaultProtocolInjector.isFrozen()) {
+                    defaultProtocolInjector.defrost();
+                }
 
-                Field networkManagersField = nettyInjector.getClass().getDeclaredField("networkManagers");
-                networkManagersField.setAccessible(true);
-                List<Object> networkManagers = (List<Object>) networkManagersField.get(nettyInjector); // don't ask
-
-                Field injectionFactoryField = nettyInjector.getClass().getDeclaredField("injectionFactory");
-                injectionFactoryField.setAccessible(true);
-                Object injectionFactory = injectionFactoryField.get(nettyInjector);
-
-                Field temporaryPlayerFactoryField = nettyInjector.getClass().getDeclaredField("playerFactory");
-                temporaryPlayerFactoryField.setAccessible(true);
-                Object temporaryPlayerFactory = temporaryPlayerFactoryField.get(nettyInjector);
-
-                System.out.println(Arrays.toString(nettyInjector.getClass().getDeclaredFields()));
-
-                Field endInitProtocolField = nettyInjector.getClass().getDeclaredField("endInitProtocol");
-                endInitProtocolField.setAccessible(true);
-
-                // Replacer
-                ChannelInboundHandler replacer = new ChannelInitializer<Channel>() {
-                    @Override
-                    protected void initChannel(final Channel channel) {
-                        try {
-                            synchronized (networkManagers) {
-                                channel.eventLoop().submit(() -> {
-                                    try {
-                                        Method fromChannel = getMethod(injectionFactory.getClass(), "fromChannel");
-                                        Object injector = fromChannel.invoke(injectionFactory.getClass(), channel, nettyInjector, temporaryPlayerFactory);
-                                        Method inject = injector.getClass().getDeclaredMethod("inject");
-                                        inject.invoke(injectionFactory.getClass());
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                });
-                            }
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-                    }
-                };
-
-                // Replacing
-                endInitProtocolField.set(nettyInjector, replacer);
+                CtClass clazz = pool.makeClass(CraftServer.class.getClassLoader().getResourceAsStream("protpatch.class"));
+                clazz.replaceClassName(clazz.getName(), "com.comphenix.protocol.injector.netty.ProtocolInjector$1");
+                clazz.toClass(plugin.getClass().getClassLoader(), plugin.getClass().getProtectionDomain());
 
                 logger.info("Successfully patched ProtocolLib!");
+                return true;
+            } catch (Exception e) {
+                logger.warning("Could not patch ProtocolLib.");
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            logger.warning("Could not patch ProtocolLib.");
-            e.printStackTrace();
-        }
+            return false;
+        });
     }
 
     private static Method getMethod(Class<?> clazz, String methodName) {

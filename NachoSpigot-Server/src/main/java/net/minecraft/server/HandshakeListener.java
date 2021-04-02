@@ -98,7 +98,7 @@ public class HandshakeListener implements PacketHandshakingInListener {
 
         case 2:
             this.b.a(EnumProtocol.STATUS);
-            this.b.a((PacketListener) (new PacketStatusListener(this.a, this.b)));
+            this.b.a(new PacketStatusListener(this.a, this.b));
             break;
 
         default:

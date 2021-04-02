@@ -60,9 +60,5 @@ public class Nacho {
         // Nacho start - [Nacho-0041] Fix block placement
         RuntimePatches.applyViaVersionBlockPatch();
         // Nacho end
-
-        // Nacho start - [Nacho-0043] Fix ProtocolLib
-        RuntimePatches.applyProtocolLibPatch();
-        // Nacho end
     }
 }

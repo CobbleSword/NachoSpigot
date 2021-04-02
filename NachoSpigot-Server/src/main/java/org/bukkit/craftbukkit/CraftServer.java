@@ -1,11 +1,7 @@
 package org.bukkit.craftbukkit;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -20,11 +16,13 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
 import com.eatthepath.uuid.FastUUID;
 import dev.cobblesword.nachospigot.Nacho;
+import dev.cobblesword.nachospigot.patches.RuntimePatches;
 import net.minecraft.server.*;
 
 import org.bukkit.BanList;
@@ -180,12 +178,7 @@ public final class CraftServer implements Server {
     public CraftServer(MinecraftServer console, PlayerList playerList) {
         this.console = console;
         this.playerList = (DedicatedPlayerList) playerList;
-        this.playerView = Collections.unmodifiableList(Lists.transform(playerList.players, new Function<EntityPlayer, CraftPlayer>() {
-            @Override
-            public CraftPlayer apply(EntityPlayer player) {
-                return player.getBukkitEntity();
-            }
-        }));
+        this.playerView = Collections.unmodifiableList(playerList.players.stream().map(EntityPlayer::getBukkitEntity).collect(Collectors.toList()));
         this.serverVersion = "NachoSpigot";
         online.value = console.getPropertyManager().getBoolean("online-mode", true);
 
@@ -296,8 +289,20 @@ public final class CraftServer implements Server {
             for (Plugin plugin : plugins) {
                 try {
                     String message = String.format("Loading %s", plugin.getDescription().getFullName());
-                    plugin.getLogger().info(message);
-                    plugin.onLoad();
+                    // Nacho start - [Nacho-0043] Fix ProtocolLib
+                    if(plugin.getDescription().getFullName().contains("ProtocolLib") && Nacho.get().getConfig().patchProtocolLib) {
+                        if(RuntimePatches.applyProtocolLibPatch(plugin).join()) {
+                            Logger.getLogger(CraftServer.class.getName()).log(Level.INFO, "Callback returned a good state, ProtocolLib patch was successful and ProtocolLib is now loading.");
+                            plugin.getLogger().info(message);
+                            plugin.onLoad();
+                        } else {
+                            Logger.getLogger(CraftServer.class.getName()).log(Level.SEVERE, "An error occurred trying to patch ProtocolLib, the plugin will not work as expected!");
+                        }
+                    } else {
+                        plugin.getLogger().info(message);
+                        plugin.onLoad();
+                    }
+                    // Nacho end
                 } catch (Throwable ex) {
                     Logger.getLogger(CraftServer.class.getName()).log(Level.SEVERE, ex.getMessage() + " initializing " + plugin.getDescription().getFullName() + " (Is it up to date?)", ex);
                 }
