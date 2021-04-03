@@ -223,7 +223,7 @@ public class SpigotWorldConfig
     public AntiXray antiXrayInstance;
     private void antiXray()
     {
-        antiXray = getBoolean( "anti-xray.enabled", true );
+        antiXray = getBoolean( "anti-xray.enabled", false );
         log( "Anti X-Ray: " + antiXray );
 
         engineMode = getInt( "anti-xray.engine-mode", 1 );

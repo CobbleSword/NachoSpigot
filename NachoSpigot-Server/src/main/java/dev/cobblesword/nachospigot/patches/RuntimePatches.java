@@ -2,6 +2,7 @@ package dev.cobblesword.nachospigot.patches;
 
 import dev.cobblesword.nachospigot.Nacho;
 import javassist.*;
+import javassist.expr.ExprEditor;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.plugin.Plugin;
@@ -61,8 +62,8 @@ public class RuntimePatches {
 
                 // TODO Remove this message if you know a better way for this!
                 logger.warning(
-                        "This patch is a nasty way to patch ProtocolLib, since if an\n" +
-                                "breaking update is done to the ProtocolInjector this WILL break ProtocolLib.\n" +
+                        "This patch is a nasty way to patch ProtocolLib, since if an " +
+                                "breaking update is done to the ProtocolInjector this WILL break ProtocolLib. " +
                                 "If you know how to fix this, please make a PR at: https://github.com/Sculas/NachoSpigot"
                 );
 
@@ -82,6 +83,36 @@ public class RuntimePatches {
                 return true;
             } catch (Exception e) {
                 logger.warning("Could not patch ProtocolLib.");
+                e.printStackTrace();
+            }
+            return false;
+        });
+    }
+
+    public static CompletableFuture<Boolean> applyCitizensPatch(Plugin plugin) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                logger.info("Patching Citizens, please wait.");
+
+                ClassPool pool = ClassPool.getDefault();
+                pool.insertClassPath(new LoaderClassPath(plugin.getClass().getClassLoader()));
+                pool.importPackage("io.netty.channel.ChannelMetadata");
+
+                CtClass emptyChannel = pool.get("net.citizensnpcs.nms.v1_8_R3.network.EmptyChannel");
+                if (emptyChannel.isFrozen()) {
+                    emptyChannel.defrost();
+                }
+
+                CtMethod metaData = emptyChannel.getDeclaredMethods("metadata")[0];
+
+                metaData.setBody("{ return new ChannelMetadata(true); }");
+
+                emptyChannel.toClass(plugin.getClass().getClassLoader(), plugin.getClass().getProtectionDomain());
+
+                logger.info("Successfully patched Citizens!");
+                return true;
+            } catch (Exception e) {
+                logger.warning("Could not patch Citizens.");
                 e.printStackTrace();
             }
             return false;

@@ -6,6 +6,8 @@ I am planning to support Java 15 but still support most plugins like ProtocolLib
 Java 15 is now natively supported, and ProtocolLib and ViaVersion are patched at runtime to work with Nacho's patches.
 Unless other bugs are found, Nacho should now run stable.
 
+**NachoSpigot supports Java 8 to Java 15!**
+
 **Download:** [https://github.com/Sculas/NachoSpigot/releases/](https://github.com/Sculas/NachoSpigot/releases/)
 
 I will maintain this version, because the official NachoSpigot is no longer maintained.
@@ -13,10 +15,11 @@ If you know any patches that will help out, please create an issue or better cre
 
 ## Backported Patches
 ```
+[Spigot-0097] Remove DataWatcher Locking by spottedleaf
 [Spigot-0138] Branchless NibbleArray by md5
 [Spigot-2380] Hitting in the air will always load the chunk at 0,0 by md_5
-[SPIGOT-0097] Remove DataWatcher Locking by spottedleaf
 
+[Paper-0033] Optimize explosions
 [Paper-0044] Use UserCache for player heads
 [Paper-0072] Fix Furnace cook time bug when lagging by Aikar
 [Paper-0076] Optimized Light Level Comparisons by Aikar
@@ -94,6 +97,8 @@ If you know any patches that will help out, please create an issue or better cre
 [Nacho-0041] Fix block placement
 [Nacho-0042] Remove Spigot Watchdog
 [Nacho-0043] Fix ProtocolLib
+[Nacho-0044] Fix Citizens
+[Nacho-0045] Async obfuscation
 
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 

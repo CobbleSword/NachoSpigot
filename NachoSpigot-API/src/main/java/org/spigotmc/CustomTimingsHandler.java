@@ -23,7 +23,6 @@
  */
 package org.spigotmc;
 
-import jdk.internal.reflect.Reflection;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.AuthorNagException;
 import org.bukkit.plugin.Plugin;
@@ -31,6 +30,7 @@ import co.aikar.timings.Timing;
 import co.aikar.timings.Timings;
 import co.aikar.timings.TimingsManager;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
 
@@ -45,13 +45,39 @@ import java.util.logging.Level;
 @Deprecated
 public final class CustomTimingsHandler {
     private final Timing handler;
+    private static Boolean sunReflectAvailable;
+    private static Method getCallerClass;
 
     public CustomTimingsHandler(String name) {
+        if (sunReflectAvailable == null) {
+            String javaVer = System.getProperty("java.version");
+            String[] elements = javaVer.split("\\.");
+
+            int major = Integer.parseInt(elements.length >= 2 ? elements[1] : javaVer);
+            if (major <= 8) {
+                sunReflectAvailable = true;
+
+                try {
+                    Class<?> reflection = Class.forName("sun.reflect.Reflection");
+                    getCallerClass = reflection.getMethod("getCallerClass", int.class);
+                } catch (ClassNotFoundException | NoSuchMethodException ignored) {}
+            } else {
+                sunReflectAvailable = false;
+            }
+        }
+
+        Class calling = null;
+        if (sunReflectAvailable) {
+            try {
+                calling = (Class) getCallerClass.invoke(null, 2);
+            } catch (IllegalAccessException | InvocationTargetException ignored) {}
+        }
+
         Timing timing;
 
         Plugin plugin = null;
         try {
-             plugin = TimingsManager.getPluginByClassloader(Reflection.getCallerClass());
+            plugin = TimingsManager.getPluginByClassloader(calling);
         } catch (Exception ignored) {}
 
         new AuthorNagException("Deprecated use of CustomTimingsHandler. Please Switch to Timings.of ASAP").printStackTrace();
@@ -59,7 +85,7 @@ public final class CustomTimingsHandler {
             timing = Timings.of(plugin, "(Deprecated API) " + name);
         } else {
             try {
-                final Method ofSafe = TimingsManager.class.getMethod("getHandler", String.class, String.class, Timing.class, boolean.class);
+                final Method ofSafe = TimingsManager.class.getDeclaredMethod("getHandler", String.class, String.class, Timing.class, boolean.class);
                 timing = (Timing) ofSafe.invoke("Minecraft", "(Deprecated API) " + name, null, true);
             } catch (Exception e) {
                 Bukkit.getLogger().log(Level.SEVERE, "This handler could not be registered");
@@ -69,7 +95,12 @@ public final class CustomTimingsHandler {
         handler = timing;
     }
 
-    public void startTiming() { handler.startTiming(); }
-    public void stopTiming() { handler.stopTiming(); }
+    public void startTiming() {
+        handler.startTiming();
+    }
+
+    public void stopTiming() {
+        handler.stopTiming();
+    }
 
 }

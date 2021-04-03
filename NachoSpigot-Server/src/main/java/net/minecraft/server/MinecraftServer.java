@@ -858,7 +858,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
                 } catch (Throwable throwable) {
                     // Spigot Start
                     try {
-                    crashreport = CrashReport.a(throwable, "Exception ticking world");
+                        crashreport = CrashReport.a(throwable, "Exception ticking world");
                     } catch (Throwable t){
                         throw new RuntimeException("Error generating crash report", t);
                     }
@@ -874,7 +874,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
                 } catch (Throwable throwable1) {
                     // Spigot Start
                     try {
-                    crashreport = CrashReport.a(throwable1, "Exception ticking world entities");
+                        crashreport = CrashReport.a(throwable1, "Exception ticking world entities");
                     } catch (Throwable t){
                         throw new RuntimeException("Error generating crash report", t);
                     }
@@ -1263,11 +1263,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     }
 
     public void a(EnumDifficulty enumdifficulty) {
-        // CraftBukkit start
-        for (int i = 0; i < this.worlds.size(); ++i) {
-            WorldServer worldserver = this.worlds.get(i);
-            // CraftBukkit end
-
+        for (WorldServer worldserver : this.worlds) {
             if (worldserver != null) {
                 if (worldserver.getWorldData().isHardcore()) {
                     worldserver.getWorldData().setDifficulty(EnumDifficulty.HARD);
@@ -1308,11 +1304,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
         this.N = true;
         this.getConvertable().d();
 
-        // CraftBukkit start
-        for (int i = 0; i < this.worlds.size(); ++i) {
-            WorldServer worldserver = this.worlds.get(i);
-            // CraftBukkit end
-            
+        for (WorldServer worldserver : this.worlds) {
             if (worldserver != null) {
                 worldserver.saveLevel();
             }

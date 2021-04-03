@@ -3,11 +3,8 @@ package net.minecraft.server;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+
+import java.util.*;
 
 // CraftBukkit start
 import org.bukkit.craftbukkit.event.CraftEventFactory;
@@ -134,7 +131,7 @@ public class Explosion {
                         d8 /= d11;
                         d9 /= d11;
                         d10 /= d11;
-                        double d12 = (double) this.world.a(vec3d, entity.getBoundingBox());
+                        double d12 = this.getBlockDensity(vec3d, entity); // Paper - Optimize explosions
                         double d13 = (1.0D - d7) * d12;
 
                         // entity.damageEntity(DamageSource.explosion(this), (float) ((int) ((d13 * d13 + d13) / 2.0D * 8.0D * (double) f3 + 1.0D)));+                        // CraftBukkit start
@@ -302,4 +299,81 @@ public class Explosion {
     public List<BlockPosition> getBlocks() {
         return this.blocks;
     }
+
+    // Paper start - Optimize explosions
+    private float getBlockDensity(Vec3D vec3d, Entity entity) {
+        CacheKey key = new CacheKey(this, entity.getBoundingBox());
+        Float blockDensity = this.world.explosionDensityCache.get(key);
+        if (blockDensity == null) {
+            blockDensity = this.world.a(vec3d, entity.getBoundingBox());
+            this.world.explosionDensityCache.put(key, blockDensity);
+        }
+        return blockDensity;
+    }
+
+    static class CacheKey {
+        private final World world;
+        private final double posX, posY, posZ;
+        private final double minX, minY, minZ;
+        private final double maxX, maxY, maxZ;
+
+        public CacheKey(Explosion explosion, AxisAlignedBB aabb) {
+            this.world = explosion.world;
+            this.posX = explosion.posX;
+            this.posY = explosion.posY;
+            this.posZ = explosion.posZ;
+            this.minX = aabb.getMinX();
+            this.minY = aabb.getMinY();
+            this.minZ = aabb.getMinZ();
+            this.maxX = aabb.getMaxX();
+            this.maxY = aabb.getMaxY();
+            this.maxZ = aabb.getMaxZ();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            CacheKey cacheKey = (CacheKey) o;
+
+            if (Double.compare(cacheKey.posX, posX) != 0) return false;
+            if (Double.compare(cacheKey.posY, posY) != 0) return false;
+            if (Double.compare(cacheKey.posZ, posZ) != 0) return false;
+            if (Double.compare(cacheKey.minX, minX) != 0) return false;
+            if (Double.compare(cacheKey.minY, minY) != 0) return false;
+            if (Double.compare(cacheKey.minZ, minZ) != 0) return false;
+            if (Double.compare(cacheKey.maxX, maxX) != 0) return false;
+            if (Double.compare(cacheKey.maxY, maxY) != 0) return false;
+            if (Double.compare(cacheKey.maxZ, maxZ) != 0) return false;
+            return world.equals(cacheKey.world);
+        }
+
+        @Override
+        public int hashCode() {
+            int result;
+            long temp;
+            result = world.hashCode();
+            temp = Double.doubleToLongBits(posX);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(posY);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(posZ);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(minX);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(minY);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(minZ);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(maxX);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(maxY);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(maxZ);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            return result;
+        }
+    }
+    // Paper end
 }

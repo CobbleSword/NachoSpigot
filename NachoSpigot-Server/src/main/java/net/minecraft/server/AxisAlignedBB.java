@@ -6,7 +6,7 @@ public class AxisAlignedBB {
     public final double c; public double getMinZ() { return c; }
     public final double d; public double getMaxX() { return d; }
     public final double e; public double getMaxY() { return e; }
-    public final double f; public double getMaxz() { return f; }
+    public final double f; public double getMaxZ() { return f; }
 
     public AxisAlignedBB(double x1, double y1, double z1, double x2, double y2, double z2)
     {

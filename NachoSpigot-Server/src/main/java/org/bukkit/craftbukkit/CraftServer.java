@@ -291,18 +291,32 @@ public final class CraftServer implements Server {
                     String message = String.format("Loading %s", plugin.getDescription().getFullName());
                     // Nacho start - [Nacho-0043] Fix ProtocolLib
                     if(plugin.getDescription().getFullName().contains("ProtocolLib") && Nacho.get().getConfig().patchProtocolLib) {
-                        if(RuntimePatches.applyProtocolLibPatch(plugin).join()) {
+                        boolean val = RuntimePatches.applyProtocolLibPatch(plugin).join();
+                        if(val) {
                             Logger.getLogger(CraftServer.class.getName()).log(Level.INFO, "Callback returned a good state, ProtocolLib patch was successful and ProtocolLib is now loading.");
-                            plugin.getLogger().info(message);
-                            plugin.onLoad();
                         } else {
                             Logger.getLogger(CraftServer.class.getName()).log(Level.SEVERE, "An error occurred trying to patch ProtocolLib, the plugin will not work as expected!");
                         }
-                    } else {
                         plugin.getLogger().info(message);
                         plugin.onLoad();
                     }
                     // Nacho end
+                    // Nacho start - [Nacho-0044] Fix Citizens
+                    else if(plugin.getDescription().getFullName().contains("Citizens")) {
+                        boolean val = RuntimePatches.applyCitizensPatch(plugin).join();
+                        if(val) {
+                            Logger.getLogger(CraftServer.class.getName()).log(Level.INFO, "Callback returned a good state, Citizens patch was successful and Citizens is now loading.");
+                        } else {
+                            Logger.getLogger(CraftServer.class.getName()).log(Level.SEVERE, "An error occurred trying to patch Citizens, the plugin will not work as expected!");
+                        }
+                        plugin.getLogger().info(message);
+                        plugin.onLoad();
+                    }
+                    // Nacho end
+                    else {
+                        plugin.getLogger().info(message);
+                        plugin.onLoad();
+                    }
                 } catch (Throwable ex) {
                     Logger.getLogger(CraftServer.class.getName()).log(Level.SEVERE, ex.getMessage() + " initializing " + plugin.getDescription().getFullName() + " (Is it up to date?)", ex);
                 }

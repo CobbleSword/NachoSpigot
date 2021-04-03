@@ -22,15 +22,15 @@ public class PacketPlayOutMapChunkBulk implements Packet<PacketListenerPlayOut> 
         this.d = !((Chunk) list.get(0)).getWorld().worldProvider.o();
 
         for (int j = 0; j < i; ++j) {
-            Chunk chunk = (Chunk) list.get(j);
-            PacketPlayOutMapChunk.ChunkMap packetplayoutmapchunk_chunkmap = chunk.getChunkMap(true, '\uffff'); // PaperSpigot
+            Chunk chunk = list.get(j);
+            PacketPlayOutMapChunk.ChunkMap map = chunk.getChunkMap(true, '\uffff'); // PaperSpigot
 
             this.a[j] = chunk.locX;
             this.b[j] = chunk.locZ;
-            this.c[j] = packetplayoutmapchunk_chunkmap;
+            this.c[j] = map;
         }
         
-        world = ((Chunk) list.get(0)).getWorld(); // Spigot
+        world = list.get(0).getWorld(); // Spigot
     }
 
     public void a(PacketDataSerializer packetdataserializer) throws IOException {
