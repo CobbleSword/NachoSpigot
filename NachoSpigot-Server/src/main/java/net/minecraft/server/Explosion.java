@@ -15,10 +15,8 @@ import org.bukkit.event.block.BlockExplodeEvent;
 
 public class Explosion {
 
-    public static final Random CACHED_RANDM = new Random();
     private final boolean a;
     private final boolean b;
-    private final Random c = CACHED_RANDM;
     private final World world;
     private final double posX;
     private final double posY;
@@ -270,7 +268,8 @@ public class Explosion {
 
             while (iterator.hasNext()) {
                 blockposition = (BlockPosition) iterator.next();
-                if (this.world.getType(blockposition).getBlock().getMaterial() == Material.AIR && this.world.getType(blockposition.down()).getBlock().o() && this.c.nextInt(3) == 0) {
+                // Nacho - optimize TNT by Lew_x
+                if (this.world.getType(blockposition).getBlock().getMaterial() == Material.AIR && this.world.getType(blockposition.down()).getBlock().o() && this.world.random.nextInt(3) == 0) {
                     // CraftBukkit start - Ignition by explosion
                     if (!org.bukkit.craftbukkit.event.CraftEventFactory.callBlockIgniteEvent(this.world, blockposition.getX(), blockposition.getY(), blockposition.getZ(), this).isCancelled()) {
                         this.world.setTypeUpdate(blockposition, Blocks.FIRE.getBlockData());
