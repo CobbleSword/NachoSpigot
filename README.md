@@ -3,7 +3,7 @@ A **maintained** version of NachoSpigot where some features have been removed or
 I am planning to support Java 15 but still support most plugins like ProtocolLib. Is this going to work out? We will see in the end.
 
 ## Current State
-Java 15 is now natively supported, and ProtocolLib and ViaVersion are patched at runtime to work with Nacho's patches.
+Java 15 is now natively supported, and ProtocolLib, Citizens and ViaVersion are patched at runtime to work with Nacho's patches.
 Unless other bugs are found, Nacho should now run stable.
 
 **NachoSpigot supports Java 8 to Java 15!**
@@ -12,6 +12,10 @@ Unless other bugs are found, Nacho should now run stable.
 
 I will maintain this version, because the official NachoSpigot is no longer maintained.
 If you know any patches that will help out, please create an issue or better create a PR so I can merge it. 
+
+#### Building / Compiling
+To build, clone the repo, and run `mvn clean package` in the NachoSpigot directory.
+*You need Java 8-15 and Maven to compile.*
 
 ## Backported Patches
 ```
