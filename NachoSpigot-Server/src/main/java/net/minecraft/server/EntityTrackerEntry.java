@@ -473,11 +473,11 @@ public class EntityTrackerEntry {
     }
 
     public void scanPlayers(List<EntityHuman> list) {
-        // Nacho start - [Nacho-0047]
-        // for (EntityHuman human : list) {
-        //     this.updatePlayer((EntityPlayer) human);
-        // }
-        list.parallelStream().forEach(entity -> this.updatePlayer((EntityPlayer) entity));
+        // Nacho start - [Nacho-0047] // TODO TEMP REVERT
+        for (EntityHuman human : list) {
+            this.updatePlayer((EntityPlayer) human);
+        }
+        // list.parallelStream().forEach(entity -> this.updatePlayer((EntityPlayer) entity));
         // Nacho end
     }
 
