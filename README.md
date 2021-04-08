@@ -3,7 +3,7 @@ A **maintained** version of NachoSpigot where some features have been removed or
 I am planning to support Java 15 but still support most plugins like ProtocolLib. Is this going to work out? We will see in the end.
 
 ## Current State
-Java 15 is now natively supported, and ProtocolLib and ViaVersion are patched at runtime to work with Nacho's patches.
+Java 15 is now natively supported, and ProtocolLib and Citizens are patched at runtime to work with Nacho's patches.
 Unless other bugs are found, Nacho should now run stable.
 
 **NachoSpigot supports Java 8 to Java 15!**
