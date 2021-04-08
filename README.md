@@ -17,6 +17,10 @@ If you know any patches that will help out, please create an issue or better cre
 To build, clone the repo, and run `mvn clean package` in the NachoSpigot directory.
 *You need Java 8-15 and Maven to compile.*
 
+#### Building / Compiling
+To build, clone the repo, and run `mvn clean package` in the NachoSpigot directory.
+*You need Java 8-15 and Maven to compile.*
+
 ## Backported Patches
 ```
 [Spigot-0097] Remove DataWatcher Locking by spottedleaf
