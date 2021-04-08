@@ -127,6 +127,8 @@ import net.md_5.bungee.api.chat.BaseComponent;
 
 public final class CraftServer implements Server {
     private static final Player[] EMPTY_PLAYER_ARRAY = new Player[0];
+    private final String serverName = "CraftBukkit";
+    public String serverVersion;
     private final String bukkitVersion = Versioning.getBukkitVersion();
     private final Logger logger = Logger.getLogger("Minecraft");
     private final ServicesManager servicesManager = new SimpleServicesManager();
@@ -137,7 +139,7 @@ public final class CraftServer implements Server {
     private final PluginManager pluginManager = new SimplePluginManager(this, commandMap);
     protected final MinecraftServer console;
     protected final DedicatedPlayerList playerList;
-    private final Map<String, World> worlds = new LinkedHashMap<String, World>();
+    private final Map<String, World> worlds = new LinkedHashMap<>();
     private YamlConfiguration configuration;
     private YamlConfiguration commandsConfiguration;
     private final Yaml yaml = new Yaml(new SafeConstructor());
@@ -177,6 +179,7 @@ public final class CraftServer implements Server {
         this.console = console;
         this.playerList = (DedicatedPlayerList) playerList;
         this.playerView = Collections.unmodifiableList(playerList.players.stream().map(EntityPlayer::getBukkitEntity).collect(Collectors.toList()));
+        this.serverVersion = "NachoSpigot";
         online.value = console.getPropertyManager().getBoolean("online-mode", true);
 
         Bukkit.setServer(this);
@@ -392,12 +395,12 @@ public final class CraftServer implements Server {
 
     @Override
     public String getName() {
-        return Nacho.exists() ? Nacho.get().getConfig().serverBrandName : "NachoSpigot";
+        return serverName;
     }
 
     @Override
     public String getVersion() {
-        return console.getVersion();
+        return serverVersion + " (MC: " + console.getVersion() + ")";
     }
 
     @Override
@@ -407,7 +410,6 @@ public final class CraftServer implements Server {
 
     @Override
     @Deprecated
-    @SuppressWarnings("unchecked")
     public Player[] _INVALID_getOnlinePlayers() {
         return getOnlinePlayers().toArray(EMPTY_PLAYER_ARRAY);
     }

@@ -1410,6 +1410,10 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
         }
     }
 
+    /**
+     * Methods added by Nacho to help you make plugins.
+     * @return the nacho class
+     */
     NachoPlayer nacho();
 
     class Unsafe {

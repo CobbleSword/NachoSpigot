@@ -4,8 +4,10 @@ import dev.cobblesword.nachospigot.commons.FileUtils;
 import dev.cobblesword.nachospigot.patches.RuntimePatches;
 import dev.cobblesword.nachospigot.protocol.PacketListener;
 import net.minecraft.server.MinecraftServer;
+import org.bukkit.Bukkit;
 import org.bukkit.command.defaults.nacho.SetMaxSlotCommand;
 import org.bukkit.command.defaults.nacho.SpawnMobCommand;
+import org.bukkit.craftbukkit.CraftServer;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -22,6 +24,11 @@ public class Nacho {
         this.config = new NachoConfig();
         while (!CONFIG_FILE.exists()) FileUtils.toFile(this.config, CONFIG_FILE);
         this.config = FileUtils.toObject(CONFIG_FILE, NachoConfig.class);
+        if (config == null) {
+            System.err.println("NachoConfig is null, cannot set server brand name.");
+            return;
+        }
+        ((CraftServer)Bukkit.getServer()).serverVersion = this.config.serverBrandName;
     }
 
     public void reloadConfig() {
@@ -30,10 +37,6 @@ public class Nacho {
 
     public static Nacho get() {
         return INSTANCE == null ? new Nacho() : INSTANCE;
-    }
-
-    public static boolean exists() {
-        return INSTANCE != null;
     }
 
     public NachoConfig getConfig()
