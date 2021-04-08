@@ -22,7 +22,7 @@ public class PacketPlayOutMapChunk implements Packet<PacketListenerPlayOut>
         chunk.world.spigotConfig.antiXrayInstance.obfuscate(chunk.locX, chunk.locZ, c.b, c.a, chunk.world); // [Nacho-0045] Async obfuscation -> obfuscateSync
     }
 
-    public void readPacketData(PacketDataSerializer packetdataserializer) throws IOException {
+    public void a(PacketDataSerializer packetdataserializer) throws IOException {
         this.a = packetdataserializer.readInt();
         this.b = packetdataserializer.readInt();
         this.d = packetdataserializer.readBoolean();
@@ -31,7 +31,7 @@ public class PacketPlayOutMapChunk implements Packet<PacketListenerPlayOut>
         this.c.a = packetdataserializer.a();
     }
 
-    public void writePacketData(PacketDataSerializer packetdataserializer) throws IOException {
+    public void b(PacketDataSerializer packetdataserializer) throws IOException {
         packetdataserializer.writeInt(this.a);
         packetdataserializer.writeInt(this.b);
         packetdataserializer.writeBoolean(this.d);
@@ -39,7 +39,7 @@ public class PacketPlayOutMapChunk implements Packet<PacketListenerPlayOut>
         packetdataserializer.a(this.c.a);
     }
 
-    public void processPacket(PacketListenerPlayOut packetlistenerplayout) {
+    public void a(PacketListenerPlayOut packetlistenerplayout) {
         packetlistenerplayout.a(this);
     }
 

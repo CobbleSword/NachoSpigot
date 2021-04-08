@@ -23,21 +23,21 @@ public class PacketPlayOutWorldEvent implements Packet<PacketListenerPlayOut> {
         this.d = var4;
     }
 
-    public void readPacketData(PacketDataSerializer var1) throws IOException {
+    public void a(PacketDataSerializer var1) throws IOException {
         this.a = var1.readInt();
         this.b = var1.c();
         this.c = var1.readInt();
         this.d = var1.readBoolean();
     }
 
-    public void writePacketData(PacketDataSerializer var1) throws IOException {
+    public void b(PacketDataSerializer var1) throws IOException {
         var1.writeInt(this.a);
         var1.a(this.b);
         var1.writeInt(this.c);
         var1.writeBoolean(this.d);
     }
 
-    public void processPacket(PacketListenerPlayOut var1) {
+    public void a(PacketListenerPlayOut var1) {
         var1.a(this);
     }
 }

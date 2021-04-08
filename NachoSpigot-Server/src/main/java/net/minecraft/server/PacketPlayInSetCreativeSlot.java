@@ -10,20 +10,20 @@ public class PacketPlayInSetCreativeSlot implements Packet<PacketListenerPlayIn>
     public PacketPlayInSetCreativeSlot() {}
 
     @Override
-    public void readPacketData(PacketDataSerializer packetDataSerializer) throws IOException {
+    public void a(PacketDataSerializer packetDataSerializer) throws IOException {
         this.slot = packetDataSerializer.readShort();
         this.b = packetDataSerializer.decodeItemStack();
     }
 
     @Override
-    public void writePacketData(PacketDataSerializer packetDataSerializer) throws IOException {
+    public void b(PacketDataSerializer packetDataSerializer) throws IOException {
 
         packetDataSerializer.writeShort(this.slot);
         packetDataSerializer.a(this.b);
     }
 
     @Override
-    public void processPacket(PacketListenerPlayIn packetListenerPlayIn)
+    public void a(PacketListenerPlayIn packetListenerPlayIn)
     {
         packetListenerPlayIn.a(this);
     }

@@ -29,12 +29,12 @@ public class PacketPlayOutChat implements Packet<PacketListenerPlayOut> {
         return b;
     }
 
-    public void readPacketData(PacketDataSerializer packetdataserializer) throws IOException {
+    public void a(PacketDataSerializer packetdataserializer) throws IOException {
         this.a = packetdataserializer.d();
         this.b = packetdataserializer.readByte();
     }
 
-    public void writePacketData(PacketDataSerializer packetdataserializer) throws IOException {
+    public void b(PacketDataSerializer packetdataserializer) throws IOException {
         // Spigot start
         if (components != null) {
             //packetdataserializer.a(net.md_5.bungee.chat.ComponentSerializer.toString(components)); // Paper - comment, replaced with below
@@ -52,7 +52,7 @@ public class PacketPlayOutChat implements Packet<PacketListenerPlayOut> {
         packetdataserializer.writeByte(this.b);
     }
 
-    public void processPacket(PacketListenerPlayOut packetlistenerplayout) {
+    public void a(PacketListenerPlayOut packetlistenerplayout) {
         packetlistenerplayout.a(this);
     }
 

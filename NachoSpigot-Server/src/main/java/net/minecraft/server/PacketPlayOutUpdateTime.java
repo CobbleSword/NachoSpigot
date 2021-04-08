@@ -22,17 +22,17 @@ public class PacketPlayOutUpdateTime implements Packet<PacketListenerPlayOut> {
         this.a = this.a % 192000; //
     }
 
-    public void readPacketData(PacketDataSerializer var1) throws IOException {
+    public void a(PacketDataSerializer var1) throws IOException {
         this.a = var1.readLong();
         this.b = var1.readLong();
     }
 
-    public void writePacketData(PacketDataSerializer var1) throws IOException {
+    public void b(PacketDataSerializer var1) throws IOException {
         var1.writeLong(this.a);
         var1.writeLong(this.b);
     }
 
-    public void processPacket(PacketListenerPlayOut var1) {
+    public void a(PacketListenerPlayOut var1) {
         var1.a(this);
     }
 }

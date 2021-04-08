@@ -161,6 +161,7 @@ public class EntityTracker {
     }
 
     public void updatePlayers() {
+        // Nacho start - [Nacho-0048]
         ArrayList<EntityPlayer> entities = Lists.newArrayList();
         for (EntityTrackerEntry entry : this.getTrackedEntities()) {
             entry.track(this.world.players);
@@ -175,6 +176,7 @@ public class EntityTracker {
                 }
             }
         }
+        // Nacho end
     }
 
     public void a(EntityPlayer entityplayer) {

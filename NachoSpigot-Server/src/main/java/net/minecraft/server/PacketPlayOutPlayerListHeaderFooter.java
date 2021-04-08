@@ -15,12 +15,12 @@ public class PacketPlayOutPlayerListHeaderFooter implements Packet<PacketListene
         this.a = ichatbasecomponent;
     }
 
-    public void readPacketData(PacketDataSerializer packetdataserializer) throws IOException {
+    public void a(PacketDataSerializer packetdataserializer) throws IOException {
         this.a = packetdataserializer.d();
         this.b = packetdataserializer.d();
     }
 
-    public void writePacketData(PacketDataSerializer packetdataserializer) throws IOException {
+    public void b(PacketDataSerializer packetdataserializer) throws IOException {
         // Paper start
         if (this.header != null) {
             packetdataserializer.a(net.md_5.bungee.chat.ComponentSerializer.toString(this.header));
@@ -36,7 +36,7 @@ public class PacketPlayOutPlayerListHeaderFooter implements Packet<PacketListene
         // Paper end
     }
 
-    public void processPacket(PacketListenerPlayOut packetlistenerplayout) {
+    public void a(PacketListenerPlayOut packetlistenerplayout) {
         packetlistenerplayout.a(this);
     }
 

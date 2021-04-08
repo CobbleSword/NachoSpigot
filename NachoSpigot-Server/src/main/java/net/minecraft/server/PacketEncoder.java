@@ -35,7 +35,7 @@ public class PacketEncoder extends MessageToByteEncoder<Packet> {
             packetdataserializer.b(integer.intValue());
 
             try {
-                packet.writePacketData(packetdataserializer);
+                packet.b(packetdataserializer);
             } catch (ExploitException ex) {
                 System.out.println("rarrr " + channelhandlercontext.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get());
             }

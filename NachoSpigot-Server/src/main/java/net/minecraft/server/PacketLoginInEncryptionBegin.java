@@ -11,19 +11,19 @@ public class PacketLoginInEncryptionBegin implements Packet<PacketLoginInListene
 
     public PacketLoginInEncryptionBegin() {}
 
-    public void readPacketData(PacketDataSerializer packetdataserializer) throws IOException {
+    public void a(PacketDataSerializer packetdataserializer) throws IOException {
         // TacoSpigot start - limit to 256 bytes
         this.a = packetdataserializer.readByteArray(256);
         this.b = packetdataserializer.readByteArray(256);
         // TacoSpigot end
     }
 
-    public void writePacketData(PacketDataSerializer packetdataserializer) throws IOException {
+    public void b(PacketDataSerializer packetdataserializer) throws IOException {
         packetdataserializer.a(this.a);
         packetdataserializer.a(this.b);
     }
 
-    public void processPacket(PacketLoginInListener packetlogininlistener) {
+    public void a(PacketLoginInListener packetlogininlistener) {
         packetlogininlistener.a(this);
     }
 

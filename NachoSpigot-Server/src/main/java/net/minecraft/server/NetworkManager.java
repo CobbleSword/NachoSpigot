@@ -93,8 +93,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     }
 
     void enableAutomaticFlush() {
-        synchronized (this.flushLock)
-        {
+        synchronized (this.flushLock) {
             this.canFlush = true;
             if (this.packetWrites.get() != this.flushPacketsStart) { // must be after canFlush = true
                 this.flush(); // only make the flush call if we need to
@@ -196,7 +195,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
             }
 
             try {
-                packet.processPacket(this.m);//packet.handle(PlayerConnection)
+                packet.a(this.m);//packet.handle(PlayerConnection)
             } catch (CancelledPacketHandleException cancelledpackethandleexception) {
                 ;
             }
@@ -443,8 +442,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
 
     }
 
-    public void handleDisconnection()
-    {
+    public void handleDisconnection() {
         if (this.channel != null && !this.channel.isOpen())
         {
             if (!this.isDisconnectionHandled())
@@ -463,19 +461,16 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         }
     }
 
-    public void l()
-    {
+    public void l() {
         this.handleDisconnection();
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext channelhandlercontext, Packet object) throws Exception
-    { // CraftBukkit - fix decompile error
+    protected void channelRead0(ChannelHandlerContext channelhandlercontext, Packet object) throws Exception { // CraftBukkit - fix decompile error
         this.a(channelhandlercontext, object);
     }
 
-    static class QueuedPacket
-    {
+    static class QueuedPacket {
         private final Packet a; //packet
         private final GenericFutureListener<? extends Future<? super Void>>[] b; //listener
 
@@ -486,8 +481,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     }
 
     // Spigot Start
-    public SocketAddress getRawAddress()
-    {
+    public SocketAddress getRawAddress() {
         return this.channel.remoteAddress();
     }
     // Spigot End

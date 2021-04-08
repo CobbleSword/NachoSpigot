@@ -55,7 +55,7 @@ public class PacketPlayOutPlayerInfo implements Packet<PacketListenerPlayOut> {
         return b;
     }
 
-    public void readPacketData(PacketDataSerializer var1) throws IOException {
+    public void a(PacketDataSerializer var1) throws IOException {
         this.a = (PacketPlayOutPlayerInfo.EnumPlayerInfoAction)var1.a(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.class);
         int var2 = var1.e();
 
@@ -109,7 +109,7 @@ public class PacketPlayOutPlayerInfo implements Packet<PacketListenerPlayOut> {
 
     }
 
-    public void writePacketData(PacketDataSerializer var1) throws IOException {
+    public void b(PacketDataSerializer var1) throws IOException {
         var1.a(this.a);
         var1.b(this.b.size());
         Iterator var2 = this.b.iterator();
@@ -171,7 +171,7 @@ public class PacketPlayOutPlayerInfo implements Packet<PacketListenerPlayOut> {
         }
     }
 
-    public void processPacket(PacketListenerPlayOut var1) {
+    public void a(PacketListenerPlayOut var1) {
         var1.a(this);
     }
 

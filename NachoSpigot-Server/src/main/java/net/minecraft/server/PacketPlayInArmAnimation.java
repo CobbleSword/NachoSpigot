@@ -8,13 +8,13 @@ public class PacketPlayInArmAnimation implements Packet<PacketListenerPlayIn> {
 
     public PacketPlayInArmAnimation() {}
 
-    public void readPacketData(PacketDataSerializer packetdataserializer) throws IOException {
+    public void a(PacketDataSerializer packetdataserializer) throws IOException {
         timestamp = System.currentTimeMillis(); // Spigot
     }
 
-    public void writePacketData(PacketDataSerializer packetdataserializer) throws IOException {}
+    public void b(PacketDataSerializer packetdataserializer) throws IOException {}
 
-    public void processPacket(PacketListenerPlayIn packetlistenerplayin) {
+    public void a(PacketListenerPlayIn packetlistenerplayin) {
         packetlistenerplayin.a(this);
     }
 }

@@ -67,7 +67,7 @@ public class PacketPlayOutSpawnEntity implements Packet<PacketListenerPlayOut> {
 
     }
 
-    public void readPacketData(PacketDataSerializer var1) throws IOException {
+    public void a(PacketDataSerializer var1) throws IOException {
         this.a = var1.e();
         this.j = var1.readByte();
         this.b = var1.readInt();
@@ -84,7 +84,7 @@ public class PacketPlayOutSpawnEntity implements Packet<PacketListenerPlayOut> {
 
     }
 
-    public void writePacketData(PacketDataSerializer var1) throws IOException {
+    public void b(PacketDataSerializer var1) throws IOException {
         var1.b(this.a);
         var1.writeByte(this.j);
         var1.writeInt(this.b);
@@ -101,7 +101,7 @@ public class PacketPlayOutSpawnEntity implements Packet<PacketListenerPlayOut> {
 
     }
 
-    public void processPacket(PacketListenerPlayOut var1) {
+    public void a(PacketListenerPlayOut var1) {
         var1.a(this);
     }
 

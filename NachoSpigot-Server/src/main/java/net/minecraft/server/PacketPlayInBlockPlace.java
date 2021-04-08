@@ -29,7 +29,7 @@ public class PacketPlayInBlockPlace implements Packet<PacketListenerPlayIn> {
         this.g = f2;
     }
 
-    public void readPacketData(PacketDataSerializer packetdataserializer) throws IOException {
+    public void a(PacketDataSerializer packetdataserializer) throws IOException {
         timestamp = System.currentTimeMillis(); // CraftBukkit
         this.b = packetdataserializer.c();
         this.c = packetdataserializer.readUnsignedByte();
@@ -39,7 +39,7 @@ public class PacketPlayInBlockPlace implements Packet<PacketListenerPlayIn> {
         this.g = (float) packetdataserializer.readUnsignedByte() / 16.0F;
     }
 
-    public void writePacketData(PacketDataSerializer packetdataserializer) throws IOException {
+    public void b(PacketDataSerializer packetdataserializer) throws IOException {
         packetdataserializer.a(this.b);
         packetdataserializer.writeByte(this.c);
         packetdataserializer.a(this.d);
@@ -48,7 +48,7 @@ public class PacketPlayInBlockPlace implements Packet<PacketListenerPlayIn> {
         packetdataserializer.writeByte((int) (this.g * 16.0F));
     }
 
-    public void processPacket(PacketListenerPlayIn packetlistenerplayin) {
+    public void a(PacketListenerPlayIn packetlistenerplayin) {
         packetlistenerplayin.a(this);
     }
 

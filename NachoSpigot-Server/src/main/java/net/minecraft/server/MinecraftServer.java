@@ -2,7 +2,6 @@ package net.minecraft.server;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListenableFutureTask;
@@ -26,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
@@ -42,12 +40,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 // CraftBukkit start
-import java.io.IOException;
 
 import jline.console.ConsoleReader;
 import joptsimple.OptionSet;
 
-import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.Main;
 import co.aikar.timings.SpigotTimings; // Spigot
 // CraftBukkit end
@@ -770,7 +766,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     public void B() {
         SpigotTimings.minecraftSchedulerTimer.startTiming(); // Spigot
         this.methodProfiler.a("jobs");
-        Queue queue = this.j;
+        Queue<FutureTask<?>> queue = this.j;
 
         // Spigot start
         FutureTask<?> entry;
@@ -873,8 +869,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
             this.methodProfiler.b();
             this.methodProfiler.a("tracker");
             worldserver.timings.tracker.startTiming(); // Spigot
-            if(this.getPlayerList().getPlayerCount() != 0) // Tuinity
-            {
+            if(this.getPlayerList().getPlayerCount() != 0) /* Tuinity */ {
                 // Tuinity start - controlled flush for entity tracker packets
                 List<NetworkManager> disabledFlushes = new java.util.ArrayList<>(this.getPlayerList().getPlayerCount());
                 for (EntityPlayer player : this.getPlayerList().players) {
