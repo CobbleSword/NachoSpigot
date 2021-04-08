@@ -20,15 +20,15 @@ public class PacketPlayInCloseWindow implements Packet<PacketListenerPlayIn> {
         return id;
     }
 
-    public void a(PacketListenerPlayIn packetlistenerplayin) {
+    public void processPacket(PacketListenerPlayIn packetlistenerplayin) {
         packetlistenerplayin.a(this);
     }
 
-    public void a(PacketDataSerializer packetdataserializer) throws IOException {
+    public void readPacketData(PacketDataSerializer packetdataserializer) throws IOException {
         this.id = packetdataserializer.readByte();
     }
 
-    public void b(PacketDataSerializer packetdataserializer) throws IOException {
+    public void writePacketData(PacketDataSerializer packetdataserializer) throws IOException {
         packetdataserializer.writeByte(this.id);
     }
 }

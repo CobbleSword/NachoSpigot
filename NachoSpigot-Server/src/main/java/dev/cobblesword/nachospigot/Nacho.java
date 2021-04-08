@@ -6,7 +6,6 @@ import dev.cobblesword.nachospigot.protocol.PacketListener;
 import net.minecraft.server.MinecraftServer;
 import org.bukkit.command.defaults.nacho.SetMaxSlotCommand;
 import org.bukkit.command.defaults.nacho.SpawnMobCommand;
-import org.bukkit.command.defaults.nacho.TestTpCommand;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -23,7 +22,6 @@ public class Nacho {
         this.config = new NachoConfig();
         while (!CONFIG_FILE.exists()) FileUtils.toFile(this.config, CONFIG_FILE);
         this.config = FileUtils.toObject(CONFIG_FILE, NachoConfig.class);
-        registerCommands();
     }
 
     public void reloadConfig() {
@@ -32,6 +30,10 @@ public class Nacho {
 
     public static Nacho get() {
         return INSTANCE == null ? new Nacho() : INSTANCE;
+    }
+
+    public static boolean exists() {
+        return INSTANCE != null;
     }
 
     public NachoConfig getConfig()

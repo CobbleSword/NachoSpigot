@@ -33,7 +33,7 @@ public class PacketPlayOutMapChunkBulk implements Packet<PacketListenerPlayOut> 
         world = list.get(0).getWorld(); // Spigot
     }
 
-    public void a(PacketDataSerializer packetdataserializer) throws IOException {
+    public void readPacketData(PacketDataSerializer packetdataserializer) throws IOException {
         this.d = packetdataserializer.readBoolean();
         int i = packetdataserializer.e();
 
@@ -57,7 +57,7 @@ public class PacketPlayOutMapChunkBulk implements Packet<PacketListenerPlayOut> 
 
     }
 
-    public void b(PacketDataSerializer packetdataserializer) throws IOException {
+    public void writePacketData(PacketDataSerializer packetdataserializer) throws IOException {
         packetdataserializer.writeBoolean(this.d);
         packetdataserializer.b(this.c.length);
 
@@ -76,7 +76,7 @@ public class PacketPlayOutMapChunkBulk implements Packet<PacketListenerPlayOut> 
 
     }
 
-    public void a(PacketListenerPlayOut packetlistenerplayout) {
+    public void processPacket(PacketListenerPlayOut packetlistenerplayout) {
         packetlistenerplayout.a(this);
     }
 }

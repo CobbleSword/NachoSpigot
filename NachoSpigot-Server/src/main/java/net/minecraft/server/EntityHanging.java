@@ -174,7 +174,7 @@ public abstract class EntityHanging extends Entity {
     }
 
     public boolean l(Entity entity) {
-        return entity instanceof EntityHuman ? this.damageEntity(DamageSource.playerAttack((EntityHuman) entity), 0.0F) : false;
+        return entity instanceof EntityHuman && this.damageEntity(DamageSource.playerAttack((EntityHuman) entity), 0.0F);
     }
 
     public EnumDirection getDirection() {

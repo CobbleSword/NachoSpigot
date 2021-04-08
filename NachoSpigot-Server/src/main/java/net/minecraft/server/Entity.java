@@ -46,7 +46,7 @@ public abstract class Entity implements ICommandListener {
     static boolean isLevelAtLeast(NBTTagCompound tag, int level) {
         return tag.hasKey("Bukkit.updateLevel") && tag.getInt("Bukkit.updateLevel") >= level;
     }
-    // CraftBukikt end
+    // CraftBukkit end
 
     private static final AxisAlignedBB a = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
     private static int entityCount = 1;
@@ -192,11 +192,11 @@ public abstract class Entity implements ICommandListener {
         // Spigot end
 
         this.datawatcher = new DataWatcher(this);
-        this.datawatcher.a(0, Byte.valueOf((byte) 0));
-        this.datawatcher.a(1, Short.valueOf((short) 300));
-        this.datawatcher.a(3, Byte.valueOf((byte) 0));
+        this.datawatcher.a(0, (byte) 0);
+        this.datawatcher.a(1, (short) 300);
+        this.datawatcher.a(3, (byte) 0);
         this.datawatcher.a(2, "");
-        this.datawatcher.a(4, Byte.valueOf((byte) 0));
+        this.datawatcher.a(4, (byte) 0);
         this.h();
         this.datawatcher.registrationLocked = true; // Spigot
     }
@@ -208,7 +208,7 @@ public abstract class Entity implements ICommandListener {
     }
 
     public boolean equals(Object object) {
-        return object instanceof Entity ? ((Entity) object).id == this.id : false;
+        return object instanceof Entity && ((Entity) object).id == this.id;
     }
 
     public int hashCode() {
@@ -1233,6 +1233,7 @@ public abstract class Entity implements ICommandListener {
         return false;
     }
 
+    public final boolean collisionBoxIsHard() { return this.ae(); } // Tuinity - OBFHELPER
     public boolean ae() {
         return false;
     }
@@ -1266,8 +1267,8 @@ public abstract class Entity implements ICommandListener {
 
     public void e(NBTTagCompound nbttagcompound) {
         try {
-            nbttagcompound.set("Pos", this.a(new double[] { this.locX, this.locY, this.locZ}));
-            nbttagcompound.set("Motion", this.a(new double[] { this.motX, this.motY, this.motZ}));
+            nbttagcompound.set("Pos", this.a(this.locX, this.locY, this.locZ));
+            nbttagcompound.set("Motion", this.a(this.motX, this.motY, this.motZ));
 
             // CraftBukkit start - Checking for NaN pitch/yaw and resetting to zero
             // TODO: make sure this is the best way to address this.
@@ -1280,7 +1281,7 @@ public abstract class Entity implements ICommandListener {
             }
             // CraftBukkit end
 
-            nbttagcompound.set("Rotation", this.a(new float[] { this.yaw, this.pitch}));
+            nbttagcompound.set("Rotation", this.a(this.yaw, this.pitch));
             nbttagcompound.setFloat("FallDistance", this.fallDistance);
             nbttagcompound.setShort("Fire", (short) this.fireTicks);
             nbttagcompound.setShort("Air", (short) this.getAirTicks());
@@ -1759,6 +1760,7 @@ public abstract class Entity implements ICommandListener {
         return !this.fireProof && (this.fireTicks > 0 || flag && this.g(0));
     }
 
+    public boolean isPassenger() { return this.au(); } // Nacho - OBFHELPER
     public boolean au() {
         return this.vehicle != null;
     }
@@ -1799,9 +1801,9 @@ public abstract class Entity implements ICommandListener {
         byte b0 = this.datawatcher.getByte(0);
 
         if (flag) {
-            this.datawatcher.watch(0, Byte.valueOf((byte) (b0 | 1 << i)));
+            this.datawatcher.watch(0, (byte) (b0 | 1 << i));
         } else {
-            this.datawatcher.watch(0, Byte.valueOf((byte) (b0 & ~(1 << i))));
+            this.datawatcher.watch(0, (byte) (b0 & ~(1 << i)));
         }
 
     }
@@ -1811,7 +1813,7 @@ public abstract class Entity implements ICommandListener {
     }
 
     public void setAirTicks(int i) {
-        this.datawatcher.watch(1, Short.valueOf((short) i));
+        this.datawatcher.watch(1, (short) i);
     }
 
     public void onLightningStrike(EntityLightning entitylightning) {

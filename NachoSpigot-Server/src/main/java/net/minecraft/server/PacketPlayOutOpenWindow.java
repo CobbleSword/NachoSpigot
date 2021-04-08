@@ -31,11 +31,11 @@ public class PacketPlayOutOpenWindow implements Packet<PacketListenerPlayOut> {
     public String getTitle() { return this.b; }
     public void setTitle(String title) { this.b = title; }
 
-    public void a(PacketListenerPlayOut packetlistenerplayout) {
+    public void processPacket(PacketListenerPlayOut packetlistenerplayout) {
         packetlistenerplayout.a(this);
     }
 
-    public void a(PacketDataSerializer packetdataserializer) throws IOException {
+    public void readPacketData(PacketDataSerializer packetdataserializer) throws IOException {
         this.a = packetdataserializer.readUnsignedByte();
         this.b = packetdataserializer.c(32);
         this.c = packetdataserializer.d();
@@ -46,7 +46,7 @@ public class PacketPlayOutOpenWindow implements Packet<PacketListenerPlayOut> {
 
     }
 
-    public void b(PacketDataSerializer packetdataserializer) throws IOException {
+    public void writePacketData(PacketDataSerializer packetdataserializer) throws IOException {
         packetdataserializer.writeByte(this.a);
         packetdataserializer.a(this.b);
         packetdataserializer.a(this.c);

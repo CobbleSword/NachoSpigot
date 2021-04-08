@@ -13,7 +13,12 @@ Unless other bugs are found, Nacho should now run stable.
 I will maintain this version, because the official NachoSpigot is no longer maintained.
 If you know any patches that will help out, please create an issue or better create a PR so I can merge it. 
 
-## Backported Patches
+#### Building / Compiling
+To build, clone the repo, and run `mvn clean package` in the NachoSpigot directory.
+
+***Note:*** *You need Java 8-15 and Maven to compile.*
+
+## Patches
 ```
 [Spigot-0097] Remove DataWatcher Locking by spottedleaf
 [Spigot-0138] Branchless NibbleArray by md5
@@ -48,13 +53,14 @@ If you know any patches that will help out, please create an issue or better cre
 [Paper-0344] [MC-111480] Start Entity ID's at 1
 [Paper-0346] [MC-135506] Experience should save as Integers
 [Paper-0347] don't go below 0 for pickupDelay, breaks picking up items by Aikar
-[Paper-0350] start - use a Queue for Queueing Commands by Aikar
+[Paper-0350] use a Queue for Queueing Commands by Aikar
 [Paper-0352] Optimize BlockPosition helper methods by Spottedleaf
 [Paper-0353] Send nearby packets from world player list not server list by Mystiflow
 [Paper-0389] performance improvement for Chunk.getEntities by wea_ondara
 [Paper-0539] Optimize NetworkManager Exception Handling by Andrew Steinborn
 [Paper-0451] Reduce memory footprint of NBTTagCompound by spottedleaf
 
+<--> by Heath
 [Nacho-0001] Remove stream usage when counting entities
 [Nacho-0002] Check if the fuel is coal first before checking others
 [Nacho-0003] Disable Snooper
@@ -87,6 +93,8 @@ If you know any patches that will help out, please create an issue or better cre
 [Nacho-0030] add a ChunkPreLoadEvent
 [Nacho-0031] remove unused vars
 [Nacho-0033] Faster Operator search method
+
+<--> by Sculas
 [Nacho-0034] Remove Java 8 message from TacoSpigot which made it so you couldn't run Java 8 or higher
 [Nacho-0035] Made it so you can switch the brand name in nacho.json
 [Nacho-0036] Add toggles for commands "reload", "version" and "plugins"
@@ -99,22 +107,28 @@ If you know any patches that will help out, please create an issue or better cre
 [Nacho-0043] Fix ProtocolLib
 [Nacho-0044] Fix Citizens
 [Nacho-0045] Async obfuscation
+[Nacho-0046] Add Player#jump and Player#sendActionBar
 
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
+
+[IonSpigot-0035] Optimise Entity Collisions
 
 [Akarin-0001] Avoid double I/O operation on load player file by tsao chi
 
 [Tuinity-????] Skip updating entity tracker without players
 [Tuinity-0017] Allow controlled flushing for network manager by Spottedleaf
 [Tuinity-0018] Consolidate flush calls for entity tracker packets
+[Tuinity-0052] Optimise non-flush packet sending
 
-[SportPaper-0043] get blocks in chunk api
+[SportPaper-0043] Get blocks in Chunk API
 [SportPaper-0162] Fix PlayerInteractEvent not cancelling properly
 ```
 
 ## Removed
 ``` 
 [Nacho-0022] Sync is maintained higher up and is causing issues
+
+[Tuinity-0021] Optimise entity hard collision checking - code that was patched is not present in 1.8
 ```
 
 ## Discord

@@ -48,7 +48,7 @@ public class PacketPlayOutNamedEntitySpawn implements Packet<PacketListenerPlayO
         this.e = MathHelper.floor(z * 32.0D);;
     }
 
-    public void a(PacketDataSerializer var1) throws IOException {
+    public void readPacketData(PacketDataSerializer var1) throws IOException {
         this.a = var1.e();
         this.b = var1.g();
         this.c = var1.readInt();
@@ -60,7 +60,7 @@ public class PacketPlayOutNamedEntitySpawn implements Packet<PacketListenerPlayO
         this.j = DataWatcher.b(var1);
     }
 
-    public void b(PacketDataSerializer var1) throws IOException {
+    public void writePacketData(PacketDataSerializer var1) throws IOException {
         var1.b(this.a);
         var1.a(this.b);
         var1.writeInt(this.c);
@@ -72,7 +72,7 @@ public class PacketPlayOutNamedEntitySpawn implements Packet<PacketListenerPlayO
         this.i.a(var1);
     }
 
-    public void a(PacketListenerPlayOut var1) {
+    public void processPacket(PacketListenerPlayOut var1) {
         var1.a(this);
     }
 }

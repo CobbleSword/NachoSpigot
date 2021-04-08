@@ -39,9 +39,7 @@ public class Chunk {
     private final int[] itemCounts = new int[16];
     private final int[] inventoryEntityCounts = new int[16];
     // PaperSpigot end
-    // Nacho start
-    private List<Entity>[][] entityGrid = new List[16][16];
-    // Nacho end
+
     private boolean done;
     private boolean lit;
     private boolean p;
@@ -57,8 +55,6 @@ public class Chunk {
     public AtomicInteger pendingLightUpdates = new AtomicInteger();
     public long lightUpdateTime;
     // PaperSpigot end
-
-
 
     // PaperSpigot start - ChunkMap caching
     private PacketPlayOutMapChunk.ChunkMap chunkMap;
@@ -1008,20 +1004,17 @@ public class Chunk {
             this.world.b(tileentity);
         }
 
-        for (int i = 0; i < this.entitySlices.length; ++i) {
+        for (List<Entity> entitySlice : this.entitySlices) {
             // CraftBukkit start
-            List<Entity> newList = Lists.newArrayList(this.entitySlices[i]);
-            java.util.Iterator<Entity> iter = newList.iterator();
+            List<Entity> newList = Lists.newArrayList(entitySlice);
+            Iterator<Entity> iter = newList.iterator();
             while (iter.hasNext()) {
                 Entity entity = iter.next();
                 // Spigot Start
-                if ( entity instanceof IInventory )
-                {
-                    for ( org.bukkit.entity.HumanEntity h : Lists.<org.bukkit.entity.HumanEntity>newArrayList( (List<org.bukkit.entity.HumanEntity>) ( (IInventory) entity ).getViewers() ) )
-                    {
-                        if ( h instanceof org.bukkit.craftbukkit.entity.CraftHumanEntity )
-                        {
-                           ( (org.bukkit.craftbukkit.entity.CraftHumanEntity) h).getHandle().closeInventory();
+                if (entity instanceof IInventory) {
+                    for (org.bukkit.entity.HumanEntity h : Lists.<org.bukkit.entity.HumanEntity>newArrayList((List<org.bukkit.entity.HumanEntity>) ((IInventory) entity).getViewers())) {
+                        if (h instanceof org.bukkit.craftbukkit.entity.CraftHumanEntity) {
+                            ((org.bukkit.craftbukkit.entity.CraftHumanEntity) h).getHandle().closeInventory();
                         }
                     }
                 }
@@ -1034,7 +1027,7 @@ public class Chunk {
                 }
             }
 
-            this.world.c((Collection) newList);
+            this.world.c(newList);
             // CraftBukkit end
         }
 
@@ -1043,6 +1036,58 @@ public class Chunk {
     public void e() {
         this.q = true;
     }
+
+    // IonSpigot start - Optimise Entity Collisions
+    public boolean collectEntitiesByAmount(Entity source, AxisAlignedBB axisalignedbb, List<Entity> entities,
+                                           Predicate<? super Entity> by, int amount) {
+        int i = MathHelper.floor((axisalignedbb.b - 2.0D) / 16.0D);
+        int j = MathHelper.floor((axisalignedbb.e + 2.0D) / 16.0D);
+
+        i = MathHelper.clamp(i, 0, this.entitySlices.length - 1);
+        j = MathHelper.clamp(j, 0, this.entitySlices.length - 1);
+
+        for (int k = i; k <= j; ++k) {
+            if (!this.entitySlices[k].isEmpty()) {
+                if (collectEntities(source, axisalignedbb, this.entitySlices[k], entities, by, amount)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean collectEntities(Entity source, AxisAlignedBB axisalignedbb, List<Entity> slice,
+                                    List<Entity> entities, Predicate<? super Entity> by, int amount) {
+        for (int i = 0; i < slice.size(); ++i) {
+            int next = world.random.nextInt(slice.size());
+            Entity entity = slice.get(next);
+
+            if (entity.getBoundingBox().b(axisalignedbb) && entity != source && !entities.contains(entity)) {
+                if (by == null || by.apply(entity)) {
+                    entities.add(entity);
+                }
+
+                Entity[] passengers = entity.aB();
+
+                if (passengers != null) {
+                    for (Entity value : passengers) {
+                        if (value != source && value.getBoundingBox().b(axisalignedbb) && (by == null
+                                || by.apply(value)) && !entities.contains(entity)) {
+                            entities.add(value);
+                        }
+                    }
+                }
+
+                if (entities.size() >= amount) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+    // IonSpigot end
 
     /***
      * adds entities to a list if they are within a box

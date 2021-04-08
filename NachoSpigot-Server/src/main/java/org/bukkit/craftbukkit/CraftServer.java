@@ -127,8 +127,6 @@ import net.md_5.bungee.api.chat.BaseComponent;
 
 public final class CraftServer implements Server {
     private static final Player[] EMPTY_PLAYER_ARRAY = new Player[0];
-    private final String serverName = "CraftBukkit";
-    private final String serverVersion;
     private final String bukkitVersion = Versioning.getBukkitVersion();
     private final Logger logger = Logger.getLogger("Minecraft");
     private final ServicesManager servicesManager = new SimpleServicesManager();
@@ -179,7 +177,6 @@ public final class CraftServer implements Server {
         this.console = console;
         this.playerList = (DedicatedPlayerList) playerList;
         this.playerView = Collections.unmodifiableList(playerList.players.stream().map(EntityPlayer::getBukkitEntity).collect(Collectors.toList()));
-        this.serverVersion = "NachoSpigot";
         online.value = console.getPropertyManager().getBoolean("online-mode", true);
 
         Bukkit.setServer(this);
@@ -395,12 +392,12 @@ public final class CraftServer implements Server {
 
     @Override
     public String getName() {
-        return serverName;
+        return Nacho.exists() ? Nacho.get().getConfig().serverBrandName : "NachoSpigot";
     }
 
     @Override
     public String getVersion() {
-        return serverVersion + " (MC: " + console.getVersion() + ")";
+        return console.getVersion();
     }
 
     @Override
@@ -860,7 +857,7 @@ public final class CraftServer implements Server {
 
     @Override
     public String toString() {
-        return "CraftServer{" + "serverName=" + serverName + ",serverVersion=" + serverVersion + ",minecraftVersion=" + console.getVersion() + '}';
+        return "CraftServer{" + "serverName=" + getName() + ",serverVersion=" + getVersion() + ",minecraftVersion=" + console.getVersion() + '}';
     }
 
     public World createWorld(String name, World.Environment environment) {

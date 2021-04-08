@@ -26,18 +26,18 @@ public class PacketPlayInChat implements Packet<PacketListenerPlayIn> {
         this.a = s;
     }
 
-    public void a(PacketDataSerializer packetdataserializer) throws IOException {
+    public void readPacketData(PacketDataSerializer packetdataserializer) throws IOException {
         this.a = packetdataserializer.c(100);
     }
 
-    public void b(PacketDataSerializer packetdataserializer) throws IOException {
+    public void writePacketData(PacketDataSerializer packetdataserializer) throws IOException {
         packetdataserializer.a(this.a);
     }
 
     // Spigot Start
     private static final java.util.concurrent.ExecutorService executors = java.util.concurrent.Executors.newCachedThreadPool(
             new com.google.common.util.concurrent.ThreadFactoryBuilder().setDaemon( true ).setNameFormat( "Async Chat Thread - #%d" ).build() );
-    public void a(final PacketListenerPlayIn packetlistenerplayin) {
+    public void processPacket(final PacketListenerPlayIn packetlistenerplayin) {
         if ( !a.startsWith("/") )
         {
             executors.submit( new Runnable()

@@ -40,7 +40,7 @@ public class PacketPlayOutTitle implements Packet<PacketListenerPlayOut> {
         this.e = k;
     }
 
-    public void a(PacketDataSerializer packetdataserializer) throws IOException {
+    public void readPacketData(PacketDataSerializer packetdataserializer) throws IOException {
         this.a = (EnumTitleAction) packetdataserializer.a(EnumTitleAction.class);
         if (this.a == EnumTitleAction.TITLE || this.a == EnumTitleAction.SUBTITLE) {
             this.b = packetdataserializer.d();
@@ -54,7 +54,7 @@ public class PacketPlayOutTitle implements Packet<PacketListenerPlayOut> {
 
     }
 
-    public void b(PacketDataSerializer packetdataserializer) throws IOException {
+    public void writePacketData(PacketDataSerializer packetdataserializer) throws IOException {
         packetdataserializer.a((Enum) this.a);
         if (this.a == EnumTitleAction.TITLE || this.a == EnumTitleAction.SUBTITLE) {
             // Paper start
@@ -74,7 +74,7 @@ public class PacketPlayOutTitle implements Packet<PacketListenerPlayOut> {
 
     }
 
-    public void a(PacketListenerPlayOut packetlistenerplayout) {
+    public void processPacket(PacketListenerPlayOut packetlistenerplayout) {
         packetlistenerplayout.a(this);
     }
 

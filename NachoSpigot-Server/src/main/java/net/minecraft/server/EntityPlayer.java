@@ -218,29 +218,23 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
             this.activeContainer = this.defaultContainer;
         }
 
-        while (!this.removeQueue.isEmpty())
-        {
-            int i = Math.min(this.removeQueue.size(), Integer.MAX_VALUE);
-            int[] aint = new int[i];
+        while (!this.removeQueue.isEmpty()) {
+            int i = this.removeQueue.size();
+            int[] i2 = new int[i];
             Iterator<Integer> iterator = this.removeQueue.iterator();
             int j = 0;
-
-            while (iterator.hasNext() && j < i)
-            {
-                aint[j++] = (iterator.next()).intValue();
-                iterator.remove();
+            while (iterator.hasNext() && j < i) {
+                i2[j++] = iterator.next();
             }
-
-            this.playerConnection.sendPacket(new PacketPlayOutEntityDestroy(aint));
+            this.playerConnection.sendPacket(new PacketPlayOutEntityDestroy(i2));
         }
 
-        if (!this.chunkCoordIntPairQueue.isEmpty())
-        {
+        if (!this.chunkCoordIntPairQueue.isEmpty()) {
             ArrayList<Chunk> chunkList = Lists.newArrayList();
             Iterator<ChunkCoordIntPair> chunksToLoad = this.chunkCoordIntPairQueue.iterator();
             ArrayList<TileEntity> tileEntities = Lists.newArrayList();
 
-            Chunk chunk = null;
+            Chunk chunk;
 
             while (chunksToLoad.hasNext() && chunkList.size() < this.world.spigotConfig.maxBulkChunk)
             { // Spigot
@@ -273,11 +267,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
                     this.playerConnection.sendPacket(new PacketPlayOutMapChunkBulk(chunkList));
                 }
 
-                Iterator<TileEntity> tileEntitiesIterator = tileEntities.iterator();
-
-                while (tileEntitiesIterator.hasNext())
-                {
-                    TileEntity tileentity = tileEntitiesIterator.next();
+                for (TileEntity tileentity : tileEntities) {
                     this.a(tileentity);
                 }
 
@@ -300,9 +290,9 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
                 for (Chunk newChunk : chunkList)
                     chunkPosSet.add(this.chunkToLong(newChunk.locX, newChunk.locZ));
 
-                for (EntityTrackerEntry entitytrackerentry : this.u().getTracker().c) {
-                    if (entitytrackerentry.tracker != this && chunkPosSet.contains(this.chunkToLong(entitytrackerentry.tracker.ae, entitytrackerentry.tracker.ag))) {
-                        entitytrackerentry.updatePlayer(this);
+                for (EntityTrackerEntry entry : this.u().getTracker().getTrackedEntities()) {
+                    if (entry.tracker != this && chunkPosSet.contains(this.chunkToLong(entry.tracker.ae, entry.tracker.ag))) {
+                        entry.updatePlayer(this);
                     }
                 }
             }
@@ -472,13 +462,8 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
 
         // we clean the player's inventory after the EntityDeathEvent is called so plugins can get the exact state of the inventory.
         if (!event.getKeepInventory()) {
-            for (int i = 0; i < this.inventory.items.length; ++i) {
-                this.inventory.items[i] = null;
-            }
-
-            for (int i = 0; i < this.inventory.armor.length; ++i) {
-                this.inventory.armor[i] = null;
-            }
+            Arrays.fill(this.inventory.items, null);
+            Arrays.fill(this.inventory.armor, null);
         }
 
         this.closeInventory();
@@ -486,24 +471,17 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
         // CraftBukkit end
 
         // CraftBukkit - Get our scores instead
-        Collection collection = this.world.getServer().getScoreboardManager().getScoreboardScores(IScoreboardCriteria.d, this.getName(), new java.util.ArrayList<ScoreboardScore>());
-        Iterator iterator = collection.iterator();
+        Collection<ScoreboardScore> collection = this.world.getServer().getScoreboardManager().getScoreboardScores(IScoreboardCriteria.d, this.getName(), new java.util.ArrayList<>());
 
-        while (iterator.hasNext()) {
-            ScoreboardScore scoreboardscore = (ScoreboardScore) iterator.next(); // CraftBukkit - Use our scores instead
-
-            scoreboardscore.incrementScore();
+        for (ScoreboardScore score : collection) {
+            score.incrementScore(); // CraftBukkit - Use our scores instead
         }
 
         EntityLiving entityliving = this.bt();
 
         if (entityliving != null) {
-            EntityTypes.MonsterEggInfo entitytypes_monsteregginfo = (EntityTypes.MonsterEggInfo) EntityTypes.eggInfo.get(Integer.valueOf(EntityTypes.a(entityliving)));
-
-            if (entitytypes_monsteregginfo != null) {
-                this.b(entitytypes_monsteregginfo.e);
-            }
-
+            EntityTypes.MonsterEggInfo info = EntityTypes.eggInfo.get(EntityTypes.a(entityliving));
+            if (info != null) this.b(info.e);
             entityliving.b(this, this.aW);
         }
 
@@ -543,7 +521,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
     }
 
     public boolean a(EntityHuman entityhuman) {
-        return !this.cr() ? false : super.a(entityhuman);
+        return this.cr() && super.a(entityhuman);
     }
 
     private boolean cr() {
@@ -621,7 +599,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
         if (entityhuman_enumbedresult == EntityHuman.EnumBedResult.OK) {
             PacketPlayOutBed packetplayoutbed = new PacketPlayOutBed(this, blockposition);
 
-            this.u().getTracker().a((Entity) this, (Packet) packetplayoutbed);
+            this.u().getTracker().a((Entity) this, packetplayoutbed);
             this.playerConnection.a(this.locX, this.locY, this.locZ, this.yaw, this.pitch);
             this.playerConnection.sendPacket(packetplayoutbed);
         }
@@ -1057,7 +1035,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
         // PaperSpigot end
         this.bR = packetplayinsettings.c();
         this.bS = packetplayinsettings.d();
-        this.getDataWatcher().watch(10, Byte.valueOf((byte) packetplayinsettings.e()));
+        this.getDataWatcher().watch(10, (byte) packetplayinsettings.e());
     }
 
     public EntityHuman.EnumChatVisibility getChatFlags() {
@@ -1082,9 +1060,9 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
 
     public void d(Entity entity) {
         if (entity instanceof EntityHuman) {
-            this.playerConnection.sendPacket(new PacketPlayOutEntityDestroy(new int[] { entity.getId()}));
+            this.playerConnection.sendPacket(new PacketPlayOutEntityDestroy(entity.getId()));
         } else {
-            this.removeQueue.add(Integer.valueOf(entity.getId()));
+            this.removeQueue.add(entity.getId());
         }
 
     }

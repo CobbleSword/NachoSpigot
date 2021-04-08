@@ -47,7 +47,7 @@ public class Int3PacketPlayOutWorldEvent extends PacketPlayOutWorldEvent {
     }
 
     @Override
-    public void a(PacketDataSerializer var1) throws IOException {
+    public void readPacketData(PacketDataSerializer var1) throws IOException {
         this.a = var1.readInt();
 
         long i = var1.readLong();
@@ -59,14 +59,14 @@ public class Int3PacketPlayOutWorldEvent extends PacketPlayOutWorldEvent {
         this.d = var1.readBoolean();
     }
 
-    public void b(PacketDataSerializer var1) throws IOException {
+    public void writePacketData(PacketDataSerializer var1) throws IOException {
         var1.writeInt(this.a);
         var1.writeLong(((long) this.blockPosition_x & BlockPosition.h) << BlockPosition.g | ((long) this.blockPosition_y & BlockPosition.i) << BlockPosition.f | ((long) this.blockPosition_z & BlockPosition.j) << 0);
         var1.writeInt(this.c);
         var1.writeBoolean(this.d);
     }
 
-    public void a(PacketListenerPlayOut var1) {
+    public void processPacket(PacketListenerPlayOut var1) {
         var1.a(this);
     }
 }

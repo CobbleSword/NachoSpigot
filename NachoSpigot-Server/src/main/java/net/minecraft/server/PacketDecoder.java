@@ -29,7 +29,7 @@ public class PacketDecoder extends ByteToMessageDecoder {
         if (packet == null)
             throw new IOException("Bad packet id " + packetId);
 
-        packet.a(packetDataHelper);
+        packet.readPacketData(packetDataHelper);
 
         if (packetDataHelper.isReadable())
             throw new IOException("Packet " + ((EnumProtocol)ctx.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get()).a() + "/" + packetId + " (" + packet.getClass().getSimpleName() + ") was larger than I expected, found " + packetDataHelper.readableBytes() + " bytes extra whilst reading packet " + packetId);

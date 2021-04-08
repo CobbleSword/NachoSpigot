@@ -1,9 +1,7 @@
 package net.minecraft.server;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,9 +13,9 @@ import org.bukkit.event.player.PlayerVelocityEvent;
 public class EntityTrackerEntry {
 
     private static final Logger p = LogManager.getLogger();
-    public Entity tracker;
-    public int b; // maxTrackingDistance
-    public int c; // updateInterval
+    public Entity tracker; public Entity getTracker() { return tracker; }
+    public int b; public int maxTrackingDistance() { return b; }
+    public int c; public int updateInterval() { return c; }
     public int xLoc;
     public int yLoc;
     public int zLoc;
@@ -32,12 +30,12 @@ public class EntityTrackerEntry {
     private double posY;
     private double posZ;
     private boolean isMoving;
-    private boolean u; // sendVelocityUpdates
+    private boolean u; public boolean sendVelocityUpdates() { return u; }
     private int ticksSinceLastForcedTeleport;
     private Entity lastRecoredRider;
     private boolean ridingEntity;
     private boolean lastOnGround;
-    public boolean n; // playerEntitiesUpdated
+    public boolean n; public boolean playerEntitiesUpdated() { return n; }
     // PaperSpigot start
     // Replace trackedPlayers Set with a Map. The value is true until the player receives
     // their first update (which is forced to have absolute coordinates), false afterward.
@@ -97,10 +95,10 @@ public class EntityTrackerEntry {
 
             if (itemstack != null && itemstack.getItem() instanceof ItemWorldMap) { // Paper - moved back up
                 WorldMap worldmap = Items.FILLED_MAP.getSavedMap(itemstack, this.tracker.world);
-                Iterator iterator = this.trackedPlayers.iterator(); // CraftBukkit
+                // CraftBukkit
 
-                while (iterator.hasNext()) {
-                    EntityHuman entityhuman = (EntityHuman) iterator.next();
+                for (EntityPlayer trackedPlayer : this.trackedPlayers) {
+                    EntityHuman entityhuman = trackedPlayer;
                     EntityPlayer entityplayer = (EntityPlayer) entityhuman;
 
                     worldmap.a(entityplayer, itemstack);
@@ -161,9 +159,8 @@ public class EntityTrackerEntry {
                         this.lastOnGround = this.tracker.onGround;
                         this.ticksSinceLastForcedTeleport = 0;
                         // CraftBukkit start - Refresh list of who can see a player before sending teleport packet
-                        if (this.tracker instanceof EntityPlayer)
-                        {
-                            this.scanPlayers(new java.util.ArrayList(this.trackedPlayers));
+                        if (this.tracker instanceof EntityPlayer) {
+                            this.scanPlayers(new ArrayList<>(this.trackedPlayers));
 
                             // EDIT: Learning the list makes it thread safe... lol
                             // Nacho start

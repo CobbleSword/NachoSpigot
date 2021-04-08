@@ -94,10 +94,10 @@ public abstract class EntityHuman extends EntityLiving {
 
     protected void h() {
         super.h();
-        this.datawatcher.a(16, Byte.valueOf((byte) 0));
-        this.datawatcher.a(17, Float.valueOf(0.0F));
-        this.datawatcher.a(18, Integer.valueOf(0));
-        this.datawatcher.a(10, Byte.valueOf((byte) 0));
+        this.datawatcher.a(16, (byte) 0);
+        this.datawatcher.a(17, 0.0F);
+        this.datawatcher.a(18, 0);
+        this.datawatcher.a(10, (byte) 0);
     }
 
     public boolean bS() {
