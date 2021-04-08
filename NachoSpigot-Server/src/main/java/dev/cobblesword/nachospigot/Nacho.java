@@ -28,7 +28,7 @@ public class Nacho {
             System.err.println("NachoConfig is null, cannot set server brand name.");
             return;
         }
-        ((CraftServer)Bukkit.getServer()).serverVersion = this.config.serverBrandName;
+        ((CraftServer)Bukkit.getServer()).serverName = this.config.serverBrandName;
     }
 
     public void reloadConfig() {
