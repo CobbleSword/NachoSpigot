@@ -1,7 +1,5 @@
 package net.minecraft.server;
 
-import co.aikar.timings.SpigotTimings;
-import co.aikar.timings.Timing;
 import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.exception.ExploitException;
 import com.google.common.collect.Queues;
@@ -9,12 +7,12 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.netty.channel.*;
 import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.local.LocalChannel;
-import io.netty.channel.local.LocalEventLoopGroup;
 import io.netty.channel.local.LocalServerChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.timeout.TimeoutException;
 import io.netty.util.AttributeKey;
+import io.netty.util.concurrent.AbstractEventExecutor;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import java.net.SocketAddress;
@@ -38,35 +36,32 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     public static final Marker PACKET_MARKER = MarkerManager.getMarker("NETWORK_PACKETS", NetworkManager.ROOT_MARKER);
     public static final AttributeKey<EnumProtocol> ATTRIBUTE_PROTOCOL = AttributeKey.valueOf("protocol");
     public static final AttributeKey<EnumProtocol> c = ATTRIBUTE_PROTOCOL;
-    public static final LazyInitVar NETWORK_WORKER_GROUP = new LazyInitVar()
-    {
+    // Nacho start - gave LazyInitVars a type
+    public static final LazyInitVar<NioEventLoopGroup> NETWORK_WORKER_GROUP = new LazyInitVar<NioEventLoopGroup>() {
         protected NioEventLoopGroup a() {
             return new NioEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Client IO #%d").setDaemon(true).build());
         }
-
-        protected Object init() {
+        protected NioEventLoopGroup init() {
             return this.a();
         }
     };
-    public static final LazyInitVar NETWORK_EPOLL_WORKER_GROUP = new LazyInitVar() {
+    public static final LazyInitVar<EpollEventLoopGroup> NETWORK_EPOLL_WORKER_GROUP = new LazyInitVar<EpollEventLoopGroup>() {
         protected EpollEventLoopGroup a() {
             return new EpollEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Epoll Client IO #%d").setDaemon(true).build());
         }
-
-        protected Object init() {
+        protected EpollEventLoopGroup init() {
             return this.a();
         }
     };
-    //TODO: Should we rename this?
-    public static final LazyInitVar LOCAL_WORKER_GROUP = new LazyInitVar() {
+    public static final LazyInitVar<DefaultEventLoopGroup> LOCAL_WORKER_GROUP = new LazyInitVar<DefaultEventLoopGroup>() {
         protected DefaultEventLoopGroup a() {
             return new DefaultEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Local Client IO #%d").setDaemon(true).build());
         }
-
-        protected Object init() {
+        protected DefaultEventLoopGroup init() {
             return this.a();
         }
     };
+    // Nacho end
 
     private final EnumProtocolDirection h;
     private final Queue<NetworkManager.QueuedPacket> i = Queues.newConcurrentLinkedQueue();
@@ -82,7 +77,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     private IChatBaseComponent n;
     private boolean o; public boolean isEncrypted() { return this.o; } // Nacho - OBFHELPER
     private boolean p; public boolean isDisconnectionHandled() { return this.p; } // Nacho - OBFHELPER
-    public void setDisconnectionHandled(boolean handled) { this.p = handled;} // Nacho - OBFHELPER
+    public void setDisconnectionHandled(boolean handled) { this.p = handled; } // Nacho - OBFHELPER
 
     // Tuinity start - allow controlled flushing
     volatile boolean canFlush = true;
@@ -110,16 +105,16 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     private void flush()
     {
         if (this.channel.eventLoop().inEventLoop()) {
-                this.channel.flush();
-            } else {
-                // [Nacho-0043] Fix ProtocolLib
-                this.channel.eventLoop().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        NetworkManager.this.channel.flush();
-                    }
-                });
-            }
+            this.channel.flush();
+        } else {
+            // [Nacho-0043] Fix ProtocolLib
+            this.channel.eventLoop().execute(new Runnable() {
+                @Override
+                public void run() {
+                    NetworkManager.this.channel.flush();
+                }
+            });
+        }
     }
     // Tuinity end - allow controlled flushing
 
@@ -136,17 +131,20 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         // Spigot End
 
         try {
-            this.a(EnumProtocol.HANDSHAKING);
+            this.setProtocol(EnumProtocol.HANDSHAKING);
         } catch (Throwable throwable) {
             NetworkManager.LOGGER.fatal(throwable);
         }
 
     }
 
-    public void a(EnumProtocol enumprotocol) {
-        this.channel.attr(NetworkManager.ATTRIBUTE_PROTOCOL).set(enumprotocol);
+    public void setProtocol(EnumProtocol protocol) {
+        a(protocol);
+    }
+
+    public void a(EnumProtocol protocol) {
+        this.channel.attr(NetworkManager.ATTRIBUTE_PROTOCOL).set(protocol);
         this.channel.config().setAutoRead(true);
-//        NetworkManager.g.debug("Enabled auto read");
     }
 
     public void channelInactive(ChannelHandlerContext channelhandlercontext) throws Exception {
@@ -245,89 +243,104 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
 
     }
 
-    //
-    public void dispatchPacket(final Packet packet, final GenericFutureListener<? extends Future<? super Void>>[] agenericfuturelistener, Boolean flushConditional)
-    {
+    // Paper / Nacho start
+    public EntityPlayer getPlayer() {
+        if (getPacketListener() instanceof PlayerConnection) {
+            return ((PlayerConnection) getPacketListener()).player;
+        } else {
+            return null;
+        }
+    }
+    // Paper / Nacho end
+
+    public void dispatchPacket(final Packet packet, final GenericFutureListener<? extends Future<? super Void>>[] listeners, Boolean flushConditional) {
         this.packetWrites.getAndIncrement(); // must be before using canFlush
         boolean effectiveFlush = flushConditional == null ? this.canFlush : flushConditional;
         final boolean flush = effectiveFlush || packet instanceof PacketPlayOutKeepAlive || packet instanceof PacketPlayOutKickDisconnect; // no delay for certain packets
-
         final EnumProtocol enumprotocol = EnumProtocol.a(packet);
         final EnumProtocol enumprotocol1 = this.channel.attr(NetworkManager.ATTRIBUTE_PROTOCOL).get();
-
         if (enumprotocol1 != enumprotocol) {
-//            NetworkManager.g.debug("Disabled auto read");
             this.channel.config().setAutoRead(false);
         }
-
-        if (this.channel.eventLoop().inEventLoop())
-        {
-            if (enumprotocol != enumprotocol1)
-            {
-                this.a(enumprotocol);
+        EntityPlayer player = getPlayer();
+        if (this.channel.eventLoop().inEventLoop()) {
+            if (enumprotocol != enumprotocol1) {
+                this.setProtocol(enumprotocol);
             }
-
-//            ChannelFuture channelfuture = this.channel.writeAndFlush(packet);
             ChannelFuture channelfuture = flush ? this.channel.writeAndFlush(packet) : this.channel.write(packet);
-            if (agenericfuturelistener != null)
-            {
-                channelfuture.addListeners(agenericfuturelistener);
+            if (listeners != null) {
+                channelfuture.addListeners(listeners);
             }
-
             channelfuture.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
         }
         else {
-            // [Nacho-0043] Fix ProtocolLib
-            this.channel.eventLoop().execute(new Runnable() {
-                @Override
-                public void run() {
+            // Tuinity start - optimise packets that are not flushed
+            Runnable choice1 = null;
+            AbstractEventExecutor.LazyRunnable choice2 = null;
+            // note: since the type is not dynamic here, we need to actually copy the old executor code
+            // into two branches. On conflict, just re-copy - no changes were made inside the executor code.
+            if (flush) {
+                choice1 = () -> {
                     if (enumprotocol != enumprotocol1) {
-                        NetworkManager.this.a(enumprotocol);
+                        this.setProtocol(enumprotocol);
                     }
-
-                    ChannelFuture channelfuture = flush ? NetworkManager.this.channel.writeAndFlush(packet) : NetworkManager.this.channel.write(packet);
-                    //ChannelFuture channelfuture = NetworkManager.this.channel.writeAndFlush(packet);
-
-                    if (agenericfuturelistener != null) {
-                        channelfuture.addListeners(agenericfuturelistener);
+                    try {
+                        ChannelFuture channelfuture1 = (flush) ? this.channel.writeAndFlush(packet) : this.channel.write(packet); // Tuinity - add flush parameter
+                        if (listeners != null) {
+                            channelfuture1.addListeners(listeners);
+                        }
+                        channelfuture1.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
+                    } catch (Exception e) {
+                        LOGGER.error("NetworkException: " + player, e);
+                        close(new ChatMessage("disconnect.genericReason", "Internal Exception: " + e.getMessage()));;
                     }
-
-                    channelfuture.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
-                }
-            });
+                };
+            } else {
+                // explicitly declare a variable to make the lambda use the type
+                choice2 = () -> {
+                    if (enumprotocol != enumprotocol1) {
+                        this.setProtocol(enumprotocol);
+                    }
+                    try {
+                        // Nacho - why not remove the check below if the check is done above? just code duplication...
+                        // even IntelliJ screamed at me for doing leaving it like that :shrug:
+                        ChannelFuture channelfuture1 = /* (flush) ? this.channel.writeAndFlush(packet) :  */this.channel.write(packet); // Nacho - see above // Tuinity - add flush parameter
+                        if (listeners != null) {
+                            channelfuture1.addListeners(listeners);
+                        }
+                        channelfuture1.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
+                    } catch (Exception e) {
+                        LOGGER.error("NetworkException: " + player, e);
+                        close(new ChatMessage("disconnect.genericReason", "Internal Exception: " + e.getMessage()));;
+                    }
+                };
+            }
+            this.channel.eventLoop().execute(choice1 != null ? choice1 : choice2);
+            // Tuinity end - optimise packets that are not flushed
         }
     }
 
-    private void a(final Packet packet, final GenericFutureListener<? extends Future<? super Void>>[] agenericfuturelistener)
-    {
+    private void a(final Packet packet, final GenericFutureListener<? extends Future<? super Void>>[] agenericfuturelistener) {
         this.dispatchPacket(packet, agenericfuturelistener, Boolean.TRUE);
     }
 
-    private void sendPacketQueue()
-    {
-            if(this.i.isEmpty()) return; // [Nacho-0019] :: Avoid lock every packet send
-            if (this.channel != null && this.channel.isOpen()) {
+    private void sendPacketQueue() {
+        if(this.i.isEmpty()) return; // [Nacho-0019] :: Avoid lock every packet send
+        if (this.channel != null && this.channel.isOpen()) {
             this.j.readLock().lock();
             boolean needsFlush = this.canFlush;
             boolean hasWrotePacket = false;
-
-            try
-            {
+            try {
                 Iterator<QueuedPacket> iterator = this.i.iterator();
                 while (iterator.hasNext()) {
                     QueuedPacket queued = iterator.next();
                     Packet packet = queued.a;
-                    if (hasWrotePacket && (needsFlush || this.canFlush))
-                    {
-                        flush();
-                    }
+                    if (hasWrotePacket && (needsFlush || this.canFlush)) flush();
                     iterator.remove();
                     this.dispatchPacket(packet, queued.b, (!iterator.hasNext() && (needsFlush || this.canFlush)) ? Boolean.TRUE : Boolean.FALSE);
                     hasWrotePacket = true;
                 }
-            }
-            finally
-            {
+            } finally {
                 this.j.readLock().unlock();
             }
         }
@@ -372,8 +385,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         return this.channel instanceof LocalChannel || this.channel instanceof LocalServerChannel;
     }
 
-    public void a(SecretKey secretkey)
-    {
+    public void a(SecretKey secretkey) {
         this.o = true;
         this.channel.pipeline().addBefore("splitter", "decrypt", new PacketDecrypter(MinecraftEncryption.a(2, secretkey)));
         this.channel.pipeline().addBefore("prepender", "encrypt", new PacketEncrypter(MinecraftEncryption.a(1, secretkey)));
