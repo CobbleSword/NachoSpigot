@@ -949,13 +949,13 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
     public void sendPacket(final Packet packet) {
         if (packet instanceof PacketPlayOutChat) {
             PacketPlayOutChat packetplayoutchat = (PacketPlayOutChat) packet;
-            EntityHuman.EnumChatVisibility entityhuman_enumchatvisibility = this.player.getChatFlags();
+            EntityHuman.EnumChatVisibility flags = this.player.getChatFlags();
 
-            if (entityhuman_enumchatvisibility == EntityHuman.EnumChatVisibility.HIDDEN) {
+            if (flags == EntityHuman.EnumChatVisibility.HIDDEN) {
                 return;
             }
 
-            if (entityhuman_enumchatvisibility == EntityHuman.EnumChatVisibility.SYSTEM && !packetplayoutchat.b()) {
+            if (flags == EntityHuman.EnumChatVisibility.SYSTEM && !packetplayoutchat.b()) {
                 return;
             }
         }

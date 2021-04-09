@@ -15,8 +15,10 @@ import org.bukkit.event.block.BlockExplodeEvent;
 
 public class Explosion {
 
+    public static final Random CACHED_RANDOM = new Random();
     private final boolean a;
     private final boolean b;
+    private final Random c = CACHED_RANDOM;
     private final World world;
     private final double posX;
     private final double posY;
@@ -53,45 +55,45 @@ public class Explosion {
         Block b = world.getChunkAt((int)posX >> 4, (int)posZ >> 4).getBlockData(new BlockPosition(posX, posY, posZ)).getBlock(); // TacoSpigot - get block of the explosion
 
         if (!this.world.tacoSpigotConfig.optimizeLiquidExplosions || !b.getMaterial().isLiquid()) { //TacoSpigot - skip calculating what blocks to blow up in water/lava
-        for (int k = 0; k < 16; ++k) {
-            for (i = 0; i < 16; ++i) {
-                for (j = 0; j < 16; ++j) {
-                    if (k == 0 || k == 15 || i == 0 || i == 15 || j == 0 || j == 15) {
-                        double d0 = (double) ((float) k / 15.0F * 2.0F - 1.0F);
-                        double d1 = (double) ((float) i / 15.0F * 2.0F - 1.0F);
-                        double d2 = (double) ((float) j / 15.0F * 2.0F - 1.0F);
-                        double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+            for (int k = 0; k < 16; ++k) {
+                for (i = 0; i < 16; ++i) {
+                    for (j = 0; j < 16; ++j) {
+                        if (k == 0 || k == 15 || i == 0 || i == 15 || j == 0 || j == 15) {
+                            double d0 = (double) ((float) k / 15.0F * 2.0F - 1.0F);
+                            double d1 = (double) ((float) i / 15.0F * 2.0F - 1.0F);
+                            double d2 = (double) ((float) j / 15.0F * 2.0F - 1.0F);
+                            double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
 
-                        d0 /= d3;
-                        d1 /= d3;
-                        d2 /= d3;
-                        float f = this.size * (0.7F + this.world.random.nextFloat() * 0.6F);
-                        double d4 = this.posX;
-                        double d5 = this.posY;
-                        double d6 = this.posZ;
+                            d0 /= d3;
+                            d1 /= d3;
+                            d2 /= d3;
+                            float f = this.size * (0.7F + this.world.random.nextFloat() * 0.6F);
+                            double d4 = this.posX;
+                            double d5 = this.posY;
+                            double d6 = this.posZ;
 
-                        for (float f1 = 0.3F; f > 0.0F; f -= 0.22500001F) {
-                            BlockPosition blockposition = new BlockPosition(d4, d5, d6);
-                            IBlockData iblockdata = this.world.getType(blockposition);
+                            for (float f1 = 0.3F; f > 0.0F; f -= 0.22500001F) {
+                                BlockPosition blockposition = new BlockPosition(d4, d5, d6);
+                                IBlockData iblockdata = this.world.getType(blockposition);
 
-                            if (iblockdata.getBlock().getMaterial() != Material.AIR) {
-                                float f2 = this.source != null ? this.source.a(this, this.world, blockposition, iblockdata) : iblockdata.getBlock().a((Entity) null);
+                                if (iblockdata.getBlock().getMaterial() != Material.AIR) {
+                                    float f2 = this.source != null ? this.source.a(this, this.world, blockposition, iblockdata) : iblockdata.getBlock().a((Entity) null);
 
-                                f -= (f2 + 0.3F) * 0.3F;
+                                    f -= (f2 + 0.3F) * 0.3F;
+                                }
+
+                                if (f > 0.0F && (this.source == null || this.source.a(this, this.world, blockposition, iblockdata, f)) && blockposition.getY() < 256 && blockposition.getY() >= 0) { // CraftBukkit - don't wrap explosions
+                                    hashset.add(blockposition);
+                                }
+
+                                d4 += d0 * 0.30000001192092896D;
+                                d5 += d1 * 0.30000001192092896D;
+                                d6 += d2 * 0.30000001192092896D;
                             }
-
-                            if (f > 0.0F && (this.source == null || this.source.a(this, this.world, blockposition, iblockdata, f)) && blockposition.getY() < 256 && blockposition.getY() >= 0) { // CraftBukkit - don't wrap explosions
-                                hashset.add(blockposition);
-                            }
-
-                            d4 += d0 * 0.30000001192092896D;
-                            d5 += d1 * 0.30000001192092896D;
-                            d6 += d2 * 0.30000001192092896D;
                         }
                     }
                 }
             }
-        }
         }
 
         this.blocks.addAll(hashset);
@@ -247,8 +249,8 @@ public class Explosion {
                     d3 *= d7;
                     d4 *= d7;
                     d5 *= d7;
-                    this.world.addParticle(EnumParticle.EXPLOSION_NORMAL, (d0 + this.posX * 1.0D) / 2.0D, (d1 + this.posY * 1.0D) / 2.0D, (d2 + this.posZ * 1.0D) / 2.0D, d3, d4, d5, new int[0]);
-                    this.world.addParticle(EnumParticle.SMOKE_NORMAL, d0, d1, d2, d3, d4, d5, new int[0]);
+                    this.world.addParticle(EnumParticle.EXPLOSION_NORMAL, (d0 + this.posX) / 2.0D, (d1 + this.posY) / 2.0D, (d2 + this.posZ) / 2.0D, d3, d4, d5);
+                    this.world.addParticle(EnumParticle.SMOKE_NORMAL, d0, d1, d2, d3, d4, d5);
                 }
 
                 if (block.getMaterial() != Material.AIR) {
@@ -268,8 +270,8 @@ public class Explosion {
 
             while (iterator.hasNext()) {
                 blockposition = (BlockPosition) iterator.next();
-                // Nacho - optimize TNT by Lew_x
-                if (this.world.getType(blockposition).getBlock().getMaterial() == Material.AIR && this.world.getType(blockposition.down()).getBlock().o() && this.world.random.nextInt(3) == 0) {
+                // Nacho - revert >> // Nacho - optimize TNT by Lew_x
+                if (this.world.getType(blockposition).getBlock().getMaterial() == Material.AIR && this.world.getType(blockposition.down()).getBlock().o() && this.c.nextInt(3) == 0) {
                     // CraftBukkit start - Ignition by explosion
                     if (!org.bukkit.craftbukkit.event.CraftEventFactory.callBlockIgniteEvent(this.world, blockposition.getX(), blockposition.getY(), blockposition.getZ(), this).isCancelled()) {
                         this.world.setTypeUpdate(blockposition, Blocks.FIRE.getBlockData());
