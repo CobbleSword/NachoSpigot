@@ -1104,13 +1104,19 @@ public class WorldServer extends World implements IAsyncTaskHandler {
     private void ak() {
         while (!this.S[this.T].isEmpty()) {
             int i = this.T;
+
             this.T ^= 1;
-            for (BlockActionData blockactiondata : this.S[i]) {
+            Iterator iterator = this.S[i].iterator();
+
+            while (iterator.hasNext()) {
+                BlockActionData blockactiondata = (BlockActionData) iterator.next();
+
                 if (this.a(blockactiondata)) {
                     // CraftBukkit - this.worldProvider.dimension -> this.dimension
                     this.server.getPlayerList().sendPacketNearby((EntityHuman) null, (double) blockactiondata.a().getX(), (double) blockactiondata.a().getY(), (double) blockactiondata.a().getZ(), 64.0D, this, new PacketPlayOutBlockAction(blockactiondata.a(), blockactiondata.d(), blockactiondata.b(), blockactiondata.c()));
                 }
             }
+
             this.S[i].clear();
         }
 
@@ -1119,7 +1125,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
     private boolean a(BlockActionData blockactiondata) {
         IBlockData iblockdata = this.getType(blockactiondata.a());
 
-        return iblockdata.getBlock() == blockactiondata.d() && iblockdata.getBlock().a(this, blockactiondata.a(), iblockdata, blockactiondata.b(), blockactiondata.c());
+        return iblockdata.getBlock() == blockactiondata.d() ? iblockdata.getBlock().a(this, blockactiondata.a(), iblockdata, blockactiondata.b(), blockactiondata.c()) : false;
     }
 
     public void saveLevel() {

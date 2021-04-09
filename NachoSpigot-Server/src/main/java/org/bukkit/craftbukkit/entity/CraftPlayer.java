@@ -1,7 +1,6 @@
 package org.bukkit.craftbukkit.entity;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.authlib.GameProfile;
 import io.netty.buffer.Unpooled;
@@ -11,7 +10,14 @@ import java.io.IOException;
 import java.lang.Override;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -1631,57 +1637,10 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         return spigot;
     }
 
-    private final NachoPlayer nacho = new NachoPlayer() {
-        @Override
-        public void sendActionBar(String message) {
-            getHandle().playerConnection.sendPacket(new PacketPlayOutChat(new ChatComponentText(message)));
-        }
-        @Override
-        public void jump() {
-            EntityPlayer player = getHandle();
-            double motX = player.motX;
-            double motY = player.motY;
-            double motZ = player.motZ;
-            if (player.hasEffect(MobEffectList.JUMP)) {
-                motY += (float) (player.getEffect(MobEffectList.JUMP).getAmplifier() + 1) * 0.1F;
-            }
-            if (player.isSprinting()) {
-                float f = player.yaw * 0.017453292F;
-                motX -= MathHelper.sin(f) * 0.2F;
-                motZ += MathHelper.cos(f) * 0.2F;
-            }
-            entity.motX = motX;
-            entity.motY = motY;
-            entity.motZ = motZ;
-            entity.velocityChanged = true;
-        }
-    };
-
     @Override
     public NachoPlayer nacho() {
-        return nacho;
+        return null;
     }
-
-    private final Unsafe unsafe = new Unsafe() {
-        @Override
-        public void sendPacket(Object o) {
-            try {
-                if (!Packet.class.isAssignableFrom(o.getClass())) {
-                    throw new IllegalArgumentException("Packet sent does not implement the NMS Packet class!");
-                }
-                Packet packet = (Packet) o;
-                getHandle().playerConnection.sendPacket(packet);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    };
-
-    @Override
-    public Unsafe unsafe() {
-        return unsafe;
-    }
-
     // Spigot end
 
     @Override

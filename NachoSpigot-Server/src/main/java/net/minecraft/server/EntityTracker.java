@@ -13,13 +13,8 @@ public class EntityTracker {
 
     private static final Logger a = LogManager.getLogger();
     private final WorldServer world;
-
     public Set<EntityTrackerEntry> c = Sets.newHashSet();
-    public Set<EntityTrackerEntry> getTrackedEntities() { return c; }
-
     public IntHashMap<EntityTrackerEntry> trackedEntities = new IntHashMap<>();
-    public IntHashMap<EntityTrackerEntry> getTrackedEntityHashTable() { return trackedEntities; }
-
     private int e;
 
     public EntityTracker(WorldServer worldserver) {
@@ -153,25 +148,26 @@ public class EntityTracker {
                 entitytrackerentry.a(entityplayer);
             }
         }
-        EntityTrackerEntry entry = this.trackedEntities.d(entity.getId());
-        if (entry != null) {
-            this.c.remove(entry);
-            entry.a();
+        EntityTrackerEntry entitytrackerentry1 = this.trackedEntities.d(entity.getId());
+        if (entitytrackerentry1 != null) {
+            this.c.remove(entitytrackerentry1);
+            entitytrackerentry1.a();
         }
     }
 
     public void updatePlayers() {
-        ArrayList<EntityPlayer> entities = Lists.newArrayList();
-        for (EntityTrackerEntry entry : this.getTrackedEntities()) {
-            entry.track(this.world.players);
-            if (entry.playerEntitiesUpdated() && entry.getTracker() instanceof EntityPlayer) {
-                entities.add((EntityPlayer) entry.getTracker());
+        ArrayList<Entity> arraylist = Lists.newArrayList();
+        for (EntityTrackerEntry entitytrackerentry : this.c) {
+            entitytrackerentry.track(this.world.players);
+            if (entitytrackerentry.n && entitytrackerentry.tracker instanceof EntityPlayer) {
+                arraylist.add(entitytrackerentry.tracker);
             }
         }
-        for (EntityPlayer entity : entities) {
-            for (EntityTrackerEntry entry : this.getTrackedEntities()) {
-                if (entry.getTracker() != entity) {
-                    entry.updatePlayer(entity);
+        for (Entity entity : arraylist) {
+            EntityPlayer entityplayer = (EntityPlayer) entity;
+            for (EntityTrackerEntry entitytrackerentry1 : this.c) {
+                if (entitytrackerentry1.tracker != entityplayer) {
+                    entitytrackerentry1.updatePlayer(entityplayer);
                 }
             }
         }

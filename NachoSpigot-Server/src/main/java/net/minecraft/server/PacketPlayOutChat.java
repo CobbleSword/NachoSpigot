@@ -19,7 +19,7 @@ public class PacketPlayOutChat implements Packet<PacketListenerPlayOut> {
         this.b = b0;
     }
 
-    public IChatBaseComponent getChatComponent()
+    public IChatBaseComponent getChatComponet()
     {
         return this.a;
     }

@@ -57,9 +57,9 @@ public class EntityBoat extends Entity {
     }
 
     protected void h() {
-        this.datawatcher.a(17, 0);
-        this.datawatcher.a(18, 1);
-        this.datawatcher.a(19, 0.0F);
+        this.datawatcher.a(17, new Integer(0));
+        this.datawatcher.a(18, new Integer(1));
+        this.datawatcher.a(19, new Float(0.0F));
     }
 
     public AxisAlignedBB j(Entity entity) {
@@ -102,7 +102,7 @@ public class EntityBoat extends Entity {
                 Vehicle vehicle = (Vehicle) this.getBukkitEntity();
                 org.bukkit.entity.Entity attacker = (damagesource.getEntity() == null) ? null : damagesource.getEntity().getBukkitEntity();
 
-                VehicleDamageEvent event = new VehicleDamageEvent(vehicle, attacker, f);
+                VehicleDamageEvent event = new VehicleDamageEvent(vehicle, attacker, (double) f);
                 this.world.getServer().getPluginManager().callEvent(event);
 
                 if (event.isCancelled()) {

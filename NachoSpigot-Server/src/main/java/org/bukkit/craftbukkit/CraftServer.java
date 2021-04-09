@@ -127,7 +127,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 
 public final class CraftServer implements Server {
     private static final Player[] EMPTY_PLAYER_ARRAY = new Player[0];
-    public String serverName = "NachoSpigot";
+    private final String serverName;
     private final String serverVersion = "1.8.8";
     private final String bukkitVersion = Versioning.getBukkitVersion();
     private final Logger logger = Logger.getLogger("Minecraft");
@@ -139,7 +139,7 @@ public final class CraftServer implements Server {
     private final PluginManager pluginManager = new SimplePluginManager(this, commandMap);
     protected final MinecraftServer console;
     protected final DedicatedPlayerList playerList;
-    private final Map<String, World> worlds = new LinkedHashMap<>();
+    private final Map<String, World> worlds = new LinkedHashMap<String, World>();
     private YamlConfiguration configuration;
     private YamlConfiguration commandsConfiguration;
     private final Yaml yaml = new Yaml(new SafeConstructor());
@@ -249,7 +249,7 @@ public final class CraftServer implements Server {
         // enablePlugins(PluginLoadOrder.STARTUP);
         // Spigot End
 
-        Nacho.get().setServerName(this);
+        this.serverName = Nacho.get().getConfig().serverBrandName;
     }
 
     public boolean getCommandBlockOverride(String command) {
@@ -411,6 +411,7 @@ public final class CraftServer implements Server {
 
     @Override
     @Deprecated
+    @SuppressWarnings("unchecked")
     public Player[] _INVALID_getOnlinePlayers() {
         return getOnlinePlayers().toArray(EMPTY_PLAYER_ARRAY);
     }
@@ -860,7 +861,7 @@ public final class CraftServer implements Server {
 
     @Override
     public String toString() {
-        return "CraftServer{" + "serverName=" + getName() + ",serverVersion=" + getVersion() + ",minecraftVersion=" + console.getVersion() + '}';
+        return "CraftServer{" + "serverName=" + serverName + ",serverVersion=" + serverVersion + ",minecraftVersion=" + console.getVersion() + '}';
     }
 
     public World createWorld(String name, World.Environment environment) {

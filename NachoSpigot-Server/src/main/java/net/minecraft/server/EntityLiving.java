@@ -1680,21 +1680,29 @@ public abstract class EntityLiving extends Entity {
     protected void doTick() {}
 
     protected void bL() {
-        // IonSpigot start - Optimise Entity Collisions
-        List<Entity> list = this.world.getEntitiesByAmount(this, this.getBoundingBox().grow(0.20000000298023224D, 0.0D, 0.20000000298023224D),
-                input -> IEntitySelector.d.apply(input) && input != null && input.ae(), world.spigotConfig.maxCollisionsPerEntity);
-        // IonSpigot end
+        List list = this.world.a((Entity) this, this.getBoundingBox().grow(0.20000000298023224D, 0.0D, 0.20000000298023224D), Predicates.and(IEntitySelector.d, new Predicate() {
+            public boolean a(Entity entity) {
+                return entity.ae();
+            }
+
+            public boolean apply(Object object) {
+                return this.a((Entity) object);
+            }
+        }));
+
         if (this.ad() && !list.isEmpty()) { // Spigot: Add this.ad() condition
             numCollisions -= world.spigotConfig.maxCollisionsPerEntity; // Spigot
-            for (Entity entity : list) {
-                if (numCollisions > world.spigotConfig.maxCollisionsPerEntity) {
-                    break;
-                } // Spigot
+            for (int i = 0; i < list.size(); ++i) {
+                if (numCollisions > world.spigotConfig.maxCollisionsPerEntity) { break; } // Spigot
+                Entity entity = (Entity) list.get(i);
+
+                // TODO better check now?
                 // CraftBukkit start - Only handle mob (non-player) collisions every other tick
                 if (entity instanceof EntityLiving && !(this instanceof EntityPlayer) && this.ticksLived % 2 == 0) {
                     continue;
                 }
                 // CraftBukkit end
+
                 entity.numCollisions++; // Spigot
                 numCollisions++; // Spigot
                 this.s(entity);
@@ -1757,15 +1765,15 @@ public abstract class EntityLiving extends Entity {
             EntityTracker entitytracker = ((WorldServer) this.world).getTracker();
 
             if (entity instanceof EntityItem) {
-                entitytracker.a(entity, new PacketPlayOutCollect(entity.getId(), this.getId()));
+                entitytracker.a(entity, (Packet) (new PacketPlayOutCollect(entity.getId(), this.getId())));
             }
 
             if (entity instanceof EntityArrow) {
-                entitytracker.a(entity, new PacketPlayOutCollect(entity.getId(), this.getId()));
+                entitytracker.a(entity, (Packet) (new PacketPlayOutCollect(entity.getId(), this.getId())));
             }
 
             if (entity instanceof EntityExperienceOrb) {
-                entitytracker.a(entity, new PacketPlayOutCollect(entity.getId(), this.getId()));
+                entitytracker.a(entity, (Packet) (new PacketPlayOutCollect(entity.getId(), this.getId())));
             }
         }
 
@@ -1840,7 +1848,7 @@ public abstract class EntityLiving extends Entity {
     }
 
     public boolean a(ScoreboardTeamBase scoreboardteambase) {
-        return this.getScoreboardTeam() != null && this.getScoreboardTeam().isAlly(scoreboardteambase);
+        return this.getScoreboardTeam() != null ? this.getScoreboardTeam().isAlly(scoreboardteambase) : false;
     }
 
     public void enterCombat() {}

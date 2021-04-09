@@ -280,7 +280,8 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                 double delta = Math.pow(this.lastPosX - to.getX(), 2) + Math.pow(this.lastPosY - to.getY(), 2) + Math.pow(this.lastPosZ - to.getZ(), 2);
                 float deltaAngle = Math.abs(this.lastYaw - to.getYaw()) + Math.abs(this.lastPitch - to.getPitch());
 
-                if ((delta > 1f / 256 || deltaAngle > 10f) && (this.checkMovement && !this.player.dead)) {
+                if ((delta > 1f / 256 || deltaAngle > 10f) && (this.checkMovement && !this.player.dead))
+                {
                     this.lastPosX = to.getX();
                     this.lastPosY = to.getY();
                     this.lastPosZ = to.getZ();
@@ -288,29 +289,33 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                     this.lastPitch = to.getPitch();
 
                     // Skip the first time we do this
-                    // Spigot - don't skip any move events
-                    Location oldTo = to.clone();
-                    PlayerMoveEvent event = new PlayerMoveEvent(player, from, to);
-                    this.server.getPluginManager().callEvent(event);
+                    if (true) { // Spigot - don't skip any move events
+                        Location oldTo = to.clone();
+                        PlayerMoveEvent event = new PlayerMoveEvent(player, from, to);
+                        this.server.getPluginManager().callEvent(event);
 
-                    // If the event is cancelled we move the player back to their old location.
-                    if (event.isCancelled()) {
-                        this.player.playerConnection.sendPacket(new PacketPlayOutPosition(from.getX(), from.getY(), from.getZ(), from.getYaw(), from.getPitch(), Collections.emptySet()));
-                        return;
-                    }
+                        // If the event is cancelled we move the player back to their old location.
+                        if (event.isCancelled())
+                        {
+                            this.player.playerConnection.sendPacket(new PacketPlayOutPosition(from.getX(), from.getY(), from.getZ(), from.getYaw(), from.getPitch(), Collections.<PacketPlayOutPosition.EnumPlayerTeleportFlags>emptySet()));
+                            return;
+                        }
 
-                    /* If a Plugin has changed the To destination then we teleport the Player
-                    there to avoid any 'Moved wrongly' or 'Moved too quickly' errors.
-                    We only do this if the Event was not cancelled. */
-                    if (!oldTo.equals(event.getTo()) && !event.isCancelled()) {
-                        this.player.getBukkitEntity().teleport(event.getTo(), PlayerTeleportEvent.TeleportCause.UNKNOWN);
-                        return;
-                    }
-                    /* Check to see if the Players Location has some how changed during the call of the event.
-                    This can happen due to a plugin teleporting the player instead of using .setTo() */
-                    if (!from.equals(this.getPlayer().getLocation()) && this.justTeleported) {
-                        this.justTeleported = false;
-                        return;
+                        /* If a Plugin has changed the To destination then we teleport the Player
+                        there to avoid any 'Moved wrongly' or 'Moved too quickly' errors.
+                        We only do this if the Event was not cancelled. */
+                        if (!oldTo.equals(event.getTo()) && !event.isCancelled()) {
+                            this.player.getBukkitEntity().teleport(event.getTo(), PlayerTeleportEvent.TeleportCause.UNKNOWN);
+                            return;
+                        }
+
+                        /* Check to see if the Players Location has some how changed during the call of the event.
+                        This can happen due to a plugin teleporting the player instead of using .setTo() */
+                        if (!from.equals(this.getPlayer().getLocation()) && this.justTeleported)
+                        {
+                            this.justTeleported = false;
+                            return;
+                        }
                     }
                 }
 

@@ -8,7 +8,8 @@ public class AxisAlignedBB {
     public final double e; public double getMaxY() { return e; }
     public final double f; public double getMaxZ() { return f; }
 
-    public AxisAlignedBB(double x1, double y1, double z1, double x2, double y2, double z2) {
+    public AxisAlignedBB(double x1, double y1, double z1, double x2, double y2, double z2)
+    {
         this.a = Math.min(x1, x2);
         this.b = Math.min(y1, y2);
         this.c = Math.min(z1, z2);
@@ -103,8 +104,10 @@ public class AxisAlignedBB {
                 }
             }
 
+            return var2;
+        } else {
+            return var2;
         }
-        return var2;
     }
 
     public double b(AxisAlignedBB var1, double var2) {
@@ -122,8 +125,10 @@ public class AxisAlignedBB {
                 }
             }
 
+            return var2;
+        } else {
+            return var2;
         }
-        return var2;
     }
 
     public double c(AxisAlignedBB var1, double var2) {
@@ -141,8 +146,10 @@ public class AxisAlignedBB {
                 }
             }
 
+            return var2;
+        } else {
+            return var2;
         }
-        return var2;
     }
 
     public boolean contains(AxisAlignedBB var1)

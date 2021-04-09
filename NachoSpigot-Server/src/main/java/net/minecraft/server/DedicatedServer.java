@@ -174,7 +174,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                 this.setPort(this.propertyManager.getInt("server-port", 25565));
             }
             // Spigot start
-            this.a((PlayerList) (new DedicatedPlayerList(this)));
+            this.a(new DedicatedPlayerList(this));
             org.spigotmc.SpigotConfig.init((File) options.valueOf("spigot-settings"));
             org.spigotmc.SpigotConfig.registerCommands();
             // Spigot end
@@ -182,7 +182,6 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
             org.github.paperspigot.PaperSpigotConfig.init((File) options.valueOf("paper-settings"));
             org.github.paperspigot.PaperSpigotConfig.registerCommands();
             // PaperSpigot end
-
             Nacho.get().registerCommands(); //NachoSpigot :: Commands
 
             DedicatedServer.LOGGER.info("Generating keypair");
@@ -265,11 +264,11 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                 this.c(this.propertyManager.getInt("max-build-height", 256));
                 this.c((this.getMaxBuildHeight() + 8) / 16 * 16);
                 this.c(MathHelper.clamp(this.getMaxBuildHeight(), 64, 256));
-                this.propertyManager.setProperty("max-build-height", Integer.valueOf(this.getMaxBuildHeight()));
+                this.propertyManager.setProperty("max-build-height", this.getMaxBuildHeight());
                 DedicatedServer.LOGGER.info("Preparing level \"" + this.U() + "\"");
                 this.a(this.U(), this.U(), k, worldtype, s2);
                 long i1 = System.nanoTime() - j;
-                String s3 = String.format("%.3fs", new Object[] { Double.valueOf((double) i1 / 1.0E9D)});
+                String s3 = String.format("%.3fs", new Object[] {(double) i1 / 1.0E9D});
 
                 DedicatedServer.LOGGER.info("Done (" + s3 + ")! For help, type \"help\" or \"?\"");
                 if (this.propertyManager.getBoolean("enable-query", false)) {

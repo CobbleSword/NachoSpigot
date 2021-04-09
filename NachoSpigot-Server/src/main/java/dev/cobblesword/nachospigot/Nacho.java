@@ -4,10 +4,8 @@ import dev.cobblesword.nachospigot.commons.FileUtils;
 import dev.cobblesword.nachospigot.patches.RuntimePatches;
 import dev.cobblesword.nachospigot.protocol.PacketListener;
 import net.minecraft.server.MinecraftServer;
-import org.bukkit.Bukkit;
 import org.bukkit.command.defaults.nacho.SetMaxSlotCommand;
 import org.bukkit.command.defaults.nacho.SpawnMobCommand;
-import org.bukkit.craftbukkit.CraftServer;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -60,13 +58,5 @@ public class Nacho {
         // Nacho start - [Nacho-0041] Fix block placement
         RuntimePatches.applyViaVersionBlockPatch();
         // Nacho end
-    }
-
-    public void setServerName(CraftServer server) {
-        if (config == null) {
-            System.err.println("NachoConfig is null, cannot set server brand name.");
-            return;
-        }
-        server.serverName = this.config.serverBrandName;
     }
 }

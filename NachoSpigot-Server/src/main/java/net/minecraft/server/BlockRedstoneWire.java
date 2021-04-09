@@ -335,7 +335,7 @@ public class BlockRedstoneWire extends Block {
         boolean flag = block.isOccluding();
         boolean flag1 = iblockaccess.getType(blockposition.up()).getBlock().isOccluding();
 
-        return !flag1 && flag && e(iblockaccess, blockposition1.up()) || (a(iblockdata, enumdirection) ? true : (block == Blocks.POWERED_REPEATER && iblockdata.get(BlockDiodeAbstract.FACING) == enumdirection ? true : !flag && e(iblockaccess, blockposition1.down())));
+        return !flag1 && flag && e(iblockaccess, blockposition1.up()) ? true : (a(iblockdata, enumdirection) ? true : (block == Blocks.POWERED_REPEATER && iblockdata.get(BlockDiodeAbstract.FACING) == enumdirection ? true : !flag && e(iblockaccess, blockposition1.down())));
     }
 
     protected static boolean e(IBlockAccess iblockaccess, BlockPosition blockposition) {

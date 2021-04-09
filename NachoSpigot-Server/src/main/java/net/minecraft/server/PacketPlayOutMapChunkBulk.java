@@ -1,7 +1,5 @@
 package net.minecraft.server;
 
-import org.bukkit.Bukkit;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -72,10 +70,7 @@ public class PacketPlayOutMapChunkBulk implements Packet<PacketListenerPlayOut> 
         }
 
         for (i = 0; i < this.a.length; ++i) {
-            // Nacho - Spigot your AsyncCatcher is trash do it in a proper way please.
-            if (Bukkit.isPrimaryThread()) {
-                world.spigotConfig.antiXrayInstance.obfuscateSync(this.a[i], this.b[i], this.c[i].b, this.c[i].a, world); // Spigot
-            }
+            world.spigotConfig.antiXrayInstance.obfuscate(this.a[i], this.b[i], this.c[i].b, this.c[i].a, world); // Spigot
             packetdataserializer.writeBytes(this.c[i].a);
         }
 

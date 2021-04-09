@@ -32,7 +32,7 @@ import org.bukkit.scheduler.BukkitWorker;
  * <li>Changing the period on a task is delicate.
  *     Any future task needs to notify waiting threads.
  *     Async tasks must be synchronized to make sure that any thread that's finishing will remove itself from {@link #runners}.
- *     Another utility method is provided for this, {@link #cancelTask(CraftTask)}</li>
+ *     Another utility method is provided for this, cancelTask(CraftTask)</li>
  * <li>{@link #runners} provides a moderately up-to-date view of active tasks.
  *     If the linked head to tail set is read, all remaining tasks that were active at the time execution started will be located in runners.</li>
  * <li>Async tasks are responsible for removing themselves from runners</li>
@@ -47,7 +47,7 @@ public class CraftScheduler implements BukkitScheduler {
      */
     private final AtomicInteger ids = new AtomicInteger(1);
     /**
-     * Current head of linked-list. This reference is always stale, {@link CraftTask#next} is the live reference.
+     * Current head of linked-list. This reference is always stale, CraftTask#next is the live reference.
      */
     private volatile CraftTask head = new CraftTask();
     /**
@@ -121,13 +121,13 @@ public class CraftScheduler implements BukkitScheduler {
 
     public BukkitTask runTaskTimer(Plugin plugin, Runnable runnable, long delay, long period) {
         validate(plugin, runnable);
-        if (delay < 0L) {
+        if (delay < 0l) {
             delay = 0;
         }
-        if (period == 0L) {
-            period = 1L;
-        } else if (period < -1L) {
-            period = -1L;
+        if (period == 0l) {
+            period = 1l;
+        } else if (period < -1l) {
+            period = -1l;
         }
         return handle(new CraftTask(plugin, runnable, nextId(), period), delay);
     }
@@ -153,7 +153,7 @@ public class CraftScheduler implements BukkitScheduler {
     public <T> Future<T> callSyncMethod(final Plugin plugin, final Callable<T> task) {
         validate(plugin, task);
         final CraftFuture<T> future = new CraftFuture<T>(task, plugin, nextId());
-        handle(future, 0L);
+        handle(future, 0l);
         return future;
     }
 

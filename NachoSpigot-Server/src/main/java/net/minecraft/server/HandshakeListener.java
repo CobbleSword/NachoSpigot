@@ -24,7 +24,7 @@ public class HandshakeListener implements PacketHandshakingInListener {
     public void a(PacketHandshakingInSetProtocol packethandshakinginsetprotocol) {
         switch (HandshakeListener.SyntheticClass_1.a[packethandshakinginsetprotocol.a().ordinal()]) {
         case 1:
-            this.b.setProtocol(EnumProtocol.LOGIN);
+            this.b.a(EnumProtocol.LOGIN);
             ChatComponentText chatcomponenttext;
 
             // CraftBukkit start - Connection throttle
@@ -97,7 +97,7 @@ public class HandshakeListener implements PacketHandshakingInListener {
             break;
 
         case 2:
-            this.b.setProtocol(EnumProtocol.STATUS);
+            this.b.a(EnumProtocol.STATUS);
             this.b.a(new PacketStatusListener(this.a, this.b));
             break;
 

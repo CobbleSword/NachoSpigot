@@ -665,7 +665,8 @@ public class EntityEnderDragon extends EntityInsentient implements IComplex, IMo
         } else {
             for (BlockState state : event.getBlocks()) {
                 PacketPlayOutBlockChange packet = new PacketPlayOutBlockChange(this.world, new BlockPosition(state.getX(), state.getY(), state.getZ()));
-                for (EntityHuman entity : this.world.players) {
+                for (Iterator it = this.world.players.iterator(); it.hasNext();) {
+                    EntityHuman entity = (EntityHuman) it.next();
                     if (entity instanceof EntityPlayer) {
                         ((EntityPlayer) entity).playerConnection.sendPacket(packet);
                     }

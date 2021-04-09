@@ -1315,7 +1315,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
         }
 
         /**
-         * Gets all players hidden with {@link hidePlayer(org.bukkit.entity.Player)}.
+         * Gets all players hidden with hidePlayer(org.bukkit.entity.Player).
          *
          * @return a Set with all hidden players
          */
@@ -1393,44 +1393,30 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
     Spigot spigot();
     // Spigot end
 
-    class NachoPlayer {
-        /**
-         * Sends an actionbar message to the player
-         * @param message the message
-         */
-        public void sendActionBar(String message) {
-            throw new UnsupportedOperationException("Not supported yet.");
+    public class NachoPlayer
+    {
+        public int sendActionBar(String message)
+        {
+            throw new UnsupportedOperationException( "Not supported yet" );
         }
 
-        /**
-         * Makes the player jump, like a vanilla MC client would do
-         */
-        public void jump() {
-            throw new UnsupportedOperationException("Not supported yet.");
+        public int setTabHeader(String message)
+        {
+            throw new UnsupportedOperationException( "Not supported yet" );
         }
-    }
 
-    /**
-     * Methods added by Nacho to help you make plugins.
-     * @return the nacho class
-     */
-    NachoPlayer nacho();
+        public int setTabFooter(String message)
+        {
+            throw new UnsupportedOperationException( "Not supported yet" );
+        }
 
-    class Unsafe {
-        /**
-         * Send a packet to a player
-         * @param packet the packet to send
-         */
-        public void sendPacket(Object packet) {
-            throw new UnsupportedOperationException("Not supported yet.");
+        public int setTabFooterAndFooter(String header, String footer)
+        {
+            throw new UnsupportedOperationException( "Not supported yet" );
         }
     }
 
-    /**
-     * Unsafe methods, be careful.
-     * @return the unsafe class
-     */
-    Unsafe unsafe();
+    public NachoPlayer nacho();
 
-    double getBlockReach();
+    public double getBlockReach();
 }
