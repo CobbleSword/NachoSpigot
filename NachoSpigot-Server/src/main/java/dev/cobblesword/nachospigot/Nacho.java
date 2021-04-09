@@ -24,11 +24,6 @@ public class Nacho {
         this.config = new NachoConfig();
         while (!CONFIG_FILE.exists()) FileUtils.toFile(this.config, CONFIG_FILE);
         this.config = FileUtils.toObject(CONFIG_FILE, NachoConfig.class);
-        if (config == null) {
-            System.err.println("NachoConfig is null, cannot set server brand name.");
-            return;
-        }
-        ((CraftServer)Bukkit.getServer()).serverName = this.config.serverBrandName;
     }
 
     public void reloadConfig() {
@@ -65,5 +60,13 @@ public class Nacho {
         // Nacho start - [Nacho-0041] Fix block placement
         RuntimePatches.applyViaVersionBlockPatch();
         // Nacho end
+    }
+
+    public void setServerName(CraftServer server) {
+        if (config == null) {
+            System.err.println("NachoConfig is null, cannot set server brand name.");
+            return;
+        }
+        server.serverName = this.config.serverBrandName;
     }
 }

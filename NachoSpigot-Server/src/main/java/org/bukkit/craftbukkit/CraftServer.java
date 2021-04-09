@@ -248,6 +248,8 @@ public final class CraftServer implements Server {
         // loadPlugins();
         // enablePlugins(PluginLoadOrder.STARTUP);
         // Spigot End
+
+        Nacho.get().setServerName(this);
     }
 
     public boolean getCommandBlockOverride(String command) {
