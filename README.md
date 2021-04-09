@@ -8,10 +8,7 @@ Unless other bugs are found, Nacho should now run stable.
 
 **NachoSpigot supports Java 8 to Java 15!**
 
-**Download:** [Click here](https://github.com/Sculas/NachoSpigot/suites/2412771728/artifacts/51422538)
-
-#### Please do not download the latest version for now, use the one above. I am fixing a unknown memory leak that is causing system and server crashes.
-#### Be careful; latest version: ~~[https://nacho.sculas.xyz/](https://nacho.sculas.xyz/)~~
+**Download:** [https://nacho.sculas.xyz/](https://nacho.sculas.xyz/)
 
 I will maintain this version, because the official NachoSpigot is no longer maintained.
 If you know any patches that will help out, please create an issue or better create a PR so I can merge it.
