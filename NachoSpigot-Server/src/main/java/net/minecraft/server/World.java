@@ -2833,6 +2833,29 @@ public abstract class World implements IBlockAccess {
         return null;
     }
 
+    // IonSpigot start - Optimise Entity Collisions
+    public List<Entity> getEntitiesByAmount(Entity entity, AxisAlignedBB axisalignedbb, Predicate<? super Entity> by, int amount) {
+        List<Entity> entities = new ArrayList<>();
+
+        int i = MathHelper.floor((axisalignedbb.a - 2.0D) / 16.0D);
+        int j = MathHelper.floor((axisalignedbb.d + 2.0D) / 16.0D);
+        int k = MathHelper.floor((axisalignedbb.c - 2.0D) / 16.0D);
+        int l = MathHelper.floor((axisalignedbb.f + 2.0D) / 16.0D);
+
+        for (int i1 = i; i1 <= j; ++i1) {
+            for (int j1 = k; j1 <= l; ++j1) {
+                if (this.isChunkLoaded(i1, j1, true)) {
+                    if (this.getChunkAt(i1, j1).collectEntitiesByAmount(entity, axisalignedbb, entities, by, amount)) {
+                        return entities;
+                    }
+                }
+            }
+        }
+
+        return entities;
+    }
+    // IonSpigot end
+
     public List<Entity> getEntities(Entity entity, AxisAlignedBB axisalignedbb) {
         return this.a(entity, axisalignedbb, IEntitySelector.d);
     }

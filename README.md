@@ -111,8 +111,6 @@ To build, clone the repo, and run `mvn clean package` in the NachoSpigot directo
 [Nacho-0044] Fix Citizens
 [Nacho-0045] Async obfuscation
 [Nacho-0046] Add Player#jump and Player#sendActionBar
-[Nacho-0047] Make EntityTrackerEntry#scanPlayers run parallel
-[Nacho-0048] Off-load EntityTracker#updatePlayers to a separate thread
 
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 

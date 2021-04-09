@@ -354,11 +354,9 @@ public class EntityTrackerEntry {
 
     }
 
-    public void updatePlayer(EntityPlayer entityplayer)
-    {
+    public void updatePlayer(EntityPlayer entityplayer) {
         org.spigotmc.AsyncCatcher.catchOp( "player tracker update"); // Spigot
-        if (entityplayer != this.tracker)
-        {
+        if (entityplayer != this.tracker) {
             boolean isPlayerEntityTracked = this.trackedPlayers.contains(entityplayer);
             if (this.c(entityplayer)) {
                 if (!isPlayerEntityTracked && (this.e(entityplayer) || this.tracker.attachedToPlayer)) {
@@ -376,32 +374,27 @@ public class EntityTrackerEntry {
                     Packet packet = this.c();
 
                     entityplayer.playerConnection.sendPacket(packet);
-                    if (!this.tracker.getDataWatcher().d())
-                    {
+                    if (!this.tracker.getDataWatcher().d()) {
                         entityplayer.playerConnection.sendPacket(new PacketPlayOutEntityMetadata(this.tracker.getId(), this.tracker.getDataWatcher(), true));
                     }
 
                     NBTTagCompound nbttagcompound = this.tracker.getNBTTag();
 
-                    if (nbttagcompound != null)
-                    {
+                    if (nbttagcompound != null) {
                         entityplayer.playerConnection.sendPacket(new PacketPlayOutUpdateEntityNBT(this.tracker.getId(), nbttagcompound));
                     }
 
-                    if (this.tracker instanceof EntityLiving)
-                    {
+                    if (this.tracker instanceof EntityLiving) {
                         AttributeMapServer attributemapserver = (AttributeMapServer) ((EntityLiving) this.tracker).getAttributeMap();
-                        Collection collection = attributemapserver.c();
+                        Collection<AttributeInstance> collection = attributemapserver.c();
 
                         // CraftBukkit start - If sending own attributes send scaled health instead of current maximum health
-                        if (this.tracker.getId() == entityplayer.getId())
-                        {
+                        if (this.tracker.getId() == entityplayer.getId()) {
                             ((EntityPlayer) this.tracker).getBukkitEntity().injectScaledMaxHealth(collection, false);
                         }
                         // CraftBukkit end
 
-                        if (!collection.isEmpty())
-                        {
+                        if (!collection.isEmpty()) {
                             entityplayer.playerConnection.sendPacket(new PacketPlayOutUpdateAttributes(this.tracker.getId(), collection));
                         }
                     }
@@ -424,7 +417,6 @@ public class EntityTrackerEntry {
                     if (this.tracker instanceof EntityLiving) {
                         for (int i = 0; i < 5; ++i) {
                             ItemStack itemstack = ((EntityLiving) this.tracker).getEquipment(i);
-
                             if (itemstack != null) {
                                 entityplayer.playerConnection.sendPacket(new PacketPlayOutEntityEquipment(this.tracker.getId(), i, itemstack));
                             }
@@ -433,24 +425,27 @@ public class EntityTrackerEntry {
 
                     if (this.tracker instanceof EntityHuman) {
                         EntityHuman entityhuman = (EntityHuman) this.tracker;
-
                         if (entityhuman.isSleeping()) {
                             entityplayer.playerConnection.sendPacket(new PacketPlayOutBed(entityhuman, new BlockPosition(this.tracker)));
                         }
                     }
 
                     // CraftBukkit start - Fix for nonsensical head yaw
-                    this.lastHeadYaw = MathHelper.d(this.tracker.getHeadRotation() * 256.0F / 360.0F);
-                    this.broadcast(new PacketPlayOutEntityHeadRotation(this.tracker, (byte) lastHeadYaw));
+                    if (this.tracker instanceof EntityLiving) { // SportPaper - avoid processing entities that can't change head rotation
+                        this.lastHeadYaw = MathHelper.d(this.tracker.getHeadRotation() * 256.0F / 360.0F);
+                        // SportPaper start
+                        // This was originally introduced by CraftBukkit, though the implementation is wrong since it's broadcasting
+                        // the packet again in a method that is already called for each player. This would create a very serious performance issue
+                        // with high player and entity counts (each sendPacket call involves waking up the event loop and flushing the network stream).
+                        // this.broadcast(new PacketPlayOutEntityHeadRotation(this.tracker, (byte) lastHeadYaw));
+                        entityplayer.playerConnection.sendPacket(new PacketPlayOutEntityHeadRotation(this.tracker, (byte) lastHeadYaw));
+                        // SportPaper end
+                    }
                     // CraftBukkit end
 
                     if (this.tracker instanceof EntityLiving) {
                         EntityLiving entityliving = (EntityLiving) this.tracker;
-                        Iterator iterator = entityliving.getEffects().iterator();
-
-                        while (iterator.hasNext()) {
-                            MobEffect mobeffect = (MobEffect) iterator.next();
-
+                        for (MobEffect mobeffect : entityliving.getEffects()) {
                             entityplayer.playerConnection.sendPacket(new PacketPlayOutEntityEffect(this.tracker.getId(), mobeffect));
                         }
                     }

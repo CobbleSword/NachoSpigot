@@ -1680,15 +1680,10 @@ public abstract class EntityLiving extends Entity {
     protected void doTick() {}
 
     protected void bL() {
-        List list = this.world.a((Entity) this, this.getBoundingBox().grow(0.20000000298023224D, 0.0D, 0.20000000298023224D), Predicates.and(IEntitySelector.d, new Predicate() {
-            public boolean a(Entity entity) {
-                return entity.ae();
-            }
-
-            public boolean apply(Object object) {
-                return this.a((Entity) object);
-            }
-        }));
+        // IonSpigot start - Optimise Entity Collisions
+        List list = this.world.getEntitiesByAmount(this, this.getBoundingBox().grow(0.20000000298023224D, 0.0D, 0.20000000298023224D),
+                input -> IEntitySelector.d.apply(input) && input != null && input.ae(), world.spigotConfig.maxCollisionsPerEntity);
+        // IonSpigot end
 
         if (this.ad() && !list.isEmpty()) { // Spigot: Add this.ad() condition
             numCollisions -= world.spigotConfig.maxCollisionsPerEntity; // Spigot

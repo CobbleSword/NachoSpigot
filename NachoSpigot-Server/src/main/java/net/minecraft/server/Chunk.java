@@ -1044,6 +1044,58 @@ public class Chunk {
         this.q = true;
     }
 
+    // IonSpigot start - Optimise Entity Collisions
+    public boolean collectEntitiesByAmount(Entity source, AxisAlignedBB axisalignedbb, List<Entity> entities,
+                                           Predicate<? super Entity> by, int amount) {
+        int i = MathHelper.floor((axisalignedbb.b - 2.0D) / 16.0D);
+        int j = MathHelper.floor((axisalignedbb.e + 2.0D) / 16.0D);
+
+        i = MathHelper.clamp(i, 0, this.entitySlices.length - 1);
+        j = MathHelper.clamp(j, 0, this.entitySlices.length - 1);
+
+        for (int k = i; k <= j; ++k) {
+            if (!this.entitySlices[k].isEmpty()) {
+                if (collectEntities(source, axisalignedbb, this.entitySlices[k], entities, by, amount)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean collectEntities(Entity source, AxisAlignedBB axisalignedbb, List<Entity> slice,
+                                    List<Entity> entities, Predicate<? super Entity> by, int amount) {
+        for (int i = 0; i < slice.size(); ++i) {
+            int next = world.random.nextInt(slice.size());
+            Entity entity = slice.get(next);
+
+            if (entity.getBoundingBox().b(axisalignedbb) && entity != source && !entities.contains(entity)) {
+                if (by == null || by.apply(entity)) {
+                    entities.add(entity);
+                }
+
+                Entity[] passengers = entity.aB();
+
+                if (passengers != null) {
+                    for (Entity value : passengers) {
+                        if (value != source && value.getBoundingBox().b(axisalignedbb) && (by == null
+                                || by.apply(value)) && !entities.contains(entity)) {
+                            entities.add(value);
+                        }
+                    }
+                }
+
+                if (entities.size() >= amount) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+    // IonSpigot end
+
     /***
      * adds entities to a list if they are within a box
      *
