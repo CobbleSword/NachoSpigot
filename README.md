@@ -126,6 +126,8 @@ To build, clone the repo, and run `mvn clean package` in the NachoSpigot directo
 [SportPaper-0197] Optimize head rotation patch
 
 [PaperBin-????] WorldServer#everyoneDeeplySleeping optimization
+
+[SportBukkit-????] Fix client-server desync when a player hits an entity while sprinting
 ```
 
 ## Removed

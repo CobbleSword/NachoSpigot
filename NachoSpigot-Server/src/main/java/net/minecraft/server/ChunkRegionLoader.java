@@ -17,8 +17,8 @@ import org.apache.logging.log4j.Logger;
 public class ChunkRegionLoader implements IChunkLoader, IAsyncChunkSaver {
 
     private static final Logger a = LogManager.getLogger();
-    private Map<ChunkCoordIntPair, NBTTagCompound> b = new ConcurrentHashMap();
-    private Set<ChunkCoordIntPair> c = Collections.newSetFromMap(new ConcurrentHashMap());
+    private final Map<ChunkCoordIntPair, NBTTagCompound> b = new ConcurrentHashMap<>();
+    private final Set<ChunkCoordIntPair> c = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final File d;
     private boolean e = false;
 
@@ -27,14 +27,10 @@ public class ChunkRegionLoader implements IChunkLoader, IAsyncChunkSaver {
     }
 
     // CraftBukkit start
-    public boolean chunkExists(World world, int i, int j)
-    {
+    public boolean chunkExists(World world, int i, int j) {
         ChunkCoordIntPair chunkcoordintpair = new ChunkCoordIntPair(i, j);
-
-        if (this.c.contains(chunkcoordintpair))
-        {
-            if (this.b.containsKey(chunkcoordintpair))
-            {
+        if (this.c.contains(chunkcoordintpair)) {
+            if (this.b.containsKey(chunkcoordintpair)) {
                 return true;
             }
         }
@@ -62,7 +58,7 @@ public class ChunkRegionLoader implements IChunkLoader, IAsyncChunkSaver {
     public Object[] loadChunk(World world, int i, int j) throws IOException {
         // CraftBukkit end
         ChunkCoordIntPair chunkcoordintpair = new ChunkCoordIntPair(i, j);
-        NBTTagCompound nbttagcompound = (NBTTagCompound) this.b.get(chunkcoordintpair);
+        NBTTagCompound nbttagcompound = this.b.get(chunkcoordintpair);
 
         if (nbttagcompound == null) {
             DataInputStream datainputstream = RegionFileCache.c(this.d, i, j);
@@ -99,7 +95,7 @@ public class ChunkRegionLoader implements IChunkLoader, IAsyncChunkSaver {
                     NBTTagList tileEntities = nbttagcompound.getCompound("Level").getList("TileEntities", 10);
                     if (tileEntities != null) {
                         for (int te = 0; te < tileEntities.size(); te++) {
-                            NBTTagCompound tileEntity = (NBTTagCompound) tileEntities.get(te);
+                            NBTTagCompound tileEntity = tileEntities.get(te);
                             int x = tileEntity.getInt("x") - chunk.locX * 16;
                             int z = tileEntity.getInt("z") - chunk.locZ * 16;
                             tileEntity.setInt("x", i * 16 + x);
