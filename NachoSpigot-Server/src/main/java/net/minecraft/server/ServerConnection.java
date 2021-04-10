@@ -153,15 +153,14 @@ public class ServerConnection {
             // Spigot Start
             this.addPending(); // Paper
             // This prevents players from 'gaming' the server, and strategically relogging to increase their position in the tick order
-            if ( org.spigotmc.SpigotConfig.playerShuffle > 0 && MinecraftServer.currentTick % org.spigotmc.SpigotConfig.playerShuffle == 0 )
-            {
+            if ( org.spigotmc.SpigotConfig.playerShuffle > 0 && MinecraftServer.currentTick % org.spigotmc.SpigotConfig.playerShuffle == 0 ) {
                 Collections.shuffle( this.h );
             }
             // Spigot End
-            Iterator iterator = this.h.iterator();
+            Iterator<NetworkManager> iterator = this.h.iterator();
 
             while (iterator.hasNext()) {
-                final NetworkManager networkmanager = (NetworkManager) iterator.next();
+                final NetworkManager networkmanager = iterator.next();
 
                 if (!networkmanager.h()) {
                     if (!networkmanager.isConnected()) {
@@ -179,15 +178,7 @@ public class ServerConnection {
                                 CrashReport crashreport = CrashReport.a(exception, "Ticking memory connection");
                                 CrashReportSystemDetails crashreportsystemdetails = crashreport.a("Ticking connection");
 
-                                crashreportsystemdetails.a("Connection", new Callable() {
-                                    public String a() {
-                                        return networkmanager.toString();
-                                    }
-
-                                    public Object call() {
-                                        return this.a();
-                                    }
-                                });
+                                crashreportsystemdetails.a("Connection", networkmanager::toString);
                                 throw new ReportedException(crashreport);
                             }
 

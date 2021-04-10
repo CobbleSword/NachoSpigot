@@ -414,21 +414,19 @@ public abstract class PlayerList {
     public EntityPlayer attemptLogin(LoginListener loginlistener, GameProfile gameprofile, String hostname) {
         // Moved from processLogin
         UUID uuid = EntityHuman.a(gameprofile);
-        ArrayList arraylist = Lists.newArrayList();
+        ArrayList<EntityPlayer> arraylist = Lists.newArrayList();
 
         EntityPlayer entityplayer;
 
-        for (int i = 0; i < this.players.size(); ++i) {
-            entityplayer = (EntityPlayer) this.players.get(i);
+        for (EntityPlayer entityPlayer : this.players) {
+            entityplayer = entityPlayer;
             if (entityplayer.getUniqueID().equals(uuid)) {
                 arraylist.add(entityplayer);
             }
         }
 
-        Iterator iterator = arraylist.iterator();
-
-        while (iterator.hasNext()) {
-            entityplayer = (EntityPlayer) iterator.next();
+        for (EntityPlayer value : arraylist) {
+            entityplayer = value;
             savePlayerFile(entityplayer); // CraftBukkit - Force the player's inventory to be saved
             entityplayer.playerConnection.disconnect("You logged in from another location");
         }
@@ -444,7 +442,7 @@ public abstract class PlayerList {
         String s;
 
         if (getProfileBans().isBanned(gameprofile) && !getProfileBans().get(gameprofile).hasExpired()) {
-            GameProfileBanEntry gameprofilebanentry = (GameProfileBanEntry) this.k.get(gameprofile);
+            GameProfileBanEntry gameprofilebanentry = this.k.get(gameprofile);
 
             s = "You are banned from this server!\nReason: " + gameprofilebanentry.getReason();
             if (gameprofilebanentry.getExpires() != null) {
@@ -674,7 +672,7 @@ public abstract class PlayerList {
         if (exitWorld != null) {
             if ((cause == TeleportCause.END_PORTAL) && (i == 0)) {
                 // THE_END -> NORMAL; use bed if available, otherwise default spawn
-                exit = ((org.bukkit.craftbukkit.entity.CraftPlayer) entityplayer.getBukkitEntity()).getBedSpawnLocation();
+                exit = entityplayer.getBukkitEntity().getBedSpawnLocation();
                 if (exit == null || ((CraftWorld) exit.getWorld()).getHandle().dimension != 0) {
                     exit = exitWorld.getWorld().getSpawnLocation();
                 }

@@ -1465,22 +1465,22 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
     public void a(PacketPlayInClientCommand packetplayinclientcommand) {
         PlayerConnectionUtils.ensureMainThread(packetplayinclientcommand, this, this.player.u());
         this.player.resetIdleTimer();
-        PacketPlayInClientCommand.EnumClientCommand packetplayinclientcommand_enumclientcommand = packetplayinclientcommand.a();
+        PacketPlayInClientCommand.EnumClientCommand command = packetplayinclientcommand.a();
 
-        switch (PlayerConnection.SyntheticClass_1.c[packetplayinclientcommand_enumclientcommand.ordinal()]) {
-        case 1:
+        switch (command) {
+        case PERFORM_RESPAWN:
             if (this.player.viewingCredits) {
                 // this.player = this.minecraftServer.getPlayerList().moveToWorld(this.player, 0, true);
                 this.minecraftServer.getPlayerList().changeDimension(this.player, 0, PlayerTeleportEvent.TeleportCause.END_PORTAL); // CraftBukkit - reroute logic through custom portal management
             } else if (this.player.u().getWorldData().isHardcore()) {
                 if (this.minecraftServer.T() && this.player.getName().equals(this.minecraftServer.S())) {
-                    this.player.playerConnection.disconnect("You have died. Game over, man, it\'s game over!");
+                    this.player.playerConnection.disconnect("You have died. Game over, man, it's game over!");
                     this.minecraftServer.aa();
                 } else {
-                    GameProfileBanEntry gameprofilebanentry = new GameProfileBanEntry(this.player.getProfile(), (Date) null, "(You just lost the game)", (Date) null, "Death in Hardcore");
+                    GameProfileBanEntry gameprofilebanentry = new GameProfileBanEntry(this.player.getProfile(), null, "(You just lost the game)", null, "Death in Hardcore");
 
                     this.minecraftServer.getPlayerList().getProfileBans().add(gameprofilebanentry);
-                    this.player.playerConnection.disconnect("You have died. Game over, man, it\'s game over!");
+                    this.player.playerConnection.disconnect("You have died. Game over, man, it's game over!");
                 }
             } else {
                 if (this.player.getHealth() > 0.0F) {
@@ -1491,12 +1491,12 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
             }
             break;
 
-        case 2:
+        case REQUEST_STATS:
             this.player.getStatisticManager().a(this.player);
             break;
 
-        case 3:
-            this.player.b((Statistic) AchievementList.f);
+        case OPEN_INVENTORY_ACHIEVEMENT:
+            this.player.b(AchievementList.f);
         }
 
     }
@@ -1813,16 +1813,16 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                     this.player.broadcastCarriedItem();
                     this.player.g = false;
                 } else {
-                    this.n.a(this.player.activeContainer.windowId, Short.valueOf(packetplayinwindowclick.d()));
+                    this.n.a(this.player.activeContainer.windowId, packetplayinwindowclick.d());
                     this.player.playerConnection.sendPacket(new PacketPlayOutTransaction(packetplayinwindowclick.a(), packetplayinwindowclick.d(), false));
                     this.player.activeContainer.a(this.player, false);
-                    ArrayList arraylist1 = Lists.newArrayList();
+                    ArrayList<ItemStack> arraylist1 = Lists.newArrayList();
 
                     for (int j = 0; j < this.player.activeContainer.c.size(); ++j) {
-                        arraylist1.add(((Slot) this.player.activeContainer.c.get(j)).getItem());
+                        arraylist1.add(this.player.activeContainer.c.get(j).getItem());
                     }
 
-                    this.player.a(this.player.activeContainer, (List) arraylist1);
+                    this.player.a(this.player.activeContainer, arraylist1);
                 }
             }
         }
@@ -1844,8 +1844,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 
 
 
-    public void a(PacketPlayInSetCreativeSlot packetplayinsetcreativeslot)
-    {
+    public void a(PacketPlayInSetCreativeSlot packetplayinsetcreativeslot) {
         PlayerConnectionUtils.ensureMainThread(packetplayinsetcreativeslot, this, this.player.u());
 
 //        if(creativeSlotCount++ > 10)

@@ -351,8 +351,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         this.sendPacketQueue();
     }
 
-    public void tick()
-    {
+    public void tick() {
         this.sendPacketQueue();
         if (this.m instanceof IUpdatePlayerListBox) {
             ((IUpdatePlayerListBox) this.m).c();
