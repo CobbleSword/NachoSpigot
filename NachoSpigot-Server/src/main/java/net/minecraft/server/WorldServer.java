@@ -963,14 +963,11 @@ public class WorldServer extends World implements IAsyncTaskHandler {
 
             this.chunkProvider.saveChunks(flag, iprogressupdate);
             // CraftBukkit - ArrayList -> Collection
-            Collection arraylist = this.chunkProviderServer.a();
-            Iterator iterator = arraylist.iterator();
+            Collection<Chunk> arraylist = this.chunkProviderServer.a();
 
-            while (iterator.hasNext()) {
-                Chunk chunk = (Chunk) iterator.next();
-
-                if (chunk != null && !this.manager.a(chunk.locX, chunk.locZ)) {
-                    this.chunkProviderServer.queueUnload(chunk.locX, chunk.locZ);
+            for (Chunk value : arraylist) {
+                if (value != null && !this.manager.a(value.locX, value.locZ)) {
+                    this.chunkProviderServer.queueUnload(value.locX, value.locZ);
                 }
             }
 

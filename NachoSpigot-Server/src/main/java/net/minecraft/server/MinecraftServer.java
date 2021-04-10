@@ -1351,14 +1351,14 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     }
 
     public void b(MojangStatisticsGenerator mojangstatisticsgenerator) {
-        mojangstatisticsgenerator.b("singleplayer", Boolean.valueOf(this.T()));
+        mojangstatisticsgenerator.b("singleplayer", this.T());
         mojangstatisticsgenerator.b("server_brand", this.getServerModName());
         mojangstatisticsgenerator.b("gui_supported", GraphicsEnvironment.isHeadless() ? "headless" : "supported");
-        mojangstatisticsgenerator.b("dedicated", Boolean.valueOf(this.ae()));
+        mojangstatisticsgenerator.b("dedicated", this.ae());
     }
 
     public boolean getSnooperEnabled() {
-        return true;
+        return false;
     }
 
     public abstract boolean ae();
