@@ -1010,11 +1010,23 @@ public abstract class EntityHuman extends EntityLiving {
                     boolean flag2 = entity.damageEntity(DamageSource.playerAttack(this), f);
 
                     if (flag2) {
+                        long now = this.world.getTime();
                         if (i > 0) {
-                            entity.g((double) (-MathHelper.sin(this.yaw * 3.1415927F / 180.0F) * (float) i * 0.5F), 0.1D, (double) (MathHelper.cos(this.yaw * 3.1415927F / 180.0F) * (float) i * 0.5F));
-                            this.motX *= 0.6D;
+                            // Implement a 20 tick cooldown for sprint knockback, to compensate for the fix below.
+                            // This is 2x the damage cooldown, so you have to wait twice as long between hits to get the extra KB.
+                            if(this.isSprinting() && this.getBukkitEntity().getLastKnockbackTime() + 20 > now) {
+                                i--;
+                            }
+                            this.getBukkitEntity().setLastKnockbackTime(now);
+                            // CraftBukkit end
+
+                            entity.g(-MathHelper.sin(this.yaw * 3.1415927F / 180.0F) * (float) i * 0.5F, 0.1D, MathHelper.cos(this.yaw * 3.1415927F / 180.0F) * (float) i * 0.5F);
+                            // CraftBukkit start
+                            // Don't try to stop the player's sprint because the client will ignore it if the sprint key is held down
+                            /* this.motX *= 0.6D;
                             this.motZ *= 0.6D;
-                            this.setSprinting(false);
+                            this.setSprinting(false); */
+                            // CraftBukkit end
                         }
 
                         if (entity instanceof EntityPlayer && entity.velocityChanged) {

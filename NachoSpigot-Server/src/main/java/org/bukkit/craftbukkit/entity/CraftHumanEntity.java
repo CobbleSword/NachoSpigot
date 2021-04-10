@@ -35,6 +35,17 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
     private boolean op;
     private GameMode mode;
 
+    // World tick-time when this entity last gave extra knockback to another entity by hitting them while sprinting
+    private long lastKnockbackTime;
+
+    public long getLastKnockbackTime() {
+        return lastKnockbackTime;
+    }
+
+    public void setLastKnockbackTime(long lastKnockbackTime) {
+        this.lastKnockbackTime = lastKnockbackTime;
+    }
+
     public CraftHumanEntity(final CraftServer server, final EntityHuman entity) {
         super(server, entity);
         mode = server.getDefaultGameMode();
