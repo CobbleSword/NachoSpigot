@@ -124,6 +124,8 @@ To build, clone the repo, and run `mvn clean package` in the NachoSpigot directo
 [SportPaper-0043] Get blocks in Chunk API
 [SportPaper-0162] Fix PlayerInteractEvent not cancelling properly
 [SportPaper-0197] Optimize head rotation patch
+
+[PaperBin-????] WorldServer#everyoneDeeplySleeping optimization
 ```
 
 ## Removed

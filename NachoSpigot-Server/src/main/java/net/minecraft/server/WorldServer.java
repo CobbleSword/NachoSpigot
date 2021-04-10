@@ -36,7 +36,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
     public EntityTracker tracker;
     private final PlayerChunkMap manager;
     // private final Set<NextTickListEntry> L = Sets.newHashSet(); // PAIL: Rename nextTickListHash
-    private final HashTreeSet<NextTickListEntry> M = new HashTreeSet<NextTickListEntry>(); // CraftBukkit - HashTreeSet // PAIL: Rename nextTickList
+    private final HashTreeSet<NextTickListEntry> M = new HashTreeSet<>(); // CraftBukkit - HashTreeSet // PAIL: Rename nextTickList
     private final Map<UUID, Entity> entitiesByUUID = Maps.newHashMap();
     public ChunkProviderServer chunkProviderServer;
     public boolean savingDisabled;
@@ -47,7 +47,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
     protected final VillageSiege siegeManager = new VillageSiege(this);
     private WorldServer.BlockActionDataList[] S = new WorldServer.BlockActionDataList[] { new WorldServer.BlockActionDataList(null), new WorldServer.BlockActionDataList(null)};
     private int T;
-    private static final List<StructurePieceTreasure> U = Lists.newArrayList(new StructurePieceTreasure[] { new StructurePieceTreasure(Items.STICK, 0, 1, 3, 10), new StructurePieceTreasure(Item.getItemOf(Blocks.PLANKS), 0, 1, 3, 10), new StructurePieceTreasure(Item.getItemOf(Blocks.LOG), 0, 1, 3, 10), new StructurePieceTreasure(Items.STONE_AXE, 0, 1, 1, 3), new StructurePieceTreasure(Items.WOODEN_AXE, 0, 1, 1, 5), new StructurePieceTreasure(Items.STONE_PICKAXE, 0, 1, 1, 3), new StructurePieceTreasure(Items.WOODEN_PICKAXE, 0, 1, 1, 5), new StructurePieceTreasure(Items.APPLE, 0, 2, 3, 5), new StructurePieceTreasure(Items.BREAD, 0, 2, 3, 3), new StructurePieceTreasure(Item.getItemOf(Blocks.LOG2), 0, 1, 3, 10)});
+    private static final List<StructurePieceTreasure> U = Lists.newArrayList(new StructurePieceTreasure(Items.STICK, 0, 1, 3, 10), new StructurePieceTreasure(Item.getItemOf(Blocks.PLANKS), 0, 1, 3, 10), new StructurePieceTreasure(Item.getItemOf(Blocks.LOG), 0, 1, 3, 10), new StructurePieceTreasure(Items.STONE_AXE, 0, 1, 1, 3), new StructurePieceTreasure(Items.WOODEN_AXE, 0, 1, 1, 5), new StructurePieceTreasure(Items.STONE_PICKAXE, 0, 1, 1, 3), new StructurePieceTreasure(Items.WOODEN_PICKAXE, 0, 1, 1, 5), new StructurePieceTreasure(Items.APPLE, 0, 2, 3, 5), new StructurePieceTreasure(Items.BREAD, 0, 2, 3, 3), new StructurePieceTreasure(Item.getItemOf(Blocks.LOG2), 0, 1, 3, 10));
     private List<NextTickListEntry> V = Lists.newArrayList();
 
     // CraftBukkit start
@@ -281,9 +281,9 @@ public class WorldServer extends World implements IAsyncTaskHandler {
     }
 
     public boolean a(EnumCreatureType enumcreaturetype, BiomeBase.BiomeMeta biomebase_biomemeta, BlockPosition blockposition) {
-        List list = this.N().getMobsFor(enumcreaturetype, blockposition);
+        List<BiomeBase.BiomeMeta> list = this.N().getMobsFor(enumcreaturetype, blockposition);
 
-        return list != null && !list.isEmpty() ? list.contains(biomebase_biomemeta) : false;
+        return list != null && !list.isEmpty() && list.contains(biomebase_biomemeta);
     }
 
     public void everyoneSleeping() {
@@ -291,11 +291,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
         if (!this.players.isEmpty()) {
             int i = 0;
             int j = 0;
-            Iterator iterator = this.players.iterator();
-
-            while (iterator.hasNext()) {
-                EntityHuman entityhuman = (EntityHuman) iterator.next();
-
+            for (EntityHuman entityhuman : this.players) {
                 if (entityhuman.isSpectator()) {
                     ++i;
                 } else if (entityhuman.isSleeping() || entityhuman.fauxSleeping) {
@@ -344,7 +340,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
 
     public boolean everyoneDeeplySleeping() {
         if (this.O && !this.isClientSide) {
-            Iterator iterator = this.players.iterator();
+            Iterator<EntityHuman> iterator = this.players.iterator();
 
             // CraftBukkit - This allows us to assume that some people are in bed but not really, allowing time to pass in spite of AFKers
             boolean foundActualSleepers = false;
@@ -356,7 +352,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
                     return foundActualSleepers;
                 }
 
-                entityhuman = (EntityHuman) iterator.next();
+                entityhuman = iterator.next();
 
                 // CraftBukkit start
                 if (entityhuman.isDeeplySleeping()) {
@@ -365,10 +361,8 @@ public class WorldServer extends World implements IAsyncTaskHandler {
             } while (!entityhuman.isSpectator() || entityhuman.isDeeplySleeping() || entityhuman.fauxSleeping);
             // CraftBukkit end
 
-            return false;
-        } else {
-            return false;
         }
+        return false;
     }
 
     protected void h() {
