@@ -306,16 +306,11 @@ public class WorldServer extends World implements IAsyncTaskHandler {
 
     protected void e() {
         this.O = false;
-        Iterator iterator = this.players.iterator();
-
-        while (iterator.hasNext()) {
-            EntityHuman entityhuman = (EntityHuman) iterator.next();
-
+        for (EntityHuman entityhuman : this.players) {
             if (entityhuman.isSleeping()) {
                 entityhuman.a(false, false, true);
             }
         }
-
         this.ag();
     }
 
@@ -339,7 +334,17 @@ public class WorldServer extends World implements IAsyncTaskHandler {
     }
 
     public boolean everyoneDeeplySleeping() {
-        if (this.O && !this.isClientSide) {
+        // PaperBin start - WorldServer#everyoneDeeplySleeping optimization
+        if (this.players.isEmpty() || this.isClientSide || !this.O) return false;
+        for (EntityHuman player : this.players) {
+            if (!player.isSpectator() && !player.isDeeplySleeping() && !player.fauxSleeping) {
+                return false;
+            }
+        }
+        return true;
+        // PaperBin end
+
+        /*if (this.O && !this.isClientSide) {
             Iterator<EntityHuman> iterator = this.players.iterator();
 
             // CraftBukkit - This allows us to assume that some people are in bed but not really, allowing time to pass in spite of AFKers
@@ -362,7 +367,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
             // CraftBukkit end
 
         }
-        return false;
+        return false;*/
     }
 
     protected void h() {
