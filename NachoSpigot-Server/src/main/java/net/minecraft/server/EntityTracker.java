@@ -153,26 +153,25 @@ public class EntityTracker {
                 entitytrackerentry.a(entityplayer);
             }
         }
-        EntityTrackerEntry entitytrackerentry1 = this.trackedEntities.d(entity.getId());
-        if (entitytrackerentry1 != null) {
-            this.c.remove(entitytrackerentry1);
-            entitytrackerentry1.a();
+        EntityTrackerEntry entry = this.trackedEntities.d(entity.getId());
+        if (entry != null) {
+            this.c.remove(entry);
+            entry.a();
         }
     }
 
     public void updatePlayers() {
-        ArrayList<Entity> arraylist = Lists.newArrayList();
-        for (EntityTrackerEntry entitytrackerentry : this.c) {
-            entitytrackerentry.track(this.world.players);
-            if (entitytrackerentry.n && entitytrackerentry.tracker instanceof EntityPlayer) {
-                arraylist.add(entitytrackerentry.tracker);
+        ArrayList<EntityPlayer> entities = Lists.newArrayList();
+        for (EntityTrackerEntry entry : this.c) {
+            entry.track(this.world.players);
+            if (entry.playerEntitiesUpdated() && entry.getTracker() instanceof EntityPlayer) {
+                entities.add((EntityPlayer) entry.getTracker());
             }
         }
-        for (Entity entity : arraylist) {
-            EntityPlayer entityplayer = (EntityPlayer) entity;
-            for (EntityTrackerEntry entitytrackerentry1 : this.c) {
-                if (entitytrackerentry1.tracker != entityplayer) {
-                    entitytrackerentry1.updatePlayer(entityplayer);
+        for (EntityPlayer entity : entities) {
+            for (EntityTrackerEntry entry : this.c) {
+                if (entry.getTracker() != entity) {
+                    entry.updatePlayer(entity);
                 }
             }
         }
@@ -180,7 +179,7 @@ public class EntityTracker {
 
     public void a(EntityPlayer entityplayer) {
         for (EntityTrackerEntry entitytrackerentry : this.c) {
-            if (entitytrackerentry.tracker == entityplayer) {
+            if (entitytrackerentry.getTracker() == entityplayer) {
                 entitytrackerentry.scanPlayers(this.world.players);
             } else {
                 entitytrackerentry.updatePlayer(entityplayer);
@@ -210,10 +209,11 @@ public class EntityTracker {
     }
 
     public void a(EntityPlayer entityplayer, Chunk chunk) {
-        for (EntityTrackerEntry entitytrackerentry : this.c) {
-            if (entitytrackerentry.tracker != entityplayer && entitytrackerentry.tracker.ae == chunk.locX && entitytrackerentry.tracker.ag == chunk.locZ) {
-                entitytrackerentry.updatePlayer(entityplayer);
-            }
+        for (EntityTrackerEntry entry : this.getTrackedEntities()) {
+            if (entry.getTracker() != entityplayer &&
+                entry.getTracker().getChunkX() == chunk.locX &&
+                entry.getTracker().getChunkZ() == chunk.locZ
+            )   entry.updatePlayer(entityplayer);
         }
     }
 }

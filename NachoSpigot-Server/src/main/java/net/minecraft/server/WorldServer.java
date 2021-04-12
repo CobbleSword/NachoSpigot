@@ -222,7 +222,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
 
         // CraftBukkit start - Only call spawner if we have players online and the world allows for mobs or animals
         long time = this.worldData.getTime();
-        if (this.getGameRules().getBoolean("doMobSpawning") && this.worldData.getType() != WorldType.DEBUG_ALL_BLOCK_STATES && (this.allowMonsters || this.allowAnimals) && (this instanceof WorldServer && this.players.size() > 0)) {
+        if (this.getGameRules().getBoolean("doMobSpawning") && this.worldData.getType() != WorldType.DEBUG_ALL_BLOCK_STATES && (this.allowMonsters || this.allowAnimals) && this.players.size() > 0) {
             timings.mobSpawn.startTiming(); // Spigot
             this.R.a(this, this.allowMonsters && (this.ticksPerMonsterSpawns != 0 && time % this.ticksPerMonsterSpawns == 0L), this.allowAnimals && (this.ticksPerAnimalSpawns != 0 && time % this.ticksPerAnimalSpawns == 0L), this.worldData.getTime() % 400L == 0L);
             timings.mobSpawn.stopTiming(); // Spigot
@@ -615,7 +615,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
             int i = this.M.size();
 
             if (false) { // CraftBukkit
-                throw new IllegalStateException("TickNextTick list out of synch");
+                throw new IllegalStateException("TickNextTick list out of sync");
             } else {
                 // PaperSpigot start - No, stop doing this, it affects things like redstone
                 /*

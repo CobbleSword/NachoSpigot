@@ -1312,42 +1312,41 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     }
 
     public void a(MojangStatisticsGenerator mojangstatisticsgenerator) {
-        mojangstatisticsgenerator.a("whitelist_enabled", Boolean.valueOf(false));
-        mojangstatisticsgenerator.a("whitelist_count", Integer.valueOf(0));
+        mojangstatisticsgenerator.a("whitelist_enabled", Boolean.FALSE);
+        mojangstatisticsgenerator.a("whitelist_count", 0);
         if (this.v != null) {
-            mojangstatisticsgenerator.a("players_current", Integer.valueOf(this.I()));
-            mojangstatisticsgenerator.a("players_max", Integer.valueOf(this.J()));
-            mojangstatisticsgenerator.a("players_seen", Integer.valueOf(this.v.getSeenPlayers().length));
+            mojangstatisticsgenerator.a("players_current", this.I());
+            mojangstatisticsgenerator.a("players_max", this.J());
+            mojangstatisticsgenerator.a("players_seen", this.v.getSeenPlayers().length);
         }
 
-        mojangstatisticsgenerator.a("uses_auth", Boolean.valueOf(this.onlineMode));
+        mojangstatisticsgenerator.a("uses_auth", this.onlineMode);
         mojangstatisticsgenerator.a("gui_state", this.as() ? "enabled" : "disabled");
-        mojangstatisticsgenerator.a("run_time", Long.valueOf((az() - mojangstatisticsgenerator.g()) / 60L * 1000L));
-        mojangstatisticsgenerator.a("avg_tick_ms", Integer.valueOf((int) (MathHelper.a(this.h) * 1.0E-6D)));
+        mojangstatisticsgenerator.a("run_time", (az() - mojangstatisticsgenerator.g()) / 60L * 1000L);
+        mojangstatisticsgenerator.a("avg_tick_ms", (int) (MathHelper.a(this.h) * 1.0E-6D));
         int i = 0;
 
         if (this.worldServer != null) {
             // CraftBukkit start
-            for (int j = 0; j < this.worlds.size(); ++j) {
-                WorldServer worldserver = this.worlds.get(j);
+            for (WorldServer worldserver : this.worlds) {
                 if (worldserver != null) {
                     // CraftBukkit end
                     WorldData worlddata = worldserver.getWorldData();
 
-                    mojangstatisticsgenerator.a("world[" + i + "][dimension]", Integer.valueOf(worldserver.worldProvider.getDimension()));
+                    mojangstatisticsgenerator.a("world[" + i + "][dimension]", worldserver.worldProvider.getDimension());
                     mojangstatisticsgenerator.a("world[" + i + "][mode]", worlddata.getGameType());
                     mojangstatisticsgenerator.a("world[" + i + "][difficulty]", worldserver.getDifficulty());
-                    mojangstatisticsgenerator.a("world[" + i + "][hardcore]", Boolean.valueOf(worlddata.isHardcore()));
+                    mojangstatisticsgenerator.a("world[" + i + "][hardcore]", worlddata.isHardcore());
                     mojangstatisticsgenerator.a("world[" + i + "][generator_name]", worlddata.getType().name());
-                    mojangstatisticsgenerator.a("world[" + i + "][generator_version]", Integer.valueOf(worlddata.getType().getVersion()));
-                    mojangstatisticsgenerator.a("world[" + i + "][height]", Integer.valueOf(this.F));
-                    mojangstatisticsgenerator.a("world[" + i + "][chunks_loaded]", Integer.valueOf(worldserver.N().getLoadedChunks()));
+                    mojangstatisticsgenerator.a("world[" + i + "][generator_version]", worlddata.getType().getVersion());
+                    mojangstatisticsgenerator.a("world[" + i + "][height]", this.F);
+                    mojangstatisticsgenerator.a("world[" + i + "][chunks_loaded]", worldserver.N().getLoadedChunks());
                     ++i;
                 }
             }
         }
 
-        mojangstatisticsgenerator.a("worlds", Integer.valueOf(i));
+        mojangstatisticsgenerator.a("worlds", i);
     }
 
     public void b(MojangStatisticsGenerator mojangstatisticsgenerator) {

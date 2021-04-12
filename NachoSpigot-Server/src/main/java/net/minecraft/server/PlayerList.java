@@ -50,7 +50,7 @@ public abstract class PlayerList {
     private final GameProfileBanList k;
     private final IpBanList l;
     private final OpList operators;
-    private Set<UUID> fastOperator = new HashSet<>();
+    private final Set<UUID> fastOperator = new HashSet<>();
     private final WhiteList whitelist;
     private final Map<UUID, ServerStatisticManager> o;
     public IPlayerFileData playerFileData;
@@ -146,7 +146,7 @@ public abstract class PlayerList {
         WorldData worlddata = worldserver.getWorldData();
         BlockPosition blockposition = worldserver.getSpawn();
 
-        this.a(entityplayer, (EntityPlayer) null, worldserver);
+        this.a(entityplayer, null, worldserver);
         PlayerConnection playerconnection = new PlayerConnection(this.server, networkmanager, entityplayer);
 
         playerconnection.sendPacket(new PacketPlayOutLogin(entityplayer.getId(), entityplayer.playerInteractManager.getGameMode(), worlddata.isHardcore(), worldserver.worldProvider.getDimension(), worldserver.getDifficulty(), Math.min(this.getMaxPlayers(), 60), worlddata.getType(), worldserver.getGameRules().getBoolean("reducedDebugInfo"))); // CraftBukkit - cap player list to 60
@@ -183,11 +183,7 @@ public abstract class PlayerList {
             entityplayer.setResourcePack(this.server.getResourcePack(), this.server.getResourcePackHash());
         }
 
-        Iterator iterator = entityplayer.getEffects().iterator();
-
-        while (iterator.hasNext()) {
-            MobEffect mobeffect = (MobEffect) iterator.next();
-
+        for (MobEffect mobeffect : entityplayer.getEffects()) {
             playerconnection.sendPacket(new PacketPlayOutEntityEffect(entityplayer.getId(), mobeffect));
         }
 
@@ -207,30 +203,19 @@ public abstract class PlayerList {
         PlayerList.f.info(entityplayer.getName() + "[" + s1 + "] logged in with entity id " + entityplayer.getId() + " at ([" + entityplayer.world.worldData.getName() + "]" + entityplayer.locX + ", " + entityplayer.locY + ", " + entityplayer.locZ + ")");
     }
 
-    public void sendScoreboard(ScoreboardServer scoreboardserver, EntityPlayer entityplayer) {
-        HashSet hashset = Sets.newHashSet();
-        Iterator iterator = scoreboardserver.getTeams().iterator();
-
-        while (iterator.hasNext()) {
-            ScoreboardTeam scoreboardteam = (ScoreboardTeam) iterator.next();
-
-            entityplayer.playerConnection.sendPacket(new PacketPlayOutScoreboardTeam(scoreboardteam, 0));
+    public void sendScoreboard(ScoreboardServer scoreboardserver, EntityPlayer player) {
+        HashSet<ScoreboardObjective> objectives = Sets.newHashSet();
+        for (ScoreboardTeam scoreboardteam : scoreboardserver.getTeams()) {
+            player.playerConnection.sendPacket(new PacketPlayOutScoreboardTeam(scoreboardteam, 0));
         }
-
         for (int i = 0; i < 19; ++i) {
-            ScoreboardObjective scoreboardobjective = scoreboardserver.getObjectiveForSlot(i);
-
-            if (scoreboardobjective != null && !hashset.contains(scoreboardobjective)) {
-                List list = scoreboardserver.getScoreboardScorePacketsForObjective(scoreboardobjective);
-                Iterator iterator1 = list.iterator();
-
-                while (iterator1.hasNext()) {
-                    Packet packet = (Packet) iterator1.next();
-
-                    entityplayer.playerConnection.sendPacket(packet);
+            ScoreboardObjective objective = scoreboardserver.getObjectiveForSlot(i);
+            if (objective != null && !objectives.contains(objective)) {
+                List<Packet<PacketListenerPlayOut>> packets = scoreboardserver.getScoreboardScorePacketsForObjective(objective);
+                for (Packet<PacketListenerPlayOut> packet : packets) {
+                    player.playerConnection.sendPacket(packet);
                 }
-
-                hashset.add(scoreboardobjective);
+                objectives.add(objective);
             }
         }
 

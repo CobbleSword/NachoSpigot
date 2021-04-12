@@ -1268,10 +1268,9 @@ public abstract class World implements IBlockAccess {
     }
 
     protected void a(Entity entity) {
-        for (int i = 0; i < this.u.size(); ++i) {
-            ((IWorldAccess) this.u.get(i)).a(entity);
+        for (IWorldAccess iWorldAccess : this.u) {
+            iWorldAccess.a(entity);
         }
-
         entity.valid = true; // CraftBukkit
     }
 

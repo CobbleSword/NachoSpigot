@@ -392,13 +392,13 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
     }
 
     public void a(MojangStatisticsGenerator mojangstatisticsgenerator) {
-        mojangstatisticsgenerator.a("whitelist_enabled", Boolean.valueOf(this.aP().getHasWhitelist()));
-        mojangstatisticsgenerator.a("whitelist_count", Integer.valueOf(this.aP().getWhitelisted().length));
+        mojangstatisticsgenerator.a("whitelist_enabled", this.aP().getHasWhitelist());
+        mojangstatisticsgenerator.a("whitelist_count", this.aP().getWhitelisted().length);
         super.a(mojangstatisticsgenerator);
     }
 
     public boolean getSnooperEnabled() {
-        return this.propertyManager.getBoolean("snooper-enabled", true);
+        return this.propertyManager.getBoolean("snooper-enabled", false);
     }
 
     public void issueCommand(String s, ICommandListener icommandlistener) {
