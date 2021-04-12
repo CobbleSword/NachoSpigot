@@ -43,7 +43,7 @@ public class LoginListener implements PacketLoginInListener, IUpdatePlayerListBo
     private LoginListener.EnumProtocolState g;
     private int h;
     private GameProfile i;
-    private String j;
+    private final String j;
     private SecretKey loginKey;
     private EntityPlayer l;
     public String hostname = ""; // CraftBukkit - add field
@@ -89,24 +89,17 @@ public class LoginListener implements PacketLoginInListener, IUpdatePlayerListBo
     }
 
     // Spigot start
-    public void initUUID()
-    {
+    public void initUUID() {
         UUID uuid;
-        if ( networkManager.spoofedUUID != null )
-        {
+        if (networkManager.spoofedUUID != null) {
             uuid = networkManager.spoofedUUID;
-        } else
-        {
+        } else {
             uuid = UUID.nameUUIDFromBytes( ( "OfflinePlayer:" + this.i.getName() ).getBytes( Charsets.UTF_8 ) );
         }
-
-        this.i = new GameProfile( uuid, this.i.getName() );
-
-        if (networkManager.spoofedProfile != null)
-        {
-            for ( com.mojang.authlib.properties.Property property : networkManager.spoofedProfile )
-            {
-                this.i.getProperties().put( property.getName(), property );
+        this.i = new GameProfile(uuid, this.i.getName());
+        if (networkManager.spoofedProfile != null) {
+            for (com.mojang.authlib.properties.Property property : networkManager.spoofedProfile) {
+                this.i.getProperties().put(property.getName(), property);
             }
         }
     }
@@ -131,14 +124,14 @@ public class LoginListener implements PacketLoginInListener, IUpdatePlayerListBo
             this.g = LoginListener.EnumProtocolState.ACCEPTED;
             if (this.server.aK() >= 0 && !this.networkManager.c()) {
                 this.networkManager.a(new PacketLoginOutSetCompression(this.server.aK()), new ChannelFutureListener() {
-                    public void a(ChannelFuture channelfuture) throws Exception {
+                    public void a(ChannelFuture channelfuture) {
                         LoginListener.this.networkManager.a(LoginListener.this.server.aK());
                     }
 
-                    public void operationComplete(ChannelFuture future) throws Exception { // CraftBukkit - fix decompile error
-                        this.a((ChannelFuture) future);
+                    public void operationComplete(ChannelFuture future) { // CraftBukkit - fix decompile error
+                        this.a(future);
                     }
-                }, new GenericFutureListener[0]);
+                });
             }
 
             this.networkManager.handle(new PacketLoginOutSuccess(this.i));
@@ -159,37 +152,35 @@ public class LoginListener implements PacketLoginInListener, IUpdatePlayerListBo
     }
 
     public String d() {
-        return this.i != null ? this.i.toString() + " (" + this.networkManager.getSocketAddress().toString() + ")" : String.valueOf(this.networkManager.getSocketAddress());
+        return this.i != null ? this.i + " (" + this.networkManager.getSocketAddress().toString() + ")" : String.valueOf(this.networkManager.getSocketAddress());
     }
 
     public void a(PacketLoginInStart packetlogininstart) {
-        Validate.validState(this.g == LoginListener.EnumProtocolState.HELLO, "Unexpected hello packet", new Object[0]);
+        Validate.validState(this.g == LoginListener.EnumProtocolState.HELLO, "Unexpected hello packet");
         this.i = packetlogininstart.a();
         if (this.server.getOnlineMode() && !this.networkManager.c()) {
             this.g = LoginListener.EnumProtocolState.KEY;
             this.networkManager.handle(new PacketLoginOutEncryptionBegin(this.j, this.server.Q().getPublic(), this.e));
         } else {
             // Spigot start
-            initUUID();
-            new Thread(new Runnable() {
-
-                @Override
-                public void run() {
-                    try{
-                        new LoginHandler().fireEvents();
-                    } catch (Exception ex) {
-                        disconnect("Failed to verify username!");
-                        server.server.getLogger().log(java.util.logging.Level.WARNING, "Exception verifying " + i.getName(), ex);
-                    }
+            // Paper start - Cache authenticator threads
+            authenticatorPool.execute(() -> {
+                try {
+                    initUUID();
+                    new LoginHandler().fireEvents();
+                } catch (Exception ex) {
+                    disconnect("Failed to verify username!");
+                    server.server.getLogger().log(Level.WARNING, "Exception verifying " + i.getName(), ex);
                 }
-            }).start();
+            });
+            // Paper end
             // Spigot end
         }
 
     }
 
     public void a(PacketLoginInEncryptionBegin packetlogininencryptionbegin) {
-        Validate.validState(this.g == LoginListener.EnumProtocolState.KEY, "Unexpected key packet", new Object[0]);
+        Validate.validState(this.g == LoginListener.EnumProtocolState.KEY, "Unexpected key packet");
         PrivateKey privatekey = this.server.Q().getPrivate();
 
         if (!Arrays.equals(this.e, packetlogininencryptionbegin.b(privatekey))) {

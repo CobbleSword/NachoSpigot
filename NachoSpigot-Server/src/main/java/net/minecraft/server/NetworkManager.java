@@ -17,6 +17,7 @@ import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import java.net.SocketAddress;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.crypto.SecretKey;
@@ -216,7 +217,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
             this.j.writeLock().lock();
 
             try {
-                this.i.add(new NetworkManager.QueuedPacket(packet, (GenericFutureListener[]) null));
+                this.i.add(new NetworkManager.QueuedPacket(packet));
             } finally {
                 this.j.writeLock().unlock();
             }
@@ -225,15 +226,15 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     }
 
     //sendPacket
-    public void a(Packet packet, GenericFutureListener<? extends Future<? super Void>> genericfuturelistener, GenericFutureListener<? extends Future<? super Void>>... agenericfuturelistener) {
+    public void a(Packet packet, GenericFutureListener<? extends Future<? super Void>> listener, GenericFutureListener<? extends Future<? super Void>>... listeners) {
         if (this.isConnected()) {
             this.sendPacketQueue();
-            this.dispatchPacket(packet, ArrayUtils.insert(0, agenericfuturelistener, genericfuturelistener), Boolean.TRUE);
+            this.dispatchPacket(packet, ArrayUtils.insert(0, listeners, listener), Boolean.TRUE);
         } else {
             this.j.writeLock().lock();
 
             try {
-                this.i.add(new NetworkManager.QueuedPacket(packet, ArrayUtils.insert(0, agenericfuturelistener, genericfuturelistener)));
+                this.i.add(new NetworkManager.QueuedPacket(packet, ArrayUtils.insert(0, listeners, listener)));
             } finally {
                 this.j.writeLock().unlock();
             }
@@ -466,25 +467,23 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext channelhandlercontext, Packet object) throws Exception
-    { // CraftBukkit - fix decompile error
+    protected void channelRead0(ChannelHandlerContext channelhandlercontext, Packet object) throws Exception { // CraftBukkit - fix decompile error
         this.a(channelhandlercontext, object);
     }
 
-    static class QueuedPacket
-    {
+    static class QueuedPacket {
         private final Packet a; //packet
         private final GenericFutureListener<? extends Future<? super Void>>[] b; //listener
 
-        public QueuedPacket(Packet packet, GenericFutureListener<? extends Future<? super Void>>... agenericfuturelistener) {
+        @SafeVarargs
+        public QueuedPacket(Packet packet, GenericFutureListener<? extends Future<? super Void>> ...listeners) {
             this.a = packet;
-            this.b = agenericfuturelistener;
+            this.b = listeners;
         }
     }
 
     // Spigot Start
-    public SocketAddress getRawAddress()
-    {
+    public SocketAddress getRawAddress() {
         return this.channel.remoteAddress();
     }
     // Spigot End
