@@ -238,9 +238,10 @@
                                     <pattern>com.github.benmanes.caffeine</pattern>
                                     <shadedPattern>org.bukkit.craftbukkit.libs.caffeine</shadedPattern>
                                 </relocation>
-
-
-
+                                <relocation>
+                                    <pattern>javassist</pattern>
+                                    <shadedPattern>org.bukkit.craftbukkit.libs.javassist</shadedPattern>
+                                </relocation>
                                 <relocation>
                                     <pattern>net.minecraft.server</pattern>
                                     <shadedPattern>net.minecraft.server.v${minecraft_version}</shadedPattern>
