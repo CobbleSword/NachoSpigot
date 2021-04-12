@@ -22,6 +22,7 @@ import javax.imageio.ImageIO;
 
 import com.eatthepath.uuid.FastUUID;
 import dev.cobblesword.nachospigot.Nacho;
+import dev.cobblesword.nachospigot.malware.AntiMalware;
 import dev.cobblesword.nachospigot.patches.RuntimePatches;
 import net.minecraft.server.*;
 
@@ -289,6 +290,11 @@ public final class CraftServer implements Server {
             Plugin[] plugins = pluginManager.loadPlugins(pluginFolder);
             for (Plugin plugin : plugins) {
                 try {
+                    // Nacho start - [Nacho-0047] Little anti-malware
+                    if (Nacho.get().getConfig().checkForMalware) {
+                        AntiMalware.find(plugin);
+                    }
+                    // Nacho end
                     String message = String.format("Loading %s", plugin.getDescription().getFullName());
                     // Nacho start - [Nacho-0043] Fix ProtocolLib
                     if(plugin.getDescription().getFullName().contains("ProtocolLib") && Nacho.get().getConfig().patchProtocolLib) {
@@ -298,8 +304,6 @@ public final class CraftServer implements Server {
                         } else {
                             Logger.getLogger(CraftServer.class.getName()).log(Level.SEVERE, "An error occurred trying to patch ProtocolLib, the plugin will not work as expected!");
                         }
-                        plugin.getLogger().info(message);
-                        plugin.onLoad();
                     }
                     // Nacho end
                     // Nacho start - [Nacho-0044] Fix Citizens
@@ -310,14 +314,10 @@ public final class CraftServer implements Server {
                         } else {
                             Logger.getLogger(CraftServer.class.getName()).log(Level.SEVERE, "An error occurred trying to patch Citizens, the plugin will not work as expected!");
                         }
-                        plugin.getLogger().info(message);
-                        plugin.onLoad();
                     }
                     // Nacho end
-                    else {
-                        plugin.getLogger().info(message);
-                        plugin.onLoad();
-                    }
+                    plugin.getLogger().info(message);
+                    plugin.onLoad();
                 } catch (Throwable ex) {
                     Logger.getLogger(CraftServer.class.getName()).log(Level.SEVERE, ex.getMessage() + " initializing " + plugin.getDescription().getFullName() + " (Is it up to date?)", ex);
                 }

@@ -9,5 +9,6 @@ public class NachoConfig
     public boolean useFastOperators = false;
     public boolean patchProtocolLib = true;
     public boolean stopNotifyBungee = false;
+    public boolean checkForMalware = false;
     public String serverBrandName = "NachoSpigot";
 }
