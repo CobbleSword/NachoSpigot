@@ -67,7 +67,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     private final ServerPing r = new ServerPing();
     private final Random s = new Random();
     private String serverIp;
-    private int u = -1;
+    private int u = -1; public int getServerPort() { return u; } // Nacho - OBFHELPER
     public WorldServer[] worldServer;
     private PlayerList v;
     private boolean isRunning = true;

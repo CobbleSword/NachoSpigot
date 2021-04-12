@@ -2055,37 +2055,28 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 
     public void a(PacketPlayInCustomPayload packetplayincustompayload) {
         PlayerConnectionUtils.ensureMainThread(packetplayincustompayload, this, this.player.u());
-        if(isExploiter) return;//NachoSpigot - ignore if they have explotied
+        if(isExploiter) return; // NachoSpigot - ignore if they have exploited
         PacketDataSerializer packetdataserializer;
         ItemStack itemstack;
         ItemStack itemstack1;
 
-        try { // CraftBukkit
-            //NachoSpigot
-
+        try {
             try {
                 String channelName = packetplayincustompayload.a();
-                if(channelName.equals("MC|BEdit") || channelName.equals("MC|BSign"))
-                {
-                    if(this.lastCustomPayloadPacketTS == -1L || System.currentTimeMillis() - this.lastCustomPayloadPacketTS > 100)
-                    {
+                if(channelName.equals("MC|BEdit") || channelName.equals("MC|BSign")) {
+                    if(this.lastCustomPayloadPacketTS == -1L || System.currentTimeMillis() - this.lastCustomPayloadPacketTS > 100) {
                         this.lastCustomPayloadPacketTS = System.currentTimeMillis();
-                    }
-                    else
-                    {
+                    } else {
                         throw new IOException("Packet influx");
                     }
-
-                    //Check nbt data here
+                    // TODO Check NBT data here
                 }
-        }
-            catch (Throwable ex)
-        {
-            this.isExploiter = true;
-            System.out.println(this.player.getName() + " has tried to crash the server...");
-            this.disconnect("Chill man, dam!");
-            return;
-        }
+            } catch (Throwable ex) {
+                this.isExploiter = true;
+                System.out.println(this.player.getName() + " has tried to crash the server...");
+                this.disconnect("Chill man, dam!");
+                return;
+            }
 
         if ("MC|BEdit".equals(packetplayincustompayload.a())) {
             if (this.lastBookTick + 20 > MinecraftServer.currentTick) {
@@ -2174,12 +2165,12 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                     ((ContainerMerchant) container).d(i);
                 }
             } catch (Exception exception2) {
-                PlayerConnection.c.error("Couldn\'t select trade", exception2);
+                PlayerConnection.c.error("Couldn't select trade", exception2);
                 this.disconnect("Invalid trade data!"); // CraftBukkit
             }
         } else if ("MC|AdvCdm".equals(packetplayincustompayload.a())) {
             if (!this.minecraftServer.getEnableCommandBlock()) {
-                this.player.sendMessage(new ChatMessage("advMode.notEnabled", new Object[0]));
+                this.player.sendMessage(new ChatMessage("advMode.notEnabled"));
             } else if (this.player.getBukkitEntity().isOp() && this.player.abilities.canInstantlyBuild) { // CraftBukkit - Change to Bukkit OP versus Vanilla OP
                 packetdataserializer = packetplayincustompayload.b();
 

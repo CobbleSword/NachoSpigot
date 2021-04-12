@@ -154,11 +154,9 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     public void exceptionCaught(ChannelHandlerContext channelhandlercontext, Throwable throwable) throws Exception {
         ChatMessage chatmessage;
 
-        if(throwable instanceof DecoderException)
-        {
+        if(throwable instanceof DecoderException) {
             DecoderException decoderException = ((DecoderException) throwable);
-            if(decoderException.getCause() instanceof ExploitException)
-            {
+            if(decoderException.getCause() instanceof ExploitException) {
                 Bukkit.getLogger().warning("Server crash detected...");
                 if(this.getPacketListener() != null && this.getPacketListener() instanceof PlayerConnection) {
                     PlayerConnection playerConnection = (PlayerConnection) this.getPacketListener();

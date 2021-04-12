@@ -66,19 +66,19 @@ public final class SpawnerCreature {
         } else {
             this.b.clear();
             int i = 0;
-            Iterator iterator = worldserver.players.iterator();
+            Iterator<EntityHuman> iterator = worldserver.players.iterator();
 
             int j;
             int k;
 
             while (iterator.hasNext()) {
-                EntityHuman entityhuman = (EntityHuman) iterator.next();
+                EntityHuman entityhuman = iterator.next();
 
                 if (!entityhuman.isSpectator() || !entityhuman.affectsSpawning) { // PaperSpigot
                     int l = MathHelper.floor(entityhuman.locX / 16.0D);
 
                     j = MathHelper.floor(entityhuman.locZ / 16.0D);
-                    byte b0 = 8;
+                    byte b0;
                     // Spigot Start
                     b0 = worldserver.spigotConfig.mobSpawnRange;
                     b0 = ( b0 > worldserver.spigotConfig.viewDistance ) ? (byte) worldserver.spigotConfig.viewDistance : b0;

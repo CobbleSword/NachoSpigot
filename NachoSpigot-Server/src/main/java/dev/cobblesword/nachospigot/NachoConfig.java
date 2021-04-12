@@ -8,5 +8,6 @@ public class NachoConfig
     public boolean enableReloadCommand = true;
     public boolean useFastOperators = false;
     public boolean patchProtocolLib = true;
+    public boolean stopNotifyBungee = false;
     public String serverBrandName = "NachoSpigot";
 }

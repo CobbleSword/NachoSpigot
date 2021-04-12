@@ -11,6 +11,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import dev.cobblesword.nachospigot.Nacho;
+import dev.cobblesword.nachospigot.commons.IPUtils;
 import dev.cobblesword.nachospigot.patches.RuntimePatches;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -212,6 +213,30 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                 if (org.spigotmc.SpigotConfig.bungee) {
                     DedicatedServer.LOGGER.warn("Whilst this makes it possible to use BungeeCord, unless access to your server is properly restricted, it also opens up the ability for hackers to connect with any username they choose.");
                     DedicatedServer.LOGGER.warn("Please see http://www.spigotmc.org/wiki/firewall-guide/ for further information.");
+                    if (!Nacho.get().getConfig().stopNotifyBungee) {
+                        DedicatedServer.LOGGER.warn("---------------------------- NachoSpigot Checker ----------------------------");
+                        DedicatedServer.LOGGER.warn("If you don't want to see this message anymore, set \"stopNotifyBungee\" to \"true\" in \"nacho.json\"!");
+                        DedicatedServer.LOGGER.warn("Checking firewall..");
+                        try {
+                            String external = IPUtils.getExternalAddress();
+                            int port = getServerPort();
+                            DedicatedServer.LOGGER.warn("External IP: " + external);
+                            DedicatedServer.LOGGER.warn("Port: " + port);
+                            if (IPUtils.isAccessible(external, port)) {
+                                DedicatedServer.LOGGER.error("THIS SERVER IS ACCESSIBLE FROM THE OUTSIDE");
+                                DedicatedServer.LOGGER.error("WITHOUT HAVING A PROPER PLUGIN LIKE BUNGEEGUARD INSTALLED");
+                                DedicatedServer.LOGGER.error("EVERYONE WILL BE ABLE TO JOIN THIS SERVER IN AN OFFLINE MODE");
+                                DedicatedServer.LOGGER.error("PLEASE FIX YOUR FIREWALL OR INSTALL A PLUGIN LIKE BUNGEEGUARD");
+                                DedicatedServer.LOGGER.error("AND THEN DISABLE THIS NOTIFICATION IN THE CONFIGURATION FILE");
+                            } else {
+                                DedicatedServer.LOGGER.info("This instance does not seem to be accessible from the internet, good! Continuing..");
+                            }
+                        } catch (Exception e) {
+                            DedicatedServer.LOGGER.error("Could not check firewall..");
+                            e.printStackTrace();
+                        }
+                        DedicatedServer.LOGGER.warn("---------------------------- NachoSpigot Checker ----------------------------");
+                    }
                 } else {
                     DedicatedServer.LOGGER.warn("While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.");
                 }

@@ -173,7 +173,6 @@ public final class CraftChatMessage {
             if(System.currentTimeMillis() - start > 10L) {
                 System.out.println("The player below has tried to crash the server with long lines book exploit");
                 throw new ExploitException("Neutron client, long lined pages, took too long to decode");
-
             }
         }
         return out.toString().replaceFirst("^(" + defaultColor + ")*", "");
