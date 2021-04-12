@@ -64,7 +64,9 @@ public class RuntimePatches {
                 logger.warning(
                         "This patch is a nasty way to patch ProtocolLib, since if an " +
                                 "breaking update is done to the ProtocolInjector this WILL break ProtocolLib. " +
-                                "If you know how to fix this, please make a PR at: https://github.com/Sculas/NachoSpigot"
+                                "Please do note that the latest update on the ProtocolInjector class was made " +
+                                "before 2018, so there shouldn't be anything to worry about. " +
+                                "If you do know how to fix this though, please make a PR at: https://github.com/Sculas/NachoSpigot"
                 );
 
                 ClassPool pool = ClassPool.getDefault();
