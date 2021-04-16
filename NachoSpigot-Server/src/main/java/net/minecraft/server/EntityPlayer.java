@@ -472,13 +472,8 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
 
         // we clean the player's inventory after the EntityDeathEvent is called so plugins can get the exact state of the inventory.
         if (!event.getKeepInventory()) {
-            for (int i = 0; i < this.inventory.items.length; ++i) {
-                this.inventory.items[i] = null;
-            }
-
-            for (int i = 0; i < this.inventory.armor.length; ++i) {
-                this.inventory.armor[i] = null;
-            }
+            Arrays.fill(this.inventory.items, null);
+            Arrays.fill(this.inventory.armor, null);
         }
 
         this.closeInventory();
@@ -486,24 +481,17 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
         // CraftBukkit end
 
         // CraftBukkit - Get our scores instead
-        Collection collection = this.world.getServer().getScoreboardManager().getScoreboardScores(IScoreboardCriteria.d, this.getName(), new java.util.ArrayList<ScoreboardScore>());
-        Iterator iterator = collection.iterator();
+        Collection<ScoreboardScore> collection = this.world.getServer().getScoreboardManager().getScoreboardScores(IScoreboardCriteria.d, this.getName(), new java.util.ArrayList<ScoreboardScore>());
 
-        while (iterator.hasNext()) {
-            ScoreboardScore scoreboardscore = (ScoreboardScore) iterator.next(); // CraftBukkit - Use our scores instead
-
-            scoreboardscore.incrementScore();
+        for (ScoreboardScore o : collection) {
+            o.incrementScore(); // CraftBukkit - Use our scores instead
         }
 
         EntityLiving entityliving = this.bt();
 
         if (entityliving != null) {
-            EntityTypes.MonsterEggInfo entitytypes_monsteregginfo = (EntityTypes.MonsterEggInfo) EntityTypes.eggInfo.get(Integer.valueOf(EntityTypes.a(entityliving)));
-
-            if (entitytypes_monsteregginfo != null) {
-                this.b(entitytypes_monsteregginfo.e);
-            }
-
+            EntityTypes.MonsterEggInfo info = EntityTypes.eggInfo.get(EntityTypes.a(entityliving));
+            if (info != null) this.b(info.e);
             entityliving.b(this, this.aW);
         }
 
@@ -543,7 +531,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
     }
 
     public boolean a(EntityHuman entityhuman) {
-        return !this.cr() ? false : super.a(entityhuman);
+        return this.cr() && super.a(entityhuman);
     }
 
     private boolean cr() {
@@ -555,7 +543,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
         // PaperSpigot start - Allow configurable end portal credits
         boolean endPortal = this.dimension == 1 && i == 1;
         if (endPortal) {
-            this.b((Statistic) AchievementList.D);
+            this.b(AchievementList.D);
             if (!world.paperSpigotConfig.disableEndCredits) {
                 this.world.kill(this);
                 this.viewingCredits = true;
@@ -564,7 +552,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
         // PaperSpigot end
         } else {
             if (this.dimension == 0 && i == 1) {
-                this.b((Statistic) AchievementList.C);
+                this.b(AchievementList.C);
                 // CraftBukkit start - Rely on custom portal management
                 /*
                 BlockPosition blockposition = this.server.getWorldServer(i).getDimensionSpawn();
@@ -596,7 +584,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
     }
 
     public boolean a(EntityPlayer entityplayer) {
-        return entityplayer.isSpectator() ? this.C() == this : (this.isSpectator() ? false : super.a(entityplayer));
+        return entityplayer.isSpectator() ? this.C() == this : (!this.isSpectator() && super.a(entityplayer));
     }
 
     private void a(TileEntity tileentity) {

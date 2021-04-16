@@ -39,11 +39,9 @@ public class SayCommand extends VanillaCommand {
         }
         message.append(ChatColor.LIGHT_PURPLE).append("] ");
 
-        if (args.length > 0) {
-            message.append(args[0]);
-            for (int i = 1; i < args.length; i++) {
-                message.append(" ").append(args[i]);
-            }
+        message.append(args[0]);
+        for (int i = 1; i < args.length; i++) {
+            message.append(" ").append(args[i]);
         }
 
         Bukkit.broadcastMessage(message.toString());

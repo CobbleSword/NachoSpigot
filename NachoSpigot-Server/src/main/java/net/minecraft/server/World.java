@@ -1142,22 +1142,22 @@ public abstract class World implements IBlockAccess {
     }
 
     public void makeSound(Entity entity, String s, float f, float f1) {
-        for (int i = 0; i < this.u.size(); ++i) {
-            ((IWorldAccess) this.u.get(i)).a(s, entity.locX, entity.locY, entity.locZ, f, f1);
+        for (IWorldAccess iWorldAccess : this.u) {
+            iWorldAccess.a(s, entity.locX, entity.locY, entity.locZ, f, f1);
         }
 
     }
 
     public void a(EntityHuman entityhuman, String s, float f, float f1) {
-        for (int i = 0; i < this.u.size(); ++i) {
-            ((IWorldAccess) this.u.get(i)).a(entityhuman, s, entityhuman.locX, entityhuman.locY, entityhuman.locZ, f, f1);
+        for (IWorldAccess iWorldAccess : this.u) {
+            iWorldAccess.a(entityhuman, s, entityhuman.locX, entityhuman.locY, entityhuman.locZ, f, f1);
         }
 
     }
 
     public void makeSound(double d0, double d1, double d2, String s, float f, float f1) {
-        for (int i = 0; i < this.u.size(); ++i) {
-            ((IWorldAccess) this.u.get(i)).a(s, d0, d1, d2, f, f1);
+        for (IWorldAccess iWorldAccess : this.u) {
+            iWorldAccess.a(s, d0, d1, d2, f, f1);
         }
 
     }
@@ -1165,8 +1165,8 @@ public abstract class World implements IBlockAccess {
     public void a(double d0, double d1, double d2, String s, float f, float f1, boolean flag) {}
 
     public void a(BlockPosition blockposition, String s) {
-        for (int i = 0; i < this.u.size(); ++i) {
-            ((IWorldAccess) this.u.get(i)).a(s, blockposition);
+        for (IWorldAccess iWorldAccess : this.u) {
+            iWorldAccess.a(s, blockposition);
         }
 
     }
@@ -1176,8 +1176,8 @@ public abstract class World implements IBlockAccess {
     }
 
     private void a(int i, boolean flag, double d0, double d1, double d2, double d3, double d4, double d5, int... aint) {
-        for (int j = 0; j < this.u.size(); ++j) {
-            ((IWorldAccess) this.u.get(j)).a(i, flag, d0, d1, d2, d3, d4, d5, aint);
+        for (IWorldAccess iWorldAccess : this.u) {
+            iWorldAccess.a(i, flag, d0, d1, d2, d3, d4, d5, aint);
         }
 
     }

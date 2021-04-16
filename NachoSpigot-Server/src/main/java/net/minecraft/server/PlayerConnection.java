@@ -1020,12 +1020,12 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
     public void a(PacketPlayInChat packetplayinchat) {
         // CraftBukkit start - async chat
         boolean isSync = packetplayinchat.a().startsWith("/");
-        if (packetplayinchat.a().startsWith("/")) {
+        if (isSync) /* bruh */ {
             PlayerConnectionUtils.ensureMainThread(packetplayinchat, this, this.player.u());
         }
         // CraftBukkit end
-        if (this.player.dead || this.player.getChatFlags() == EntityHuman.EnumChatVisibility.HIDDEN) { // CraftBukkit - dead men tell no tales
-            ChatMessage chatmessage = new ChatMessage("chat.cannotSend", new Object[0]);
+        if (this.player.dead || this.player.getChatFlags() == EntityHuman.EnumChatVisibility.HIDDEN) { // CraftBukkit - dead men tell no tales // i like that one, approved
+            ChatMessage chatmessage = new ChatMessage("chat.cannotSend");
 
             chatmessage.getChatModifier().setColor(EnumChatFormat.RED);
             this.sendPacket(new PacketPlayOutChat(chatmessage));
@@ -1226,8 +1226,8 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                 s = String.format(event.getFormat(), event.getPlayer().getDisplayName(), event.getMessage());
                 minecraftServer.console.sendMessage(s);
                 if (((LazyPlayerSet) event.getRecipients()).isLazy()) {
-                    for (Object recipient : minecraftServer.getPlayerList().players) {
-                        ((EntityPlayer) recipient).sendMessage(CraftChatMessage.fromString(s));
+                    for (EntityPlayer recipient : minecraftServer.getPlayerList().players) {
+                        recipient.sendMessage(CraftChatMessage.fromString(s));
                     }
                 } else {
                     for (Player recipient : event.getRecipients()) {

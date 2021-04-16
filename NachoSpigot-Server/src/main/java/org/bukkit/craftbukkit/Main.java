@@ -34,12 +34,10 @@ public class Main {
         try {
             if(!SystemUtils.IS_JAVA_15) {
                 System.err.println("It seems like you are not using Java 15!");
-                System.err.println("I won't shut down because of this, but please do know that this might cause issues if you use Java 8 for example.");
+                System.out.println("The use of Java 15 is strongly recommended.");
             }
         } catch (Exception ignored) {
-            System.err.println("Failed to get Java version!");
-        } finally {
-            System.out.println("The use of Java 15 is strongly recommended.");
+            System.err.println("Failed to get Java version! Continuing either way..");
         }
         OptionParser parser = new OptionParser() {
             {

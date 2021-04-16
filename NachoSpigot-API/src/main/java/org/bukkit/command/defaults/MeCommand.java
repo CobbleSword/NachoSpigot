@@ -29,7 +29,7 @@ public class MeCommand extends VanillaCommand {
             message.append(arg);
         }
 
-        Bukkit.broadcastMessage("* " + message.toString());
+        Bukkit.broadcastMessage("* " + message);
 
         return true;
     }
