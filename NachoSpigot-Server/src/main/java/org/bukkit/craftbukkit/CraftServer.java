@@ -156,7 +156,7 @@ public final class CraftServer implements Server {
     public int chunkGCLoadThresh = 0;
     private File container;
     private WarningState warningState = WarningState.DEFAULT;
-    private final BooleanWrapper online = new BooleanWrapper();
+    private final BooleanWrapper online = new org.bukkit.craftbukkit.CraftServer.BooleanWrapper();
     public CraftScoreboardManager scoreboardManager;
     public boolean playerCommandState;
     private boolean printSaveWarning;
@@ -179,7 +179,7 @@ public final class CraftServer implements Server {
     public CraftServer(MinecraftServer console, PlayerList playerList) {
         this.console = console;
         this.playerList = (DedicatedPlayerList) playerList;
-        this.playerView = Collections.unmodifiableList(playerList.players.stream().map(EntityPlayer::getBukkitEntity).collect(Collectors.toList()));
+        this.playerView = Collections.unmodifiableList(Lists.transform(playerList.players, net.minecraft.server.EntityPlayer::getBukkitEntity));
         online.value = console.getPropertyManager().getBoolean("online-mode", true);
 
         Bukkit.setServer(this);
