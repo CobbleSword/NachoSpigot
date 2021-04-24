@@ -141,6 +141,4 @@ To build, clone the repo, and run `mvn clean package` in the NachoSpigot directo
 
 ## Supporters
 
-[Henry Lanier](youtube.com/channel/UCYKmXuEo1ZVMzvsWwaBeBwQ) (MILDJELLYo#9091)
-
 [Lucas (aka Sculas)](https://sculas.xyz/)
