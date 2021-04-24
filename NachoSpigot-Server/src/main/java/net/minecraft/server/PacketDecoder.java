@@ -19,20 +19,19 @@ public class PacketDecoder extends ByteToMessageDecoder {
         this.c = var1;
     }
 
-    protected void decode(ChannelHandlerContext ctx , ByteBuf in, List<Object> out) throws Exception
-    {
+    protected void decode(ChannelHandlerContext ctx , ByteBuf in, List<Object> out) throws Exception {
         if (!in.isReadable()) return;
 
         PacketDataSerializer packetDataHelper = new PacketDataSerializer(in);
         int packetId = packetDataHelper.e();
-        Packet packet = ((EnumProtocol) ctx.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get()).a(this.c, packetId);
+        Packet packet = ctx.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get().a(this.c, packetId);
         if (packet == null)
             throw new IOException("Bad packet id " + packetId);
 
         packet.a(packetDataHelper);
 
         if (packetDataHelper.isReadable())
-            throw new IOException("Packet " + ((EnumProtocol)ctx.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get()).a() + "/" + packetId + " (" + packet.getClass().getSimpleName() + ") was larger than I expected, found " + packetDataHelper.readableBytes() + " bytes extra whilst reading packet " + packetId);
+            throw new IOException("Packet " + ctx.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get().a() + "/" + packetId + " (" + packet.getClass().getSimpleName() + ") was larger than I expected, found " + packetDataHelper.readableBytes() + " bytes extra whilst reading packet " + packetId);
         out.add(packet);
     }
 

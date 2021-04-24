@@ -55,7 +55,7 @@ public class ChunkProviderServer implements IChunkProvider {
     }
 
     // CraftBukkit start - Change return type to Collection and return the values of our chunk map
-    public java.util.Collection a() {
+    public java.util.Collection<Chunk> a() {
         // return this.chunkList;
         return this.chunks.values();
         // CraftBukkit end

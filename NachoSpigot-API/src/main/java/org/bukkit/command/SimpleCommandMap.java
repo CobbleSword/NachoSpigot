@@ -20,7 +20,7 @@ import org.bukkit.util.StringUtil;
 
 public class SimpleCommandMap implements CommandMap {
     private static final Pattern PATTERN_ON_SPACE = Pattern.compile(" ", Pattern.LITERAL);
-    protected final Map<String, Command> knownCommands = new HashMap<String, Command>();
+    protected final Map<String, Command> knownCommands = new HashMap<>();
     private final Server server;
 
     public SimpleCommandMap(final Server server) {
@@ -29,9 +29,16 @@ public class SimpleCommandMap implements CommandMap {
     }
 
     private void setDefaultCommands() {
-        register("bukkit", new VersionCommand("version"));
-        register("bukkit", new ReloadCommand("reload"));
-        register("bukkit", new PluginsCommand("plugins"));
+        // [Nacho-0036] Add toggles for commands
+        try { // You might ask; "why?". Well, unit testing doesn't like this so I'll have to do it the ugly way. If anyone knows a better way to do this, please PR.
+            if(server.versionCommandEnabled()) register("bukkit", new VersionCommand("version"));
+            if(server.reloadCommandEnabled()) register("bukkit", new ReloadCommand("reload"));
+            if(server.pluginsCommandEnabled()) register("bukkit", new PluginsCommand("plugins"));
+        } catch (Exception e) {
+            register("bukkit", new VersionCommand("version"));
+            register("bukkit", new ReloadCommand("reload"));
+            register("bukkit", new PluginsCommand("plugins"));
+        }
         register("bukkit", new co.aikar.timings.TimingsCommand("timings")); // Spigot
     }
 

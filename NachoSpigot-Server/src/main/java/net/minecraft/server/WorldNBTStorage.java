@@ -65,14 +65,11 @@ public class WorldNBTStorage implements IDataManager, IPlayerFileData {
     public void checkSession() throws ExceptionWorldConflict {
         try {
             File file = new File(this.baseDir, "session.lock");
-            DataInputStream datainputstream = new DataInputStream(new FileInputStream(file));
 
-            try {
+            try (DataInputStream datainputstream = new DataInputStream(new FileInputStream(file))) {
                 if (datainputstream.readLong() != this.sessionId) {
                     throw new ExceptionWorldConflict("The save for world located at " + this.baseDir + " is being accessed from another location, aborting");  // Spigot
                 }
-            } finally {
-                datainputstream.close();
             }
 
         } catch (IOException ioexception) {

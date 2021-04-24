@@ -1,6 +1,7 @@
 package org.bukkit.craftbukkit.entity;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.authlib.GameProfile;
 import io.netty.buffer.Unpooled;
@@ -10,14 +11,7 @@ import java.io.IOException;
 import java.lang.Override;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -345,21 +339,21 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 
         String instrumentName = null;
         switch (instrument) {
-        case 0:
-            instrumentName = "harp";
-            break;
-        case 1:
-            instrumentName = "bd";
-            break;
-        case 2:
-            instrumentName = "snare";
-            break;
-        case 3:
-            instrumentName = "hat";
-            break;
-        case 4:
-            instrumentName = "bassattack";
-            break;
+            case 0:
+                instrumentName = "harp";
+                break;
+            case 1:
+                instrumentName = "bd";
+                break;
+            case 2:
+                instrumentName = "snare";
+                break;
+            case 3:
+                instrumentName = "hat";
+                break;
+            case 4:
+                instrumentName = "bassattack";
+                break;
         }
 
         float f = (float) Math.pow(2.0D, (note - 12.0D) / 12.0D);
@@ -525,7 +519,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         }
 
         if (entity.playerConnection == null || entity.playerConnection.isDisconnected()) {
-           return false;
+            return false;
         }
 
         if (entity.passenger != null) {
@@ -851,7 +845,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
             if (event.isCancelled()) {
                 return;
             }
-            
+
             getHandle().setSpectatorTarget(getHandle());
             getHandle().playerInteractManager.setGameMode(WorldSettings.EnumGamemode.getById(mode.getValue()));
             getHandle().fallDistance = 0;
@@ -976,7 +970,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         //remove this player from the hidden player's EntityTrackerEntry
         EntityTracker tracker = ((WorldServer) entity.world).tracker;
         EntityPlayer other = ((CraftPlayer) player).getHandle();
-        EntityTrackerEntry entry = (EntityTrackerEntry) tracker.trackedEntitiesID.get(other.getId());
+        EntityTrackerEntry entry = tracker.trackedEntities.get(other.getId());
         if (entry != null) {
             entry.clear(getHandle());
         }
@@ -998,7 +992,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 
         getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, other));
 
-        EntityTrackerEntry entry = (EntityTrackerEntry) tracker.trackedEntitiesID.get(other.getId());
+        EntityTrackerEntry entry = tracker.trackedEntities.get(other.getId());
         if (entry != null && !entry.trackedPlayers.contains(getHandle())) {
             entry.updatePlayer(getHandle());
         }
@@ -1155,7 +1149,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
     }
 
     public void addChannel(String channel) {
-       com.google.common.base.Preconditions.checkState( channels.size() < 128, "Too many channels registered" ); // Spigot
+        com.google.common.base.Preconditions.checkState( channels.size() < 128, "Too many channels registered" ); // Spigot
         if (channels.add(channel)) {
             server.getPluginManager().callEvent(new PlayerRegisterChannelEvent(this, channel));
         }
@@ -1500,12 +1494,12 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
                     if ( effect.getName().startsWith( p.b().replace("_", "") ) )
                     {
                         particle = p;
-                        if ( effect.getData() != null ) 
+                        if ( effect.getData() != null )
                         {
                             if ( effect.getData().equals( org.bukkit.Material.class ) )
                             {
                                 extra = new int[]{ id };
-                            } else 
+                            } else
                             {
                                 extra = new int[]{ (data << 12) | (id & 0xFFF) };
                             }
@@ -1540,7 +1534,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         @Override
         public String getLocale()
         {
-           return getHandle().locale;
+            return getHandle().locale;
         }
 
         @Override
@@ -1557,12 +1551,12 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 
         @Override
         public void sendMessage(BaseComponent component) {
-          sendMessage( new BaseComponent[] { component } );
+            sendMessage( new BaseComponent[] { component } );
         }
 
         @Override
         public void sendMessage(BaseComponent... components) {
-           if ( getHandle().playerConnection == null ) return;
+            if ( getHandle().playerConnection == null ) return;
 
             PacketPlayOutChat packet = new PacketPlayOutChat();
             packet.components = components;
@@ -1637,10 +1631,57 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         return spigot;
     }
 
+    private final NachoPlayer nacho = new NachoPlayer() {
+        @Override
+        public void sendActionBar(String message) {
+            getHandle().playerConnection.sendPacket(new PacketPlayOutChat(new ChatComponentText(message)));
+        }
+        @Override
+        public void jump() {
+            EntityPlayer player = getHandle();
+            double motX = player.motX;
+            double motY = player.motY;
+            double motZ = player.motZ;
+            if (player.hasEffect(MobEffectList.JUMP)) {
+                motY += (float) (player.getEffect(MobEffectList.JUMP).getAmplifier() + 1) * 0.1F;
+            }
+            if (player.isSprinting()) {
+                float f = player.yaw * 0.017453292F;
+                motX -= MathHelper.sin(f) * 0.2F;
+                motZ += MathHelper.cos(f) * 0.2F;
+            }
+            entity.motX = motX;
+            entity.motY = motY;
+            entity.motZ = motZ;
+            entity.velocityChanged = true;
+        }
+    };
+
     @Override
     public NachoPlayer nacho() {
-        return null;
+        return nacho;
     }
+
+    private final Unsafe unsafe = new Unsafe() {
+        @Override
+        public void sendPacket(Object o) {
+            try {
+                if (!Packet.class.isAssignableFrom(o.getClass())) {
+                    throw new IllegalArgumentException("Packet sent does not implement the NMS Packet class!");
+                }
+                Packet packet = (Packet) o;
+                getHandle().playerConnection.sendPacket(packet);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    @Override
+    public Unsafe unsafe() {
+        return unsafe;
+    }
+
     // Spigot end
 
     @Override

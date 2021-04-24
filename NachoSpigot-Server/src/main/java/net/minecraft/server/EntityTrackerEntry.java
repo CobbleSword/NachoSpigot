@@ -15,9 +15,9 @@ import org.bukkit.event.player.PlayerVelocityEvent;
 public class EntityTrackerEntry {
 
     private static final Logger p = LogManager.getLogger();
-    public Entity tracker;
-    public int maxTrackingDistance; //Max Tracking distance
-    public int updateInterval;
+    public Entity tracker; public Entity getTracker() { return tracker; }
+    public int b; public int maxTrackingDistance() { return b; }
+    public int c; public int updateInterval() { return c; }
     public int xLoc;
     public int yLoc;
     public int zLoc;
@@ -32,12 +32,12 @@ public class EntityTrackerEntry {
     private double posY;
     private double posZ;
     private boolean isMoving;
-    private boolean sendVelocityUpdates;
+    private boolean u; public boolean sendVelocityUpdates() { return u; }
     private int ticksSinceLastForcedTeleport;
     private Entity lastRecoredRider;
     private boolean ridingEntity;
     private boolean lastOnGround;
-    public boolean playerEntitiesUpdated;
+    public boolean n; public boolean playerEntitiesUpdated() { return n; }
     // PaperSpigot start
     // Replace trackedPlayers Set with a Map. The value is true until the player receives
     // their first update (which is forced to have absolute coordinates), false afterward.
@@ -45,11 +45,11 @@ public class EntityTrackerEntry {
     public Set<EntityPlayer> trackedPlayers = trackedPlayerMap.keySet();
     // PaperSpigot end
 
-    public EntityTrackerEntry(Entity entity, int maxTrackingDistance, int updateInterval, boolean flag) {
+    public EntityTrackerEntry(Entity entity, int b, int c, boolean flag) {
         this.tracker = entity;
-        this.maxTrackingDistance = maxTrackingDistance;
-        this.updateInterval = updateInterval;
-        this.sendVelocityUpdates = flag;
+        this.b = b;
+        this.c = c;
+        this.u = flag;
         this.xLoc = MathHelper.floor(entity.locX * 32.0D);
         this.yLoc = MathHelper.floor(entity.locY * 32.0D);
         this.zLoc = MathHelper.floor(entity.locZ * 32.0D);
@@ -75,14 +75,14 @@ public class EntityTrackerEntry {
      */
     public void track(List<EntityHuman> list)
     {
-        this.playerEntitiesUpdated = false;
+        this.n = false;
         if (!this.isMoving || this.tracker.distanceSqured(this.posX, this.posY, this.posZ) > 16.0D)
         {
             this.posX = this.tracker.locX;
             this.posY = this.tracker.locY;
             this.posZ = this.tracker.locZ;
             this.isMoving = true;
-            this.playerEntitiesUpdated = true;
+            this.n = true;
             this.scanPlayers(list);
         }
 
@@ -115,7 +115,7 @@ public class EntityTrackerEntry {
             this.b();
         }
 
-        if (this.tickCount % this.updateInterval == 0 || this.tracker.ai || this.tracker.getDataWatcher().a()) {
+        if (this.tickCount % this.c == 0 || this.tracker.ai || this.tracker.getDataWatcher().a()) {
             int i;
             int j;
 
@@ -182,7 +182,7 @@ public class EntityTrackerEntry {
                     }
                 }
 
-                if (this.sendVelocityUpdates) {
+                if (this.u) {
                     double d0 = this.tracker.motX - this.motionX;
                     double d1 = this.tracker.motY - this.motionY;
                     double d2 = this.tracker.motZ - this.motionZ;
@@ -354,11 +354,9 @@ public class EntityTrackerEntry {
 
     }
 
-    public void updatePlayer(EntityPlayer entityplayer)
-    {
+    public void updatePlayer(EntityPlayer entityplayer) {
         org.spigotmc.AsyncCatcher.catchOp( "player tracker update"); // Spigot
-        if (entityplayer != this.tracker)
-        {
+        if (entityplayer != this.tracker) {
             boolean isPlayerEntityTracked = this.trackedPlayers.contains(entityplayer);
             if (this.c(entityplayer)) {
                 if (!isPlayerEntityTracked && (this.e(entityplayer) || this.tracker.attachedToPlayer)) {
@@ -376,32 +374,27 @@ public class EntityTrackerEntry {
                     Packet packet = this.c();
 
                     entityplayer.playerConnection.sendPacket(packet);
-                    if (!this.tracker.getDataWatcher().d())
-                    {
+                    if (!this.tracker.getDataWatcher().d()) {
                         entityplayer.playerConnection.sendPacket(new PacketPlayOutEntityMetadata(this.tracker.getId(), this.tracker.getDataWatcher(), true));
                     }
 
                     NBTTagCompound nbttagcompound = this.tracker.getNBTTag();
 
-                    if (nbttagcompound != null)
-                    {
+                    if (nbttagcompound != null) {
                         entityplayer.playerConnection.sendPacket(new PacketPlayOutUpdateEntityNBT(this.tracker.getId(), nbttagcompound));
                     }
 
-                    if (this.tracker instanceof EntityLiving)
-                    {
+                    if (this.tracker instanceof EntityLiving) {
                         AttributeMapServer attributemapserver = (AttributeMapServer) ((EntityLiving) this.tracker).getAttributeMap();
-                        Collection collection = attributemapserver.c();
+                        Collection<AttributeInstance> collection = attributemapserver.c();
 
                         // CraftBukkit start - If sending own attributes send scaled health instead of current maximum health
-                        if (this.tracker.getId() == entityplayer.getId())
-                        {
+                        if (this.tracker.getId() == entityplayer.getId()) {
                             ((EntityPlayer) this.tracker).getBukkitEntity().injectScaledMaxHealth(collection, false);
                         }
                         // CraftBukkit end
 
-                        if (!collection.isEmpty())
-                        {
+                        if (!collection.isEmpty()) {
                             entityplayer.playerConnection.sendPacket(new PacketPlayOutUpdateAttributes(this.tracker.getId(), collection));
                         }
                     }
@@ -409,7 +402,7 @@ public class EntityTrackerEntry {
                     this.motionX = this.tracker.motX;
                     this.motionY = this.tracker.motY;
                     this.motionZ = this.tracker.motZ;
-                    if (this.sendVelocityUpdates && !(packet instanceof PacketPlayOutSpawnEntityLiving)) {
+                    if (this.u && !(packet instanceof PacketPlayOutSpawnEntityLiving)) {
                         entityplayer.playerConnection.sendPacket(new PacketPlayOutEntityVelocity(this.tracker.getId(), this.tracker.motX, this.tracker.motY, this.tracker.motZ));
                     }
 
@@ -424,7 +417,6 @@ public class EntityTrackerEntry {
                     if (this.tracker instanceof EntityLiving) {
                         for (int i = 0; i < 5; ++i) {
                             ItemStack itemstack = ((EntityLiving) this.tracker).getEquipment(i);
-
                             if (itemstack != null) {
                                 entityplayer.playerConnection.sendPacket(new PacketPlayOutEntityEquipment(this.tracker.getId(), i, itemstack));
                             }
@@ -433,24 +425,27 @@ public class EntityTrackerEntry {
 
                     if (this.tracker instanceof EntityHuman) {
                         EntityHuman entityhuman = (EntityHuman) this.tracker;
-
                         if (entityhuman.isSleeping()) {
                             entityplayer.playerConnection.sendPacket(new PacketPlayOutBed(entityhuman, new BlockPosition(this.tracker)));
                         }
                     }
 
                     // CraftBukkit start - Fix for nonsensical head yaw
-                    this.lastHeadYaw = MathHelper.d(this.tracker.getHeadRotation() * 256.0F / 360.0F);
-                    this.broadcast(new PacketPlayOutEntityHeadRotation(this.tracker, (byte) lastHeadYaw));
+                    if (this.tracker instanceof EntityLiving) { // SportPaper - avoid processing entities that can't change head rotation
+                        this.lastHeadYaw = MathHelper.d(this.tracker.getHeadRotation() * 256.0F / 360.0F);
+                        // SportPaper start
+                        // This was originally introduced by CraftBukkit, though the implementation is wrong since it's broadcasting
+                        // the packet again in a method that is already called for each player. This would create a very serious performance issue
+                        // with high player and entity counts (each sendPacket call involves waking up the event loop and flushing the network stream).
+                        // this.broadcast(new PacketPlayOutEntityHeadRotation(this.tracker, (byte) lastHeadYaw));
+                        entityplayer.playerConnection.sendPacket(new PacketPlayOutEntityHeadRotation(this.tracker, (byte) lastHeadYaw));
+                        // SportPaper end
+                    }
                     // CraftBukkit end
 
                     if (this.tracker instanceof EntityLiving) {
                         EntityLiving entityliving = (EntityLiving) this.tracker;
-                        Iterator iterator = entityliving.getEffects().iterator();
-
-                        while (iterator.hasNext()) {
-                            MobEffect mobeffect = (MobEffect) iterator.next();
-
+                        for (MobEffect mobeffect : entityliving.getEffects()) {
                             entityplayer.playerConnection.sendPacket(new PacketPlayOutEntityEffect(this.tracker.getId(), mobeffect));
                         }
                     }
@@ -469,8 +464,8 @@ public class EntityTrackerEntry {
         double d1 = entityplayer.locZ - this.tracker.locZ;
         // CraftBukkit end
 
-        return d0 >= (double) (-this.maxTrackingDistance) && d0 <= (double) this.maxTrackingDistance
-            && d1 >= (double) (-this.maxTrackingDistance) && d1 <= (double) this.maxTrackingDistance
+        return d0 >= (double) (-this.b) && d0 <= (double) this.b
+            && d1 >= (double) (-this.b) && d1 <= (double) this.b
             && this.tracker.a(entityplayer);
     }
 

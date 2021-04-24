@@ -1,6 +1,7 @@
 package org.bukkit.plugin.java;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -18,7 +19,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 public final class PluginClassLoader extends URLClassLoader { // Spigot
     public JavaPlugin getPlugin() { return plugin; } // Spigot
     private final JavaPluginLoader loader;
-    private final Map<String, Class<?>> classes = new java.util.concurrent.ConcurrentHashMap<String, Class<?>>(); // Spigot
+    private final Map<String, Class<?>> classes = new java.util.concurrent.ConcurrentHashMap<>(); // Spigot
     private final PluginDescriptionFile description;
     private final File dataFolder;
     private final File file;
@@ -74,8 +75,8 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot
                 throw new InvalidPluginException("main class `" + description.getMain() + "' does not extend JavaPlugin", ex);
             }
 
-            plugin = pluginClass.newInstance();
-        } catch (IllegalAccessException ex) {
+            plugin = pluginClass.getDeclaredConstructor().newInstance();
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
             throw new InvalidPluginException("No public constructor", ex);
         } catch (InstantiationException ex) {
             throw new InvalidPluginException("Abnormal plugin type", ex);

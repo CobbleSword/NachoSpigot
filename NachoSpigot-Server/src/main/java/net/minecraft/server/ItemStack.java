@@ -9,8 +9,11 @@ import java.util.Random;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.TreeType;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.block.CraftBlockState;
 import org.bukkit.craftbukkit.util.CraftMagicNumbers;
@@ -146,7 +149,7 @@ public final class ItemStack {
                 }
             }
 
-            return flag;
+            return true;
         }
         world.captureTreeGeneration = false;
 
@@ -159,9 +162,7 @@ public final class ItemStack {
             } else if (blocks.size() == 1) {
                 placeEvent = org.bukkit.craftbukkit.event.CraftEventFactory.callBlockPlaceEvent(world, entityhuman, blocks.get(0), blockposition.getX(), blockposition.getY(), blockposition.getZ());
             }
-
             if (placeEvent != null && (placeEvent.isCancelled() || !placeEvent.canBuild())) {
-                flag = false; // cancel placement
                 // revert back all captured blocks
                 for (BlockState blockstate : blocks) {
                     blockstate.update(true, false);
@@ -766,6 +767,20 @@ public final class ItemStack {
 
             this.k = false;
             return false;
+        }
+    }
+
+    private boolean isPlacable(Material material) {
+        if (!material.isSolid()) return true;
+        // signs and banners
+        switch (material.getId()) {
+            case 63:
+            case 68:
+            case 176:
+            case 177:
+                return true;
+            default:
+                return false;
         }
     }
 }

@@ -36,7 +36,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
     public EntityTracker tracker;
     private final PlayerChunkMap manager;
     // private final Set<NextTickListEntry> L = Sets.newHashSet(); // PAIL: Rename nextTickListHash
-    private final HashTreeSet<NextTickListEntry> M = new HashTreeSet<NextTickListEntry>(); // CraftBukkit - HashTreeSet // PAIL: Rename nextTickList
+    private final HashTreeSet<NextTickListEntry> M = new HashTreeSet<>(); // CraftBukkit - HashTreeSet // PAIL: Rename nextTickList
     private final Map<UUID, Entity> entitiesByUUID = Maps.newHashMap();
     public ChunkProviderServer chunkProviderServer;
     public boolean savingDisabled;
@@ -47,7 +47,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
     protected final VillageSiege siegeManager = new VillageSiege(this);
     private WorldServer.BlockActionDataList[] S = new WorldServer.BlockActionDataList[] { new WorldServer.BlockActionDataList(null), new WorldServer.BlockActionDataList(null)};
     private int T;
-    private static final List<StructurePieceTreasure> U = Lists.newArrayList(new StructurePieceTreasure[] { new StructurePieceTreasure(Items.STICK, 0, 1, 3, 10), new StructurePieceTreasure(Item.getItemOf(Blocks.PLANKS), 0, 1, 3, 10), new StructurePieceTreasure(Item.getItemOf(Blocks.LOG), 0, 1, 3, 10), new StructurePieceTreasure(Items.STONE_AXE, 0, 1, 1, 3), new StructurePieceTreasure(Items.WOODEN_AXE, 0, 1, 1, 5), new StructurePieceTreasure(Items.STONE_PICKAXE, 0, 1, 1, 3), new StructurePieceTreasure(Items.WOODEN_PICKAXE, 0, 1, 1, 5), new StructurePieceTreasure(Items.APPLE, 0, 2, 3, 5), new StructurePieceTreasure(Items.BREAD, 0, 2, 3, 3), new StructurePieceTreasure(Item.getItemOf(Blocks.LOG2), 0, 1, 3, 10)});
+    private static final List<StructurePieceTreasure> U = Lists.newArrayList(new StructurePieceTreasure(Items.STICK, 0, 1, 3, 10), new StructurePieceTreasure(Item.getItemOf(Blocks.PLANKS), 0, 1, 3, 10), new StructurePieceTreasure(Item.getItemOf(Blocks.LOG), 0, 1, 3, 10), new StructurePieceTreasure(Items.STONE_AXE, 0, 1, 1, 3), new StructurePieceTreasure(Items.WOODEN_AXE, 0, 1, 1, 5), new StructurePieceTreasure(Items.STONE_PICKAXE, 0, 1, 1, 3), new StructurePieceTreasure(Items.WOODEN_PICKAXE, 0, 1, 1, 5), new StructurePieceTreasure(Items.APPLE, 0, 2, 3, 5), new StructurePieceTreasure(Items.BREAD, 0, 2, 3, 3), new StructurePieceTreasure(Item.getItemOf(Blocks.LOG2), 0, 1, 3, 10));
     private List<NextTickListEntry> V = Lists.newArrayList();
 
     // CraftBukkit start
@@ -222,7 +222,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
 
         // CraftBukkit start - Only call spawner if we have players online and the world allows for mobs or animals
         long time = this.worldData.getTime();
-        if (this.getGameRules().getBoolean("doMobSpawning") && this.worldData.getType() != WorldType.DEBUG_ALL_BLOCK_STATES && (this.allowMonsters || this.allowAnimals) && (this instanceof WorldServer && this.players.size() > 0)) {
+        if (this.getGameRules().getBoolean("doMobSpawning") && this.worldData.getType() != WorldType.DEBUG_ALL_BLOCK_STATES && (this.allowMonsters || this.allowAnimals) && this.players.size() > 0) {
             timings.mobSpawn.startTiming(); // Spigot
             this.R.a(this, this.allowMonsters && (this.ticksPerMonsterSpawns != 0 && time % this.ticksPerMonsterSpawns == 0L), this.allowAnimals && (this.ticksPerAnimalSpawns != 0 && time % this.ticksPerAnimalSpawns == 0L), this.worldData.getTime() % 400L == 0L);
             timings.mobSpawn.stopTiming(); // Spigot
@@ -281,9 +281,9 @@ public class WorldServer extends World implements IAsyncTaskHandler {
     }
 
     public boolean a(EnumCreatureType enumcreaturetype, BiomeBase.BiomeMeta biomebase_biomemeta, BlockPosition blockposition) {
-        List list = this.N().getMobsFor(enumcreaturetype, blockposition);
+        List<BiomeBase.BiomeMeta> list = this.N().getMobsFor(enumcreaturetype, blockposition);
 
-        return list != null && !list.isEmpty() ? list.contains(biomebase_biomemeta) : false;
+        return list != null && !list.isEmpty() && list.contains(biomebase_biomemeta);
     }
 
     public void everyoneSleeping() {
@@ -291,11 +291,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
         if (!this.players.isEmpty()) {
             int i = 0;
             int j = 0;
-            Iterator iterator = this.players.iterator();
-
-            while (iterator.hasNext()) {
-                EntityHuman entityhuman = (EntityHuman) iterator.next();
-
+            for (EntityHuman entityhuman : this.players) {
                 if (entityhuman.isSpectator()) {
                     ++i;
                 } else if (entityhuman.isSleeping() || entityhuman.fauxSleeping) {
@@ -310,16 +306,11 @@ public class WorldServer extends World implements IAsyncTaskHandler {
 
     protected void e() {
         this.O = false;
-        Iterator iterator = this.players.iterator();
-
-        while (iterator.hasNext()) {
-            EntityHuman entityhuman = (EntityHuman) iterator.next();
-
+        for (EntityHuman entityhuman : this.players) {
             if (entityhuman.isSleeping()) {
                 entityhuman.a(false, false, true);
             }
         }
-
         this.ag();
     }
 
@@ -343,8 +334,18 @@ public class WorldServer extends World implements IAsyncTaskHandler {
     }
 
     public boolean everyoneDeeplySleeping() {
-        if (this.O && !this.isClientSide) {
-            Iterator iterator = this.players.iterator();
+        // PaperBin start - WorldServer#everyoneDeeplySleeping optimization
+        if (this.players.isEmpty() || this.isClientSide || !this.O) return false;
+        for (EntityHuman player : this.players) {
+            if (!player.isSpectator() && !player.isDeeplySleeping() && !player.fauxSleeping) {
+                return false;
+            }
+        }
+        return true;
+        // PaperBin end
+
+        /*if (this.O && !this.isClientSide) {
+            Iterator<EntityHuman> iterator = this.players.iterator();
 
             // CraftBukkit - This allows us to assume that some people are in bed but not really, allowing time to pass in spite of AFKers
             boolean foundActualSleepers = false;
@@ -356,7 +357,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
                     return foundActualSleepers;
                 }
 
-                entityhuman = (EntityHuman) iterator.next();
+                entityhuman = iterator.next();
 
                 // CraftBukkit start
                 if (entityhuman.isDeeplySleeping()) {
@@ -365,10 +366,8 @@ public class WorldServer extends World implements IAsyncTaskHandler {
             } while (!entityhuman.isSpectator() || entityhuman.isDeeplySleeping() || entityhuman.fauxSleeping);
             // CraftBukkit end
 
-            return false;
-        } else {
-            return false;
         }
+        return false;*/
     }
 
     protected void h() {
@@ -616,7 +615,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
             int i = this.M.size();
 
             if (false) { // CraftBukkit
-                throw new IllegalStateException("TickNextTick list out of synch");
+                throw new IllegalStateException("TickNextTick list out of sync");
             } else {
                 // PaperSpigot start - No, stop doing this, it affects things like redstone
                 /*
@@ -964,14 +963,11 @@ public class WorldServer extends World implements IAsyncTaskHandler {
 
             this.chunkProvider.saveChunks(flag, iprogressupdate);
             // CraftBukkit - ArrayList -> Collection
-            Collection arraylist = this.chunkProviderServer.a();
-            Iterator iterator = arraylist.iterator();
+            Collection<Chunk> arraylist = this.chunkProviderServer.a();
 
-            while (iterator.hasNext()) {
-                Chunk chunk = (Chunk) iterator.next();
-
-                if (chunk != null && !this.manager.a(chunk.locX, chunk.locZ)) {
-                    this.chunkProviderServer.queueUnload(chunk.locX, chunk.locZ);
+            for (Chunk value : arraylist) {
+                if (value != null && !this.manager.a(value.locX, value.locZ)) {
+                    this.chunkProviderServer.queueUnload(value.locX, value.locZ);
                 }
             }
 

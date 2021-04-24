@@ -57,13 +57,11 @@ public class SpigotConfig
     {
         CONFIG_FILE = configFile;
         config = new YamlConfiguration();
-        try
-        {
+        try {
             config.load( CONFIG_FILE );
-        } catch ( IOException ex )
-        {
-        } catch ( InvalidConfigurationException ex )
-        {
+        } catch ( IOException ignored ) {
+          // ignored..
+        } catch ( InvalidConfigurationException ex ) {
             Bukkit.getLogger().log( Level.SEVERE, "Could not load spigot.yml, please correct your syntax errors", ex );
             throw Throwables.propagate( ex );
         }
@@ -71,7 +69,7 @@ public class SpigotConfig
         config.options().header( HEADER );
         config.options().copyDefaults( true );
 
-        commands = new HashMap<String, Command>();
+        commands = new HashMap<>();
 
         version = getInt( "config-version", 8 );
         set( "config-version", 8 );
@@ -150,7 +148,7 @@ public class SpigotConfig
     private static <T> List getList(String path, T def)
     {
         config.addDefault( path, def );
-        return (List<T>) config.getList( path, config.getList( path ) );
+        return config.getList( path, config.getList( path ) );
     }
 
     private static String getString(String path, String def)

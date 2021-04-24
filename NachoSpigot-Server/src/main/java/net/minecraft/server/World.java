@@ -136,6 +136,9 @@ public abstract class World implements IBlockAccess {
     private org.spigotmc.TickLimiter entityLimiter;
     private org.spigotmc.TickLimiter tileLimiter;
     private int tileTickPosition;
+
+    public final Map<Explosion.CacheKey, Float> explosionDensityCache = new HashMap<>(); // Paper - Optimize explosions
+
     public ExecutorService lightingExecutor = Executors.newSingleThreadExecutor(new ThreadFactoryBuilder().setNameFormat("PaperSpigot - Lighting Thread").build()); // PaperSpigot - Asynchronous lighting updates
     public java.util.ArrayDeque<BlockRedstoneTorch.RedstoneUpdateInfo> redstoneUpdateInfos; // Paper - Move from Map in BlockRedstoneTorch to here
 
@@ -1139,22 +1142,22 @@ public abstract class World implements IBlockAccess {
     }
 
     public void makeSound(Entity entity, String s, float f, float f1) {
-        for (int i = 0; i < this.u.size(); ++i) {
-            ((IWorldAccess) this.u.get(i)).a(s, entity.locX, entity.locY, entity.locZ, f, f1);
+        for (IWorldAccess iWorldAccess : this.u) {
+            iWorldAccess.a(s, entity.locX, entity.locY, entity.locZ, f, f1);
         }
 
     }
 
     public void a(EntityHuman entityhuman, String s, float f, float f1) {
-        for (int i = 0; i < this.u.size(); ++i) {
-            ((IWorldAccess) this.u.get(i)).a(entityhuman, s, entityhuman.locX, entityhuman.locY, entityhuman.locZ, f, f1);
+        for (IWorldAccess iWorldAccess : this.u) {
+            iWorldAccess.a(entityhuman, s, entityhuman.locX, entityhuman.locY, entityhuman.locZ, f, f1);
         }
 
     }
 
     public void makeSound(double d0, double d1, double d2, String s, float f, float f1) {
-        for (int i = 0; i < this.u.size(); ++i) {
-            ((IWorldAccess) this.u.get(i)).a(s, d0, d1, d2, f, f1);
+        for (IWorldAccess iWorldAccess : this.u) {
+            iWorldAccess.a(s, d0, d1, d2, f, f1);
         }
 
     }
@@ -1162,8 +1165,8 @@ public abstract class World implements IBlockAccess {
     public void a(double d0, double d1, double d2, String s, float f, float f1, boolean flag) {}
 
     public void a(BlockPosition blockposition, String s) {
-        for (int i = 0; i < this.u.size(); ++i) {
-            ((IWorldAccess) this.u.get(i)).a(s, blockposition);
+        for (IWorldAccess iWorldAccess : this.u) {
+            iWorldAccess.a(s, blockposition);
         }
 
     }
@@ -1173,8 +1176,8 @@ public abstract class World implements IBlockAccess {
     }
 
     private void a(int i, boolean flag, double d0, double d1, double d2, double d3, double d4, double d5, int... aint) {
-        for (int j = 0; j < this.u.size(); ++j) {
-            ((IWorldAccess) this.u.get(j)).a(i, flag, d0, d1, d2, d3, d4, d5, aint);
+        for (IWorldAccess iWorldAccess : this.u) {
+            iWorldAccess.a(i, flag, d0, d1, d2, d3, d4, d5, aint);
         }
 
     }
@@ -1265,10 +1268,9 @@ public abstract class World implements IBlockAccess {
     }
 
     protected void a(Entity entity) {
-        for (int i = 0; i < this.u.size(); ++i) {
-            ((IWorldAccess) this.u.get(i)).a(entity);
+        for (IWorldAccess iWorldAccess : this.u) {
+            iWorldAccess.a(entity);
         }
-
         entity.valid = true; // CraftBukkit
     }
 
@@ -2829,6 +2831,29 @@ public abstract class World implements IBlockAccess {
     public List<NextTickListEntry> a(StructureBoundingBox structureboundingbox, boolean flag) {
         return null;
     }
+
+    // IonSpigot start - Optimise Entity Collisions
+    public List<Entity> getEntitiesByAmount(Entity entity, AxisAlignedBB axisalignedbb, Predicate<? super Entity> by, int amount) {
+        List<Entity> entities = new ArrayList<>();
+
+        int i = MathHelper.floor((axisalignedbb.a - 2.0D) / 16.0D);
+        int j = MathHelper.floor((axisalignedbb.d + 2.0D) / 16.0D);
+        int k = MathHelper.floor((axisalignedbb.c - 2.0D) / 16.0D);
+        int l = MathHelper.floor((axisalignedbb.f + 2.0D) / 16.0D);
+
+        for (int i1 = i; i1 <= j; ++i1) {
+            for (int j1 = k; j1 <= l; ++j1) {
+                if (this.isChunkLoaded(i1, j1, true)) {
+                    if (this.getChunkAt(i1, j1).collectEntitiesByAmount(entity, axisalignedbb, entities, by, amount)) {
+                        return entities;
+                    }
+                }
+            }
+        }
+
+        return entities;
+    }
+    // IonSpigot end
 
     public List<Entity> getEntities(Entity entity, AxisAlignedBB axisalignedbb) {
         return this.a(entity, axisalignedbb, IEntitySelector.d);

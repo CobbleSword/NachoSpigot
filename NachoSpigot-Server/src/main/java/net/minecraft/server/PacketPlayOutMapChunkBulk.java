@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import org.bukkit.Bukkit;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -22,15 +24,15 @@ public class PacketPlayOutMapChunkBulk implements Packet<PacketListenerPlayOut> 
         this.d = !((Chunk) list.get(0)).getWorld().worldProvider.o();
 
         for (int j = 0; j < i; ++j) {
-            Chunk chunk = (Chunk) list.get(j);
-            PacketPlayOutMapChunk.ChunkMap packetplayoutmapchunk_chunkmap = chunk.getChunkMap(true, '\uffff'); // PaperSpigot
+            Chunk chunk = list.get(j);
+            PacketPlayOutMapChunk.ChunkMap map = chunk.getChunkMap(true, '\uffff'); // PaperSpigot
 
             this.a[j] = chunk.locX;
             this.b[j] = chunk.locZ;
-            this.c[j] = packetplayoutmapchunk_chunkmap;
+            this.c[j] = map;
         }
         
-        world = ((Chunk) list.get(0)).getWorld(); // Spigot
+        world = list.get(0).getWorld(); // Spigot
     }
 
     public void a(PacketDataSerializer packetdataserializer) throws IOException {
@@ -70,7 +72,10 @@ public class PacketPlayOutMapChunkBulk implements Packet<PacketListenerPlayOut> 
         }
 
         for (i = 0; i < this.a.length; ++i) {
-            world.spigotConfig.antiXrayInstance.obfuscate(this.a[i], this.b[i], this.c[i].b, this.c[i].a, world); // Spigot
+            // Nacho - Spigot your AsyncCatcher is trash do it in a proper way please.
+            if (Bukkit.isPrimaryThread()) {
+                world.spigotConfig.antiXrayInstance.obfuscateSync(this.a[i], this.b[i], this.c[i].b, this.c[i].a, world); // Spigot
+            }
             packetdataserializer.writeBytes(this.c[i].a);
         }
 

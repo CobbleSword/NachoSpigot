@@ -1,19 +1,18 @@
 package net.minecraft.server;
 
-import com.google.common.collect.Lists;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.Proxy;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import dev.cobblesword.nachospigot.Nacho;
+import dev.cobblesword.nachospigot.commons.IPUtils;
+import dev.cobblesword.nachospigot.patches.RuntimePatches;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,6 +20,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.PrintStream;
 import org.apache.logging.log4j.Level;
 
+import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.LoggerOutputStream;
 import co.aikar.timings.SpigotTimings; // Spigot
 import org.bukkit.event.server.ServerCommandEvent;
@@ -175,7 +175,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                 this.setPort(this.propertyManager.getInt("server-port", 25565));
             }
             // Spigot start
-            this.a((PlayerList) (new DedicatedPlayerList(this)));
+            this.a(new DedicatedPlayerList(this));
             org.spigotmc.SpigotConfig.init((File) options.valueOf("spigot-settings"));
             org.spigotmc.SpigotConfig.registerCommands();
             // Spigot end
@@ -183,8 +183,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
             org.github.paperspigot.PaperSpigotConfig.init((File) options.valueOf("paper-settings"));
             org.github.paperspigot.PaperSpigotConfig.registerCommands();
             // PaperSpigot end
-            if(Nacho.get() == null) new Nacho();
-            Nacho.get().registerCommands();
+            Nacho.get().registerCommands(); //NachoSpigot :: Commands
 
             DedicatedServer.LOGGER.info("Generating keypair");
             this.a(MinecraftEncryption.b());
@@ -195,7 +194,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                 this.aq().a(inetaddress, this.R());
             } catch (IOException ioexception) {
                 DedicatedServer.LOGGER.warn("**** FAILED TO BIND TO PORT!");
-                DedicatedServer.LOGGER.warn("The exception was: {}", new Object[] { ioexception.toString()});
+                DedicatedServer.LOGGER.warn("The exception was: {}", ioexception.toString());
                 DedicatedServer.LOGGER.warn("Perhaps a server is already running on that port?");
                 return false;
             }
@@ -214,6 +213,30 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                 if (org.spigotmc.SpigotConfig.bungee) {
                     DedicatedServer.LOGGER.warn("Whilst this makes it possible to use BungeeCord, unless access to your server is properly restricted, it also opens up the ability for hackers to connect with any username they choose.");
                     DedicatedServer.LOGGER.warn("Please see http://www.spigotmc.org/wiki/firewall-guide/ for further information.");
+                    if (!Nacho.get().getConfig().stopNotifyBungee) {
+                        DedicatedServer.LOGGER.warn("---------------------------- NachoSpigot Checker ----------------------------");
+                        DedicatedServer.LOGGER.warn("If you don't want to see this message anymore, set \"stopNotifyBungee\" to \"true\" in \"nacho.json\"!");
+                        DedicatedServer.LOGGER.warn("Checking firewall..");
+                        try {
+                            String external = IPUtils.getExternalAddress();
+                            int port = getServerPort();
+                            DedicatedServer.LOGGER.warn("External IP: " + external);
+                            DedicatedServer.LOGGER.warn("Port: " + port);
+                            if (IPUtils.isAccessible(external, port)) {
+                                DedicatedServer.LOGGER.error("THIS SERVER IS ACCESSIBLE FROM THE OUTSIDE");
+                                DedicatedServer.LOGGER.error("WITHOUT HAVING A PROPER PLUGIN LIKE BUNGEEGUARD INSTALLED");
+                                DedicatedServer.LOGGER.error("EVERYONE WILL BE ABLE TO JOIN THIS SERVER IN AN OFFLINE MODE");
+                                DedicatedServer.LOGGER.error("PLEASE FIX YOUR FIREWALL OR INSTALL A PLUGIN LIKE BUNGEEGUARD");
+                                DedicatedServer.LOGGER.error("AND THEN DISABLE THIS NOTIFICATION IN THE CONFIGURATION FILE");
+                            } else {
+                                DedicatedServer.LOGGER.info("This instance does not seem to be accessible from the internet, good! Continuing..");
+                            }
+                        } catch (Exception e) {
+                            DedicatedServer.LOGGER.error("Could not check firewall..");
+                            e.printStackTrace();
+                        }
+                        DedicatedServer.LOGGER.warn("---------------------------- NachoSpigot Checker ----------------------------");
+                    }
                 } else {
                     DedicatedServer.LOGGER.warn("While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.");
                 }
@@ -266,11 +289,11 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                 this.c(this.propertyManager.getInt("max-build-height", 256));
                 this.c((this.getMaxBuildHeight() + 8) / 16 * 16);
                 this.c(MathHelper.clamp(this.getMaxBuildHeight(), 64, 256));
-                this.propertyManager.setProperty("max-build-height", Integer.valueOf(this.getMaxBuildHeight()));
+                this.propertyManager.setProperty("max-build-height", this.getMaxBuildHeight());
                 DedicatedServer.LOGGER.info("Preparing level \"" + this.U() + "\"");
                 this.a(this.U(), this.U(), k, worldtype, s2);
                 long i1 = System.nanoTime() - j;
-                String s3 = String.format("%.3fs", new Object[] { Double.valueOf((double) i1 / 1.0E9D)});
+                String s3 = String.format("%.3fs", new Object[] {(double) i1 / 1.0E9D});
 
                 DedicatedServer.LOGGER.info("Done (" + s3 + ")! For help, type \"help\" or \"?\"");
                 if (this.propertyManager.getBoolean("enable-query", false)) {
@@ -301,19 +324,21 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                         this.aq().a(inetaddress, this.R());
                     } catch (IOException ioexception) {
                         DedicatedServer.LOGGER.warn("**** FAILED TO BIND TO PORT!");
-                        DedicatedServer.LOGGER.warn("The exception was: {}", new Object[] { ioexception.toString()});
+                        DedicatedServer.LOGGER.warn("The exception was: {}", ioexception.toString());
                         DedicatedServer.LOGGER.warn("Perhaps a server is already running on that port?");
                         return false;
                     }
                 }
 
-                if (false && this.aS() > 0L) {  // Spigot - disable
+                // [Nacho-0042] Remove Spigot Watchdog
+                /* if (this.aS() > 0L) {  // Spigot - disable
                     Thread thread1 = new Thread(new ThreadWatchdog(this));
-
                     thread1.setName("Server Watchdog");
                     thread1.setDaemon(true);
                     thread1.start();
-                }
+                } */
+
+                Nacho.get().applyPatches(); // Nacho
 
                 return true;
             }
@@ -392,13 +417,13 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
     }
 
     public void a(MojangStatisticsGenerator mojangstatisticsgenerator) {
-        mojangstatisticsgenerator.a("whitelist_enabled", Boolean.valueOf(this.aP().getHasWhitelist()));
-        mojangstatisticsgenerator.a("whitelist_count", Integer.valueOf(this.aP().getWhitelisted().length));
+        mojangstatisticsgenerator.a("whitelist_enabled", this.aP().getHasWhitelist());
+        mojangstatisticsgenerator.a("whitelist_count", this.aP().getWhitelisted().length);
         super.a(mojangstatisticsgenerator);
     }
 
     public boolean getSnooperEnabled() {
-        return this.propertyManager.getBoolean("snooper-enabled", true);
+        return this.propertyManager.getBoolean("snooper-enabled", false);
     }
 
     public void issueCommand(String s, ICommandListener icommandlistener) {
@@ -431,7 +456,8 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
     }
 
     public boolean ai() {
-        return this.propertyManager.getBoolean("use-native-transport", true);
+        // [Nacho-0039] Add a check to see if we are using Linux or not, if not ignore this.
+        return this.propertyManager.getBoolean("use-native-transport", true) && org.apache.commons.lang.SystemUtils.IS_OS_LINUX;
     }
 
     public DedicatedPlayerList aP() {
@@ -473,7 +499,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
         return this.s;
     }
 
-    public String a(WorldSettings.EnumGamemode worldsettings_enumgamemode, boolean flag) {
+    public String a(WorldSettings.EnumGamemode gamemode, boolean flag) {
         return "";
     }
 

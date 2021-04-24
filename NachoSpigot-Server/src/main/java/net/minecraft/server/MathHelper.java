@@ -20,7 +20,7 @@ public class MathHelper {
     }
 
     public static float c(float var0) {
-        return (float)Math.sqrt((double)var0);
+        return (float)Math.sqrt(var0);
     }
 
     public static float sqrt(double var0) {
@@ -64,7 +64,7 @@ public class MathHelper {
         if (var0 < var1) {
             return var1;
         } else {
-            return var0 > var2 ? var2 : var0;
+            return Math.min(var0, var2);
         }
     }
 
@@ -72,7 +72,7 @@ public class MathHelper {
         if (var0 < var1) {
             return var1;
         } else {
-            return var0 > var2 ? var2 : var0;
+            return Math.min(var0, var2);
         }
     }
 
@@ -80,7 +80,7 @@ public class MathHelper {
         if (var0 < var2) {
             return var2;
         } else {
-            return var0 > var4 ? var4 : var0;
+            return Math.min(var0, var4);
         }
     }
 
@@ -101,7 +101,7 @@ public class MathHelper {
             var2 = -var2;
         }
 
-        return var0 > var2 ? var0 : var2;
+        return Math.max(var0, var2);
     }
 
     public static int nextInt(Random var0, int var1, int var2) {
@@ -118,11 +118,8 @@ public class MathHelper {
 
     public static double a(long[] var0) {
         long var1 = 0L;
-        long[] var3 = var0;
-        int var4 = var0.length;
 
-        for(int var5 = 0; var5 < var4; ++var5) {
-            long var6 = var3[var5];
+        for (long var6 : var0) {
             var1 += var6;
         }
 

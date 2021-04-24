@@ -1,8 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>dev.cobblesword.nachospigot</groupId>
-    <artifactId>server</artifactId>
+    <artifactId>NachoSpigot</artifactId>
     <packaging>jar</packaging>
     <version>1.8.8-R0.2-SNAPSHOT</version>
     <name>NachoSpigot</name>
@@ -14,8 +13,7 @@
         <minecraft.version>1.8.8</minecraft.version>
         <minecraft_version>1_8_R3</minecraft_version>
         <buildtag.prefix>git-Bukkit-</buildtag.prefix>
-        <buildtag.suffix></buildtag.suffix>
-        <!--PaperSpigot - Bump to 1.8 - This will haunt me -->
+        <buildtag.suffix/>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
@@ -39,7 +37,13 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
-            <version>4.1.50.Final</version>
+            <version>4.1.60.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.27.0-GA</version>
         </dependency>
 
         <dependency>
@@ -119,6 +123,13 @@
         </dependency>
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>elmakers-repo</id>
+            <url>http://maven.elmakers.com/repository/</url>
+        </repository>
+    </repositories>
+
     <!-- required until fixed plexus-compiler-eclipse is deployed -->
     <pluginRepositories>
         <pluginRepository>
@@ -129,6 +140,7 @@
 
     <!-- This builds a completely 'ready to start' jar with all dependencies inside -->
     <build>
+        <finalName>NachoSpigot-Server</finalName>
         <defaultGoal>install</defaultGoal>
         <plugins>
             <plugin>
@@ -226,9 +238,10 @@
                                     <pattern>com.github.benmanes.caffeine</pattern>
                                     <shadedPattern>org.bukkit.craftbukkit.libs.caffeine</shadedPattern>
                                 </relocation>
-
-
-
+                                <relocation>
+                                    <pattern>javassist</pattern>
+                                    <shadedPattern>org.bukkit.craftbukkit.libs.javassist</shadedPattern>
+                                </relocation>
                                 <relocation>
                                     <pattern>net.minecraft.server</pattern>
                                     <shadedPattern>net.minecraft.server.v${minecraft_version}</shadedPattern>

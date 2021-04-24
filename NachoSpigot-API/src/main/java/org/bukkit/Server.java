@@ -707,6 +707,18 @@ public interface Server extends PluginMessageRecipient {
      */
     public ConsoleCommandSender getConsoleSender();
 
+    default boolean versionCommandEnabled() {
+        return true;
+    }
+
+    default boolean reloadCommandEnabled() {
+        return true;
+    }
+
+    default boolean pluginsCommandEnabled() {
+        return true;
+    }
+
     /**
      * Gets the folder that contains all of the various {@link World}s.
      *

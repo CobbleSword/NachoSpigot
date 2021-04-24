@@ -874,6 +874,18 @@ public final class Bukkit {
         return server.getConsoleSender();
     }
 
+    public static boolean versionCommandEnabled() {
+        return server.versionCommandEnabled();
+    }
+
+    public static boolean reloadCommandEnabled() {
+        return server.reloadCommandEnabled();
+    }
+
+    public static boolean pluginsCommandEnabled() {
+        return server.pluginsCommandEnabled();
+    }
+
     /**
      * Gets the folder that contains all of the various {@link World}s.
      *

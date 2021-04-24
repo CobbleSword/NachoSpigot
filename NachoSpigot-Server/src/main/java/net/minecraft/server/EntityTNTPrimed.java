@@ -194,7 +194,7 @@ public class EntityTNTPrimed extends Entity {
         if (this.inWater) {
             // Send position and velocity updates to nearby players on every tick while the TNT is in water.
             // This does pretty well at keeping their clients in sync with the server.
-            EntityTrackerEntry ete = ((WorldServer) this.getWorld()).getTracker().trackedEntitiesID.get(this.getId());
+            EntityTrackerEntry ete = ((WorldServer) this.getWorld()).getTracker().trackedEntities.get(this.getId());
             if (ete != null) {
                 PacketPlayOutEntityVelocity velocityPacket = new PacketPlayOutEntityVelocity(this);
                 PacketPlayOutEntityTeleport positionPacket = new PacketPlayOutEntityTeleport(this);

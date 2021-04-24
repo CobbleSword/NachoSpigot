@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
+import dev.cobblesword.nachospigot.Nacho;
 import io.netty.buffer.Unpooled;
 import java.io.File;
 import java.net.SocketAddress;
@@ -49,7 +50,7 @@ public abstract class PlayerList {
     private final GameProfileBanList k;
     private final IpBanList l;
     private final OpList operators;
-    private Set<UUID> fastOperator = new HashSet<>();
+    private final Set<UUID> fastOperator = new HashSet<>();
     private final WhiteList whitelist;
     private final Map<UUID, ServerStatisticManager> o;
     public IPlayerFileData playerFileData;
@@ -73,8 +74,11 @@ public abstract class PlayerList {
         this.k = new GameProfileBanList(PlayerList.a);
         this.l = new IpBanList(PlayerList.b);
         this.operators = new OpList(PlayerList.c);
-        for (OpListEntry value : this.operators.getValues()) {
-            this.fastOperator.add(value.getKey().getId());
+        // [Nacho-0037] Add toggle for "Faster Operator"
+        if(Nacho.get().getConfig().useFastOperators) {
+            for (OpListEntry value : this.operators.getValues()) {
+                this.fastOperator.add(value.getKey().getId());
+            }
         }
         this.whitelist = new WhiteList(PlayerList.d);
         this.o = Maps.newHashMap();
@@ -142,7 +146,7 @@ public abstract class PlayerList {
         WorldData worlddata = worldserver.getWorldData();
         BlockPosition blockposition = worldserver.getSpawn();
 
-        this.a(entityplayer, (EntityPlayer) null, worldserver);
+        this.a(entityplayer, null, worldserver);
         PlayerConnection playerconnection = new PlayerConnection(this.server, networkmanager, entityplayer);
 
         playerconnection.sendPacket(new PacketPlayOutLogin(entityplayer.getId(), entityplayer.playerInteractManager.getGameMode(), worlddata.isHardcore(), worldserver.worldProvider.getDimension(), worldserver.getDifficulty(), Math.min(this.getMaxPlayers(), 60), worlddata.getType(), worldserver.getGameRules().getBoolean("reducedDebugInfo"))); // CraftBukkit - cap player list to 60
@@ -179,11 +183,7 @@ public abstract class PlayerList {
             entityplayer.setResourcePack(this.server.getResourcePack(), this.server.getResourcePackHash());
         }
 
-        Iterator iterator = entityplayer.getEffects().iterator();
-
-        while (iterator.hasNext()) {
-            MobEffect mobeffect = (MobEffect) iterator.next();
-
+        for (MobEffect mobeffect : entityplayer.getEffects()) {
             playerconnection.sendPacket(new PacketPlayOutEntityEffect(entityplayer.getId(), mobeffect));
         }
 
@@ -203,30 +203,19 @@ public abstract class PlayerList {
         PlayerList.f.info(entityplayer.getName() + "[" + s1 + "] logged in with entity id " + entityplayer.getId() + " at ([" + entityplayer.world.worldData.getName() + "]" + entityplayer.locX + ", " + entityplayer.locY + ", " + entityplayer.locZ + ")");
     }
 
-    public void sendScoreboard(ScoreboardServer scoreboardserver, EntityPlayer entityplayer) {
-        HashSet hashset = Sets.newHashSet();
-        Iterator iterator = scoreboardserver.getTeams().iterator();
-
-        while (iterator.hasNext()) {
-            ScoreboardTeam scoreboardteam = (ScoreboardTeam) iterator.next();
-
-            entityplayer.playerConnection.sendPacket(new PacketPlayOutScoreboardTeam(scoreboardteam, 0));
+    public void sendScoreboard(ScoreboardServer scoreboardserver, EntityPlayer player) {
+        HashSet<ScoreboardObjective> objectives = Sets.newHashSet();
+        for (ScoreboardTeam scoreboardteam : scoreboardserver.getTeams()) {
+            player.playerConnection.sendPacket(new PacketPlayOutScoreboardTeam(scoreboardteam, 0));
         }
-
         for (int i = 0; i < 19; ++i) {
-            ScoreboardObjective scoreboardobjective = scoreboardserver.getObjectiveForSlot(i);
-
-            if (scoreboardobjective != null && !hashset.contains(scoreboardobjective)) {
-                List list = scoreboardserver.getScoreboardScorePacketsForObjective(scoreboardobjective);
-                Iterator iterator1 = list.iterator();
-
-                while (iterator1.hasNext()) {
-                    Packet packet = (Packet) iterator1.next();
-
-                    entityplayer.playerConnection.sendPacket(packet);
+            ScoreboardObjective objective = scoreboardserver.getObjectiveForSlot(i);
+            if (objective != null && !objectives.contains(objective)) {
+                List<Packet<PacketListenerPlayOut>> packets = scoreboardserver.getScoreboardScorePacketsForObjective(objective);
+                for (Packet<PacketListenerPlayOut> packet : packets) {
+                    player.playerConnection.sendPacket(packet);
                 }
-
-                hashset.add(scoreboardobjective);
+                objectives.add(objective);
             }
         }
 
@@ -410,21 +399,19 @@ public abstract class PlayerList {
     public EntityPlayer attemptLogin(LoginListener loginlistener, GameProfile gameprofile, String hostname) {
         // Moved from processLogin
         UUID uuid = EntityHuman.a(gameprofile);
-        ArrayList arraylist = Lists.newArrayList();
+        ArrayList<EntityPlayer> arraylist = Lists.newArrayList();
 
         EntityPlayer entityplayer;
 
-        for (int i = 0; i < this.players.size(); ++i) {
-            entityplayer = (EntityPlayer) this.players.get(i);
+        for (EntityPlayer entityPlayer : this.players) {
+            entityplayer = entityPlayer;
             if (entityplayer.getUniqueID().equals(uuid)) {
                 arraylist.add(entityplayer);
             }
         }
 
-        Iterator iterator = arraylist.iterator();
-
-        while (iterator.hasNext()) {
-            entityplayer = (EntityPlayer) iterator.next();
+        for (EntityPlayer value : arraylist) {
+            entityplayer = value;
             savePlayerFile(entityplayer); // CraftBukkit - Force the player's inventory to be saved
             entityplayer.playerConnection.disconnect("You logged in from another location");
         }
@@ -440,7 +427,7 @@ public abstract class PlayerList {
         String s;
 
         if (getProfileBans().isBanned(gameprofile) && !getProfileBans().get(gameprofile).hasExpired()) {
-            GameProfileBanEntry gameprofilebanentry = (GameProfileBanEntry) this.k.get(gameprofile);
+            GameProfileBanEntry gameprofilebanentry = this.k.get(gameprofile);
 
             s = "You are banned from this server!\nReason: " + gameprofilebanentry.getReason();
             if (gameprofilebanentry.getExpires() != null) {
@@ -670,7 +657,7 @@ public abstract class PlayerList {
         if (exitWorld != null) {
             if ((cause == TeleportCause.END_PORTAL) && (i == 0)) {
                 // THE_END -> NORMAL; use bed if available, otherwise default spawn
-                exit = ((org.bukkit.craftbukkit.entity.CraftPlayer) entityplayer.getBukkitEntity()).getBedSpawnLocation();
+                exit = entityplayer.getBukkitEntity().getBedSpawnLocation();
                 if (exit == null || ((CraftWorld) exit.getWorld()).getHandle().dimension != 0) {
                     exit = exitWorld.getWorld().getSpawnLocation();
                 }
@@ -1015,7 +1002,10 @@ public abstract class PlayerList {
 
     public void addOp(GameProfile gameprofile) {
         this.operators.add(new OpListEntry(gameprofile, this.server.p(), this.operators.b(gameprofile)));
-        this.fastOperator.add(gameprofile.getId());
+        // [Nacho-0037] Add toggle for "Faster Operator"
+        if(Nacho.get().getConfig().useFastOperators) {
+            this.fastOperator.add(gameprofile.getId());
+        }
         // CraftBukkit start
         Player player = server.server.getPlayer(gameprofile.getId());
         if (player != null) {
@@ -1026,7 +1016,10 @@ public abstract class PlayerList {
 
     public void removeOp(GameProfile gameprofile) {
         this.operators.remove(gameprofile);
-        this.fastOperator.remove(gameprofile.getId());
+        // [Nacho-0037] Add toggle for "Faster Operator"
+        if(Nacho.get().getConfig().useFastOperators) {
+            this.fastOperator.remove(gameprofile.getId());
+        }
 
         // CraftBukkit start
         Player player = server.server.getPlayer(gameprofile.getId());
@@ -1037,11 +1030,13 @@ public abstract class PlayerList {
     }
 
     public boolean isWhitelisted(GameProfile gameprofile) {
-        return !this.hasWhitelist || this.fastOperator.contains(gameprofile.getId()) || this.whitelist.d(gameprofile);
+        // [Nacho-0037] Add toggle for "Faster Operator"
+        return !this.hasWhitelist || (Nacho.get().getConfig().useFastOperators ? this.fastOperator.contains(gameprofile.getId()) : this.operators.d(gameprofile)) || this.whitelist.d(gameprofile);
     }
 
     public boolean isOp(GameProfile gameprofile) {
-        return this.fastOperator.contains(gameprofile.getId()) || this.server.T() && this.server.worlds.get(0).getWorldData().v() && this.server.S().equalsIgnoreCase(gameprofile.getName()) || this.t; // CraftBukkit
+        // [Nacho-0037] Add toggle for "Faster Operator"
+        return (Nacho.get().getConfig().useFastOperators ? this.fastOperator.contains(gameprofile.getId()) : this.operators.d(gameprofile)) || this.server.T() && this.server.worlds.get(0).getWorldData().v() && this.server.S().equalsIgnoreCase(gameprofile.getName()) || this.t; // CraftBukkit
     }
 
     public EntityPlayer getPlayer(String s) {

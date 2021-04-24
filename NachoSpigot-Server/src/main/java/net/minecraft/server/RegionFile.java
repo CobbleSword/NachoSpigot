@@ -54,11 +54,11 @@ public class RegionFile {
             int j;
 
             for (j = 0; j < i; ++j) {
-                this.f.add(Boolean.valueOf(true));
+                this.f.add(true);
             }
 
-            this.f.set(0, Boolean.valueOf(false));
-            this.f.set(1, Boolean.valueOf(false));
+            this.f.set(0, false);
+            this.f.set(1, false);
             this.c.seek(0L);
 
             int k;
@@ -76,7 +76,7 @@ public class RegionFile {
                 this.d[j] = k;
                 if (k != 0 && (k >> 8) + (k & 255) <= this.f.size()) {
                     for (int l = 0; l < (k & 255); ++l) {
-                        this.f.set((k >> 8) + l, Boolean.valueOf(false));
+                        this.f.set((k >> 8) + l, false);
                     }
                 }
             }

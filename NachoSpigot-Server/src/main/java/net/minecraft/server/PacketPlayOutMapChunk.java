@@ -19,7 +19,7 @@ public class PacketPlayOutMapChunk implements Packet<PacketListenerPlayOut>
         this.b = chunk.locZ;
         this.d = flag;
         this.c = chunk.getChunkMap(flag, i); // PaperSpigot
-        chunk.world.spigotConfig.antiXrayInstance.obfuscateSync(chunk.locX, chunk.locZ, c.b, c.a, chunk.world);
+        chunk.world.spigotConfig.antiXrayInstance.obfuscate(chunk.locX, chunk.locZ, c.b, c.a, chunk.world); // [Nacho-0045] Async obfuscation -> obfuscateSync
     }
 
     public void a(PacketDataSerializer packetdataserializer) throws IOException {

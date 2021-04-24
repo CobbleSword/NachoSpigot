@@ -8,27 +8,21 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 public class SpawnMobCommand extends Command {
-  public SpawnMobCommand(String name)
-  {
+  public SpawnMobCommand(String name) {
     super(name);
     this.description = "Spawn mobs";
-    this.usageMessage = "/spawnMob <MobName> [amount]";
-    setPermission("NachoSpigot.command.mobspawns");
+    this.usageMessage = "/spawnmob <mob name> [amount]";
+    setPermission("ns.command.spawnmob");
   }
 
   public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-    if (!testPermission(sender))
-      return true;
-
-    if(!(sender instanceof Player))
-    {
+    if (!testPermission(sender)) return true;
+    if(!(sender instanceof Player)) {
       sender.sendMessage(ChatColor.RED + "Please run this command as a player");
       return true;
     }
-
-    if(args.length == 0)
-    {
-      sender.sendMessage(ChatColor.RED + "Please use '/spawnMob <MobName> [amount]'");
+    if(args.length == 0) {
+      sender.sendMessage(ChatColor.RED + "Please use '/spawnmob <mob name> [amount]'");
       return false;
     }
 
@@ -36,13 +30,10 @@ public class SpawnMobCommand extends Command {
     Player player = (Player) sender;
     Location location = player.getLocation();
 
-    EntityType entityType = null;
-    try
-    {
+    EntityType entityType;
+    try {
       entityType = EntityType.valueOf(args[0]);
-    }
-    catch(IllegalArgumentException ex)
-    {
+    } catch(IllegalArgumentException ex) {
       StringBuilder entityListStr = new StringBuilder();
       for (EntityType entityVal : EntityType.values())
         entityListStr.append(ChatColor.GREEN).append(entityVal.name()).append(ChatColor.WHITE).append(", ");

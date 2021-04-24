@@ -27,24 +27,11 @@ import org.apache.logging.log4j.Logger;
 public class ServerConnection {
 
     private static final Logger e = LogManager.getLogger();
-    public static final LazyInitVar<NioEventLoopGroup> a = new LazyInitVar() {
-        protected NioEventLoopGroup a() {
-            return new NioEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Server IO #%d").setDaemon(true).build());
-        }
 
-        protected Object init() {
-            return this.a();
-        }
-    };
-    public static final LazyInitVar<EpollEventLoopGroup> b = new LazyInitVar() {
-        protected EpollEventLoopGroup a() {
-            return new EpollEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Epoll Server IO #%d").setDaemon(true).build());
-        }
+    private static boolean isUsingEpoll = false;
 
-        protected Object init() {
-            return this.a();
-        }
-    };
+    public static LazyInitVar<NioEventLoopGroup> a;
+    public static LazyInitVar<EpollEventLoopGroup> b;
     public static final LazyInitVar<DefaultEventLoopGroup> c = new LazyInitVar() {
         protected DefaultEventLoopGroup a() {
             return new DefaultEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Local Server IO #%d").setDaemon(true).build());
@@ -79,13 +66,38 @@ public class ServerConnection {
             Class oclass;
             LazyInitVar lazyinitvar;
 
-            if (Epoll.isAvailable() && this.f.ai()) {
+            // [Nacho-0039] Fixed a bug in Netty epoll, and by the way; shouldn't it first check if you even want to use native transport before checking if its available?
+            // I mean, why check if its available when in the end you don't even want to use it.
+            // Minecraft is weird :)
+            // ----------------------
+            // Added late init and only shuts it down when it is assigned to do so, maybe this will fix it?
+            // Yes, I keep the variables "a" and "b" because other classes might use these.
+            if (this.f.ai() && Epoll.isAvailable()) {
                 oclass = EpollServerSocketChannel.class;
+                ServerConnection.b = new LazyInitVar() {
+                    protected EpollEventLoopGroup a() {
+                        return new EpollEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Epoll Server IO #%d").setDaemon(true).build());
+                    }
+                    protected Object init() {
+                        return this.a();
+                    }
+                };
                 lazyinitvar = ServerConnection.b;
+                isUsingEpoll = true;
                 ServerConnection.e.info("Using epoll channel type");
             } else {
                 oclass = NioServerSocketChannel.class;
+                ServerConnection.a = new LazyInitVar() {
+                    protected NioEventLoopGroup a() {
+                        return new NioEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Server IO #%d").setDaemon(true).build());
+                    }
+
+                    protected Object init() {
+                        return this.a();
+                    }
+                };
                 lazyinitvar = ServerConnection.a;
+                isUsingEpoll = false;
                 ServerConnection.e.info("Using default channel type");
             }
 
@@ -124,16 +136,12 @@ public class ServerConnection {
 
     public void b() throws InterruptedException {
         this.d = false;
-        Iterator iterator = this.g.iterator();
-
-        while (iterator.hasNext()) {
-            ChannelFuture channelfuture = (ChannelFuture) iterator.next();
-
+        for (ChannelFuture channelfuture : this.g) {
             try {
                 channelfuture.channel().close().sync();
             } finally {
-                a.c().shutdownGracefully();
-                b.c().shutdownGracefully();
+                if(isUsingEpoll) b.c().shutdownGracefully();
+                else a.c().shutdownGracefully();
                 c.c().shutdownGracefully();
             }
         }
@@ -145,15 +153,14 @@ public class ServerConnection {
             // Spigot Start
             this.addPending(); // Paper
             // This prevents players from 'gaming' the server, and strategically relogging to increase their position in the tick order
-            if ( org.spigotmc.SpigotConfig.playerShuffle > 0 && MinecraftServer.currentTick % org.spigotmc.SpigotConfig.playerShuffle == 0 )
-            {
+            if ( org.spigotmc.SpigotConfig.playerShuffle > 0 && MinecraftServer.currentTick % org.spigotmc.SpigotConfig.playerShuffle == 0 ) {
                 Collections.shuffle( this.h );
             }
             // Spigot End
-            Iterator iterator = this.h.iterator();
+            Iterator<NetworkManager> iterator = this.h.iterator();
 
             while (iterator.hasNext()) {
-                final NetworkManager networkmanager = (NetworkManager) iterator.next();
+                final NetworkManager networkmanager = iterator.next();
 
                 if (!networkmanager.h()) {
                     if (!networkmanager.isConnected()) {
@@ -171,15 +178,7 @@ public class ServerConnection {
                                 CrashReport crashreport = CrashReport.a(exception, "Ticking memory connection");
                                 CrashReportSystemDetails crashreportsystemdetails = crashreport.a("Ticking connection");
 
-                                crashreportsystemdetails.a("Connection", new Callable() {
-                                    public String a() {
-                                        return networkmanager.toString();
-                                    }
-
-                                    public Object call() {
-                                        return this.a();
-                                    }
-                                });
+                                crashreportsystemdetails.a("Connection", networkmanager::toString);
                                 throw new ReportedException(crashreport);
                             }
 

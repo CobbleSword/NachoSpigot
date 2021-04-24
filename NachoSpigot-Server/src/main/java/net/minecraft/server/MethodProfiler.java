@@ -53,7 +53,7 @@ public class MethodProfiler {
         }
 
         public int compareTo(MethodProfiler.ProfilerInfo object) {
-            return this.a((MethodProfiler.ProfilerInfo) object);
+            return this.a(object);
         }
     }
 }

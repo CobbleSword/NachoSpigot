@@ -147,7 +147,7 @@ public final class CraftChatMessage {
 
         long start = System.currentTimeMillis();
 
-        for (IChatBaseComponent c : (Iterable<IChatBaseComponent>) component)
+        for (IChatBaseComponent c : component)
         {
             ChatModifier modi = c.getChatModifier();
             out.append(modi.getColor() == null ? defaultColor : modi.getColor());
@@ -173,7 +173,6 @@ public final class CraftChatMessage {
             if(System.currentTimeMillis() - start > 10L) {
                 System.out.println("The player below has tried to crash the server with long lines book exploit");
                 throw new ExploitException("Neutron client, long lined pages, took too long to decode");
-
             }
         }
         return out.toString().replaceFirst("^(" + defaultColor + ")*", "");

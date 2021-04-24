@@ -132,26 +132,18 @@ public class ScoreboardServer extends Scoreboard {
 
     }
 
-    public List<Packet> getScoreboardScorePacketsForObjective(ScoreboardObjective scoreboardobjective) {
-        ArrayList arraylist = Lists.newArrayList();
-
-        arraylist.add(new PacketPlayOutScoreboardObjective(scoreboardobjective, 0));
-
+    public List<Packet<PacketListenerPlayOut>> getScoreboardScorePacketsForObjective(ScoreboardObjective scoreboardobjective) {
+        ArrayList<Packet<PacketListenerPlayOut>> packets = Lists.newArrayList();
+        packets.add(new PacketPlayOutScoreboardObjective(scoreboardobjective, 0));
         for (int i = 0; i < 19; ++i) {
             if (this.getObjectiveForSlot(i) == scoreboardobjective) {
-                arraylist.add(new PacketPlayOutScoreboardDisplayObjective(i, scoreboardobjective));
+                packets.add(new PacketPlayOutScoreboardDisplayObjective(i, scoreboardobjective));
             }
         }
-
-        Iterator iterator = this.getScoresForObjective(scoreboardobjective).iterator();
-
-        while (iterator.hasNext()) {
-            ScoreboardScore scoreboardscore = (ScoreboardScore) iterator.next();
-
-            arraylist.add(new PacketPlayOutScoreboardScore(scoreboardscore));
+        for (ScoreboardScore scoreboardscore : this.getScoresForObjective(scoreboardobjective)) {
+            packets.add(new PacketPlayOutScoreboardScore(scoreboardscore));
         }
-
-        return arraylist;
+        return packets;
     }
 
     public void e(ScoreboardObjective scoreboardobjective) {

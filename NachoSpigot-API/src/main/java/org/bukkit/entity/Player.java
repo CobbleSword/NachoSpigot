@@ -1254,7 +1254,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      */
     boolean hasResourcePack();
     // TacoSpigot end
-    
+
     // Spigot start
     public class Spigot extends Entity.Spigot
     {
@@ -1393,30 +1393,40 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
     Spigot spigot();
     // Spigot end
 
-    public class NachoPlayer
-    {
-        public int sendActionBar(String message)
-        {
-            throw new UnsupportedOperationException( "Not supported yet" );
+    class NachoPlayer {
+        /**
+         * Sends an actionbar message to the player
+         * @param message the message
+         */
+        public void sendActionBar(String message) {
+            throw new UnsupportedOperationException("Not supported yet.");
         }
 
-        public int setTabHeader(String message)
-        {
-            throw new UnsupportedOperationException( "Not supported yet" );
-        }
-
-        public int setTabFooter(String message)
-        {
-            throw new UnsupportedOperationException( "Not supported yet" );
-        }
-
-        public int setTabFooterAndFooter(String header, String footer)
-        {
-            throw new UnsupportedOperationException( "Not supported yet" );
+        /**
+         * Makes the player jump, like a vanilla MC client would do
+         */
+        public void jump() {
+            throw new UnsupportedOperationException("Not supported yet.");
         }
     }
 
-    public NachoPlayer nacho();
+    NachoPlayer nacho();
 
-    public double getBlockReach();
+    class Unsafe {
+        /**
+         * Send a packet to a player
+         * @param packet the packet to send
+         */
+        public void sendPacket(Object packet) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+    }
+
+    /**
+     * Unsafe methods, be careful.
+     * @return the unsafe class
+     */
+    Unsafe unsafe();
+
+    double getBlockReach();
 }

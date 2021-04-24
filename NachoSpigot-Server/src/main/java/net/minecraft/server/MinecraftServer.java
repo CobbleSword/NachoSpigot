@@ -10,6 +10,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.GameProfileRepository;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
+import dev.cobblesword.nachospigot.Nacho;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
@@ -34,6 +35,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import javax.imageio.ImageIO;
+
+import io.netty.util.ResourceLeakDetector;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,6 +47,7 @@ import java.io.IOException;
 import jline.console.ConsoleReader;
 import joptsimple.OptionSet;
 
+import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.Main;
 import co.aikar.timings.SpigotTimings; // Spigot
 // CraftBukkit end
@@ -63,7 +67,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     private final ServerPing r = new ServerPing();
     private final Random s = new Random();
     private String serverIp;
-    private int u = -1;
+    private int u = -1; public int getServerPort() { return u; } // Nacho - OBFHELPER
     public WorldServer[] worldServer;
     private PlayerList v;
     private boolean isRunning = true;
@@ -118,7 +122,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     // CraftBukkit end
 
     public MinecraftServer(OptionSet options, Proxy proxy, File file1) {
-        io.netty.util.ResourceLeakDetector.setEnabled( false ); // Spigot - disable
+        io.netty.util.ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.DISABLED); // [Nacho-0040] Change deprecated Netty parameter // Spigot - disable
         this.e = proxy;
         MinecraftServer.l = this;
         // this.universe = file; // CraftBukkit
@@ -328,14 +332,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     }
 
     protected void k() {
-        boolean flag = true;
-        boolean flag1 = true;
-        boolean flag2 = true;
-        boolean flag3 = true;
-        int i = 0;
-
         this.b("menu.generatingTerrain");
-        byte b0 = 0;
 
         // CraftBukkit start - fire WorldLoadEvent and handle whether or not to keep the spawn in memory
         for (int m = 0; m < worlds.size(); m++) {
@@ -348,7 +345,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
 
             BlockPosition blockposition = worldserver.getSpawn();
             long j = az();
-            i = 0;
+            int i = 0;
 
             for (int k = -192; k <= 192 && this.isRunning(); k += 16) {
                 for (int l = -192; l <= 192 && this.isRunning(); l += 16) {
@@ -836,86 +833,70 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
 
 
         for (i = 0; i < this.worlds.size(); ++i) {
-            long j = System.nanoTime();
+            WorldServer worldserver = this.worlds.get(i);
+            this.methodProfiler.a(worldserver.getWorldData().getName());
+            this.methodProfiler.a("tick");
+            CrashReport crashreport;
 
-            // if (i == 0 || this.getAllowNether()) {
-                WorldServer worldserver = this.worlds.get(i);
-
-                this.methodProfiler.a(worldserver.getWorldData().getName());
-                /* Drop global time updates
-                if (this.ticks % 20 == 0) {
-                    this.methodProfiler.a("timeSync");
-                    this.v.a(new PacketPlayOutUpdateTime(worldserver.getTime(), worldserver.getDayTime(), worldserver.getGameRules().getBoolean("doDaylightCycle")), worldserver.worldProvider.getDimension());
-                    this.methodProfiler.b();
-                }
-                // CraftBukkit end */
-
-                this.methodProfiler.a("tick");
-
-                CrashReport crashreport;
-
+            try {
+                worldserver.timings.doTick.startTiming(); // Spigot
+                worldserver.doTick();
+                worldserver.timings.doTick.stopTiming(); // Spigot
+            } catch (Throwable throwable) {
+                // Spigot Start
                 try {
-                    worldserver.timings.doTick.startTiming(); // Spigot
-                    worldserver.doTick();
-                    worldserver.timings.doTick.stopTiming(); // Spigot
-                } catch (Throwable throwable) {
-                    // Spigot Start
-                    try {
                     crashreport = CrashReport.a(throwable, "Exception ticking world");
-                    } catch (Throwable t){
-                        throw new RuntimeException("Error generating crash report", t);
-                    }
-                    // Spigot End
-                    worldserver.a(crashreport);
-                    throw new ReportedException(crashreport);
+                } catch (Throwable t){
+                    throw new RuntimeException("Error generating crash report", t);
                 }
+                // Spigot End
+                worldserver.a(crashreport);
+                throw new ReportedException(crashreport);
+            }
 
+            try {
+                worldserver.timings.tickEntities.startTiming(); // Spigot
+                worldserver.tickEntities();
+                worldserver.timings.tickEntities.stopTiming(); // Spigot
+            } catch (Throwable throwable1) {
+                // Spigot Start
                 try {
-                    worldserver.timings.tickEntities.startTiming(); // Spigot
-                    worldserver.tickEntities();
-                    worldserver.timings.tickEntities.stopTiming(); // Spigot
-                } catch (Throwable throwable1) {
-                    // Spigot Start
-                    try {
                     crashreport = CrashReport.a(throwable1, "Exception ticking world entities");
-                    } catch (Throwable t){
-                        throw new RuntimeException("Error generating crash report", t);
-                    }
-                    // Spigot End
-                    worldserver.a(crashreport);
-                    throw new ReportedException(crashreport);
+                } catch (Throwable t){
+                    throw new RuntimeException("Error generating crash report", t);
                 }
+                // Spigot End
+                worldserver.a(crashreport);
+                throw new ReportedException(crashreport);
+            }
 
-                this.methodProfiler.b();
-                this.methodProfiler.a("tracker");
-                worldserver.timings.tracker.startTiming(); // Spigot
-                if(this.getPlayerList().getPlayerCount() != 0) // Tuinity
-                {
-                    // Tuinity start - controlled flush for entity tracker packets
-                    List<NetworkManager> disabledFlushes = new java.util.ArrayList<>(this.getPlayerList().getPlayerCount());
-                    for (EntityPlayer player : this.getPlayerList().players) {
-                        PlayerConnection connection = player.playerConnection;
-                        if (connection != null) {
-                            connection.networkManager.disableAutomaticFlush();
-                            disabledFlushes.add(connection.networkManager);
-                        }
+            this.methodProfiler.b();
+            this.methodProfiler.a("tracker");
+            worldserver.timings.tracker.startTiming(); // Spigot
+            if(this.getPlayerList().getPlayerCount() != 0) // Tuinity
+            {
+                // Tuinity start - controlled flush for entity tracker packets
+                List<NetworkManager> disabledFlushes = new java.util.ArrayList<>(this.getPlayerList().getPlayerCount());
+                for (EntityPlayer player : this.getPlayerList().players) {
+                    PlayerConnection connection = player.playerConnection;
+                    if (connection != null) {
+                        connection.networkManager.disableAutomaticFlush();
+                        disabledFlushes.add(connection.networkManager);
                     }
-                    try {
-                        worldserver.getTracker().updatePlayers();
-                    } finally {
-                        for (NetworkManager networkManager : disabledFlushes) {
-                            networkManager.enableAutomaticFlush();
-                        }
-                    }
-                    // Tuinity end - controlled flush for entity tracker packets
                 }
-                worldserver.timings.tracker.stopTiming(); // Spigot
-//                if(this.)
-                this.methodProfiler.b();
-                this.methodProfiler.b();
-            // } // CraftBukkit
-
-            // this.i[i][this.ticks % 100] = System.nanoTime() - j; // CraftBukkit
+                try {
+                    worldserver.getTracker().updatePlayers();
+                } finally {
+                    for (NetworkManager networkManager : disabledFlushes) {
+                        networkManager.enableAutomaticFlush();
+                    }
+                }
+                // Tuinity end - controlled flush for entity tracker packets
+            }
+            worldserver.timings.tracker.stopTiming(); // Spigot
+            this.methodProfiler.b();
+            this.methodProfiler.b();
+            worldserver.explosionDensityCache.clear(); // Paper - Optimize explosions
         }
 
         this.methodProfiler.c("connection");
@@ -930,7 +911,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
 
         SpigotTimings.tickablesTimer.startTiming(); // Spigot
         for (i = 0; i < this.p.size(); ++i) {
-            ((IUpdatePlayerListBox) this.p.get(i)).c();
+            this.p.get(i).c();
         }
         SpigotTimings.tickablesTimer.stopTiming(); // Spigot
 
@@ -1132,7 +1113,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     }
 
     public String getServerModName() {
-        return "NachoSpigot"; // NachoSpigot - NachoSpig >  // TacoSpigot - TacoSpigot // PaperSpigot - PaperSpigot > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
+        return Nacho.get().getConfig().serverBrandName; // [Nacho-0035] // NachoSpigot - NachoSpigot >  // TacoSpigot - TacoSpigot // PaperSpigot - PaperSpigot > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
     }
 
     public CrashReport b(CrashReport crashreport) {
@@ -1266,11 +1247,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     }
 
     public void a(EnumDifficulty enumdifficulty) {
-        // CraftBukkit start
-        for (int i = 0; i < this.worlds.size(); ++i) {
-            WorldServer worldserver = this.worlds.get(i);
-            // CraftBukkit end
-
+        for (WorldServer worldserver : this.worlds) {
             if (worldserver != null) {
                 if (worldserver.getWorldData().isHardcore()) {
                     worldserver.getWorldData().setDifficulty(EnumDifficulty.HARD);
@@ -1311,11 +1288,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
         this.N = true;
         this.getConvertable().d();
 
-        // CraftBukkit start
-        for (int i = 0; i < this.worlds.size(); ++i) {
-            WorldServer worldserver = this.worlds.get(i);
-            // CraftBukkit end
-            
+        for (WorldServer worldserver : this.worlds) {
             if (worldserver != null) {
                 worldserver.saveLevel();
             }
@@ -1339,53 +1312,52 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     }
 
     public void a(MojangStatisticsGenerator mojangstatisticsgenerator) {
-        mojangstatisticsgenerator.a("whitelist_enabled", Boolean.valueOf(false));
-        mojangstatisticsgenerator.a("whitelist_count", Integer.valueOf(0));
+        mojangstatisticsgenerator.a("whitelist_enabled", Boolean.FALSE);
+        mojangstatisticsgenerator.a("whitelist_count", 0);
         if (this.v != null) {
-            mojangstatisticsgenerator.a("players_current", Integer.valueOf(this.I()));
-            mojangstatisticsgenerator.a("players_max", Integer.valueOf(this.J()));
-            mojangstatisticsgenerator.a("players_seen", Integer.valueOf(this.v.getSeenPlayers().length));
+            mojangstatisticsgenerator.a("players_current", this.I());
+            mojangstatisticsgenerator.a("players_max", this.J());
+            mojangstatisticsgenerator.a("players_seen", this.v.getSeenPlayers().length);
         }
 
-        mojangstatisticsgenerator.a("uses_auth", Boolean.valueOf(this.onlineMode));
+        mojangstatisticsgenerator.a("uses_auth", this.onlineMode);
         mojangstatisticsgenerator.a("gui_state", this.as() ? "enabled" : "disabled");
-        mojangstatisticsgenerator.a("run_time", Long.valueOf((az() - mojangstatisticsgenerator.g()) / 60L * 1000L));
-        mojangstatisticsgenerator.a("avg_tick_ms", Integer.valueOf((int) (MathHelper.a(this.h) * 1.0E-6D)));
+        mojangstatisticsgenerator.a("run_time", (az() - mojangstatisticsgenerator.g()) / 60L * 1000L);
+        mojangstatisticsgenerator.a("avg_tick_ms", (int) (MathHelper.a(this.h) * 1.0E-6D));
         int i = 0;
 
         if (this.worldServer != null) {
             // CraftBukkit start
-            for (int j = 0; j < this.worlds.size(); ++j) {
-                WorldServer worldserver = this.worlds.get(j);
+            for (WorldServer worldserver : this.worlds) {
                 if (worldserver != null) {
                     // CraftBukkit end
                     WorldData worlddata = worldserver.getWorldData();
 
-                    mojangstatisticsgenerator.a("world[" + i + "][dimension]", Integer.valueOf(worldserver.worldProvider.getDimension()));
+                    mojangstatisticsgenerator.a("world[" + i + "][dimension]", worldserver.worldProvider.getDimension());
                     mojangstatisticsgenerator.a("world[" + i + "][mode]", worlddata.getGameType());
                     mojangstatisticsgenerator.a("world[" + i + "][difficulty]", worldserver.getDifficulty());
-                    mojangstatisticsgenerator.a("world[" + i + "][hardcore]", Boolean.valueOf(worlddata.isHardcore()));
+                    mojangstatisticsgenerator.a("world[" + i + "][hardcore]", worlddata.isHardcore());
                     mojangstatisticsgenerator.a("world[" + i + "][generator_name]", worlddata.getType().name());
-                    mojangstatisticsgenerator.a("world[" + i + "][generator_version]", Integer.valueOf(worlddata.getType().getVersion()));
-                    mojangstatisticsgenerator.a("world[" + i + "][height]", Integer.valueOf(this.F));
-                    mojangstatisticsgenerator.a("world[" + i + "][chunks_loaded]", Integer.valueOf(worldserver.N().getLoadedChunks()));
+                    mojangstatisticsgenerator.a("world[" + i + "][generator_version]", worlddata.getType().getVersion());
+                    mojangstatisticsgenerator.a("world[" + i + "][height]", this.F);
+                    mojangstatisticsgenerator.a("world[" + i + "][chunks_loaded]", worldserver.N().getLoadedChunks());
                     ++i;
                 }
             }
         }
 
-        mojangstatisticsgenerator.a("worlds", Integer.valueOf(i));
+        mojangstatisticsgenerator.a("worlds", i);
     }
 
     public void b(MojangStatisticsGenerator mojangstatisticsgenerator) {
-        mojangstatisticsgenerator.b("singleplayer", Boolean.valueOf(this.T()));
+        mojangstatisticsgenerator.b("singleplayer", this.T());
         mojangstatisticsgenerator.b("server_brand", this.getServerModName());
         mojangstatisticsgenerator.b("gui_supported", GraphicsEnvironment.isHeadless() ? "headless" : "supported");
-        mojangstatisticsgenerator.b("dedicated", Boolean.valueOf(this.ae()));
+        mojangstatisticsgenerator.b("dedicated", this.ae());
     }
 
     public boolean getSnooperEnabled() {
-        return true;
+        return false;
     }
 
     public abstract boolean ae();

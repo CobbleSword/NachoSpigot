@@ -1,11 +1,7 @@
 package org.bukkit.craftbukkit;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -20,11 +16,14 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
 import com.eatthepath.uuid.FastUUID;
 import dev.cobblesword.nachospigot.Nacho;
+import dev.cobblesword.nachospigot.malware.AntiMalware;
+import dev.cobblesword.nachospigot.patches.RuntimePatches;
 import net.minecraft.server.*;
 
 import org.bukkit.BanList;
@@ -129,8 +128,8 @@ import net.md_5.bungee.api.chat.BaseComponent;
 
 public final class CraftServer implements Server {
     private static final Player[] EMPTY_PLAYER_ARRAY = new Player[0];
-    private final String serverName = "CraftBukkit";
-    private final String serverVersion;
+    private final String serverName;
+    private final String serverVersion = "1.8.8";
     private final String bukkitVersion = Versioning.getBukkitVersion();
     private final Logger logger = Logger.getLogger("Minecraft");
     private final ServicesManager servicesManager = new SimpleServicesManager();
@@ -141,7 +140,7 @@ public final class CraftServer implements Server {
     private final PluginManager pluginManager = new SimplePluginManager(this, commandMap);
     protected final MinecraftServer console;
     protected final DedicatedPlayerList playerList;
-    private final Map<String, World> worlds = new LinkedHashMap<String, World>();
+    private final Map<String, World> worlds = new LinkedHashMap<>();
     private YamlConfiguration configuration;
     private YamlConfiguration commandsConfiguration;
     private final Yaml yaml = new Yaml(new SafeConstructor());
@@ -157,7 +156,7 @@ public final class CraftServer implements Server {
     public int chunkGCLoadThresh = 0;
     private File container;
     private WarningState warningState = WarningState.DEFAULT;
-    private final BooleanWrapper online = new BooleanWrapper();
+    private final BooleanWrapper online = new org.bukkit.craftbukkit.CraftServer.BooleanWrapper();
     public CraftScoreboardManager scoreboardManager;
     public boolean playerCommandState;
     private boolean printSaveWarning;
@@ -180,13 +179,7 @@ public final class CraftServer implements Server {
     public CraftServer(MinecraftServer console, PlayerList playerList) {
         this.console = console;
         this.playerList = (DedicatedPlayerList) playerList;
-        this.playerView = Collections.unmodifiableList(Lists.transform(playerList.players, new Function<EntityPlayer, CraftPlayer>() {
-            @Override
-            public CraftPlayer apply(EntityPlayer player) {
-                return player.getBukkitEntity();
-            }
-        }));
-        this.serverVersion = "NachoSpigot";
+        this.playerView = Collections.unmodifiableList(Lists.transform(playerList.players, net.minecraft.server.EntityPlayer::getBukkitEntity));
         online.value = console.getPropertyManager().getBoolean("online-mode", true);
 
         Bukkit.setServer(this);
@@ -256,6 +249,8 @@ public final class CraftServer implements Server {
         // loadPlugins();
         // enablePlugins(PluginLoadOrder.STARTUP);
         // Spigot End
+
+        this.serverName = Nacho.get().getConfig().serverBrandName;
     }
 
     public boolean getCommandBlockOverride(String command) {
@@ -295,7 +290,32 @@ public final class CraftServer implements Server {
             Plugin[] plugins = pluginManager.loadPlugins(pluginFolder);
             for (Plugin plugin : plugins) {
                 try {
+                    // Nacho start - [Nacho-0047] Little anti-malware
+                    if (Nacho.get().getConfig().checkForMalware) {
+                        AntiMalware.find(plugin);
+                    }
+                    // Nacho end
                     String message = String.format("Loading %s", plugin.getDescription().getFullName());
+                    // Nacho start - [Nacho-0043] Fix ProtocolLib
+                    if(plugin.getDescription().getFullName().contains("ProtocolLib") && Nacho.get().getConfig().patchProtocolLib) {
+                        boolean val = RuntimePatches.applyProtocolLibPatch(plugin).join();
+                        if(val) {
+                            Logger.getLogger(CraftServer.class.getName()).log(Level.INFO, "Callback returned a good state, ProtocolLib patch was successful and ProtocolLib is now loading.");
+                        } else {
+                            Logger.getLogger(CraftServer.class.getName()).log(Level.SEVERE, "An error occurred trying to patch ProtocolLib, the plugin will not work as expected!");
+                        }
+                    }
+                    // Nacho end
+                    // Nacho start - [Nacho-0044] Fix Citizens
+                    else if(plugin.getDescription().getFullName().contains("Citizens")) {
+                        boolean val = RuntimePatches.applyCitizensPatch(plugin).join();
+                        if(val) {
+                            Logger.getLogger(CraftServer.class.getName()).log(Level.INFO, "Callback returned a good state, Citizens patch was successful and Citizens is now loading.");
+                        } else {
+                            Logger.getLogger(CraftServer.class.getName()).log(Level.SEVERE, "An error occurred trying to patch Citizens, the plugin will not work as expected!");
+                        }
+                    }
+                    // Nacho end
                     plugin.getLogger().info(message);
                     plugin.onLoad();
                 } catch (Throwable ex) {
@@ -1486,6 +1506,21 @@ public final class CraftServer implements Server {
     @Override
     public ConsoleCommandSender getConsoleSender() {
         return console.console;
+    }
+
+    @Override
+    public boolean versionCommandEnabled() {
+        return Nacho.get().getConfig().enableVersionCommand;
+    }
+
+    @Override
+    public boolean reloadCommandEnabled() {
+        return Nacho.get().getConfig().enableReloadCommand;
+    }
+
+    @Override
+    public boolean pluginsCommandEnabled() {
+        return Nacho.get().getConfig().enablePluginsCommand;
     }
 
     public EntityMetadataStore getEntityMetadata() {

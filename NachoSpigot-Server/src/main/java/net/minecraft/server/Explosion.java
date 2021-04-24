@@ -3,11 +3,8 @@ package net.minecraft.server;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+
+import java.util.*;
 
 // CraftBukkit start
 import org.bukkit.craftbukkit.event.CraftEventFactory;
@@ -18,10 +15,10 @@ import org.bukkit.event.block.BlockExplodeEvent;
 
 public class Explosion {
 
-    public static final Random CACHED_RANDM = new Random();
+    public static final Random CACHED_RANDOM = new Random();
     private final boolean a;
     private final boolean b;
-    private final Random c = CACHED_RANDM;
+    private final Random c = CACHED_RANDOM;
     private final World world;
     private final double posX;
     private final double posY;
@@ -58,45 +55,45 @@ public class Explosion {
         Block b = world.getChunkAt((int)posX >> 4, (int)posZ >> 4).getBlockData(new BlockPosition(posX, posY, posZ)).getBlock(); // TacoSpigot - get block of the explosion
 
         if (!this.world.tacoSpigotConfig.optimizeLiquidExplosions || !b.getMaterial().isLiquid()) { //TacoSpigot - skip calculating what blocks to blow up in water/lava
-        for (int k = 0; k < 16; ++k) {
-            for (i = 0; i < 16; ++i) {
-                for (j = 0; j < 16; ++j) {
-                    if (k == 0 || k == 15 || i == 0 || i == 15 || j == 0 || j == 15) {
-                        double d0 = (double) ((float) k / 15.0F * 2.0F - 1.0F);
-                        double d1 = (double) ((float) i / 15.0F * 2.0F - 1.0F);
-                        double d2 = (double) ((float) j / 15.0F * 2.0F - 1.0F);
-                        double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+            for (int k = 0; k < 16; ++k) {
+                for (i = 0; i < 16; ++i) {
+                    for (j = 0; j < 16; ++j) {
+                        if (k == 0 || k == 15 || i == 0 || i == 15 || j == 0 || j == 15) {
+                            double d0 = (double) ((float) k / 15.0F * 2.0F - 1.0F);
+                            double d1 = (double) ((float) i / 15.0F * 2.0F - 1.0F);
+                            double d2 = (double) ((float) j / 15.0F * 2.0F - 1.0F);
+                            double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
 
-                        d0 /= d3;
-                        d1 /= d3;
-                        d2 /= d3;
-                        float f = this.size * (0.7F + this.world.random.nextFloat() * 0.6F);
-                        double d4 = this.posX;
-                        double d5 = this.posY;
-                        double d6 = this.posZ;
+                            d0 /= d3;
+                            d1 /= d3;
+                            d2 /= d3;
+                            float f = this.size * (0.7F + this.world.random.nextFloat() * 0.6F);
+                            double d4 = this.posX;
+                            double d5 = this.posY;
+                            double d6 = this.posZ;
 
-                        for (float f1 = 0.3F; f > 0.0F; f -= 0.22500001F) {
-                            BlockPosition blockposition = new BlockPosition(d4, d5, d6);
-                            IBlockData iblockdata = this.world.getType(blockposition);
+                            for (float f1 = 0.3F; f > 0.0F; f -= 0.22500001F) {
+                                BlockPosition blockposition = new BlockPosition(d4, d5, d6);
+                                IBlockData iblockdata = this.world.getType(blockposition);
 
-                            if (iblockdata.getBlock().getMaterial() != Material.AIR) {
-                                float f2 = this.source != null ? this.source.a(this, this.world, blockposition, iblockdata) : iblockdata.getBlock().a((Entity) null);
+                                if (iblockdata.getBlock().getMaterial() != Material.AIR) {
+                                    float f2 = this.source != null ? this.source.a(this, this.world, blockposition, iblockdata) : iblockdata.getBlock().a((Entity) null);
 
-                                f -= (f2 + 0.3F) * 0.3F;
+                                    f -= (f2 + 0.3F) * 0.3F;
+                                }
+
+                                if (f > 0.0F && (this.source == null || this.source.a(this, this.world, blockposition, iblockdata, f)) && blockposition.getY() < 256 && blockposition.getY() >= 0) { // CraftBukkit - don't wrap explosions
+                                    hashset.add(blockposition);
+                                }
+
+                                d4 += d0 * 0.30000001192092896D;
+                                d5 += d1 * 0.30000001192092896D;
+                                d6 += d2 * 0.30000001192092896D;
                             }
-
-                            if (f > 0.0F && (this.source == null || this.source.a(this, this.world, blockposition, iblockdata, f)) && blockposition.getY() < 256 && blockposition.getY() >= 0) { // CraftBukkit - don't wrap explosions
-                                hashset.add(blockposition);
-                            }
-
-                            d4 += d0 * 0.30000001192092896D;
-                            d5 += d1 * 0.30000001192092896D;
-                            d6 += d2 * 0.30000001192092896D;
                         }
                     }
                 }
             }
-        }
         }
 
         this.blocks.addAll(hashset);
@@ -134,7 +131,7 @@ public class Explosion {
                         d8 /= d11;
                         d9 /= d11;
                         d10 /= d11;
-                        double d12 = (double) this.world.a(vec3d, entity.getBoundingBox());
+                        double d12 = this.getBlockDensity(vec3d, entity); // Paper - Optimize explosions
                         double d13 = (1.0D - d7) * d12;
 
                         // entity.damageEntity(DamageSource.explosion(this), (float) ((int) ((d13 * d13 + d13) / 2.0D * 8.0D * (double) f3 + 1.0D)));+                        // CraftBukkit start
@@ -252,8 +249,8 @@ public class Explosion {
                     d3 *= d7;
                     d4 *= d7;
                     d5 *= d7;
-                    this.world.addParticle(EnumParticle.EXPLOSION_NORMAL, (d0 + this.posX * 1.0D) / 2.0D, (d1 + this.posY * 1.0D) / 2.0D, (d2 + this.posZ * 1.0D) / 2.0D, d3, d4, d5, new int[0]);
-                    this.world.addParticle(EnumParticle.SMOKE_NORMAL, d0, d1, d2, d3, d4, d5, new int[0]);
+                    this.world.addParticle(EnumParticle.EXPLOSION_NORMAL, (d0 + this.posX) / 2.0D, (d1 + this.posY) / 2.0D, (d2 + this.posZ) / 2.0D, d3, d4, d5);
+                    this.world.addParticle(EnumParticle.SMOKE_NORMAL, d0, d1, d2, d3, d4, d5);
                 }
 
                 if (block.getMaterial() != Material.AIR) {
@@ -273,6 +270,7 @@ public class Explosion {
 
             while (iterator.hasNext()) {
                 blockposition = (BlockPosition) iterator.next();
+                // Nacho - revert >> // Nacho - optimize TNT by Lew_x
                 if (this.world.getType(blockposition).getBlock().getMaterial() == Material.AIR && this.world.getType(blockposition.down()).getBlock().o() && this.c.nextInt(3) == 0) {
                     // CraftBukkit start - Ignition by explosion
                     if (!org.bukkit.craftbukkit.event.CraftEventFactory.callBlockIgniteEvent(this.world, blockposition.getX(), blockposition.getY(), blockposition.getZ(), this).isCancelled()) {
@@ -302,4 +300,81 @@ public class Explosion {
     public List<BlockPosition> getBlocks() {
         return this.blocks;
     }
+
+    // Paper start - Optimize explosions
+    private float getBlockDensity(Vec3D vec3d, Entity entity) {
+        CacheKey key = new CacheKey(this, entity.getBoundingBox());
+        Float blockDensity = this.world.explosionDensityCache.get(key);
+        if (blockDensity == null) {
+            blockDensity = this.world.a(vec3d, entity.getBoundingBox());
+            this.world.explosionDensityCache.put(key, blockDensity);
+        }
+        return blockDensity;
+    }
+
+    static class CacheKey {
+        private final World world;
+        private final double posX, posY, posZ;
+        private final double minX, minY, minZ;
+        private final double maxX, maxY, maxZ;
+
+        public CacheKey(Explosion explosion, AxisAlignedBB aabb) {
+            this.world = explosion.world;
+            this.posX = explosion.posX;
+            this.posY = explosion.posY;
+            this.posZ = explosion.posZ;
+            this.minX = aabb.getMinX();
+            this.minY = aabb.getMinY();
+            this.minZ = aabb.getMinZ();
+            this.maxX = aabb.getMaxX();
+            this.maxY = aabb.getMaxY();
+            this.maxZ = aabb.getMaxZ();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            CacheKey cacheKey = (CacheKey) o;
+
+            if (Double.compare(cacheKey.posX, posX) != 0) return false;
+            if (Double.compare(cacheKey.posY, posY) != 0) return false;
+            if (Double.compare(cacheKey.posZ, posZ) != 0) return false;
+            if (Double.compare(cacheKey.minX, minX) != 0) return false;
+            if (Double.compare(cacheKey.minY, minY) != 0) return false;
+            if (Double.compare(cacheKey.minZ, minZ) != 0) return false;
+            if (Double.compare(cacheKey.maxX, maxX) != 0) return false;
+            if (Double.compare(cacheKey.maxY, maxY) != 0) return false;
+            if (Double.compare(cacheKey.maxZ, maxZ) != 0) return false;
+            return world.equals(cacheKey.world);
+        }
+
+        @Override
+        public int hashCode() {
+            int result;
+            long temp;
+            result = world.hashCode();
+            temp = Double.doubleToLongBits(posX);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(posY);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(posZ);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(minX);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(minY);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(minZ);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(maxX);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(maxY);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(maxZ);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            return result;
+        }
+    }
+    // Paper end
 }
