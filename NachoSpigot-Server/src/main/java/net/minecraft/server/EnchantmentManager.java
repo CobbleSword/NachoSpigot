@@ -13,73 +13,59 @@ import java.util.Random;
 public class EnchantmentManager {
 
     private static final Random a = new Random();
-    private static final EnchantmentManager.EnchantmentModifierProtection b = new EnchantmentManager.EnchantmentModifierProtection((EnchantmentManager.SyntheticClass_1) null);
-    private static final EnchantmentManager.EnchantmentModifierDamage c = new EnchantmentManager.EnchantmentModifierDamage((EnchantmentManager.SyntheticClass_1) null);
-    private static final EnchantmentManager.EnchantmentModifierThorns d = new EnchantmentManager.EnchantmentModifierThorns((EnchantmentManager.SyntheticClass_1) null);
-    private static final EnchantmentManager.EnchantmentModifierArthropods e = new EnchantmentManager.EnchantmentModifierArthropods((EnchantmentManager.SyntheticClass_1) null);
+    private static final EnchantmentManager.EnchantmentModifierProtection b = new EnchantmentManager.EnchantmentModifierProtection(null);
+    private static final EnchantmentManager.EnchantmentModifierDamage c = new EnchantmentManager.EnchantmentModifierDamage(null);
+    private static final EnchantmentManager.EnchantmentModifierThorns d = new EnchantmentManager.EnchantmentModifierThorns(null);
+    private static final EnchantmentManager.EnchantmentModifierArthropods e = new EnchantmentManager.EnchantmentModifierArthropods(null);
 
     public static int getEnchantmentLevel(int i, ItemStack itemstack) {
-        if (itemstack == null) {
-            return 0;
-        } else {
+        if (itemstack != null) {
             NBTTagList nbttaglist = itemstack.getEnchantments();
-
-            if (nbttaglist == null) {
-                return 0;
-            } else {
+            if (nbttaglist != null) {
                 for (int j = 0; j < nbttaglist.size(); ++j) {
                     short short0 = nbttaglist.get(j).getShort("id");
                     short short1 = nbttaglist.get(j).getShort("lvl");
-
                     if (short0 == i) {
                         return short1;
                     }
                 }
-
-                return 0;
             }
         }
+        return 0;
     }
 
     public static Map<Integer, Integer> a(ItemStack itemstack) {
-        LinkedHashMap linkedhashmap = Maps.newLinkedHashMap();
+        LinkedHashMap<Integer, Integer> map = Maps.newLinkedHashMap();
         NBTTagList nbttaglist = itemstack.getItem() == Items.ENCHANTED_BOOK ? Items.ENCHANTED_BOOK.h(itemstack) : itemstack.getEnchantments();
-
         if (nbttaglist != null) {
             for (int i = 0; i < nbttaglist.size(); ++i) {
                 short short0 = nbttaglist.get(i).getShort("id");
                 short short1 = nbttaglist.get(i).getShort("lvl");
-
-                linkedhashmap.put(Integer.valueOf(short0), Integer.valueOf(short1));
+                map.put((int) short0, (int) short1);
             }
         }
-
-        return linkedhashmap;
+        return map;
     }
 
     public static void a(Map<Integer, Integer> map, ItemStack itemstack) {
         NBTTagList nbttaglist = new NBTTagList();
-        Iterator iterator = map.keySet().iterator();
 
-        while (iterator.hasNext()) {
-            int i = ((Integer) iterator.next()).intValue();
+        for (int i : map.keySet()) {
             Enchantment enchantment = Enchantment.getById(i);
-
             if (enchantment != null) {
                 NBTTagCompound nbttagcompound = new NBTTagCompound();
-
                 nbttagcompound.setShort("id", (short) i);
-                nbttagcompound.setShort("lvl", (short) ((Integer) map.get(Integer.valueOf(i))).intValue());
+                nbttagcompound.setShort("lvl", (short) map.get(i).intValue());
                 nbttaglist.add(nbttagcompound);
                 if (itemstack.getItem() == Items.ENCHANTED_BOOK) {
-                    Items.ENCHANTED_BOOK.a(itemstack, new WeightedRandomEnchant(enchantment, ((Integer) map.get(Integer.valueOf(i))).intValue()));
+                    Items.ENCHANTED_BOOK.a(itemstack, new WeightedRandomEnchant(enchantment, map.get(i)));
                 }
             }
         }
 
         if (nbttaglist.size() > 0) {
             if (itemstack.getItem() != Items.ENCHANTED_BOOK) {
-                itemstack.a("ench", (NBTBase) nbttaglist);
+                itemstack.a("ench", nbttaglist);
             }
         } else if (itemstack.hasTag()) {
             itemstack.getTag().remove("ench");
@@ -141,7 +127,7 @@ public class EnchantmentManager {
     public static int a(ItemStack[] aitemstack, DamageSource damagesource) {
         EnchantmentManager.b.a = 0;
         EnchantmentManager.b.b = damagesource;
-        a((EnchantmentManager.EnchantmentModifier) EnchantmentManager.b, aitemstack);
+        a(EnchantmentManager.b, aitemstack);
         if (EnchantmentManager.b.a > 25) {
             EnchantmentManager.b.a = 25;
         } else if (EnchantmentManager.b.a < 0) {
@@ -154,7 +140,7 @@ public class EnchantmentManager {
     public static float a(ItemStack itemstack, EnumMonsterType enummonstertype) {
         EnchantmentManager.c.a = 0.0F;
         EnchantmentManager.c.b = enummonstertype;
-        a((EnchantmentManager.EnchantmentModifier) EnchantmentManager.c, itemstack);
+        a(EnchantmentManager.c, itemstack);
         return EnchantmentManager.c.a;
     }
 
@@ -162,12 +148,16 @@ public class EnchantmentManager {
         EnchantmentManager.d.b = entity;
         EnchantmentManager.d.a = entityliving;
         if (entityliving != null) {
-            a((EnchantmentManager.EnchantmentModifier) EnchantmentManager.d, entityliving.getEquipment());
+            a(EnchantmentManager.d, entityliving.getEquipment());
         }
 
         if (entity instanceof EntityHuman) {
-            a((EnchantmentManager.EnchantmentModifier) EnchantmentManager.d, entityliving.bA());
+            a(EnchantmentManager.d, entityliving.bA());
         }
+
+        // FlamePaper - Minetick fix memory leaks
+        EnchantmentManager.e.a = null;
+        EnchantmentManager.e.b = null;
 
     }
 
@@ -175,12 +165,16 @@ public class EnchantmentManager {
         EnchantmentManager.e.a = entityliving;
         EnchantmentManager.e.b = entity;
         if (entityliving != null) {
-            a((EnchantmentManager.EnchantmentModifier) EnchantmentManager.e, entityliving.getEquipment());
+            a(EnchantmentManager.e, entityliving.getEquipment());
         }
 
         if (entityliving instanceof EntityHuman) {
-            a((EnchantmentManager.EnchantmentModifier) EnchantmentManager.e, entityliving.bA());
+            a(EnchantmentManager.e, entityliving.bA());
         }
+
+        // FlamePaper - Minetick fix memory leaks
+        EnchantmentManager.e.a = null;
+        EnchantmentManager.e.b = null;
 
     }
 

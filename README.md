@@ -106,6 +106,7 @@ To build, clone the repo, and run `mvn clean package` in the NachoSpigot directo
 [Nacho-0045] Async obfuscation
 [Nacho-0046] Add Player#jump and Player#sendActionBar
 [Nacho-0047] Little anti-malware
+[Nacho-0048] Little anti-crash
 
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 
@@ -124,6 +125,12 @@ To build, clone the repo, and run `mvn clean package` in the NachoSpigot directo
 [SportPaper-0197] Optimize head rotation patch
 
 [PaperBin-????] WorldServer#everyoneDeeplySleeping optimization
+
+[FlamePaper-0102] Fixed chunk memory leak
+[FlamePaper-0103] Limit CraftChatMessage iterations
+[FlamePaper-0104] Return last slot by default
+[FlamePaper-0105] Fix memory leaks by Minetick
+[FlamePaper-0115] Patch Book Exploits
 
 [SportBukkit-????] Fix client-server desync when a player hits an entity while sprinting
 ```

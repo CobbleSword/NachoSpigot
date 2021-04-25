@@ -1294,17 +1294,14 @@ public abstract class World implements IBlockAccess {
         entity.die();
         if (entity instanceof EntityHuman) {
             this.players.remove(entity);
+            this.worldMaps.removeTrackedPlayer((EntityHuman) entity); // FlamePaper - Minetick fix memory leaks
             // Spigot start
-            for ( Object o : worldMaps.c )
-            {
-                if ( o instanceof WorldMap )
-                {
+            for ( Object o : worldMaps.c ) {
+                if ( o instanceof WorldMap ) {
                     WorldMap map = (WorldMap) o;
                     map.i.remove( entity );
-                    for ( Iterator<WorldMap.WorldMapHumanTracker> iter = (Iterator<WorldMap.WorldMapHumanTracker>) map.g.iterator(); iter.hasNext(); )
-                    {
-                        if ( iter.next().trackee == entity )
-                        {
+                    for (Iterator<WorldMap.WorldMapHumanTracker> iter = map.g.iterator(); iter.hasNext(); ) {
+                        if ( iter.next().trackee == entity ) {
                             map.decorations.remove(entity.getUniqueID()); // Paper
                             iter.remove();
                         }
@@ -1323,6 +1320,7 @@ public abstract class World implements IBlockAccess {
         entity.die();
         if (entity instanceof EntityHuman) {
             this.players.remove(entity);
+            this.worldMaps.removeTrackedPlayer((EntityHuman) entity); // FlamePaper - Minetick fix memory leaks
             this.everyoneSleeping();
         }
 
@@ -2388,9 +2386,9 @@ public abstract class World implements IBlockAccess {
                 this.p = MathHelper.a(this.p, 0.0F, 1.0F);
 
                 // CraftBukkit start
-                for (int idx = 0; idx < this.players.size(); ++idx) {
-                    if (((EntityPlayer) this.players.get(idx)).world == this) {
-                        ((EntityPlayer) this.players.get(idx)).tickWeather();
+                for (EntityHuman player : this.players) {
+                    if (player.world == this) {
+                        ((EntityPlayer) player).tickWeather();
                     }
                 }
                 // CraftBukkit end

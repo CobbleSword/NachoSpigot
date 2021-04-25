@@ -47,6 +47,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.12</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.10</version>
@@ -241,6 +247,10 @@
                                 <relocation>
                                     <pattern>javassist</pattern>
                                     <shadedPattern>org.bukkit.craftbukkit.libs.javassist</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.reflections</pattern>
+                                    <shadedPattern>org.bukkit.craftbukkit.libs.org.reflections</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>net.minecraft.server</pattern>

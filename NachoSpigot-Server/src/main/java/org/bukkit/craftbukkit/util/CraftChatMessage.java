@@ -144,26 +144,30 @@ public final class CraftChatMessage {
     public static String fromComponent(IChatBaseComponent component, EnumChatFormat defaultColor) {
         if (component == null) return "";
         StringBuilder out = new StringBuilder();
+        // FlamePaper - Limit iterations to 2
+        int iterations = 0;
 
         long start = System.currentTimeMillis();
 
-        for (IChatBaseComponent c : component)
-        {
-            ChatModifier modi = c.getChatModifier();
-            out.append(modi.getColor() == null ? defaultColor : modi.getColor());
-            if (modi.isBold()) {
+        for (IChatBaseComponent c : component) {
+            if (++iterations > 2) {
+                break;
+            }
+            ChatModifier modifier = c.getChatModifier();
+            out.append(modifier.getColor() == null ? defaultColor : modifier.getColor());
+            if (modifier.isBold()) {
                 out.append(EnumChatFormat.BOLD);
             }
-            if (modi.isItalic()) {
+            if (modifier.isItalic()) {
                 out.append(EnumChatFormat.ITALIC);
             }
-            if (modi.isUnderlined()) {
+            if (modifier.isUnderlined()) {
                 out.append(EnumChatFormat.UNDERLINE);
             }
-            if (modi.isStrikethrough()) {
+            if (modifier.isStrikethrough()) {
                 out.append(EnumChatFormat.STRIKETHROUGH);
             }
-            if (modi.isRandom()) {
+            if (modifier.isRandom()) {
                 out.append(EnumChatFormat.OBFUSCATED);
             }
             out.append(c.getText());

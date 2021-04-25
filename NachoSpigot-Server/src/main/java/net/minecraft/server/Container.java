@@ -94,24 +94,24 @@ public abstract class Container {
     }
 
     public Slot getSlot(IInventory iinventory, int i) {
-        for (int j = 0; j < this.c.size(); ++j) {
-            Slot slot = (Slot) this.c.get(j);
-
-            if (slot.a(iinventory, i)) {
-                return slot;
+        for (Slot value : this.c) {
+            if (value.a(iinventory, i)) {
+                return value;
             }
         }
-
         return null;
     }
 
     public Slot getSlot(int i) {
-        return (Slot) this.c.get(i);
+        final int lastIndex = this.c.size() - 1;
+        if (i > lastIndex) {
+            i = lastIndex;
+        }
+        return this.c.get(i);
     }
 
     public ItemStack b(EntityHuman entityhuman, int i) {
-        Slot slot = (Slot) this.c.get(i);
-
+        Slot slot = this.c.get(i);
         return slot != null ? slot.getItem() : null;
     }
 

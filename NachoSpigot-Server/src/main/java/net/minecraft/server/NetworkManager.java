@@ -179,13 +179,11 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
 //        if (MinecraftServer.getServer().isDebugging()) throwable.printStackTrace(); // Spigot
     }
 
-    protected void a(ChannelHandlerContext channelhandlercontext, Packet packet) throws Exception {
-        if (this.channel.isOpen())
-        {
+    protected void a(ChannelHandlerContext ctx, Packet packet) throws Exception {
+        if (this.channel.isOpen()) {
             if (this.m instanceof PlayerConnection) {
                 try {
-                    for (dev.cobblesword.nachospigot.protocol.PacketListener packetListener : Nacho.get().getPacketListeners())
-                    {
+                    for (dev.cobblesword.nachospigot.protocol.PacketListener packetListener : Nacho.get().getPacketListeners()) {
                         if(!packetListener.onReceivedPacket((PlayerConnection) this.m, packet))
                             return;
                     }
@@ -193,7 +191,6 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
                     e.printStackTrace();
                 }
             }
-
             try {
                 packet.a(this.m);//packet.handle(PlayerConnection)
             } catch (CancelledPacketHandleException cancelledpackethandleexception) {
@@ -367,13 +364,12 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         return this.l;
     }
 
-    public void close(IChatBaseComponent ichatbasecomponent)
-    {
+    public void close(IChatBaseComponent ichatbasecomponent) {
+        this.i.clear(); // FlamePaper - Minetick fix memory leaks
         // Spigot Start
         this.preparing = false;
         // Spigot End
-        if (this.channel.isOpen())
-        {
+        if (this.channel.isOpen()) {
             this.channel.close(); // We can't wait as this may be called from an event loop.
             this.n = ichatbasecomponent;
         }
