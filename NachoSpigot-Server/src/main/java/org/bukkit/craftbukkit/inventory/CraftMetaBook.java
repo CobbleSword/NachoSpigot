@@ -33,12 +33,14 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta {
     static final ItemMetaKey BOOK_PAGES = new ItemMetaKey("pages");
     static final ItemMetaKey RESOLVED = new ItemMetaKey("resolved");
     static final ItemMetaKey GENERATION = new ItemMetaKey("generation");
-    static final int MAX_PAGE_LENGTH = Short.MAX_VALUE; // TODO: Check me
-    static final int MAX_TITLE_LENGTH = 0xffff;
+    static final int MAX_PAGE_LENGTH = 340; // FlamePaper - Limit max page length to 320
+    static final int MAX_TITLE_LENGTH = 32; // FlamePaper - Limit max title length to 32
+    static final int MAX_PAGES = 50; // FlamePaper - Limit pages to 50
+    static final int MAX_AUTHOR_LENGTH = 16; // FlamePaper - Limit author name length to 16
 
     protected String title;
     protected String author;
-    public List<IChatBaseComponent> pages = new ArrayList<IChatBaseComponent>();
+    public List<IChatBaseComponent> pages = new ArrayList<>();
     protected Integer generation;
 
     CraftMetaBook(CraftMetaItem meta) {
@@ -61,11 +63,13 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta {
         super(tag);
 
         if (tag.hasKey(BOOK_TITLE.NBT)) {
-            this.title = limit( tag.getString(BOOK_TITLE.NBT), 1024 ); // Spigot
+            // FlamePaper - Apply title limit
+            this.title = limit( tag.getString(BOOK_TITLE.NBT), MAX_TITLE_LENGTH ); // Spigot
         }
 
         if (tag.hasKey(BOOK_AUTHOR.NBT)) {
-            this.author = limit( tag.getString(BOOK_AUTHOR.NBT), 1024 ); // Spigot
+            // FlamePaper - Apply author limit
+            this.author = limit( tag.getString(BOOK_AUTHOR.NBT), MAX_AUTHOR_LENGTH ); // Spigot
         }
 
         boolean resolved = false;
@@ -79,8 +83,8 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta {
 
         if (tag.hasKey(BOOK_PAGES.NBT) && handlePages) {
             NBTTagList pages = tag.getList(BOOK_PAGES.NBT, 8);
-
-            for (int i = 0; i < pages.size(); i++) {
+            // FlamePaper - Apply page limit
+            for (int i = 0; i < Math.min(pages.size(), MAX_PAGES); i++) {
                 String page = pages.getString(i);
                 if (resolved) {
                     try {
@@ -90,7 +94,8 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta {
                         // Ignore and treat as an old book
                     }
                 }
-                addPage( limit( page, 2048 ) ); // Spigot
+                // FlamePaper - Apply page limit
+                addPage( limit( page, MAX_PAGE_LENGTH ) ); // Spigot
             }
         }
     }
@@ -104,9 +109,16 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta {
 
         Iterable<?> pages = SerializableMeta.getObject(Iterable.class, map, BOOK_PAGES.BUKKIT, true);
         if(pages != null) {
+            int pageCount = 0;
             for (Object page : pages) {
-                if (page instanceof String) {
-                    addPage((String) page);
+                // FlamePaper - Limit page iterations
+                if (pageCount < MAX_PAGES) {
+                    if (page instanceof String) {
+                        addPage((String) page);
+                    }
+                    pageCount++;
+                } else {
+                    break;
                 }
             }
         }
@@ -188,12 +200,11 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta {
     public boolean setTitle(final String title) {
         if (title == null) {
             this.title = null;
-            return true;
-        } else if (title.length() > MAX_TITLE_LENGTH) {
-            return false;
+        } else {
+            // FlamePaper - Simplify & improve title handling
+            this.title = title.substring(0, Math.min(title.length(), MAX_PAGE_LENGTH));
         }
-
-        this.title = title;
+        // FlamePaper - Always return true
         return true;
     }
 
@@ -215,7 +226,8 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta {
             throw new IllegalArgumentException("Invalid page number " + page + "/" + pages.size());
         }
 
-        String newText = text == null ? "" : text.length() > MAX_PAGE_LENGTH ? text.substring(0, MAX_PAGE_LENGTH) : text;
+        // FlamePaper - Simplify page handling
+        String newText = text == null ? "" : text.substring(0, Math.min(text.length(), MAX_PAGE_LENGTH));
         pages.set(page - 1, CraftChatMessage.fromString(newText, true)[0]);
     }
 
@@ -226,14 +238,21 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta {
     }
 
     public void addPage(final String... pages) {
-        for (String page : pages) {
-            if (page == null) {
-                page = "";
-            } else if (page.length() > MAX_PAGE_LENGTH) {
-                page = page.substring(0, MAX_PAGE_LENGTH);
-            }
+        // FlamePaper - Limit page iterations
+        for (int i = 0; i < Math.min(pages.length, MAX_PAGES); i++) {
+            // FlamePaper - Apply page limit
+            if (getPageCount() < MAX_PAGES) {
+                String page = pages[i];
 
-            this.pages.add(CraftChatMessage.fromString(page, true)[0]);
+                if (page == null) {
+                    page = "";
+                } else if (page.length() > MAX_PAGE_LENGTH) {
+                    page = page.substring(0, MAX_PAGE_LENGTH);
+                }
+                this.pages.add(CraftChatMessage.fromString(page, true)[0]);
+            } else {
+                break;
+            }
         }
     }
 
@@ -259,9 +278,8 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta {
 
     public void setPages(List<String> pages) {
         this.pages.clear();
-        for (String page : pages) {
-            addPage(page);
-        }
+        // FlamePaper - Convert list to array to reuse methods
+        addPage(pages.toArray(new String[0]));
     }
 
     private boolean isValidPage(int page) {
@@ -271,7 +289,7 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta {
     @Override
     public CraftMetaBook clone() {
         CraftMetaBook meta = (CraftMetaBook) super.clone();
-        meta.pages = new ArrayList<IChatBaseComponent>(pages);
+        meta.pages = new ArrayList<>(pages);
         return meta;
     }
 
@@ -324,7 +342,7 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta {
         }
 
         if (hasPages()) {
-            List<String> pagesString = new ArrayList<String>();
+            List<String> pagesString = new ArrayList<>();
             for (IChatBaseComponent comp : pages) {
                 pagesString.add(CraftChatMessage.fromComponent(comp));
             }
