@@ -34,7 +34,7 @@ public class TacoSpigotConfig {
         try {
             System.out.println("Loading TacoSpigot config from " + configFile.getName());
             config.load(CONFIG_FILE);
-        } catch (IOException ex) {
+        } catch (IOException ignored) {
         } catch (InvalidConfigurationException ex) {
             Bukkit.getLogger().log(Level.SEVERE, "Could not load taco.yml, please correct your syntax errors", ex);
             throw Throwables.propagate(ex);
@@ -96,16 +96,11 @@ public class TacoSpigotConfig {
 
     private static <T> List getList(String path, T def) {
         config.addDefault(path, def);
-        return (List<T>) config.getList(path, config.getList(path));
+        return config.getList(path, config.getList(path));
     }
 
     private static String getString(String path, String def) {
         config.addDefault(path, def);
         return config.getString(path, config.getString(path));
-    }
-
-    public static boolean useArraysForBlockStates;
-    private static void useArraysForBlockStates() {
-        useArraysForBlockStates = getBoolean("useArraysForBlockStates", false);
     }
 }
