@@ -367,13 +367,12 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         return this.l;
     }
 
-    public void close(IChatBaseComponent ichatbasecomponent)
-    {
+    public void close(IChatBaseComponent ichatbasecomponent) {
+        this.i.clear(); // FlamePaper - Minetick fix memory leaks
         // Spigot Start
         this.preparing = false;
         // Spigot End
-        if (this.channel.isOpen())
-        {
+        if (this.channel.isOpen()) {
             this.channel.close(); // We can't wait as this may be called from an event loop.
             this.n = ichatbasecomponent;
         }

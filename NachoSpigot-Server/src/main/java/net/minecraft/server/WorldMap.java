@@ -256,7 +256,7 @@ public class WorldMap extends PersistentBase {
     }
 
     public WorldMap.WorldMapHumanTracker a(EntityHuman entityhuman) {
-        WorldMap.WorldMapHumanTracker worldmap_worldmaphumantracker = (WorldMap.WorldMapHumanTracker) this.i.get(entityhuman);
+        WorldMap.WorldMapHumanTracker worldmap_worldmaphumantracker = this.i.get(entityhuman);
 
         if (worldmap_worldmaphumantracker == null) {
             worldmap_worldmaphumantracker = new WorldMap.WorldMapHumanTracker(entityhuman);
@@ -336,6 +336,14 @@ public class WorldMap extends PersistentBase {
                 this.h = j;
             }
 
+        }
+    }
+
+    // FlamePaper - Minetick fix memory leaks
+    public void untrackPlayer(EntityHuman entityhuman) {
+        if(this.i.containsKey(entityhuman)) {
+            this.i.remove(entityhuman);
+            this.g.removeIf(worldMapHumanTracker -> worldMapHumanTracker.trackee == entityhuman);
         }
     }
 }

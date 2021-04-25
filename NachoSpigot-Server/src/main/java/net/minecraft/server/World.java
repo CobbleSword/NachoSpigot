@@ -1294,17 +1294,14 @@ public abstract class World implements IBlockAccess {
         entity.die();
         if (entity instanceof EntityHuman) {
             this.players.remove(entity);
+            this.worldMaps.removeTrackedPlayer((EntityHuman) entity); // FlamePaper - Minetick fix memory leaks
             // Spigot start
-            for ( Object o : worldMaps.c )
-            {
-                if ( o instanceof WorldMap )
-                {
+            for ( Object o : worldMaps.c ) {
+                if ( o instanceof WorldMap ) {
                     WorldMap map = (WorldMap) o;
                     map.i.remove( entity );
-                    for ( Iterator<WorldMap.WorldMapHumanTracker> iter = (Iterator<WorldMap.WorldMapHumanTracker>) map.g.iterator(); iter.hasNext(); )
-                    {
-                        if ( iter.next().trackee == entity )
-                        {
+                    for (Iterator<WorldMap.WorldMapHumanTracker> iter = map.g.iterator(); iter.hasNext(); ) {
+                        if ( iter.next().trackee == entity ) {
                             map.decorations.remove(entity.getUniqueID()); // Paper
                             iter.remove();
                         }
@@ -1323,6 +1320,7 @@ public abstract class World implements IBlockAccess {
         entity.die();
         if (entity instanceof EntityHuman) {
             this.players.remove(entity);
+            this.worldMaps.removeTrackedPlayer((EntityHuman) entity); // FlamePaper - Minetick fix memory leaks
             this.everyoneSleeping();
         }
 
