@@ -127,11 +127,7 @@ public class BlockStateList {
             this.a = block;
             // TacoSpigot start
             this.bAsImmutableMap = immutablemap;
-            if (TacoSpigotConfig.useArraysForBlockStates) {
-                b = new ImmutableArrayMap<>(IBlockState.INDEXER, immutablemap);
-            } else {
-                b = immutablemap;
-            }
+            b = immutablemap;
             // TacoSpigot end
         }
 
@@ -199,17 +195,7 @@ public class BlockStateList {
                     }
                 }
 
-                // TacoSpigot start
-                if (TacoSpigotConfig.useArraysForBlockStates) {
-                    this.c = new ImmutableArrayTable<IBlockState, Comparable, IBlockData> (
-                            IBlockState.INDEXER,
-                            (IBlockState state, Comparable value) -> state.getValueId(value),
-                            hashbasedtable
-                    );
-                } else {
-                    this.c = ImmutableTable.copyOf(hashbasedtable);
-                }
-                // TacoSpigot end
+                this.c = ImmutableTable.copyOf(hashbasedtable);
             }
         }
 

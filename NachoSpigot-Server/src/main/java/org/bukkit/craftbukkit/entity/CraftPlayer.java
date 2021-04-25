@@ -1634,7 +1634,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
     private final NachoPlayer nacho = new NachoPlayer() {
         @Override
         public void sendActionBar(String message) {
-            getHandle().playerConnection.sendPacket(new PacketPlayOutChat(new ChatComponentText(message)));
+            getHandle().playerConnection.sendPacket(new PacketPlayOutChat(new ChatComponentText(message), (byte) 2));
         }
         @Override
         public void jump() {
