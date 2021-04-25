@@ -125,6 +125,8 @@ To build, clone the repo, and run `mvn clean package` in the NachoSpigot directo
 
 [PaperBin-????] WorldServer#everyoneDeeplySleeping optimization
 
+[FlamePaper-0102] Fixed chunk memory leak
+
 [SportBukkit-????] Fix client-server desync when a player hits an entity while sprinting
 ```
 

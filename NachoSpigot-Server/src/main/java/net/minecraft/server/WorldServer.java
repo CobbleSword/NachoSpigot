@@ -231,7 +231,12 @@ public class WorldServer extends World implements IAsyncTaskHandler {
         // CraftBukkit end
         timings.doChunkUnload.startTiming(); // Spigot
         this.methodProfiler.c("chunkSource");
-        this.chunkProvider.unloadChunks();
+
+        // Only unload if chunkProvider isn't null
+        if (this.chunkProvider != null) {
+            this.chunkProvider.unloadChunks();
+        }
+
         int j = this.a(1.0F);
 
         if (j != this.ab()) {
@@ -1144,10 +1149,8 @@ public class WorldServer extends World implements IAsyncTaskHandler {
         // */
         if (flag != this.S()) {
             // Only send weather packets to those affected
-            for (EntityHuman player : this.players)
-            {
-                if (player.world == this)
-                {
+            for (EntityHuman player : this.players) {
+                if (player.world == this) {
                     ((EntityPlayer) player).setPlayerWeather((!flag ? WeatherType.DOWNFALL : WeatherType.CLEAR), false);
                     ((EntityPlayer) player).updateWeather(this.o, this.p, this.q, this.r);
                 }

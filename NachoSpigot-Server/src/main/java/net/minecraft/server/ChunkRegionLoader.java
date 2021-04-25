@@ -17,8 +17,9 @@ import org.apache.logging.log4j.Logger;
 public class ChunkRegionLoader implements IChunkLoader, IAsyncChunkSaver {
 
     private static final Logger a = LogManager.getLogger();
-    private final Map<ChunkCoordIntPair, NBTTagCompound> b = new ConcurrentHashMap<>();
-    private final Set<ChunkCoordIntPair> c = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    // FlamePaper - Make b and c public
+    public final Map<ChunkCoordIntPair, NBTTagCompound> b = new ConcurrentHashMap<>();
+    public final Set<ChunkCoordIntPair> c = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final File d;
     private boolean e = false;
 

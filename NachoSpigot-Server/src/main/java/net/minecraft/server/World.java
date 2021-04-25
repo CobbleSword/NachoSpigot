@@ -2388,9 +2388,9 @@ public abstract class World implements IBlockAccess {
                 this.p = MathHelper.a(this.p, 0.0F, 1.0F);
 
                 // CraftBukkit start
-                for (int idx = 0; idx < this.players.size(); ++idx) {
-                    if (((EntityPlayer) this.players.get(idx)).world == this) {
-                        ((EntityPlayer) this.players.get(idx)).tickWeather();
+                for (EntityHuman player : this.players) {
+                    if (player.world == this) {
+                        ((EntityPlayer) player).tickWeather();
                     }
                 }
                 // CraftBukkit end

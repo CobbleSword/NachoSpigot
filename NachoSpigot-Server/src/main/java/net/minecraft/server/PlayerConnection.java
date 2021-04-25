@@ -2100,7 +2100,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                 if (itemstack1 != null) {
                     if (itemstack.getItem() == Items.WRITABLE_BOOK && itemstack.getItem() == itemstack1.getItem()) {
                         itemstack1 = new ItemStack(Items.WRITABLE_BOOK); // CraftBukkit
-                        itemstack1.a("pages", (NBTBase) itemstack.getTag().getList("pages", 8));
+                        itemstack1.a("pages", itemstack.getTag().getList("pages", 8));
                         CraftEventFactory.handleEditBookEvent(player, itemstack1); // CraftBukkit
                     }
 
