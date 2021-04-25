@@ -11,7 +11,6 @@ import io.netty.util.concurrent.GenericFutureListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -81,10 +80,10 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
     private long k;
     // CraftBukkit start - multithreaded fields
     private volatile int chatThrottle;
-    private static final AtomicIntegerFieldUpdater chatSpamField = AtomicIntegerFieldUpdater.newUpdater(PlayerConnection.class, "chatThrottle");
+    private static final AtomicIntegerFieldUpdater<PlayerConnection> chatSpamField = AtomicIntegerFieldUpdater.newUpdater(PlayerConnection.class, "chatThrottle");
     // CraftBukkit end
     private int m;
-    private IntHashMap<Short> n = new IntHashMap();
+    private final IntHashMap<Short> n = new IntHashMap<>();
     private double o;
     private double p;
     private double q;
@@ -160,11 +159,15 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
             --this.m;
         }
 
-        if (this.player.D() > 0L && this.minecraftServer.getIdleTimeout() > 0 && MinecraftServer.az() - this.player.D() > (long) (this.minecraftServer.getIdleTimeout() * 1000 * 60)) {
+        if (this.player.D() > 0L && this.minecraftServer.getIdleTimeout() > 0 && MinecraftServer.az() - this.player.D() > ((long) this.minecraftServer.getIdleTimeout() * 1000 * 60)) {
             this.player.resetIdleTimer(); // CraftBukkit - SPIGOT-854
             this.disconnect("You have been idle for too long!");
         }
 
+    }
+
+    public NetworkManager getNetworkManager() {
+        return this.networkManager;
     }
 
     public NetworkManager a() {
@@ -217,12 +220,9 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 
     public void a(PacketPlayInFlying packetplayinflying) {
         PlayerConnectionUtils.ensureMainThread(packetplayinflying, this, this.player.u());
-        if (this.b(packetplayinflying))
-        {
+        if (this.b(packetplayinflying)) {
             this.disconnect("Invalid move packet received");
-        }
-        else
-            {
+        } else {
             creativeSlotCount = Math.max(creativeSlotCount--, 0);
             windowClickCount = 0;
             WorldServer worldserver = this.minecraftServer.getWorldServer(this.player.dimension);
@@ -426,7 +426,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                     double d15 = d11 * d11 + d12 * d12 + d13 * d13;
 
                     // Spigot: make "moved too quickly" limit configurable
-                    if (d15 - d14 > org.spigotmc.SpigotConfig.movedTooQuicklyThreshold && this.checkMovement && (!this.minecraftServer.T() || !this.minecraftServer.S().equals(this.player.getName()))) { // CraftBukkit - Added this.checkMovement condition to solve this check being triggered by teleports
+                    if (d15 - d14 > org.spigotmc.SpigotConfig.movedTooQuicklyThreshold && (!this.minecraftServer.T() || !this.minecraftServer.S().equals(this.player.getName()))) { // CraftBukkit - Added this.checkMovement condition to solve this check being triggered by teleports
                         PlayerConnection.c.warn(this.player.getName() + " moved too quickly! " + d11 + "," + d12 + "," + d13 + " (" + d11 + ", " + d12 + ", " + d13 + ")");
                         this.a(this.o, this.p, this.q, this.player.yaw, this.player.pitch);
                         return;
@@ -497,7 +497,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
     }
 
     public void a(double d0, double d1, double d2, float f, float f1) {
-        this.a(d0, d1, d2, f, f1, Collections.<PacketPlayOutPosition.EnumPlayerTeleportFlags>emptySet()); // CraftBukkit fix decompile errors
+        this.a(d0, d1, d2, f, f1, Collections.emptySet()); // CraftBukkit fix decompile errors
     }
 
     public void a(double d0, double d1, double d2, float f, float f1, Set<PacketPlayOutPosition.EnumPlayerTeleportFlags> set) {

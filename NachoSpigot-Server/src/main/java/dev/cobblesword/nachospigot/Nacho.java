@@ -1,5 +1,6 @@
 package dev.cobblesword.nachospigot;
 
+import dev.cobblesword.nachospigot.anticrash.AntiCrash;
 import dev.cobblesword.nachospigot.commons.FileUtils;
 import dev.cobblesword.nachospigot.patches.RuntimePatches;
 import dev.cobblesword.nachospigot.protocol.PacketListener;
@@ -12,9 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Nacho {
+
     private static Nacho INSTANCE;
+
     private static final File CONFIG_FILE = new File("nacho.json");
     private NachoConfig config;
+
     public List<PacketListener> packetListeners = new ArrayList<>();
 
     public Nacho() {
@@ -22,6 +26,7 @@ public class Nacho {
         this.config = new NachoConfig();
         while (!CONFIG_FILE.exists()) FileUtils.toFile(this.config, CONFIG_FILE);
         this.config = FileUtils.toObject(CONFIG_FILE, NachoConfig.class);
+        new AntiCrash().registerAll();
     }
 
     public void reloadConfig() {
@@ -46,7 +51,10 @@ public class Nacho {
 
     public void registerPacketListener(PacketListener packetListener) {
         this.packetListeners.add(packetListener);
-        System.out.println("[NachoSpigot] Register PacketListener @ " + packetListener.getClass().getName());
+    }
+
+    public void unregisterPacketListener(PacketListener packetListener) {
+        this.packetListeners.remove(packetListener);
     }
 
     public List<PacketListener> getPacketListeners()
