@@ -10,9 +10,6 @@ Unless other bugs are found, Nacho should now run stable.
 
 **Download:** [https://nacho.sculas.xyz/](https://nacho.sculas.xyz/)
 
-I will maintain this version, because the official NachoSpigot is no longer maintained.
-If you know any patches that will help out, please create an issue or better create a PR so I can merge it.
-
 #### Building / Compiling
 To build, clone the repo, and run `mvn clean package` in the NachoSpigot directory.
 
@@ -140,7 +137,5 @@ To build, clone the repo, and run `mvn clean package` in the NachoSpigot directo
 [Join the Discord server!](https://discord.gg/SBTEbSx)
 
 ## Supporters
-
-[Henry Lanier](youtube.com/channel/UCYKmXuEo1ZVMzvsWwaBeBwQ) (MILDJELLYo#9091)
 
 [Lucas (aka Sculas)](https://sculas.xyz/)
