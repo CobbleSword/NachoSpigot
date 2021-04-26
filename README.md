@@ -111,6 +111,7 @@ To build, clone the repo, and run `mvn clean package` in the NachoSpigot directo
 [Nacho-0048] Little anti-crash
 
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
+[Yatopia-0050] smol bat optimisation
 
 [IonSpigot-0035] Optimise Entity Collisions
 
