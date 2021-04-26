@@ -92,6 +92,7 @@ To build, clone the repo, and run `mvn clean package` in the NachoSpigot directo
 [Nacho-0030] add a ChunkPreLoadEvent
 [Nacho-0031] remove unused vars
 [Nacho-0033] Faster Operator search method
+[Nacho-0050] Option to disable Enchantment table ticking
 
 <--> by Sculas
 [Nacho-0034] Remove Java 8 message from TacoSpigot which made it so you couldn't run Java 8 or higher
