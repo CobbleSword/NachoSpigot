@@ -117,6 +117,7 @@ If you find any bugs, please create an issue or contact us in the Discord server
 
 [IonSpigot-0006] Fix Chunk Loading
 [IonSpigot-0012] Movement Cache
+[IonSpigot-0014] Faster Chunk Entity List
 [IonSpigot-0035] Optimise Entity Collisions
 
 [Akarin-0001] Avoid double I/O operation on load player file by tsao chi

@@ -150,7 +150,7 @@ public class Chunk {
         this.heightMap = new int[256];
 
         for (int k = 0; k < this.entitySlices.length; ++k) {
-            this.entitySlices[k] = new org.bukkit.craftbukkit.util.UnsafeList(); // Spigot
+            this.entitySlices[k] = new io.papermc.paper.util.maplist.ObjectMapList<>(); // IonSpigot - UnsafeList -> ObjectMapList // Spigot
         }
 
         Arrays.fill(this.f, -999);
