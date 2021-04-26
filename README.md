@@ -137,6 +137,8 @@ If you find any bugs, please create an issue or contact us in the Discord server
 [FlamePaper-0105] Fix memory leaks by Minetick
 [FlamePaper-0115] Patch Book Exploits
 
+[MineTick-0006] Fix Occasional Client Side Unloading of Chunk 0 0
+
 [SportBukkit-????] Fix client-server desync when a player hits an entity while sprinting
 ```
 
