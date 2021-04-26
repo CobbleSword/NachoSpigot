@@ -1,6 +1,7 @@
 package net.minecraft.server;
 
 // CraftBukkit start
+import dev.cobblesword.nachospigot.commons.Constants;
 import org.bukkit.event.entity.SlimeSplitEvent;
 // CraftBukkit end
 
@@ -88,7 +89,7 @@ public class EntitySlime extends EntityInsentient implements IMonster {
                 double d0 = this.locX + (double) f2;
                 double d1 = this.locZ + (double) f3;
 
-                world.addParticle(enumparticle, d0, this.getBoundingBox().b, d1, 0.0D, 0.0D, 0.0D, new int[0]);
+                world.addParticle(enumparticle, d0, this.getBoundingBox().b, d1, 0.0D, 0.0D, 0.0D, Constants.EMPTY_ARRAY);
             }
 
             if (this.cl()) {

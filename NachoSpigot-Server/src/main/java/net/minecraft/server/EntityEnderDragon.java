@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 // CraftBukkit start
+import dev.cobblesword.nachospigot.commons.Constants;
 import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.craftbukkit.util.BlockStateListPopulator;
@@ -99,7 +100,7 @@ public class EntityEnderDragon extends EntityInsentient implements IComplex, IMo
             f = (this.random.nextFloat() - 0.5F) * 8.0F;
             f1 = (this.random.nextFloat() - 0.5F) * 4.0F;
             f2 = (this.random.nextFloat() - 0.5F) * 8.0F;
-            this.world.addParticle(EnumParticle.EXPLOSION_LARGE, this.locX + (double) f, this.locY + 2.0D + (double) f1, this.locZ + (double) f2, 0.0D, 0.0D, 0.0D, new int[0]);
+            this.world.addParticle(EnumParticle.EXPLOSION_LARGE, this.locX + (double) f, this.locY + 2.0D + (double) f1, this.locZ + (double) f2, 0.0D, 0.0D, 0.0D, Constants.EMPTY_ARRAY);
         } else {
             this.n();
             f = 0.2F / (MathHelper.sqrt(this.motX * this.motX + this.motZ * this.motZ) * 10.0F + 1.0F);
@@ -502,7 +503,7 @@ public class EntityEnderDragon extends EntityInsentient implements IComplex, IMo
             double d1 = axisalignedbb.b + (axisalignedbb.e - axisalignedbb.b) * (double) this.random.nextFloat();
             double d2 = axisalignedbb.c + (axisalignedbb.f - axisalignedbb.c) * (double) this.random.nextFloat();
 
-            this.world.addParticle(EnumParticle.EXPLOSION_LARGE, d0, d1, d2, 0.0D, 0.0D, 0.0D, new int[0]);
+            this.world.addParticle(EnumParticle.EXPLOSION_LARGE, d0, d1, d2, 0.0D, 0.0D, 0.0D, Constants.EMPTY_ARRAY);
         }
 
         return flag;
@@ -552,7 +553,7 @@ public class EntityEnderDragon extends EntityInsentient implements IComplex, IMo
             float f1 = (this.random.nextFloat() - 0.5F) * 4.0F;
             float f2 = (this.random.nextFloat() - 0.5F) * 8.0F;
 
-            this.world.addParticle(EnumParticle.EXPLOSION_HUGE, this.locX + (double) f, this.locY + 2.0D + (double) f1, this.locZ + (double) f2, 0.0D, 0.0D, 0.0D, new int[0]);
+            this.world.addParticle(EnumParticle.EXPLOSION_HUGE, this.locX + (double) f, this.locY + 2.0D + (double) f1, this.locZ + (double) f2, 0.0D, 0.0D, 0.0D, Constants.EMPTY_ARRAY);
         }
 
         boolean flag = this.world.getGameRules().getBoolean("doMobLoot");

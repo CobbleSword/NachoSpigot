@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import dev.cobblesword.nachospigot.commons.Constants;
+
 public abstract class EntityAgeable extends EntityCreature {
 
     protected int a;
@@ -140,7 +142,7 @@ public abstract class EntityAgeable extends EntityCreature {
         if (this.world.isClientSide || ageLocked) { // CraftBukkit
             if (this.c > 0) {
                 if (this.c % 4 == 0) {
-                    this.world.addParticle(EnumParticle.VILLAGER_HAPPY, this.locX + (double) (this.random.nextFloat() * this.width * 2.0F) - (double) this.width, this.locY + 0.5D + (double) (this.random.nextFloat() * this.length), this.locZ + (double) (this.random.nextFloat() * this.width * 2.0F) - (double) this.width, 0.0D, 0.0D, 0.0D, new int[0]);
+                    this.world.addParticle(EnumParticle.VILLAGER_HAPPY, this.locX + (double) (this.random.nextFloat() * this.width * 2.0F) - (double) this.width, this.locY + 0.5D + (double) (this.random.nextFloat() * this.length), this.locZ + (double) (this.random.nextFloat() * this.width * 2.0F) - (double) this.width, 0.0D, 0.0D, 0.0D, Constants.EMPTY_ARRAY);
                 }
 
                 --this.c;

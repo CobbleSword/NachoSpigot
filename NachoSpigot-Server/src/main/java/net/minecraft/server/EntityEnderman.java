@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.UUID;
 
 // CraftBukkit start
+import dev.cobblesword.nachospigot.commons.Constants;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.event.entity.EntityTeleportEvent;
@@ -105,7 +106,7 @@ public class EntityEnderman extends EntityMonster {
     public void m() {
         if (this.world.isClientSide) {
             for (int i = 0; i < 2; ++i) {
-                this.world.addParticle(EnumParticle.PORTAL, this.locX + (this.random.nextDouble() - 0.5D) * (double) this.width, this.locY + this.random.nextDouble() * (double) this.length - 0.25D, this.locZ + (this.random.nextDouble() - 0.5D) * (double) this.width, (this.random.nextDouble() - 0.5D) * 2.0D, -this.random.nextDouble(), (this.random.nextDouble() - 0.5D) * 2.0D, new int[0]);
+                this.world.addParticle(EnumParticle.PORTAL, this.locX + (this.random.nextDouble() - 0.5D) * (double) this.width, this.locY + this.random.nextDouble() * (double) this.length - 0.25D, this.locZ + (this.random.nextDouble() - 0.5D) * (double) this.width, (this.random.nextDouble() - 0.5D) * 2.0D, -this.random.nextDouble(), (this.random.nextDouble() - 0.5D) * 2.0D, Constants.EMPTY_ARRAY);
             }
         }
 
@@ -215,7 +216,7 @@ public class EntityEnderman extends EntityMonster {
                 double d8 = d4 + (this.locY - d4) * d6 + this.random.nextDouble() * (double) this.length;
                 double d9 = d5 + (this.locZ - d5) * d6 + (this.random.nextDouble() - 0.5D) * (double) this.width * 2.0D;
 
-                this.world.addParticle(EnumParticle.PORTAL, d7, d8, d9, (double) f, (double) f1, (double) f2, new int[0]);
+                this.world.addParticle(EnumParticle.PORTAL, d7, d8, d9, (double) f, (double) f1, (double) f2, Constants.EMPTY_ARRAY);
             }
 
             this.world.makeSound(d3, d4, d5, "mob.endermen.portal", 1.0F, 1.0F);

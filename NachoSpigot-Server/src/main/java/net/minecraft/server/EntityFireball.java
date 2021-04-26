@@ -2,6 +2,7 @@ package net.minecraft.server;
 
 import java.util.List;
 
+import dev.cobblesword.nachospigot.commons.Constants;
 import org.bukkit.craftbukkit.event.CraftEventFactory; // CraftBukkit
 
 public abstract class EntityFireball extends Entity {
@@ -167,7 +168,7 @@ public abstract class EntityFireball extends Entity {
                 for (int j = 0; j < 4; ++j) {
                     float f3 = 0.25F;
 
-                    this.world.addParticle(EnumParticle.WATER_BUBBLE, this.locX - this.motX * (double) f3, this.locY - this.motY * (double) f3, this.locZ - this.motZ * (double) f3, this.motX, this.motY, this.motZ, new int[0]);
+                    this.world.addParticle(EnumParticle.WATER_BUBBLE, this.locX - this.motX * (double) f3, this.locY - this.motY * (double) f3, this.locZ - this.motZ * (double) f3, this.motX, this.motY, this.motZ, Constants.EMPTY_ARRAY);
                 }
 
                 f2 = 0.8F;
@@ -179,7 +180,7 @@ public abstract class EntityFireball extends Entity {
             this.motX *= (double) f2;
             this.motY *= (double) f2;
             this.motZ *= (double) f2;
-            this.world.addParticle(EnumParticle.SMOKE_NORMAL, this.locX, this.locY + 0.5D, this.locZ, 0.0D, 0.0D, 0.0D, new int[0]);
+            this.world.addParticle(EnumParticle.SMOKE_NORMAL, this.locX, this.locY + 0.5D, this.locZ, 0.0D, 0.0D, 0.0D, Constants.EMPTY_ARRAY);
             this.setPosition(this.locX, this.locY, this.locZ);
         }
     }

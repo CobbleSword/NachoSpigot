@@ -3,6 +3,7 @@ package net.minecraft.server;
 import com.google.common.base.Predicate;
 
 // CraftBukkit start
+import dev.cobblesword.nachospigot.commons.Constants;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
 // CraftBukkit end
@@ -183,7 +184,7 @@ public class EntityWolf extends EntityTameableAnimal {
                     float f1 = (this.random.nextFloat() * 2.0F - 1.0F) * this.width * 0.5F;
                     float f2 = (this.random.nextFloat() * 2.0F - 1.0F) * this.width * 0.5F;
 
-                    this.world.addParticle(EnumParticle.WATER_SPLASH, this.locX + (double) f1, (double) (f + 0.8F), this.locZ + (double) f2, this.motX, this.motY, this.motZ, new int[0]);
+                    this.world.addParticle(EnumParticle.WATER_SPLASH, this.locX + (double) f1, (double) (f + 0.8F), this.locZ + (double) f2, this.motX, this.motY, this.motZ, Constants.EMPTY_ARRAY);
                 }
             }
         }

@@ -2,6 +2,8 @@
 A **maintained** version of NachoSpigot where some features have been removed or added to make sure the server is stable and works with most plugins but is also optimized.
 I am planning to support Java 15 but still support most plugins like ProtocolLib. Is this going to work out? We will see in the end.
 
+NachoSpigot offers a number of enchancements to performance as well as bug fixes that were not public available to paper 1.8.9
+
 ## Current State
 Java 15 is now natively supported, and ProtocolLib and Citizens are patched at runtime to work with Nacho's patches.
 Unless other bugs are found, Nacho should now run stable.
@@ -90,6 +92,7 @@ To build, clone the repo, and run `mvn clean package` in the NachoSpigot directo
 [Nacho-0030] add a ChunkPreLoadEvent
 [Nacho-0031] remove unused vars
 [Nacho-0033] Faster Operator search method
+[Nacho-0050] Option to disable Enchantment table ticking
 
 <--> by Sculas
 [Nacho-0034] Remove Java 8 message from TacoSpigot which made it so you couldn't run Java 8 or higher
@@ -107,8 +110,10 @@ To build, clone the repo, and run `mvn clean package` in the NachoSpigot directo
 [Nacho-0046] Add Player#jump and Player#sendActionBar
 [Nacho-0047] Little anti-malware
 [Nacho-0048] Little anti-crash
+[Nacho-0049] Don't allocate empty int arrays for particles
 
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
+[Yatopia-0050] smol bat optimisation
 
 [IonSpigot-0035] Optimise Entity Collisions
 

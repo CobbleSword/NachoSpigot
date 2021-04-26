@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import dev.cobblesword.nachospigot.commons.Constants;
+
 public abstract class EntityAnimal extends EntityAgeable implements IAnimal {
 
     protected Block bn;
@@ -32,7 +34,7 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimal {
                 double d1 = this.random.nextGaussian() * 0.02D;
                 double d2 = this.random.nextGaussian() * 0.02D;
 
-                this.world.addParticle(EnumParticle.HEART, this.locX + (double) (this.random.nextFloat() * this.width * 2.0F) - (double) this.width, this.locY + 0.5D + (double) (this.random.nextFloat() * this.length), this.locZ + (double) (this.random.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2, new int[0]);
+                this.world.addParticle(EnumParticle.HEART, this.locX + (double) (this.random.nextFloat() * this.width * 2.0F) - (double) this.width, this.locY + 0.5D + (double) (this.random.nextFloat() * this.length), this.locZ + (double) (this.random.nextFloat() * this.width * 2.0F) - (double) this.width, d0, d1, d2, Constants.EMPTY_ARRAY);
             }
         }
 
