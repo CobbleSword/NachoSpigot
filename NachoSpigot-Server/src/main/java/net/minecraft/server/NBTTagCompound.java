@@ -1,5 +1,6 @@
 package net.minecraft.server;
 
+import dev.cobblesword.nachospigot.commons.Constants;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 import java.io.DataInput;
@@ -199,7 +200,7 @@ public class NBTTagCompound extends NBTBase {
 
     public int[] getIntArray(String var1) {
         try {
-            return !this.hasKeyOfType(var1, 11) ? new int[0] : ((NBTTagIntArray)this.map.get(var1)).c();
+            return !this.hasKeyOfType(var1, 11) ? Constants.EMPTY_ARRAY : ((NBTTagIntArray)this.map.get(var1)).c();
         } catch (ClassCastException var3) {
             throw new ReportedException(this.a(var1, 11, var3));
         }

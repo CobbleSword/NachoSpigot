@@ -1,6 +1,7 @@
 package net.minecraft.server;
 
 import com.eatthepath.uuid.FastUUID;
+import dev.cobblesword.nachospigot.commons.Constants;
 
 import java.util.List;
 import java.util.UUID;
@@ -210,7 +211,7 @@ public abstract class EntityProjectile extends Entity implements IProjectile {
             for (int j = 0; j < 4; ++j) {
                 float f4 = 0.25F;
 
-                this.world.addParticle(EnumParticle.WATER_BUBBLE, this.locX - this.motX * (double) f4, this.locY - this.motY * (double) f4, this.locZ - this.motZ * (double) f4, this.motX, this.motY, this.motZ, new int[0]);
+                this.world.addParticle(EnumParticle.WATER_BUBBLE, this.locX - this.motX * (double) f4, this.locY - this.motY * (double) f4, this.locZ - this.motZ * (double) f4, this.motX, this.motY, this.motZ, Constants.EMPTY_ARRAY);
             }
 
             f2 = 0.8F;

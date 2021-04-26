@@ -6,6 +6,8 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+
+import dev.cobblesword.nachospigot.commons.Constants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -131,9 +133,8 @@ public class NBTTagList extends NBTBase {
         if (i >= 0 && i < this.list.size()) {
             NBTBase nbtbase = (NBTBase) this.list.get(i);
 
-            return nbtbase.getTypeId() == 11 ? ((NBTTagIntArray) nbtbase).c() : new int[0];
-        } else {
-            return new int[0];
+            return nbtbase.getTypeId() == 11 ? ((NBTTagIntArray) nbtbase).c() : Constants.EMPTY_ARRAY;        } else {
+            return Constants.EMPTY_ARRAY;
         }
     }
 

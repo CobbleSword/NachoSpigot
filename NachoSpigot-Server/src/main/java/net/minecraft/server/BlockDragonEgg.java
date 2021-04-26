@@ -2,6 +2,7 @@ package net.minecraft.server;
 
 import java.util.Random;
 
+import dev.cobblesword.nachospigot.commons.Constants;
 import org.bukkit.event.block.BlockFromToEvent; // CraftBukkit
 
 public class BlockDragonEgg extends Block {
@@ -88,7 +89,7 @@ public class BlockDragonEgg extends Block {
                             double d2 = (double) blockposition1.getY() + (double) (blockposition.getY() - blockposition1.getY()) * d0 + world.random.nextDouble() * 1.0D - 0.5D;
                             double d3 = (double) blockposition1.getZ() + (double) (blockposition.getZ() - blockposition1.getZ()) * d0 + (world.random.nextDouble() - 0.5D) * 1.0D + 0.5D;
 
-                            world.addParticle(EnumParticle.PORTAL, d1, d2, d3, (double) f, (double) f1, (double) f2, new int[0]);
+                            world.addParticle(EnumParticle.PORTAL, d1, d2, d3, (double) f, (double) f1, (double) f2, Constants.EMPTY_ARRAY);
                         }
                     } else {
                         world.setTypeAndData(blockposition1, iblockdata, 2);

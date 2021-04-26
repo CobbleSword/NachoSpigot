@@ -12,6 +12,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
+import dev.cobblesword.nachospigot.commons.Constants;
 import net.minecraft.server.*;
 
 import org.apache.commons.lang.Validate;
@@ -1453,7 +1454,7 @@ public class CraftWorld implements World {
                 }
                 if ( extra == null )
                 {
-                    extra = new int[0];
+                    extra = Constants.EMPTY_ARRAY;
                 }
                 packet = new PacketPlayOutWorldParticles( particle, true, (float) location.getX(), (float) location.getY(), (float) location.getZ(), offsetX, offsetY, offsetZ, speed, particleCount, extra );
             }

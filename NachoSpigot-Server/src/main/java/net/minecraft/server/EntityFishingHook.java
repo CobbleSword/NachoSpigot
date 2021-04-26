@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 // CraftBukkit start
+import dev.cobblesword.nachospigot.commons.Constants;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Fish;
 import org.bukkit.event.player.PlayerFishEvent;
@@ -287,8 +288,8 @@ public class EntityFishingHook extends Entity {
                                 this.motY -= 0.20000000298023224D;
                                 this.makeSound("random.splash", 0.25F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.4F);
                                 f3 = (float) MathHelper.floor(this.getBoundingBox().b);
-                                worldserver.a(EnumParticle.WATER_BUBBLE, this.locX, (double) (f3 + 1.0F), this.locZ, (int) (1.0F + this.width * 20.0F), (double) this.width, 0.0D, (double) this.width, 0.20000000298023224D, new int[0]);
-                                worldserver.a(EnumParticle.WATER_WAKE, this.locX, (double) (f3 + 1.0F), this.locZ, (int) (1.0F + this.width * 20.0F), (double) this.width, 0.0D, (double) this.width, 0.20000000298023224D, new int[0]);
+                                worldserver.a(EnumParticle.WATER_BUBBLE, this.locX, (double) (f3 + 1.0F), this.locZ, (int) (1.0F + this.width * 20.0F), (double) this.width, 0.0D, (double) this.width, 0.20000000298023224D, Constants.EMPTY_ARRAY);
+                                worldserver.a(EnumParticle.WATER_WAKE, this.locX, (double) (f3 + 1.0F), this.locZ, (int) (1.0F + this.width * 20.0F), (double) this.width, 0.0D, (double) this.width, 0.20000000298023224D, Constants.EMPTY_ARRAY);
                                 this.av = MathHelper.nextInt(this.random, 10, 30);
                             } else {
                                 this.ay = (float) ((double) this.ay + this.random.nextGaussian() * 4.0D);
@@ -301,14 +302,14 @@ public class EntityFishingHook extends Entity {
                                 block = worldserver.getType(new BlockPosition((int) d8, (int) d12 - 1, (int) d11)).getBlock();
                                 if (block == Blocks.WATER || block == Blocks.FLOWING_WATER) {
                                     if (this.random.nextFloat() < 0.15F) {
-                                        worldserver.a(EnumParticle.WATER_BUBBLE, d8, d12 - 0.10000000149011612D, d11, 1, (double) f5, 0.1D, (double) f4, 0.0D, new int[0]);
+                                        worldserver.a(EnumParticle.WATER_BUBBLE, d8, d12 - 0.10000000149011612D, d11, 1, (double) f5, 0.1D, (double) f4, 0.0D, Constants.EMPTY_ARRAY);
                                     }
 
                                     float f6 = f5 * 0.04F;
                                     float f7 = f4 * 0.04F;
 
-                                    worldserver.a(EnumParticle.WATER_WAKE, d8, d12, d11, 0, (double) f7, 0.01D, (double) (-f6), 1.0D, new int[0]);
-                                    worldserver.a(EnumParticle.WATER_WAKE, d8, d12, d11, 0, (double) (-f7), 0.01D, (double) f6, 1.0D, new int[0]);
+                                    worldserver.a(EnumParticle.WATER_WAKE, d8, d12, d11, 0, (double) f7, 0.01D, (double) (-f6), 1.0D, Constants.EMPTY_ARRAY);
+                                    worldserver.a(EnumParticle.WATER_WAKE, d8, d12, d11, 0, (double) (-f7), 0.01D, (double) f6, 1.0D, Constants.EMPTY_ARRAY);
                                 }
                             }
                         } else if (this.aw > 0) {
@@ -330,7 +331,7 @@ public class EntityFishingHook extends Entity {
                                 d11 = this.locZ + (double) (MathHelper.cos(f5) * f4 * 0.1F);
                                 block = worldserver.getType(new BlockPosition((int) d8, (int) d12 - 1, (int) d11)).getBlock();
                                 if (block == Blocks.WATER || block == Blocks.FLOWING_WATER) {
-                                    worldserver.a(EnumParticle.WATER_SPLASH, d8, d12, d11, 2 + this.random.nextInt(2), 0.10000000149011612D, 0.0D, 0.10000000149011612D, 0.0D, new int[0]);
+                                    worldserver.a(EnumParticle.WATER_SPLASH, d8, d12, d11, 2 + this.random.nextInt(2), 0.10000000149011612D, 0.0D, 0.10000000149011612D, 0.0D, Constants.EMPTY_ARRAY);
                                 }
                             }
 

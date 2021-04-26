@@ -1,5 +1,6 @@
 package net.minecraft.server;
 
+import dev.cobblesword.nachospigot.commons.Constants;
 import org.bukkit.event.entity.ExplosionPrimeEvent; // CraftBukkit
 
 public class EntityTNTPrimed extends Entity {
@@ -90,7 +91,7 @@ public class EntityTNTPrimed extends Entity {
             // CraftBukkit end
         } else {
             this.W();
-            this.world.addParticle(EnumParticle.SMOKE_NORMAL, this.locX, this.locY + 0.5D, this.locZ, 0.0D, 0.0D, 0.0D, new int[0]);
+            this.world.addParticle(EnumParticle.SMOKE_NORMAL, this.locX, this.locY + 0.5D, this.locZ, 0.0D, 0.0D, 0.0D, Constants.EMPTY_ARRAY);
         }
 
     }

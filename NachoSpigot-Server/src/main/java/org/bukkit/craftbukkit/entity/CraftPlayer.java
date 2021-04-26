@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.authlib.GameProfile;
+import dev.cobblesword.nachospigot.commons.Constants;
 import io.netty.buffer.Unpooled;
 
 import java.io.ByteArrayOutputStream;
@@ -1509,7 +1510,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
                 }
                 if ( extra == null )
                 {
-                    extra = new int[0];
+                    extra = Constants.EMPTY_ARRAY;
                 }
                 packet = new PacketPlayOutWorldParticles( particle, true, (float) location.getX(), (float) location.getY(), (float) location.getZ(), offsetX, offsetY, offsetZ, speed, particleCount, extra );
             }
