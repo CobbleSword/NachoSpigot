@@ -138,6 +138,7 @@ If you find any bugs, please create an issue or contact us in the Discord server
 [FlamePaper-0115] Patch Book Exploits
 
 [MineTick-0006] Fix Occasional Client Side Unloading of Chunk 0 0
+[MineTick-0017] Fix Insane Nether Portal Lag
 
 [SportBukkit-????] Fix client-server desync when a player hits an entity while sprinting
 ```
