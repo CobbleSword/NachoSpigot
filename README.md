@@ -111,6 +111,7 @@ If you find any bugs, please create an issue or contact us in the Discord server
 [Nacho-0046] Add Player#jump and Player#sendActionBar
 [Nacho-0047] Little anti-malware
 [Nacho-0048] Little anti-crash
+[Nacho-0051] Custom knockback
 
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 [Yatopia-0050] smol bat optimisation

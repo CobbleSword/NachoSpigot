@@ -22,6 +22,7 @@ import javax.imageio.ImageIO;
 
 import com.eatthepath.uuid.FastUUID;
 import dev.cobblesword.nachospigot.Nacho;
+import dev.cobblesword.nachospigot.knockback.Knockback;
 import dev.cobblesword.nachospigot.malware.AntiMalware;
 import dev.cobblesword.nachospigot.patches.RuntimePatches;
 import net.minecraft.server.*;
@@ -767,7 +768,8 @@ public final class CraftServer implements Server {
         resetRecipes();
         org.spigotmc.SpigotConfig.registerCommands(); // Spigot
         org.github.paperspigot.PaperSpigotConfig.registerCommands(); // PaperSpigot
-        Nacho.get().registerCommands(); //NachoSpigot :: Commands
+        Nacho.get().registerCommands(); // NachoSpigot :: Commands
+        Knockback.get().registerCommands(); // NS Knockback :: Commands
 
         overrideAllCommandBlockCommands = commandsConfiguration.getStringList("command-block-overrides").contains("*");
 
@@ -798,6 +800,47 @@ public final class CraftServer implements Server {
         loadPlugins();
         enablePlugins(PluginLoadOrder.STARTUP);
         enablePlugins(PluginLoadOrder.POSTWORLD);
+    }
+
+    @Override
+    public void reloadKB() {
+        Knockback.get().reloadConfig();
+    }
+
+    @Override
+    public void setKnockbackFriction(double d) {
+        Knockback.get().getConfig().knockbackFriction = d;
+        Knockback.get().saveConfig();
+    }
+
+    @Override
+    public void setKnockbackHorizontal(double d) {
+        Knockback.get().getConfig().knockbackHorizontal = d;
+        Knockback.get().saveConfig();
+    }
+
+    @Override
+    public void setKnockbackVertical(double d) {
+        Knockback.get().getConfig().knockbackVertical = d;
+        Knockback.get().saveConfig();
+    }
+
+    @Override
+    public void setKnockbackVerticalLimit(double d) {
+        Knockback.get().getConfig().knockbackVerticalLimit = d;
+        Knockback.get().saveConfig();
+    }
+
+    @Override
+    public void setKnockbackExtraHorizontal(double d) {
+        Knockback.get().getConfig().knockbackExtraHorizontal = d;
+        Knockback.get().saveConfig();
+    }
+
+    @Override
+    public void setKnockbackExtraVertical(double d) {
+        Knockback.get().getConfig().knockbackExtraVertical = d;
+        Knockback.get().saveConfig();
     }
 
     private void loadIcon() {

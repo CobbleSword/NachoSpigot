@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.commons.IPUtils;
+import dev.cobblesword.nachospigot.knockback.Knockback;
 import dev.cobblesword.nachospigot.patches.RuntimePatches;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -183,7 +184,8 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
             org.github.paperspigot.PaperSpigotConfig.init((File) options.valueOf("paper-settings"));
             org.github.paperspigot.PaperSpigotConfig.registerCommands();
             // PaperSpigot end
-            Nacho.get().registerCommands(); //NachoSpigot :: Commands
+            Nacho.get().registerCommands(); // NachoSpigot :: Commands
+            Knockback.get().registerCommands(); // NS Knockback :: Commands
 
             DedicatedServer.LOGGER.info("Generating keypair");
             this.a(MinecraftEncryption.b());
