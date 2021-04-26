@@ -40,6 +40,7 @@ public class KnockbackCommand extends Command {
                     sender.sendMessage(CC.red + "Invalid value.");
                     break;
                 }
+                boolean success = true;
                 switch (args[0].toLowerCase()) {
                     case "f": {
                         Bukkit.getServer().setKnockbackFriction(value);
@@ -67,8 +68,12 @@ public class KnockbackCommand extends Command {
                     }
                     default: {
                         sendHelpKB(sender);
+                        success = false;
                         break;
                     }
+                }
+                if (success) {
+                    sender.sendMessage(CC.gray + args[0].toLowerCase() + CC.aqua + "set to " + CC.gray + value);
                 }
                 break;
             }
