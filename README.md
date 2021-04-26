@@ -109,6 +109,7 @@ To build, clone the repo, and run `mvn clean package` in the NachoSpigot directo
 [Nacho-0046] Add Player#jump and Player#sendActionBar
 [Nacho-0047] Little anti-malware
 [Nacho-0048] Little anti-crash
+[Nacho-0049] Don't allocate empty int arrays for particles
 
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 
