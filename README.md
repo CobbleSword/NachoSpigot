@@ -92,6 +92,7 @@ If you find any bugs, please create an issue or contact us in the Discord server
 [Nacho-0030] add a ChunkPreLoadEvent
 [Nacho-0031] remove unused vars
 [Nacho-0033] Faster Operator search method
+[Nacho-0049] Don't allocate empty int arrays for particles
 [Nacho-0050] Option to disable Enchantment table ticking
 
 <--> by Sculas
@@ -110,11 +111,11 @@ If you find any bugs, please create an issue or contact us in the Discord server
 [Nacho-0046] Add Player#jump and Player#sendActionBar
 [Nacho-0047] Little anti-malware
 [Nacho-0048] Little anti-crash
-[Nacho-0049] Don't allocate empty int arrays for particles
 
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 [Yatopia-0050] smol bat optimisation
 
+[IonSpigot-0006] Fix Chunk Loading
 [IonSpigot-0012] Movement Cache
 [IonSpigot-0035] Optimise Entity Collisions
 

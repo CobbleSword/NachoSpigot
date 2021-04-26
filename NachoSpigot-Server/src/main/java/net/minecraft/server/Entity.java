@@ -444,11 +444,31 @@ public abstract class Entity implements ICommandListener {
      * PaperSpigot - Load surrounding chunks the entity is moving through
      */
     public void loadChunks() {
+        // IonSpigot start - Fix Load Chunks
+        /*
+        This implementation is flawed, as it does not work properly in south and east directions.
+        The reason for this is because the motion would be negative in those directions which
+        would cause the checks to fail, as it is missing min and max checks.
+
+        Now you're going to be saying my cannon loaded chunks in those directions,
+        you are right about that, the reason it works is because theres an additional layer
+        of chunk loading, I personally believe this method is meant to ensure that the current position
+        is loaded as it isn't guaranteed that the entity will move at all.
+
+        This additional layer is located in the getCubes method, we can remove the excess logic from here
+        and take advantage of that with the triangle patch that was implemented in TacoSpigot
+        this allows for triangle chunk loading allowing to us to reduce chunks loaded by cannons.
+
         for (int cx = (int) locX >> 4; cx <= (int) (locX + motX) >> 4; ++cx) {
             for (int cz = (int) locZ >> 4; cz <= (int) (locZ + motZ) >> 4; ++cz) {
                 ((ChunkProviderServer) world.chunkProvider).getChunkAt(cx, cz);
             }
         }
+        */
+        int chunkX = org.bukkit.util.NumberConversions.floor(locX) >> 4;
+        int chunkZ = org.bukkit.util.NumberConversions.floor(locX) >> 4;
+        ((ChunkProviderServer) world.chunkProvider).getChunkAt(chunkX, chunkZ);
+        // IonSpigot end
     }
 
 
