@@ -225,7 +225,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                             if (IPUtils.isAccessible(external, port)) {
                                 DedicatedServer.LOGGER.error("THIS SERVER IS ACCESSIBLE FROM THE OUTSIDE");
                                 DedicatedServer.LOGGER.error("WITHOUT HAVING A PROPER PLUGIN LIKE BUNGEEGUARD INSTALLED");
-                                DedicatedServer.LOGGER.error("EVERYONE WILL BE ABLE TO JOIN THIS SERVER IN AN OFFLINE MODE");
+                                DedicatedServer.LOGGER.error("EVERYONE WILL BE ABLE TO JOIN THIS SERVER IN OFFLINE MODE");
                                 DedicatedServer.LOGGER.error("PLEASE FIX YOUR FIREWALL OR INSTALL A PLUGIN LIKE BUNGEEGUARD");
                                 DedicatedServer.LOGGER.error("AND THEN DISABLE THIS NOTIFICATION IN THE CONFIGURATION FILE");
                             } else {
