@@ -147,7 +147,7 @@ If you find any bugs, please create an issue or contact us in the Discord server
 [MineTick-0017] Fix Insane Nether Portal Lag
 
 [SportBukkit-????] Fix client-server desync when a player hits an entity while sprinting
-[SportBukkit-PR94] Async chunk compressing and caching
+[SportBukkit-PR94] Async chunk caching
 ```
 
 ## Removed
