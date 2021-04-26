@@ -117,6 +117,7 @@ If you find any bugs, please create an issue or contact us in the Discord server
 
 [IonSpigot-0006] Fix Chunk Loading
 [IonSpigot-0012] Movement Cache
+[IonSpigot-0013] Implement PandaWire
 [IonSpigot-0014] Faster Chunk Entity List
 [IonSpigot-0020] Faster EntityTracker Collections
 [IonSpigot-0035] Optimise Entity Collisions

@@ -10,5 +10,6 @@ public class NachoConfig {
     public boolean stopNotifyBungee = false;
     public boolean checkForMalware = false;
     public boolean shouldTickEnchantmentTables = true;
+    public boolean usePandaWire = true;
     public String serverBrandName = "NachoSpigot";
 }
