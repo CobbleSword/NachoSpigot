@@ -439,6 +439,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                         this.player.bF();
                     }
 
+                    this.player.world.movementCache.clear(); // IonSpigot - Movement Cache
                     this.player.move(d11, d12, d13);
                     this.player.onGround = packetplayinflying.f();
                     double d16 = d12;

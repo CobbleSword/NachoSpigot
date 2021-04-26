@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import me.suicidalkids.ion.movement.MovementCache;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.CraftServer;
@@ -142,9 +143,11 @@ public abstract class World implements IBlockAccess {
     public ExecutorService lightingExecutor = Executors.newSingleThreadExecutor(new ThreadFactoryBuilder().setNameFormat("PaperSpigot - Lighting Thread").build()); // PaperSpigot - Asynchronous lighting updates
     public java.util.ArrayDeque<BlockRedstoneTorch.RedstoneUpdateInfo> redstoneUpdateInfos; // Paper - Move from Map in BlockRedstoneTorch to here
 
+    public final MovementCache movementCache = new MovementCache(); // IonSpigot - Movement Cache
+
     public static long chunkToKey(int x, int z)
     {
-        long k = ( ( ( (long) x ) & 0xFFFF0000L ) << 16 ) | ( ( ( (long) x ) & 0x0000FFFFL ) << 0 );
+        long k = ( ( ( (long) x ) & 0xFFFF0000L ) << 16 ) | ((((long) x) & 0x0000FFFFL));
         k |= ( ( ( (long) z ) & 0xFFFF0000L ) << 32 ) | ( ( ( (long) z ) & 0x0000FFFFL ) << 16 );
         return k;
     }
@@ -459,6 +462,7 @@ public abstract class World implements IBlockAccess {
                     this.methodProfiler.b();
                 }
 
+                movementCache.clear(); // IonSpigot - Movement Cache
                 /*
                 if ((i & 2) != 0 && (!this.isClientSide || (i & 4) == 0) && chunk.isReady()) {
                     this.notify(blockposition);

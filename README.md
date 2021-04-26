@@ -115,6 +115,7 @@ If you find any bugs, please create an issue or contact us in the Discord server
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 [Yatopia-0050] smol bat optimisation
 
+[IonSpigot-0012] Movement Cache
 [IonSpigot-0035] Optimise Entity Collisions
 
 [Akarin-0001] Avoid double I/O operation on load player file by tsao chi
