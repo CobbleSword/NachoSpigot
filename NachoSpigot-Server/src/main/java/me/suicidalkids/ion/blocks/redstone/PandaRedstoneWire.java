@@ -23,9 +23,9 @@ public class PandaRedstoneWire extends BlockRedstoneWire {
      * but an artificial test showed barely any difference in performance
      */
     /** Positions that need to be turned off **/
-    private List<BlockPosition> turnOff = Lists.newArrayList();
+    private final List<BlockPosition> turnOff = Lists.newArrayList();
     /** Positions that need to be checked to be turned on **/
-    private List<BlockPosition> turnOn = Lists.newArrayList();
+    private final List<BlockPosition> turnOn = Lists.newArrayList();
     /** Positions of wire that was updated already (Ordering determines update order and is therefore required!) **/
     private final Set<BlockPosition> updatedRedstoneWire = Sets.newLinkedHashSet();
 
