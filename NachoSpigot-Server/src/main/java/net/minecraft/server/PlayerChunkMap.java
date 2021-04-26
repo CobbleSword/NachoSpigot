@@ -13,6 +13,9 @@ import java.util.Collections;
 import java.util.Queue;
 import java.util.LinkedList;
 import org.bukkit.craftbukkit.chunkio.ChunkIOExecutor;
+import org.bukkit.craftbukkit.chunkio.QueuedChunkPacket;
+import org.bukkit.craftbukkit.chunkio.QueuedChunkThread;
+
 import java.util.HashMap;
 // CraftBukkit end
 
@@ -28,10 +31,12 @@ public class PlayerChunkMap {
     private long h;
     private final int[][] i = new int[][] { { 1, 0}, { 0, 1}, { -1, 0}, { 0, -1}};
     private boolean wasNotEmpty; // CraftBukkit - add field
+    public QueuedChunkThread queuedChunkThread = new QueuedChunkThread();
 
     public PlayerChunkMap(WorldServer worldserver, int viewDistance /* Spigot */) {
         this.world = worldserver;
         this.a(viewDistance); // Spigot
+        new Thread(this.queuedChunkThread).start();
     }
 
     public WorldServer a() {
@@ -61,7 +66,7 @@ public class PlayerChunkMap {
             }
         }
 
-        // this.e.clear(); //CraftBukkit - Removals are already covered
+        // this.e.clear(); // CraftBukkit - Removals are already covered
         if (this.managedPlayers.isEmpty()) {
             if (!wasNotEmpty) return; // CraftBukkit - Only do unload when we go from non-empty to empty
             WorldProvider worldprovider = this.world.worldProvider;
@@ -412,7 +417,8 @@ public class PlayerChunkMap {
                 Chunk chunk = PlayerChunkMap.this.world.getChunkAt(this.location.x, this.location.z);
 
                 if (chunk.isReady()) {
-                    entityplayer.playerConnection.sendPacket(new PacketPlayOutMapChunk(chunk, true, 0));
+                    if (chunk.cachedEmptyPacket == null) chunk.cachedEmptyPacket = new PacketPlayOutMapChunk(chunk, true, 0);
+                    queuedChunkThread.chunks.add(new QueuedChunkPacket(Lists.newArrayList(entityplayer), Lists.newArrayList(chunk.cachedEmptyPacket)));
                 }
 
                 this.players.remove(entityplayer); // CraftBukkit

@@ -19,6 +19,7 @@ import org.apache.logging.log4j.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.WeatherType;
 import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.craftbukkit.chunkio.QueuedChunkPacket;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
@@ -234,24 +235,19 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
             this.playerConnection.sendPacket(new PacketPlayOutEntityDestroy(aint));
         }
 
-        if (!this.chunkCoordIntPairQueue.isEmpty())
-        {
+        if (!this.chunkCoordIntPairQueue.isEmpty()) {
             ArrayList<Chunk> chunkList = Lists.newArrayList();
             Iterator<ChunkCoordIntPair> chunksToLoad = this.chunkCoordIntPairQueue.iterator();
             ArrayList<TileEntity> tileEntities = Lists.newArrayList();
 
             Chunk chunk = null;
 
-            while (chunksToLoad.hasNext() && chunkList.size() < this.world.spigotConfig.maxBulkChunk)
-            { // Spigot
+            while (chunksToLoad.hasNext() && chunkList.size() < this.world.spigotConfig.maxBulkChunk) { // Spigot
                 ChunkCoordIntPair chunkcoordintpair = chunksToLoad.next();
-
-                if (chunkcoordintpair != null)
-                {
+                if (chunkcoordintpair != null) {
                     if (this.world.isLoaded(chunkcoordintpair.x << 4, 0, chunkcoordintpair.z << 4)) {// [Nacho-0024] Do not create new BlockPosition when loading chunk
                         chunk = this.world.getChunkAt(chunkcoordintpair.x, chunkcoordintpair.z);
-                        if (chunk.isReady())
-                        {
+                        if (chunk.isReady()) {
                             chunkList.add(chunk);
                             tileEntities.addAll(chunk.tileEntities.values()); // CraftBukkit - Get tile entities directly from the chunk instead of the world
                             chunksToLoad.remove();
@@ -262,39 +258,40 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
                 }
             }
 
-            if (!chunkList.isEmpty())
-            {
-                if (chunkList.size() == 1)
-                {
-                    this.playerConnection.sendPacket(new PacketPlayOutMapChunk(chunkList.get(0), true, '\uffff'));
+            if (!chunkList.isEmpty()) {
+                // CraftBukkit start - use cached chunks
+                //this.playerConnection.sendPacket(new PacketPlayOutMapChunkBulk(chunkList));
+                List<Packet> packets = Lists.newArrayList();
+                for (Chunk chunk1 : chunkList) {
+                    if (chunk1.cachedPacket == null) chunk1.cachedPacket = new PacketPlayOutMapChunkBulk(Lists.newArrayList(chunk1));
+                    packets.add(chunk1.cachedPacket);
                 }
-                else
-                {
-                    this.playerConnection.sendPacket(new PacketPlayOutMapChunkBulk(chunkList));
-                }
-
-                Iterator<TileEntity> tileEntitiesIterator = tileEntities.iterator();
-
-                while (tileEntitiesIterator.hasNext())
-                {
-                    TileEntity tileentity = tileEntitiesIterator.next();
-                    this.a(tileentity);
+                for (TileEntity tileEntity : tileEntities) {
+                    // this.a(tileEntity);
+                    Packet updatePacket = tileEntity.getUpdatePacket();
+                    if (updatePacket != null) packets.add(updatePacket);
                 }
 
+                ((WorldServer) this.world).getPlayerChunkMap().queuedChunkThread.chunks.add(new QueuedChunkPacket(Lists.newArrayList(this), packets));
+                // CraftBukkit end
 
-//              //Nacho - if there are a lot of entities, we end up scanning the WHOLE list of entities multiple times
-//              // Which isn't the best if we have 100 players doing that
-                // So instead of updating all entities by chunk, we update all entities at once with a hashset of chunks
-                // This means we don't have to pass over the list x chunks
-                // o(chunk * entityList) => o(entitylist)
+                // Nacho start
+                /*
+                If there are a lot of entities, we end up scanning the WHOLE list of entities multiple times
+                Which isn't the best if we have 100 players doing that
+                So instead of updating all entities by chunk, we update all entities at once with a hashset of chunks
+                This means we don't have to pass over the list x chunks
+                o(chunk * entityList) => o(entityList)
+                /*-------------------------------------*\
+                Iterator<Chunk> chunkIterator = chunkList.iterator();
+                while (chunkIterator.hasNext())
+                {
+                    chunk = (Chunk) chunkIterator.next();
+                    this.u().getTracker().a(this, chunk);
+                }
+                */
+                // Nacho end
 
-//                Iterator<Chunk> chunkIterator = chunkList.iterator();
-//                while (chunkIterator.hasNext())
-//                {
-//                    chunk = (Chunk) chunkIterator.next();
-//                    this.u().getTracker().a(this, chunk);
-//                }
-//              Nacho - end
 
                 LongOpenHashSet chunkPosSet = new LongOpenHashSet(chunkList.size());
                 for (Chunk newChunk : chunkList)
@@ -427,7 +424,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
             }
 
             if (hashset.isEmpty()) {
-                this.b((Statistic) AchievementList.L);
+                this.b(AchievementList.L);
             }
         }
 

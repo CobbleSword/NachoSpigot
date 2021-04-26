@@ -387,10 +387,11 @@ public class Explosion {
     // Paper start - Optimize explosions
     private float getBlockDensity(Vec3D vec3d, Entity entity) {
         // IonSpigot start - Optimise Density Cache
-        int key = createKey(this, entity.getBoundingBox());
+        AxisAlignedBB aabb = entity.getBoundingBox();
+        int key = createKey(this, aabb);
         float blockDensity = this.world.explosionDensityCache.get(key);
         if (blockDensity == -1.0f) {
-            blockDensity = this.world.a(vec3d, entity.getBoundingBox());
+            blockDensity = this.world.a(vec3d, aabb);
             this.world.explosionDensityCache.put(key, blockDensity);
         }
         return blockDensity;

@@ -90,12 +90,9 @@ public class CraftChunk implements Chunk {
 
         for (int i = 0; i < 16; i++) {
             // Paper start - speed up (was with chunk.entitySlices[i].toArray() and cast checks which costs a lot of performance if called often)
-            for (net.minecraft.server.Entity entity : chunk.entitySlices[i]) {
-                if (entity == null) {
-                    continue;
-                }
-
-                entities[index++] = entity.getBukkitEntity();
+            for (Object entity : chunk.entitySlices[i]) {
+                if (entity == null) continue;
+                entities[index++] = ((net.minecraft.server.Entity) entity).getBukkitEntity();
             }
             // Paper end
         }

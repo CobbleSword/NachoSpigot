@@ -21,7 +21,7 @@ public class PacketPlayOutMapChunkBulk implements Packet<PacketListenerPlayOut> 
         this.a = new int[i];
         this.b = new int[i];
         this.c = new PacketPlayOutMapChunk.ChunkMap[i];
-        this.d = !((Chunk) list.get(0)).getWorld().worldProvider.o();
+        this.d = !list.get(0).getWorld().worldProvider.o();
 
         for (int j = 0; j < i; ++j) {
             Chunk chunk = list.get(j);
