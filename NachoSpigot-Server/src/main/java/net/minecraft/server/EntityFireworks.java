@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import dev.cobblesword.nachospigot.commons.Constants;
+
 public class EntityFireworks extends Entity {
 
     private int ticksFlown;
@@ -83,7 +85,7 @@ public class EntityFireworks extends Entity {
 
         ++this.ticksFlown;
         if (this.world.isClientSide && this.ticksFlown % 2 < 2) {
-            this.world.addParticle(EnumParticle.FIREWORKS_SPARK, this.locX, this.locY - 0.3D, this.locZ, this.random.nextGaussian() * 0.05D, -this.motY * 0.5D, this.random.nextGaussian() * 0.05D, new int[0]);
+            this.world.addParticle(EnumParticle.FIREWORKS_SPARK, this.locX, this.locY - 0.3D, this.locZ, this.random.nextGaussian() * 0.05D, -this.motY * 0.5D, this.random.nextGaussian() * 0.05D, Constants.EMPTY_ARRAY);
         }
 
         if (!this.world.isClientSide && this.ticksFlown > this.expectedLifespan) {

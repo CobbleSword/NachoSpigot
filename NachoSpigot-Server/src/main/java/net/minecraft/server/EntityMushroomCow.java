@@ -1,5 +1,6 @@
 package net.minecraft.server;
 
+import dev.cobblesword.nachospigot.commons.Constants;
 import org.bukkit.event.player.PlayerShearEntityEvent; // CraftBukkit
 
 public class EntityMushroomCow extends EntityCow {
@@ -35,7 +36,7 @@ public class EntityMushroomCow extends EntityCow {
             }
             // CraftBukkit end
             this.die();
-            this.world.addParticle(EnumParticle.EXPLOSION_LARGE, this.locX, this.locY + (double) (this.length / 2.0F), this.locZ, 0.0D, 0.0D, 0.0D, new int[0]);
+            this.world.addParticle(EnumParticle.EXPLOSION_LARGE, this.locX, this.locY + (double) (this.length / 2.0F), this.locZ, 0.0D, 0.0D, 0.0D, Constants.EMPTY_ARRAY);
             if (!this.world.isClientSide) {
                 EntityCow entitycow = new EntityCow(this.world);
 

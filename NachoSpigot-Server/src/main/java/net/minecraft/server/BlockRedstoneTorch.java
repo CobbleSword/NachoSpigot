@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import dev.cobblesword.nachospigot.commons.Constants;
 import org.bukkit.event.block.BlockRedstoneEvent; // CraftBukkit
 
 public class BlockRedstoneTorch extends BlockTorch {
@@ -153,7 +154,7 @@ public class BlockRedstoneTorch extends BlockTorch {
                         double d1 = (double) blockposition.getY() + random.nextDouble() * 0.6D + 0.2D;
                         double d2 = (double) blockposition.getZ() + random.nextDouble() * 0.6D + 0.2D;
 
-                        world.addParticle(EnumParticle.SMOKE_NORMAL, d0, d1, d2, 0.0D, 0.0D, 0.0D, new int[0]);
+                        world.addParticle(EnumParticle.SMOKE_NORMAL, d0, d1, d2, 0.0D, 0.0D, 0.0D, Constants.EMPTY_ARRAY);
                     }
 
                     world.a(blockposition, world.getType(blockposition).getBlock(), 160);

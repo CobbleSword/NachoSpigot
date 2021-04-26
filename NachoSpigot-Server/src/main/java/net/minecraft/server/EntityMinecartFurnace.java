@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import dev.cobblesword.nachospigot.commons.Constants;
+
 public class EntityMinecartFurnace extends EntityMinecartAbstract {
 
     private int c;
@@ -35,7 +37,7 @@ public class EntityMinecartFurnace extends EntityMinecartAbstract {
 
         this.i(this.c > 0);
         if (this.j() && this.random.nextInt(4) == 0) {
-            this.world.addParticle(EnumParticle.SMOKE_LARGE, this.locX, this.locY + 0.8D, this.locZ, 0.0D, 0.0D, 0.0D, new int[0]);
+            this.world.addParticle(EnumParticle.SMOKE_LARGE, this.locX, this.locY + 0.8D, this.locZ, 0.0D, 0.0D, 0.0D, Constants.EMPTY_ARRAY);
         }
 
     }

@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import dev.cobblesword.nachospigot.commons.Constants;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -105,7 +107,7 @@ public class PathfinderGoalBreed extends PathfinderGoal {
                 double d4 = 0.5D + random.nextDouble() * (double) this.d.length;
                 double d5 = random.nextDouble() * (double) this.d.width * 2.0D - (double) this.d.width;
 
-                this.a.addParticle(EnumParticle.HEART, this.d.locX + d3, this.d.locY + d4, this.d.locZ + d5, d0, d1, d2, new int[0]);
+                this.a.addParticle(EnumParticle.HEART, this.d.locX + d3, this.d.locY + d4, this.d.locZ + d5, d0, d1, d2, Constants.EMPTY_ARRAY);
             }
 
             if (this.a.getGameRules().getBoolean("doMobLoot")) {
