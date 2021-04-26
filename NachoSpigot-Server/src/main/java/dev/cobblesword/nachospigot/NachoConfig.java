@@ -10,5 +10,6 @@ public class NachoConfig
     public boolean patchProtocolLib = true;
     public boolean stopNotifyBungee = false;
     public boolean checkForMalware = false;
+    public boolean shouldTickEnchantmentTables = true;
     public String serverBrandName = "NachoSpigot";
 }
