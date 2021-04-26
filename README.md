@@ -115,6 +115,7 @@ If you find any bugs, please create an issue or contact us in the Discord server
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 [Yatopia-0050] smol bat optimisation
 
+[IonSpigot-0003] Explosion Improvements
 [IonSpigot-0006] Fix Chunk Loading
 [IonSpigot-0012] Movement Cache
 [IonSpigot-0013] Implement PandaWire

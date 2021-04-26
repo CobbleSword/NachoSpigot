@@ -47,7 +47,7 @@ public abstract class Entity implements ICommandListener {
     static boolean isLevelAtLeast(NBTTagCompound tag, int level) {
         return tag.hasKey("Bukkit.updateLevel") && tag.getInt("Bukkit.updateLevel") >= level;
     }
-    // CraftBukikt end
+    // CraftBukkit end
 
     private static final AxisAlignedBB a = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
     private static int entityCount = 1;
@@ -137,6 +137,7 @@ public abstract class Entity implements ICommandListener {
     public boolean valid; // CraftBukkit
     public org.bukkit.projectiles.ProjectileSource projectileSource; // CraftBukkit - For projectiles only
     public boolean forceExplosionKnockback; // CraftBukkit - SPIGOT-949
+    public boolean isCannoningEntity; // IonSpigot
     public boolean inUnloadedChunk = false; // PaperSpigot - Remove entities in unloaded chunks
     public boolean loadChunks = false; // PaperSpigot - Entities can load chunks they move through and keep them loaded
 
@@ -196,13 +197,14 @@ public abstract class Entity implements ICommandListener {
             this.defaultActivationState = false;
         }
         // Spigot end
+        this.isCannoningEntity = this instanceof EntityTNTPrimed || this instanceof EntityFallingBlock; // IonSpigot
 
         this.datawatcher = new DataWatcher(this);
-        this.datawatcher.a(0, Byte.valueOf((byte) 0));
-        this.datawatcher.a(1, Short.valueOf((short) 300));
-        this.datawatcher.a(3, Byte.valueOf((byte) 0));
+        this.datawatcher.a(0, (byte) 0);
+        this.datawatcher.a(1, (short) 300);
+        this.datawatcher.a(3, (byte) 0);
         this.datawatcher.a(2, "");
-        this.datawatcher.a(4, Byte.valueOf((byte) 0));
+        this.datawatcher.a(4, (byte) 0);
         this.h();
         this.datawatcher.registrationLocked = true; // Spigot
     }
@@ -214,7 +216,7 @@ public abstract class Entity implements ICommandListener {
     }
 
     public boolean equals(Object object) {
-        return object instanceof Entity ? ((Entity) object).id == this.id : false;
+        return object instanceof Entity && ((Entity) object).id == this.id;
     }
 
     public int hashCode() {
