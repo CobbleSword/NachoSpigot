@@ -1032,7 +1032,7 @@ public final class CraftServer implements Server {
             } catch (ExceptionWorldConflict ex) {
                 getLogger().log(Level.SEVERE, null, ex);
             }
-        } else { // FlamePaper - Fix chunk memory leak
+        } else if (handle.chunkProviderServer.chunkLoader instanceof ChunkRegionLoader) { // Nacho - allow custom chunk loaders // FlamePaper - Fix chunk memory leak
             ChunkProviderServer chunkProviderServer = handle.chunkProviderServer;
             ChunkRegionLoader regionLoader = (ChunkRegionLoader) chunkProviderServer.chunkLoader;
 
