@@ -1,11 +1,10 @@
 package net.minecraft.server;
 
-import com.google.common.collect.Lists;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
 
 // CraftBukkit start
+import it.unimi.dsi.fastutil.longs.LongArrayList;
+import it.unimi.dsi.fastutil.longs.LongListIterator;
 import org.bukkit.Location;
 import org.bukkit.event.entity.EntityPortalExitEvent;
 import org.bukkit.util.Vector;
@@ -16,7 +15,7 @@ public class PortalTravelAgent {
     private final WorldServer a;
     private final Random b;
     private final LongHashMap<PortalTravelAgent.ChunkCoordinatesPortal> c = new LongHashMap<>();
-    private final List<Long> d = Lists.newArrayList();
+    private final LongArrayList d = new LongArrayList(); // Nacho :: ArrayList<Long> -> LongArrayList
 
     public PortalTravelAgent(WorldServer worldserver) {
         this.a = worldserver;
@@ -462,11 +461,10 @@ public class PortalTravelAgent {
 
     public void a(long i) {
         if (i % 100L == 0L) {
-            Iterator<Long> iterator = this.d.iterator();
+            LongListIterator iterator = this.d.iterator(); // Nacho :: Iterator -> LongListIterator
             long j = i - 300L;
-
             while (iterator.hasNext()) {
-                Long l = iterator.next();
+                long l = iterator.nextLong();
                 PortalTravelAgent.ChunkCoordinatesPortal portal = this.c.getEntry(l);
                 if (portal == null || portal.c < j) {
                     iterator.remove();
