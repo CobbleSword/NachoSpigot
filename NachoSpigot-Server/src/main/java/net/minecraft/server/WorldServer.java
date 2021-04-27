@@ -1031,7 +1031,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
             return false;
         }
         if (super.strikeLightning(entity)) {
-            this.server.getPlayerList().sendPacketNearby((EntityHuman) null,entity.locX, entity.locY, entity.locZ, 512.0D,this, new PacketPlayOutSpawnEntityWeather(entity));
+            this.server.getPlayerList().sendPacketNearby(null,entity.locX, entity.locY, entity.locZ, 512.0D,this, new PacketPlayOutSpawnEntityWeather(entity));
             // CraftBukkit end
             return true;
         } else {
