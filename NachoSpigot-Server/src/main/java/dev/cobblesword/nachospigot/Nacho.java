@@ -63,10 +63,5 @@ public class Nacho {
     {
         return packetListeners;
     }
-
-    public void applyPatches() {
-        // Nacho start - [Nacho-0041] Fix block placement
-        RuntimePatches.applyViaVersionBlockPatch();
-        // Nacho end
-    }
+    
 }

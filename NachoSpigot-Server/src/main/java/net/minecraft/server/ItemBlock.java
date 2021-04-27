@@ -25,7 +25,7 @@ public class ItemBlock extends Item {
             return false;
         } else if (!entityhuman.a(blockposition, enumdirection, itemstack)) {
             return false;
-        } else if (world.a(this.a, blockposition, false, enumdirection, null, itemstack)) { // Nacho - who asked? // PaperSpigot - Pass entityhuman instead of null
+        } else if (world.a(this.a, blockposition, false, enumdirection, null, itemstack)) { // [Nacho-0041] - who asked? // PaperSpigot - Pass entityhuman instead of null
             int i = this.filterData(itemstack.getData());
             IBlockData iblockdata1 = this.a.getPlacedState(world, blockposition, enumdirection, f, f1, f2, i, entityhuman);
 
