@@ -1,6 +1,8 @@
 package net.minecraft.server;
 
+import java.util.Iterator;
 import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 // CraftBukkit start
 import it.unimi.dsi.fastutil.longs.LongArrayList;
@@ -15,7 +17,7 @@ public class PortalTravelAgent {
     private final WorldServer a;
     private final Random b;
     private final LongHashMap<PortalTravelAgent.ChunkCoordinatesPortal> c = new LongHashMap<>();
-    private final LongArrayList d = new LongArrayList(); // Nacho :: ArrayList<Long> -> LongArrayList
+    private final ConcurrentLinkedQueue<Long> d = new ConcurrentLinkedQueue<>(); // Nacho :: ArrayList -> ConcurrentLinkedQueue
 
     public PortalTravelAgent(WorldServer worldserver) {
         this.a = worldserver;
@@ -461,10 +463,10 @@ public class PortalTravelAgent {
 
     public void a(long i) {
         if (i % 100L == 0L) {
-            LongListIterator iterator = this.d.iterator(); // Nacho :: Iterator -> LongListIterator
+            Iterator<Long> iterator = this.d.iterator();
             long j = i - 300L;
             while (iterator.hasNext()) {
-                long l = iterator.nextLong();
+                long l = iterator.next();
                 PortalTravelAgent.ChunkCoordinatesPortal portal = this.c.getEntry(l);
                 if (portal == null || portal.c < j) {
                     iterator.remove();
@@ -472,10 +474,9 @@ public class PortalTravelAgent {
                 }
             }
         }
-
     }
 
-    public static class ChunkCoordinatesPortal extends BlockPosition {
+    public class ChunkCoordinatesPortal extends BlockPosition {
         public long c;
         public ChunkCoordinatesPortal(BlockPosition blockposition, long i) {
             super(blockposition.getX(), blockposition.getY(), blockposition.getZ());
