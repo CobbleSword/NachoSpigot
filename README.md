@@ -116,8 +116,9 @@ If you find any bugs, please create an issue or contact us in the Discord server
 [Nacho-0048] Little anti-crash
 [Nacho-0051] Custom knockback
 
-[YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
-[Yatopia-0050] smol bat optimisation
+[Yatopia-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
+[Yatopia-0047] Smarter statistics ticking
+[Yatopia-0050] Smol entity optimisation
 
 [IonSpigot-0003] Explosion Improvements
 [IonSpigot-0006] Fix Chunk Loading

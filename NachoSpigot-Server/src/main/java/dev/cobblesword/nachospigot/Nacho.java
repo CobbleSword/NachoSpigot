@@ -19,7 +19,7 @@ public class Nacho {
     private static final File CONFIG_FILE = new File("nacho.json");
     private NachoConfig config;
 
-    public List<PacketListener> packetListeners = new ArrayList<>();
+    private final List<PacketListener> packetListeners = new ArrayList<>();
 
     public Nacho() {
         INSTANCE = this;

@@ -13,5 +13,6 @@ public class NachoConfig {
     public boolean usePandaWire = true;
     public boolean constantExplosions = false;
     public boolean explosionProtectedRegions = true;
+    public int playerTimeStatisticsInterval = 20;
     public String serverBrandName = "NachoSpigot";
 }
