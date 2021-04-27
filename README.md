@@ -14,7 +14,7 @@ If you find any bugs, please create an issue or contact us in the Discord server
 **NachoSpigot supports Java 8 to Java 15!**
 
 ## Download
-**Latest:** [https://nacho.sculas.xyz/](https://nacho.sculas.xyz/)
+**Stable:** [https://nacho.sculas.xyz/](https://nacho.sculas.xyz/)
 **Development:** [https://dev.nacho.sculas.xyz/](https://dev.nacho.sculas.xyz/)
 
 ### Building / Compiling

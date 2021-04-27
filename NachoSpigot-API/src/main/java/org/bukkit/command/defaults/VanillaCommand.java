@@ -35,7 +35,7 @@ public abstract class VanillaCommand extends Command {
         int i = min;
 
         try {
-            i = Integer.valueOf(value);
+            i = Integer.parseInt(value);
         } catch (NumberFormatException ex) {
             if (Throws) {
                 throw new NumberFormatException(String.format("%s is not a valid number", value));
