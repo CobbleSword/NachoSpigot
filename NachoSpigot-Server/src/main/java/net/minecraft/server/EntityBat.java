@@ -13,7 +13,7 @@ public class EntityBat extends EntityAmbient {
 
     protected void h() {
         super.h();
-        this.datawatcher.a(16, new Byte((byte)0));
+        this.datawatcher.a(16, (byte) 0);
     }
 
     protected float bB() {
@@ -83,7 +83,7 @@ public class EntityBat extends EntityAmbient {
         if (this.isAsleep()) {
             if (!this.world.getType(var2).getBlock().isOccluding()) {
                 this.setAsleep(false);
-                this.world.a((EntityHuman)null, 1015, var1, 0);
+                this.world.a(null, 1015, var1, 0);
             } else {
                 if (this.random.nextInt(200) == 0) {
                     this.aK = (float)this.random.nextInt(360);
@@ -91,7 +91,7 @@ public class EntityBat extends EntityAmbient {
 
                 if (this.world.findNearbyPlayer(this, 4.0D) != null) {
                     this.setAsleep(false);
-                    this.world.a((EntityHuman)null, 1015, var1, 0);
+                    this.world.a(null, 1015, var1, 0);
                 }
             }
         } else {
@@ -99,7 +99,7 @@ public class EntityBat extends EntityAmbient {
                 this.a = null;
             }
 
-            if (this.a == null || this.random.nextInt(30) == 0 || this.a.c((double)((int)this.locX), (double)((int)this.locY), (double)((int)this.locZ)) < 4.0D) {
+            if (this.a == null || this.random.nextInt(30) == 0 || this.a.c((int)this.locX, (int)this.locY, (int)this.locZ) < 4.0D) {
                 this.a = new BlockPosition((int)this.locX + this.random.nextInt(7) - this.random.nextInt(7), (int)this.locY + this.random.nextInt(6) - 2, (int)this.locZ + this.random.nextInt(7) - this.random.nextInt(7));
             }
 
@@ -169,12 +169,12 @@ public class EntityBat extends EntityAmbient {
             }
 
             int curLightLevel = this.world.getLightLevel(pos);
-            return curLightLevel > this.random.nextInt(var3) ? false : super.bR();
+            return curLightLevel <= this.random.nextInt(var3) && super.bR();
         }
     }
 
     private boolean a(Calendar var1) {
-        return var1.get(2) + 1 == 10 && var1.get(5) >= 20 || var1.get(2) + 1 == 11 && var1.get(5) <= 3;
+        return var1.get(Calendar.MONTH) + 1 == 10 && var1.get(Calendar.DATE) >= 20 || var1.get(Calendar.MONTH) + 1 == 11 && var1.get(Calendar.DATE) <= 3;
     }
 
     public float getHeadHeight() {

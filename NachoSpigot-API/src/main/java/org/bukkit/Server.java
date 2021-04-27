@@ -459,6 +459,18 @@ public interface Server extends PluginMessageRecipient {
     public void reload();
 
     /**
+     * Reloads the knockback config.
+     */
+    public void reloadKB();
+
+    public void setKnockbackFriction(double d);
+    public void setKnockbackHorizontal(double d);
+    public void setKnockbackVertical(double d);
+    public void setKnockbackVerticalLimit(double d);
+    public void setKnockbackExtraHorizontal(double d);
+    public void setKnockbackExtraVertical(double d);
+
+    /**
      * Returns the primary logger associated with this server instance.
      *
      * @return Logger associated with this server

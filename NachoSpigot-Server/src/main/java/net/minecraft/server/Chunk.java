@@ -33,15 +33,12 @@ public class Chunk {
     public final int locZ;
     private boolean k;
     public final Map<BlockPosition, TileEntity> tileEntities;
-    public final List<Entity>[] entitySlices; // Spigot
+    public final List[] entitySlices; // Spigot
     // PaperSpigot start - track the number of minecarts and items
     // Keep this synced with entitySlices.add() and entitySlices.remove()
     private final int[] itemCounts = new int[16];
     private final int[] inventoryEntityCounts = new int[16];
     // PaperSpigot end
-    // Nacho start
-    private List<Entity>[][] entityGrid = new List[16][16];
-    // Nacho end
     private boolean done;
     private boolean lit;
     private boolean p;
@@ -52,13 +49,11 @@ public class Chunk {
     private long u;
     private int v;
     private ConcurrentLinkedQueue<BlockPosition> w;
-    protected gnu.trove.map.hash.TObjectIntHashMap<Class> entityCount = new gnu.trove.map.hash.TObjectIntHashMap<Class>(); // Spigot
+    protected gnu.trove.map.hash.TObjectIntHashMap<Class> entityCount = new gnu.trove.map.hash.TObjectIntHashMap<>(); // Spigot
     // PaperSpigot start - Asynchronous light updates
     public AtomicInteger pendingLightUpdates = new AtomicInteger();
     public long lightUpdateTime;
     // PaperSpigot end
-
-
 
     // PaperSpigot start - ChunkMap caching
     private PacketPlayOutMapChunk.ChunkMap chunkMap;
@@ -135,6 +130,9 @@ public class Chunk {
     }
     // CraftBukkit end
 
+    public PacketPlayOutMapChunkBulk cachedPacket;
+    public PacketPlayOutMapChunk cachedEmptyPacket;
+
     public Chunk(World world, int i, int j) {
         this.sections = new ChunkSection[16];
         this.e = new byte[256];
@@ -143,14 +141,14 @@ public class Chunk {
         this.tileEntities = Maps.newHashMap();
         this.v = 4096;
         this.w = Queues.newConcurrentLinkedQueue();
-        this.entitySlices = (List[]) (new List[16]); // Spigot
+        this.entitySlices = new List[16]; // Spigot
         this.world = world;
         this.locX = i;
         this.locZ = j;
         this.heightMap = new int[256];
 
         for (int k = 0; k < this.entitySlices.length; ++k) {
-            this.entitySlices[k] = new org.bukkit.craftbukkit.util.UnsafeList(); // Spigot
+            this.entitySlices[k] = new io.papermc.paper.util.maplist.ObjectMapList<>(); // IonSpigot - UnsafeList -> ObjectMapList // Spigot
         }
 
         Arrays.fill(this.f, -999);
@@ -971,57 +969,40 @@ public class Chunk {
     public void addEntities() {
         this.h = true;
         this.world.a(this.tileEntities.values());
-
-        for (int i = 0; i < this.entitySlices.length; ++i) {
-            Iterator iterator = this.entitySlices[i].iterator();
-
-            while (iterator.hasNext()) {
-                Entity entity = (Entity) iterator.next();
-
+        for (List<Entity> entitySlice : this.entitySlices) {
+            for (Entity entity : entitySlice) {
                 entity.ah();
             }
-
-            this.world.b((Collection) this.entitySlices[i]);
+            this.world.b(entitySlice);
         }
 
     }
 
     public void removeEntities() {
         this.h = false;
-        Iterator iterator = this.tileEntities.values().iterator();
-
-        while (iterator.hasNext()) {
-            TileEntity tileentity = (TileEntity) iterator.next();
+        for (TileEntity tileentity : this.tileEntities.values()) {
             // Spigot Start
-            if ( tileentity instanceof IInventory )
-            {
-                for ( org.bukkit.entity.HumanEntity h : Lists.<org.bukkit.entity.HumanEntity>newArrayList((List<org.bukkit.entity.HumanEntity>) ( (IInventory) tileentity ).getViewers() ) )
-                {
-                    if ( h instanceof org.bukkit.craftbukkit.entity.CraftHumanEntity )
-                    {
-                       ( (org.bukkit.craftbukkit.entity.CraftHumanEntity) h).getHandle().closeInventory();
+            if (tileentity instanceof IInventory) {
+                for (org.bukkit.entity.HumanEntity h : Lists.<org.bukkit.entity.HumanEntity>newArrayList((List<org.bukkit.entity.HumanEntity>) ((IInventory) tileentity).getViewers())) {
+                    if (h instanceof org.bukkit.craftbukkit.entity.CraftHumanEntity) {
+                        ((org.bukkit.craftbukkit.entity.CraftHumanEntity) h).getHandle().closeInventory();
                     }
                 }
             }
             // Spigot End
-
             this.world.b(tileentity);
         }
-
-        for (int i = 0; i < this.entitySlices.length; ++i) {
+        for (List<Entity> entitySlice : this.entitySlices) {
             // CraftBukkit start
-            List<Entity> newList = Lists.newArrayList(this.entitySlices[i]);
-            java.util.Iterator<Entity> iter = newList.iterator();
+            List<Entity> newList = Lists.newArrayList(entitySlice);
+            Iterator<Entity> iter = newList.iterator();
             while (iter.hasNext()) {
                 Entity entity = iter.next();
                 // Spigot Start
-                if ( entity instanceof IInventory )
-                {
-                    for ( org.bukkit.entity.HumanEntity h : Lists.<org.bukkit.entity.HumanEntity>newArrayList( (List<org.bukkit.entity.HumanEntity>) ( (IInventory) entity ).getViewers() ) )
-                    {
-                        if ( h instanceof org.bukkit.craftbukkit.entity.CraftHumanEntity )
-                        {
-                           ( (org.bukkit.craftbukkit.entity.CraftHumanEntity) h).getHandle().closeInventory();
+                if (entity instanceof IInventory) {
+                    for (org.bukkit.entity.HumanEntity h : Lists.<org.bukkit.entity.HumanEntity>newArrayList(((IInventory) entity).getViewers())) {
+                        if (h instanceof org.bukkit.craftbukkit.entity.CraftHumanEntity) {
+                            ((org.bukkit.craftbukkit.entity.CraftHumanEntity) h).getHandle().closeInventory();
                         }
                     }
                 }
@@ -1034,7 +1015,7 @@ public class Chunk {
                 }
             }
 
-            this.world.c((Collection) newList);
+            this.world.c(newList);
             // CraftBukkit end
         }
 

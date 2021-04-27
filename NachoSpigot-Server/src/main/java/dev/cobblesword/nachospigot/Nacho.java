@@ -26,7 +26,9 @@ public class Nacho {
         this.config = new NachoConfig();
         while (!CONFIG_FILE.exists()) FileUtils.toFile(this.config, CONFIG_FILE);
         this.config = FileUtils.toObject(CONFIG_FILE, NachoConfig.class);
-        new AntiCrash().registerAll();
+        System.out.println("[NS-AntiCrash] Activating Anti Crash.");
+        Nacho.get().registerPacketListener(new AntiCrash());
+        System.out.println("[NS-AntiCrash] Activated Anti Crash.");
     }
 
     public void reloadConfig() {

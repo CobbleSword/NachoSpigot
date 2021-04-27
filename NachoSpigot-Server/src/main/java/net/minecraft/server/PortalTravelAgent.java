@@ -1,11 +1,10 @@
 package net.minecraft.server;
 
-import com.google.common.collect.Lists;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
 
 // CraftBukkit start
+import it.unimi.dsi.fastutil.longs.LongArrayList;
+import it.unimi.dsi.fastutil.longs.LongListIterator;
 import org.bukkit.Location;
 import org.bukkit.event.entity.EntityPortalExitEvent;
 import org.bukkit.util.Vector;
@@ -15,8 +14,8 @@ public class PortalTravelAgent {
 
     private final WorldServer a;
     private final Random b;
-    private final LongHashMap<PortalTravelAgent.ChunkCoordinatesPortal> c = new LongHashMap();
-    private final List<Long> d = Lists.newArrayList();
+    private final LongHashMap<PortalTravelAgent.ChunkCoordinatesPortal> c = new LongHashMap<>();
+    private final LongArrayList d = new LongArrayList(); // Nacho :: ArrayList<Long> -> LongArrayList
 
     public PortalTravelAgent(WorldServer worldserver) {
         this.a = worldserver;
@@ -30,12 +29,13 @@ public class PortalTravelAgent {
                 this.b(entity, f);
             }
         } else {
-            int i = MathHelper.floor(entity.locX);
-            int j = MathHelper.floor(entity.locY) - 1;
-            int k = MathHelper.floor(entity.locZ);
+            // Nacho - the fuck? why have these USELESS CALCULATIONS?!
+            // int i = MathHelper.floor(entity.locX);
+            // int j = MathHelper.floor(entity.locY) - 1;
+            // int k = MathHelper.floor(entity.locZ);
             // CraftBukkit start - Modularize end portal creation
             BlockPosition created = this.createEndPortal(entity.locX, entity.locY, entity.locZ);
-            entity.setPositionRotation((double) created.getX(), (double) created.getY(), (double) created.getZ(), entity.yaw, 0.0F);
+            entity.setPositionRotation(created.getX(), created.getY(), created.getZ(), entity.yaw, 0.0F);
             entity.motX = entity.motY = entity.motZ = 0.0D;
         }
     }
@@ -52,9 +52,10 @@ public class PortalTravelAgent {
             for (int l = -2; l <= 2; ++l) {
                 for (int i1 = -2; i1 <= 2; ++i1) {
                     for (int j1 = -1; j1 < 3; ++j1) {
-                        int k1 = i + i1 * b0 + l * b1;
+                        // Nacho - I hope my IDE was not being stupid.
+                        int k1 = i + i1 * b0;
                         int l1 = j + j1;
-                        int i2 = k + i1 * b1 - l * b0;
+                        int i2 = k - l * b0;
                         boolean flag = j1 < 0;
 
                         this.a.setTypeUpdate(new BlockPosition(k1, l1, i2), flag ? Blocks.OBSIDIAN.getBlockData() : Blocks.AIR.getBlockData());
@@ -94,13 +95,12 @@ public class PortalTravelAgent {
 
     public boolean b(Entity entity, float f) {
         // CraftBukkit start - Modularize portal search process and entity teleportation
-//        BlockPosition found = this.findPortal(entity.locX, entity.locY, entity.locZ, 128);
+        //  BlockPosition found = this.findPortal(entity.locX, entity.locY, entity.locZ, 128);
         // MinetickMod start
         BlockPosition found = this.findPortal(entity.locX, entity.locY, entity.locZ, 10);
         if (found == null) {
             found = this.findPortal(entity.locX, entity.locY, entity.locZ, 128);
         }
-
         if (found == null) {
             return false;
         }
@@ -127,11 +127,11 @@ public class PortalTravelAgent {
         int j = MathHelper.floor(z);
         // CraftBukkit end
         boolean flag1 = true;
-        Object object = BlockPosition.ZERO;
+        BlockPosition object = BlockPosition.ZERO;
         long k = ChunkCoordIntPair.a(i, j);
 
         if (this.c.contains(k)) {
-            PortalTravelAgent.ChunkCoordinatesPortal portaltravelagent_chunkcoordinatesportal = (PortalTravelAgent.ChunkCoordinatesPortal) this.c.getEntry(k);
+            PortalTravelAgent.ChunkCoordinatesPortal portaltravelagent_chunkcoordinatesportal = this.c.getEntry(k);
 
             d0 = 0.0D;
             object = portaltravelagent_chunkcoordinatesportal;
@@ -141,10 +141,8 @@ public class PortalTravelAgent {
             BlockPosition blockposition = new BlockPosition(x, y, z);
 
             // MinetickMod start
-
             for (int l = -searchRadius; l <= searchRadius; ++l) {   // Paper - actually use search radius
                 BlockPosition blockposition1;
-
                 for (int i1 = -searchRadius; i1 <= searchRadius; ++i1) {    // Paper - actually use search radius
                     for (BlockPosition blockposition2 = blockposition.a(l, this.a.V() - 1 - blockposition.getY(), i1); blockposition2.getY() >= 0; blockposition2 = blockposition1) {
                         blockposition1 = blockposition2.down();
@@ -152,9 +150,7 @@ public class PortalTravelAgent {
                             while (this.a.getType(blockposition1 = blockposition2.down()).getBlock() == Blocks.PORTAL) {
                                 blockposition2 = blockposition1;
                             }
-
                             double d1 = blockposition2.i(blockposition);
-
                             if (d0 < 0.0D || d1 < d0) {
                                 d0 = d1;
                                 object = blockposition2;
@@ -167,11 +163,11 @@ public class PortalTravelAgent {
 
         if (d0 >= 0.0D) {
             if (flag1) {
-                this.c.put(k, new PortalTravelAgent.ChunkCoordinatesPortal((BlockPosition) object, this.a.getTime()));
-                this.d.add(Long.valueOf(k));
+                this.c.put(k, new ChunkCoordinatesPortal(object, this.a.getTime()));
+                this.d.add(k);
             }
             // CraftBukkit start - Move entity teleportation logic into exit
-            return (BlockPosition) object;
+            return object;
         } else {
             return null;
         }
@@ -194,10 +190,10 @@ public class PortalTravelAgent {
         } else {
             // CraftBukkit end
 
-            double d2 = (double) ((BlockPosition) object).getX() + 0.5D;
-            double d3 = (double) ((BlockPosition) object).getY() + 0.5D;
-            double d4 = (double) ((BlockPosition) object).getZ() + 0.5D;
-            ShapeDetector.ShapeDetectorCollection shapedetector_shapedetectorcollection = Blocks.PORTAL.f(this.a, (BlockPosition) object);
+            double d2 = (double) object.getX() + 0.5D;
+            double d3;
+            double d4 = (double) object.getZ() + 0.5D;
+            ShapeDetector.ShapeDetectorCollection shapedetector_shapedetectorcollection = Blocks.PORTAL.f(this.a, object);
             boolean flag2 = shapedetector_shapedetectorcollection.b().e().c() == EnumDirection.EnumAxisDirection.NEGATIVE;
             double d5 = shapedetector_shapedetectorcollection.b().k() == EnumDirection.EnumAxis.X ? (double) shapedetector_shapedetectorcollection.a().getZ() : (double) shapedetector_shapedetectorcollection.a().getX();
 
@@ -465,26 +461,22 @@ public class PortalTravelAgent {
 
     public void a(long i) {
         if (i % 100L == 0L) {
-            Iterator iterator = this.d.iterator();
+            LongListIterator iterator = this.d.iterator(); // Nacho :: Iterator -> LongListIterator
             long j = i - 300L;
-
             while (iterator.hasNext()) {
-                Long olong = (Long) iterator.next();
-                PortalTravelAgent.ChunkCoordinatesPortal portaltravelagent_chunkcoordinatesportal = (PortalTravelAgent.ChunkCoordinatesPortal) this.c.getEntry(olong.longValue());
-
-                if (portaltravelagent_chunkcoordinatesportal == null || portaltravelagent_chunkcoordinatesportal.c < j) {
+                long l = iterator.nextLong();
+                PortalTravelAgent.ChunkCoordinatesPortal portal = this.c.getEntry(l);
+                if (portal == null || portal.c < j) {
                     iterator.remove();
-                    this.c.remove(olong.longValue());
+                    this.c.remove(l);
                 }
             }
         }
 
     }
 
-    public class ChunkCoordinatesPortal extends BlockPosition {
-
+    public static class ChunkCoordinatesPortal extends BlockPosition {
         public long c;
-
         public ChunkCoordinatesPortal(BlockPosition blockposition, long i) {
             super(blockposition.getX(), blockposition.getY(), blockposition.getZ());
             this.c = i;

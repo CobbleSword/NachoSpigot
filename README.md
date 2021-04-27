@@ -1,21 +1,24 @@
-# NachoSpigot
-A **maintained** version of NachoSpigot where some features have been removed or added to make sure the server is stable and works with most plugins but is also optimized.
-I am planning to support Java 15 but still support most plugins like ProtocolLib. Is this going to work out? We will see in the end.
+# NachoSpigot ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/CobbleSword/NachoSpigot/NachoSpigot%20Build)
 
-NachoSpigot offers a number of enchancements to performance as well as bug fixes that were not public available to paper 1.8.9
+#### NachoSpigot is a fork of TacoSpigot 1.8.9.
+NachoSpigot offers a number of enhancements to performance as well as bug fixes such as a built-in Anti-Crash system and being able to perform well with a large number of players.
 
 ## Current State
 Java 15 is now natively supported, and ProtocolLib and Citizens are patched at runtime to work with Nacho's patches.
-Unless other bugs are found, Nacho should now run stable.
+Nacho can now be used in production environments.
+
+If you find any bugs, please create an issue or contact us in the Discord server!
+
+> Test Server: `nacho.sucks-ass.lol`
 
 **NachoSpigot supports Java 8 to Java 15!**
 
-**Download:** [https://nacho.sculas.xyz/](https://nacho.sculas.xyz/)
+## Download
+**Latest:** [https://nacho.sculas.xyz/](https://nacho.sculas.xyz/)
+**Development:** [https://dev.nacho.sculas.xyz/](https://dev.nacho.sculas.xyz/)
 
-#### Building / Compiling
-To build, clone the repo, and run `mvn clean package` in the NachoSpigot directory.
-
-***Note:*** *You need Java 8-15 and Maven to compile.*
+### Building / Compiling
+> To build, clone the repo, and run `mvn clean package` in the NachoSpigot directory.
 
 ## Patches
 ```
@@ -92,6 +95,7 @@ To build, clone the repo, and run `mvn clean package` in the NachoSpigot directo
 [Nacho-0030] add a ChunkPreLoadEvent
 [Nacho-0031] remove unused vars
 [Nacho-0033] Faster Operator search method
+[Nacho-0049] Don't allocate empty int arrays for particles
 [Nacho-0050] Option to disable Enchantment table ticking
 
 <--> by Sculas
@@ -110,11 +114,17 @@ To build, clone the repo, and run `mvn clean package` in the NachoSpigot directo
 [Nacho-0046] Add Player#jump and Player#sendActionBar
 [Nacho-0047] Little anti-malware
 [Nacho-0048] Little anti-crash
-[Nacho-0049] Don't allocate empty int arrays for particles
+[Nacho-0051] Custom knockback
 
 [YAPFA-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 [Yatopia-0050] smol bat optimisation
 
+[IonSpigot-0003] Explosion Improvements
+[IonSpigot-0006] Fix Chunk Loading
+[IonSpigot-0012] Movement Cache
+[IonSpigot-0013] Implement PandaWire
+[IonSpigot-0014] Faster Chunk Entity List
+[IonSpigot-0020] Faster EntityTracker Collections
 [IonSpigot-0035] Optimise Entity Collisions
 
 [Akarin-0001] Avoid double I/O operation on load player file by tsao chi
@@ -137,7 +147,11 @@ To build, clone the repo, and run `mvn clean package` in the NachoSpigot directo
 [FlamePaper-0105] Fix memory leaks by Minetick
 [FlamePaper-0115] Patch Book Exploits
 
+[MineTick-0006] Fix Occasional Client Side Unloading of Chunk 0 0
+[MineTick-0017] Fix Insane Nether Portal Lag
+
 [SportBukkit-????] Fix client-server desync when a player hits an entity while sprinting
+[SportBukkit-PR94] Async chunk caching
 ```
 
 ## Removed

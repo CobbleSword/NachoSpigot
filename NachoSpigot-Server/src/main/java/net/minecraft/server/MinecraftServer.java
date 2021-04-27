@@ -897,6 +897,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
             this.methodProfiler.b();
             this.methodProfiler.b();
             worldserver.explosionDensityCache.clear(); // Paper - Optimize explosions
+            worldserver.movementCache.clear(); // IonSpigot - Movement Cache
         }
 
         this.methodProfiler.c("connection");

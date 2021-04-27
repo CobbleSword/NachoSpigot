@@ -36,7 +36,7 @@ public abstract class Command {
     public String getTimingName() {return getName();} // Spigot
 
     protected Command(String name) {
-        this(name, "", "/" + name, new ArrayList<String>());
+        this(name, "", "/" + name, new ArrayList<>());
     }
 
     protected Command(String name, String description, String usageMessage, List<String> aliases) {

@@ -22,6 +22,7 @@ import javax.imageio.ImageIO;
 
 import com.eatthepath.uuid.FastUUID;
 import dev.cobblesword.nachospigot.Nacho;
+import dev.cobblesword.nachospigot.knockback.Knockback;
 import dev.cobblesword.nachospigot.malware.AntiMalware;
 import dev.cobblesword.nachospigot.patches.RuntimePatches;
 import net.minecraft.server.*;
@@ -128,7 +129,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 
 public final class CraftServer implements Server {
     private static final Player[] EMPTY_PLAYER_ARRAY = new Player[0];
-    private final String serverName;
+    private String serverName = "NachoSpigot";
     private final String serverVersion = "1.8.8";
     private final String bukkitVersion = Versioning.getBukkitVersion();
     private final Logger logger = Logger.getLogger("Minecraft");
@@ -767,7 +768,8 @@ public final class CraftServer implements Server {
         resetRecipes();
         org.spigotmc.SpigotConfig.registerCommands(); // Spigot
         org.github.paperspigot.PaperSpigotConfig.registerCommands(); // PaperSpigot
-        Nacho.get().registerCommands(); //NachoSpigot :: Commands
+        Nacho.get().registerCommands(); // NachoSpigot :: Commands
+        Knockback.get().registerCommands(); // NS Knockback :: Commands
 
         overrideAllCommandBlockCommands = commandsConfiguration.getStringList("command-block-overrides").contains("*");
 
@@ -798,6 +800,47 @@ public final class CraftServer implements Server {
         loadPlugins();
         enablePlugins(PluginLoadOrder.STARTUP);
         enablePlugins(PluginLoadOrder.POSTWORLD);
+    }
+
+    @Override
+    public void reloadKB() {
+        Knockback.get().reloadConfig();
+    }
+
+    @Override
+    public void setKnockbackFriction(double d) {
+        Knockback.get().getConfig().knockbackFriction = d;
+        Knockback.get().saveConfig();
+    }
+
+    @Override
+    public void setKnockbackHorizontal(double d) {
+        Knockback.get().getConfig().knockbackHorizontal = d;
+        Knockback.get().saveConfig();
+    }
+
+    @Override
+    public void setKnockbackVertical(double d) {
+        Knockback.get().getConfig().knockbackVertical = d;
+        Knockback.get().saveConfig();
+    }
+
+    @Override
+    public void setKnockbackVerticalLimit(double d) {
+        Knockback.get().getConfig().knockbackVerticalLimit = d;
+        Knockback.get().saveConfig();
+    }
+
+    @Override
+    public void setKnockbackExtraHorizontal(double d) {
+        Knockback.get().getConfig().knockbackExtraHorizontal = d;
+        Knockback.get().saveConfig();
+    }
+
+    @Override
+    public void setKnockbackExtraVertical(double d) {
+        Knockback.get().getConfig().knockbackExtraVertical = d;
+        Knockback.get().saveConfig();
     }
 
     private void loadIcon() {
@@ -1032,7 +1075,7 @@ public final class CraftServer implements Server {
             } catch (ExceptionWorldConflict ex) {
                 getLogger().log(Level.SEVERE, null, ex);
             }
-        } else { // FlamePaper - Fix chunk memory leak
+        } else if (handle.chunkProviderServer.chunkLoader instanceof ChunkRegionLoader) { // Nacho - allow custom chunk loaders // FlamePaper - Fix chunk memory leak
             ChunkProviderServer chunkProviderServer = handle.chunkProviderServer;
             ChunkRegionLoader regionLoader = (ChunkRegionLoader) chunkProviderServer.chunkLoader;
 
