@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 // CraftBukkit start
+import dev.cobblesword.nachospigot.Nacho;
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 import org.bukkit.craftbukkit.entity.CraftItem;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
@@ -1350,8 +1351,10 @@ public abstract class EntityHuman extends EntityLiving {
 
     }
 
+    private final int interval = Nacho.get().getConfig().playerTimeStatisticsInterval;
+
     public void b(Statistic statistic) {
-        this.a(statistic, 1);
+        this.a(statistic, interval); // Nacho / Yatopia - or do it like this :shrug:
     }
 
     public void a(Statistic statistic, int i) {}

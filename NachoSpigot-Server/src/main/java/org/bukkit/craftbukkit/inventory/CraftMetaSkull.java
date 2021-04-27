@@ -79,15 +79,11 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
             // Spigot start - do an async lookup of the profile. 
             // Unfortunately there is not way to refresh the holding
             // inventory, so that responsibility is left to the user.
-            net.minecraft.server.TileEntitySkull.b(profile, new com.google.common.base.Predicate<GameProfile>() {
-
-                @Override
-                public boolean apply(GameProfile input) {
-                    NBTTagCompound owner = new NBTTagCompound();
-                    GameProfileSerializer.serialize( owner, input );
-                    tag.set( SKULL_OWNER.NBT, owner );
-                    return false;
-                }
+            net.minecraft.server.TileEntitySkull.b(profile, input -> {
+                NBTTagCompound owner1 = new NBTTagCompound();
+                GameProfileSerializer.serialize(owner1, input );
+                tag.set( SKULL_OWNER.NBT, owner1);
+                return false;
             });
             // Spigot end
         }
@@ -164,7 +160,7 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
         if (meta instanceof CraftMetaSkull) {
             CraftMetaSkull that = (CraftMetaSkull) meta;
 
-            return (this.hasOwner() ? that.hasOwner() && this.profile.equals(that.profile) : !that.hasOwner());
+            return (this.hasOwner() ? that.hasOwner() && profile.equals(that.profile) : !that.hasOwner());
         }
         return true;
     }
@@ -178,7 +174,7 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
     Builder<String, Object> serialize(Builder<String, Object> builder) {
         super.serialize(builder);
         if (hasOwner()) {
-            return builder.put(SKULL_OWNER.BUKKIT, this.profile.getName());
+            return builder.put(SKULL_OWNER.BUKKIT, profile.getName());
         }
         return builder;
     }
