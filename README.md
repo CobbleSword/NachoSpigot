@@ -115,6 +115,7 @@ If you find any bugs, please create an issue or contact us in the Discord server
 [Nacho-0047] Little anti-malware
 [Nacho-0048] Little anti-crash
 [Nacho-0051] Custom knockback
+[Nacho-0052] Fix block-placing bug
 
 [Yatopia-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 [Yatopia-0047] Smarter statistics ticking
