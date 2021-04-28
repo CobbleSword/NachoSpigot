@@ -15,7 +15,7 @@ If you find any bugs, please create an issue or contact us in the Discord server
 
 ## Download
 **Stable:** [https://nacho.sculas.xyz/](https://nacho.sculas.xyz/)
-**Development:** [https://dev.nacho.sculas.xyz/](https://dev.nacho.sculas.xyz/)
+**Development:** [https://nachodev.sculas.xyz/](https://nachodev.sculas.xyz/)
 
 ### Building / Compiling
 > To build, clone the repo, and run `mvn clean package` in the NachoSpigot directory.
