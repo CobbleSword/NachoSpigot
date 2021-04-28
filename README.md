@@ -15,7 +15,7 @@ If you find any bugs, please create an issue or contact us in the Discord server
 
 ## Download
 **Stable:** [https://nacho.sculas.xyz/](https://nacho.sculas.xyz/)
-**Development:** [https://dev.nacho.sculas.xyz/](https://dev.nacho.sculas.xyz/)
+**Development:** [https://nachodev.sculas.xyz/](https://nachodev.sculas.xyz/)
 
 ### Building / Compiling
 > To build, clone the repo, and run `mvn clean package` in the NachoSpigot directory.
@@ -151,7 +151,6 @@ If you find any bugs, please create an issue or contact us in the Discord server
 [MineTick-0006] Fix Occasional Client Side Unloading of Chunk 0 0
 [MineTick-0017] Fix Insane Nether Portal Lag
 
-[SportBukkit-PR80] Fix client-server desync when a player hits an entity while sprinting
 [SportBukkit-PR94] Async chunk caching
 ```
 

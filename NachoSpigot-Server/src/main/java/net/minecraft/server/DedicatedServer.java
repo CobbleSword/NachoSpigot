@@ -340,6 +340,8 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                     thread1.start();
                 } */
 
+                Nacho.get().applyPatches(); // Nacho
+
                 return true;
             }
         }
