@@ -25,7 +25,7 @@ public class ItemBlock extends Item {
             return false;
         } else if (!entityhuman.a(blockposition, enumdirection, itemstack)) {
             return false;
-        } else if (world.a(this.a, blockposition, false, enumdirection, null, itemstack)) { // Nacho - who asked? // PaperSpigot - Pass entityhuman instead of null
+        } else if (world.a(this.a, blockposition, false, enumdirection, entityhuman, itemstack)) { // PaperSpigot - Pass entityhuman instead of null
             int i = this.filterData(itemstack.getData());
             IBlockData iblockdata1 = this.a.getPlacedState(world, blockposition, enumdirection, f, f1, f2, i, entityhuman);
 
@@ -36,7 +36,7 @@ public class ItemBlock extends Item {
                     this.a.postPlace(world, blockposition, iblockdata1, entityhuman, itemstack);
                 }
 
-                world.makeSound((float) blockposition.getX() + 0.5F, (float) blockposition.getY() + 0.5F, (float) blockposition.getZ() + 0.5F, this.a.stepSound.getPlaceSound(), (this.a.stepSound.getVolume1() + 1.0F) / 2.0F, this.a.stepSound.getVolume2() * 0.8F);
+                world.makeSound((double) ((float) blockposition.getX() + 0.5F), (double) ((float) blockposition.getY() + 0.5F), (double) ((float) blockposition.getZ() + 0.5F), this.a.stepSound.getPlaceSound(), (this.a.stepSound.getVolume1() + 1.0F) / 2.0F, this.a.stepSound.getVolume2() * 0.8F);
                 --itemstack.count;
             }
 
