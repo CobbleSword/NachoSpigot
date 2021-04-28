@@ -154,11 +154,6 @@ If you find any bugs, please create an issue or contact us in the Discord server
 [SportBukkit-PR94] Async chunk caching
 ```
 
-## Removed
-``` 
-[Nacho-0022] Sync is maintained higher up and is causing issues
-```
-
 ## Discord
 [Join the Discord server!](https://discord.gg/SBTEbSx)
 
