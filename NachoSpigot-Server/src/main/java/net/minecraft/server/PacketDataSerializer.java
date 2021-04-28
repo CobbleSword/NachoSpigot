@@ -126,7 +126,7 @@ public class PacketDataSerializer extends ByteBuf {
         int j = 0;
         do {
             b0 = readByte();
-            i |= (b0 & Byte.MAX_VALUE) << j++ * 7;
+            i |= (long) (b0 & Byte.MAX_VALUE) << j++ * 7;
             if (j > 10)
                 throw new RuntimeException("VarLong too big");
         } while ((b0 & 0x80) == 128);

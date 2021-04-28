@@ -1360,9 +1360,8 @@ public abstract class World implements IBlockAccess {
         this.u.add(iworldaccess);
     }
 
-    public List<AxisAlignedBB> getCubes(Entity entity, AxisAlignedBB axisalignedbb)
-    {
-        ArrayList arraylist = Lists.newArrayList();
+    public List<AxisAlignedBB> getCubes(Entity entity, AxisAlignedBB axisalignedbb) {
+        ArrayList<AxisAlignedBB> arraylist = Lists.newArrayList();
         int i = MathHelper.floor(axisalignedbb.a);
         int j = MathHelper.floor(axisalignedbb.d + 1.0D);
         int k = MathHelper.floor(axisalignedbb.b);
@@ -1375,7 +1374,7 @@ public abstract class World implements IBlockAccess {
         IBlockData block = Blocks.STONE.getBlockData();
 
         // Spigot start
-        int ystart = ( ( k - 1 ) < 0 ) ? 0 : ( k - 1 );
+        int ystart = Math.max((k - 1), 0);
         for ( int chunkx = ( i >> 4 ); chunkx <= ( ( j - 1 ) >> 4 ); chunkx++ )
         {
             int cx = chunkx << 4;
@@ -1397,10 +1396,10 @@ public abstract class World implements IBlockAccess {
                 boolean collidesWithSign = entity.world.paperSpigotConfig.fallingBlocksCollideWithSigns && (entity instanceof EntityTNTPrimed || entity instanceof EntityFallingBlock);
                 int cz = chunkz << 4;
                 // Compute ranges within chunk
-                int xstart = ( i < cx ) ? cx : i;
-                int xend = ( j < ( cx + 16 ) ) ? j : ( cx + 16 );
-                int zstart = ( i1 < cz ) ? cz : i1;
-                int zend = ( j1 < ( cz + 16 ) ) ? j1 : ( cz + 16 );
+                int xstart = Math.max(i, cx);
+                int xend = Math.min(j, (cx + 16));
+                int zstart = Math.max(i1, cz);
+                int zend = Math.min(j1, (cz + 16));
                 // Loop through blocks within chunk
                 for ( int x = xstart; x < xend; x++ )
                 {
