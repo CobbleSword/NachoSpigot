@@ -1339,10 +1339,8 @@ public abstract class EntityHuman extends EntityLiving {
 
     }
 
-    private final int interval = Nacho.get().getConfig().playerTimeStatisticsInterval;
-
     public void b(Statistic statistic) {
-        this.a(statistic, interval); // Nacho / Yatopia - or do it like this :shrug:
+        this.a(statistic, Nacho.get().getConfig().playerTimeStatisticsInterval); // Nacho / Yatopia - or do it like this :shrug:
     }
 
     public void a(Statistic statistic, int i) {}
