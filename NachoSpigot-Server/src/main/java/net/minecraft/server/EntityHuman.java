@@ -1011,23 +1011,11 @@ public abstract class EntityHuman extends EntityLiving {
                     boolean flag2 = entity.damageEntity(DamageSource.playerAttack(this), f);
 
                     if (flag2) {
-                        long now = this.world.getTime();
                         if (i > 0) {
-                            // Implement a 20 tick cooldown for sprint knockback, to compensate for the fix below.
-                            // This is 2x the damage cooldown, so you have to wait twice as long between hits to get the extra KB.
-                            if(this.isSprinting() && this.getBukkitEntity().getLastKnockbackTime() + 20 > now) {
-                                i--;
-                            }
-                            this.getBukkitEntity().setLastKnockbackTime(now);
-                            // CraftBukkit end
-
                             entity.g(-MathHelper.sin(this.yaw * 3.1415927F / 180.0F) * (float) i * 0.5F, 0.1D, MathHelper.cos(this.yaw * 3.1415927F / 180.0F) * (float) i * 0.5F);
-                            // CraftBukkit start
-                            // Don't try to stop the player's sprint because the client will ignore it if the sprint key is held down
-                            /* this.motX *= 0.6D;
+                            this.motX *= 0.6D;
                             this.motZ *= 0.6D;
-                            this.setSprinting(false); */
-                            // CraftBukkit end
+                            this.setSprinting(false);
                         }
 
                         if (entity instanceof EntityPlayer && entity.velocityChanged) {
@@ -1064,12 +1052,12 @@ public abstract class EntityHuman extends EntityLiving {
                         }
 
                         if (f >= 18.0F) {
-                            this.b((Statistic) AchievementList.F);
+                            this.b(AchievementList.F);
                         }
 
                         this.p(entity);
                         if (entity instanceof EntityLiving) {
-                            EnchantmentManager.a((EntityLiving) entity, (Entity) this);
+                            EnchantmentManager.a((EntityLiving) entity, this);
                         }
 
                         EnchantmentManager.b(this, entity);
@@ -1080,7 +1068,7 @@ public abstract class EntityHuman extends EntityLiving {
                             IComplex icomplex = ((EntityComplexPart) entity).owner;
 
                             if (icomplex instanceof EntityLiving) {
-                                object = (EntityLiving) icomplex;
+                                object = icomplex;
                             }
                         }
 
