@@ -172,11 +172,10 @@ public final class CraftChatMessage {
             }
             out.append(c.getText());
 
-            //Neutron client will send a page will a long line of text, this will just escape it if
-            //we spend to long loading
+            // Neutron client will send a page will a long line of text, this will just escape it if
+            // we spend to long loading
             if(System.currentTimeMillis() - start > 10L) {
-                System.out.println("The player below has tried to crash the server with long lines book exploit");
-                throw new ExploitException("Neutron client, long lined pages, took too long to decode");
+                break;
             }
         }
         return out.toString().replaceFirst("^(" + defaultColor + ")*", "");

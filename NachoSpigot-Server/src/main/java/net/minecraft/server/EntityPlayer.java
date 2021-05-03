@@ -19,7 +19,6 @@ import org.apache.logging.log4j.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.WeatherType;
 import org.bukkit.craftbukkit.CraftWorld;
-import org.bukkit.craftbukkit.chunkio.QueuedChunkPacket;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
@@ -259,20 +258,15 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
             }
 
             if (!chunkList.isEmpty()) {
-                // CraftBukkit start - use cached chunks
-                //this.playerConnection.sendPacket(new PacketPlayOutMapChunkBulk(chunkList));
-                List<Packet> packets = Lists.newArrayList();
-                for (Chunk chunk1 : chunkList) {
-                    if (chunk1.cachedPacket == null) chunk1.cachedPacket = new PacketPlayOutMapChunkBulk(Lists.newArrayList(chunk1));
-                    packets.add(chunk1.cachedPacket);
-                }
-                for (TileEntity tileEntity : tileEntities) {
-                    // this.a(tileEntity);
-                    Packet updatePacket = tileEntity.getUpdatePacket();
-                    if (updatePacket != null) packets.add(updatePacket);
+                if (chunkList.size() == 1) {
+                    this.playerConnection.sendPacket(new PacketPlayOutMapChunk(chunkList.get(0), true, '\uffff'));
+                } else {
+                    this.playerConnection.sendPacket(new PacketPlayOutMapChunkBulk(chunkList));
                 }
 
-                ((WorldServer) this.world).getPlayerChunkMap().queuedChunkThread.chunks.add(new QueuedChunkPacket(Lists.newArrayList(this), packets));
+                for (TileEntity tileentity : tileEntities) {
+                    this.a(tileentity);
+                }
                 // CraftBukkit end
 
                 // Nacho start

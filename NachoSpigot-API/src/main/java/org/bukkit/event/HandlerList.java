@@ -27,7 +27,7 @@ public class HandlerList {
     /**
      * List of all HandlerLists which have been created, for use in bakeAll()
      */
-    private static ArrayList<HandlerList> allLists = new ArrayList<HandlerList>();
+    private static final ArrayList<HandlerList> allLists = new ArrayList<HandlerList>();
 
     /**
      * Bake all handler lists. Best used just after all normal event
@@ -90,9 +90,9 @@ public class HandlerList {
      * The HandlerList is then added to meta-list for use in bakeAll()
      */
     public HandlerList() {
-        handlerslots = new EnumMap<EventPriority, ArrayList<RegisteredListener>>(EventPriority.class);
+        handlerslots = new EnumMap<>(EventPriority.class);
         for (EventPriority o : EventPriority.values()) {
-            handlerslots.put(o, new ArrayList<RegisteredListener>());
+            handlerslots.put(o, new ArrayList<>());
         }
         synchronized (allLists) {
             allLists.add(this);
