@@ -2,19 +2,14 @@ package net.minecraft.server;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 // CraftBukkit start
-import java.util.Collections;
 import java.util.Queue;
 import java.util.LinkedList;
 import org.bukkit.craftbukkit.chunkio.ChunkIOExecutor;
-import org.bukkit.craftbukkit.chunkio.QueuedChunkPacket;
-import org.bukkit.craftbukkit.chunkio.QueuedChunkThread;
 
 import java.util.HashMap;
 // CraftBukkit end
@@ -31,12 +26,10 @@ public class PlayerChunkMap {
     private long h;
     private final int[][] i = new int[][] { { 1, 0}, { 0, 1}, { -1, 0}, { 0, -1}};
     private boolean wasNotEmpty; // CraftBukkit - add field
-    public QueuedChunkThread queuedChunkThread = new QueuedChunkThread();
 
     public PlayerChunkMap(WorldServer worldserver, int viewDistance /* Spigot */) {
         this.world = worldserver;
         this.a(viewDistance); // Spigot
-        new Thread(this.queuedChunkThread).start();
     }
 
     public WorldServer a() {
@@ -417,8 +410,7 @@ public class PlayerChunkMap {
                 Chunk chunk = PlayerChunkMap.this.world.getChunkAt(this.location.x, this.location.z);
 
                 if (chunk.isReady()) {
-                    if (chunk.cachedEmptyPacket == null) chunk.cachedEmptyPacket = new PacketPlayOutMapChunk(chunk, true, 0);
-                    queuedChunkThread.chunks.add(new QueuedChunkPacket(Lists.newArrayList(entityplayer), Lists.newArrayList(chunk.cachedEmptyPacket)));
+                    entityplayer.playerConnection.sendPacket(new PacketPlayOutMapChunk(chunk, true, 0));
                 }
 
                 this.players.remove(entityplayer); // CraftBukkit

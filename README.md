@@ -150,8 +150,6 @@ If you find any bugs, please create an issue or contact us in the Discord server
 
 [MineTick-0006] Fix Occasional Client Side Unloading of Chunk 0 0
 [MineTick-0017] Fix Insane Nether Portal Lag
-
-[SportBukkit-PR94] Async chunk caching
 ```
 
 ## Discord
