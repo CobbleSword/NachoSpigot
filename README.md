@@ -103,7 +103,6 @@ If you find any bugs, please create an issue or contact us in the Discord server
 [Nacho-0035] Made it so you can switch the brand name in nacho.json
 [Nacho-0036] Add toggles for commands "reload", "version" and "plugins"
 [Nacho-0037] Add toggle for "Faster Operator"
-[Nacho-0038] Fix weather desync
 [Nacho-0039] Fixed a bug in Netty's epoll when using Windows
 [Nacho-0040] Change deprecated Netty parameter in ResourceLeakDetector
 [Nacho-0041] Fix block placement
