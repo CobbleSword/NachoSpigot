@@ -16,6 +16,7 @@ public class KnockbackCommand extends Command {
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] str) {
+        if (!testPermission(sender)) return true; // by GreenMC - thank you!
         if(str.length == 0) {
             sendHelp(sender);
             return false;
