@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Floats;
 import dev.cobblesword.nachospigot.Nacho;
+import dev.cobblesword.nachospigot.events.PlayerIllegalBehaviourEvent;
 import io.netty.buffer.Unpooled;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
@@ -1936,6 +1937,13 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                     entityitem.j();
                 }
             }
+        }
+        else
+        {
+            PlayerIllegalBehaviourEvent event = new PlayerIllegalBehaviourEvent(this.server.getPlayer(this.player), PlayerIllegalBehaviourEvent.IllegalType.CREATIVE_ACTION_NOT_IN_CREATIVE);
+            this.server.getPluginManager().callEvent(event);
+
+            this.disconnect("Perform a creative action not in creative");
         }
 
     }
