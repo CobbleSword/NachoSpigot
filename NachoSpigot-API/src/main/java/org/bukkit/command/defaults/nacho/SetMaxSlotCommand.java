@@ -23,7 +23,7 @@ public class SetMaxSlotCommand extends Command {
 
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         if (!testPermission(sender)) return true;
-        if(args.length == 0) {
+        if(args.length != 1) {
             sender.sendMessage(CC.gray + "There are currently " + CC.white + Bukkit.getMaxPlayers() + CC.gray + " slots!");
             sender.sendMessage(ChatColor.RED + "Please use '/sms [amount]' to set the number of max slots for the server");
             return false;
@@ -31,9 +31,9 @@ public class SetMaxSlotCommand extends Command {
         int amount;
         Player player = (Player) sender;
         try {
-            amount = Integer.parseInt(args[1]);
+            amount = Integer.parseInt(args[0]);
         } catch (Exception ex) {
-            player.sendMessage(ChatColor.RED + "Please enter a number instead of '" + args[1] + "'.");
+            player.sendMessage(ChatColor.RED + "Please enter a number instead of '" + args[0] + "'.");
             return false;
         }
         Bukkit.getServer().setMaxPlayers(amount);
