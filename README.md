@@ -141,6 +141,8 @@ If you find any bugs, please create an issue or contact us in the Discord server
 
 [PaperBin-????] WorldServer#everyoneDeeplySleeping optimization
 
+[KigPaper-0172] NBT no-op for block place packet
+
 [FlamePaper-0102] Fixed chunk memory leak
 [FlamePaper-0103] Limit CraftChatMessage iterations
 [FlamePaper-0104] Return last slot by default
