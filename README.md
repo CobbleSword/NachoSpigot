@@ -159,3 +159,4 @@ If you find any bugs, please create an issue or contact us in the Discord server
 ## Supporters
 
 [Lucas (aka Sculas)](https://sculas.xyz/)
+[LewUwU](https://github.com/LewUwU/)
