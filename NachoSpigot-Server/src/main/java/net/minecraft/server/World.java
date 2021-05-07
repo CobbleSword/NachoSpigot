@@ -3333,7 +3333,7 @@ public abstract class World implements IBlockAccess {
         } else {
             BiomeBase biomebase = this.getBiome(blockposition);
 
-            return biomebase.d() ? false : (this.f(blockposition, false) ? false : biomebase.e());
+            return !biomebase.d() && (!this.f(blockposition, false) && biomebase.e());
         }
     }
 
