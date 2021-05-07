@@ -127,6 +127,8 @@ If you find any bugs, please create an issue or contact us in the Discord server
 [IonSpigot-0020] Faster EntityTracker Collections
 [IonSpigot-0035] Optimise Entity Collisions
 
+[InsanePaper-269] Cache Chunk Coordinations
+
 [Akarin-0001] Avoid double I/O operation on load player file by tsao chi
 
 [Tuinity-????] Skip updating entity tracker without players
@@ -157,3 +159,5 @@ If you find any bugs, please create an issue or contact us in the Discord server
 ## Supporters
 
 [Lucas (aka Sculas)](https://sculas.xyz/)
+
+[LewUwU](https://github.com/LewUwU/)
