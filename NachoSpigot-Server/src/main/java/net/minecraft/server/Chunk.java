@@ -133,7 +133,7 @@ public class Chunk {
     public PacketPlayOutMapChunkBulk cachedPacket;
     public PacketPlayOutMapChunk cachedEmptyPacket;
 
-    private final ChunkCoordIntPair chunkCoords;
+    private final ChunkCoordIntPair chunkCoords; // InsanePaper-269 - Cache Chunk Coordinations
     
     public Chunk(World world, int i, int j) {
         this.sections = new ChunkSection[16];
@@ -160,7 +160,7 @@ public class Chunk {
         if (!(this instanceof EmptyChunk)) {
             this.bukkitChunk = new org.bukkit.craftbukkit.CraftChunk(this);
         }
-        this.chunkCoords = new ChunkCoordIntPair(this.locX, this.locZ);
+        this.chunkCoords = new ChunkCoordIntPair(this.locX, this.locZ); // InsanePaper-269 - Cache Chunk Coordinations
     }
 
     public org.bukkit.Chunk bukkitChunk;
@@ -1332,7 +1332,7 @@ public class Chunk {
     }
 
     public ChunkCoordIntPair j() {
-        return this.chunkCoords;
+        return this.chunkCoords; // InsanePaper-269 - Cache Chunk Coordinations
     }
 
     public boolean c(int i, int j) {
