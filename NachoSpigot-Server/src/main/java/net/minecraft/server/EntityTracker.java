@@ -204,7 +204,6 @@ public class EntityTracker {
         for (EntityTrackerEntry entitytrackerentry : this.c) {
             entitytrackerentry.clear(entityplayer);
         }
-
     }
 
     public void a(EntityPlayer entityplayer, Chunk chunk) {

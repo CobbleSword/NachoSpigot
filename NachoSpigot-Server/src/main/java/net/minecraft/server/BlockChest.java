@@ -338,7 +338,7 @@ public class BlockChest extends BlockContainer {
         }
     }
 
-    //Paper - OBF HELPER
+    // Paper - OBF HELPER
     public ITileInventory getInventory(World world, BlockPosition blockposition) {
         return f(world, blockposition, false);
     }
@@ -469,6 +469,6 @@ public class BlockChest extends BlockContainer {
     }
 
     protected BlockStateList getStateList() {
-        return new BlockStateList(this, new IBlockState[] { BlockChest.FACING});
+        return new BlockStateList(this, BlockChest.FACING);
     }
 }
