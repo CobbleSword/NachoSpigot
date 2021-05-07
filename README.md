@@ -9,8 +9,6 @@ Nacho can now be used in production environments.
 
 If you find any bugs, please create an issue or contact us in the Discord server!
 
-> Test Server: `nacho.sucks-ass.lol`
-
 **NachoSpigot supports Java 8 to Java 15!**
 
 ## Download
