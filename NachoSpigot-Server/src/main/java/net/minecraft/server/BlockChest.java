@@ -355,7 +355,7 @@ public class BlockChest extends BlockContainer {
 
         Object object = tileentity;
 
-        if (this.n(world, blockposition))
+        if (flag && this.n(world, blockposition))
             return null;
 
         for (EnumDirection enumdirection : EnumDirection.EnumDirectionLimit.HORIZONTAL) {
@@ -367,7 +367,7 @@ public class BlockChest extends BlockContainer {
             Block block = typeIfLoaded.getBlock();
 
             if (block == this) {
-                if (!flag && this.e(world, blockposition1)) { // Paper - check for allowBlocked flag - MC-99321
+                if (this.n(world, blockposition1)) { // Paper - check for allowBlocked flag - MC-99321
                     return null;
                 }
 
