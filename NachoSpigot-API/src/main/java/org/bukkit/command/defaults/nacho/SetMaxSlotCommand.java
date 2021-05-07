@@ -29,15 +29,14 @@ public class SetMaxSlotCommand extends Command {
             return false;
         }
         int amount;
-        Player player = (Player) sender;
         try {
             amount = Integer.parseInt(args[0]);
         } catch (Exception ex) {
-            player.sendMessage(ChatColor.RED + "Please enter a number instead of '" + args[0] + "'.");
+            sender.sendMessage(ChatColor.RED + "Please enter a number instead of '" + args[0] + "'.");
             return false;
         }
         Bukkit.getServer().setMaxPlayers(amount);
-        player.sendMessage(ChatColor.GREEN + "Player slots are now set at " + amount);
+        sender.sendMessage(ChatColor.GREEN + "Player slots are now set at " + amount);
         return false;
     }
 }
