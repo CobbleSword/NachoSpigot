@@ -355,7 +355,7 @@ public class BlockChest extends BlockContainer {
 
         Object object = tileentity;
 
-        if (flag && this.n(world, blockposition))
+        if (this.n(world, blockposition))
             return null;
 
         for (EnumDirection enumdirection : EnumDirection.EnumDirectionLimit.HORIZONTAL) {
