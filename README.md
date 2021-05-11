@@ -1,6 +1,6 @@
 # NachoSpigot ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/CobbleSword/NachoSpigot/NachoSpigot%20Build)
 
-#### NachoSpigot is a fork of TacoSpigot 1.8.9.
+#### NachoSpigot is a fork of TacoSpigot 1.8.8.
 NachoSpigot offers a number of enhancements to performance as well as bug fixes such as a built-in Anti-Crash system and being able to perform well with a large number of players.
 
 ## Current State
