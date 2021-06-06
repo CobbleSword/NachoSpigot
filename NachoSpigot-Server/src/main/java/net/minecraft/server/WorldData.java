@@ -30,7 +30,7 @@ public class WorldData {
     private boolean s;
     private int t;
     private WorldSettings.EnumGamemode u;
-    private boolean v;
+    private boolean v; // generate-structures
     private boolean w;
     private boolean x;
     private boolean y;
@@ -614,7 +614,7 @@ public class WorldData {
         });
         crashreportsystemdetails.a("Level generator", new Callable() {
             public String a() throws Exception {
-                return String.format("ID %02d - %s, ver %d. Features enabled: %b", new Object[] { Integer.valueOf(WorldData.this.c.g()), WorldData.this.c.name(), Integer.valueOf(WorldData.this.c.getVersion()), Boolean.valueOf(WorldData.this.v)});
+                return String.format("ID %02d - %s, ver %d. Features enabled: %b", new Object[] { Integer.valueOf(WorldData.this.c.g()), WorldData.this.c.name(), Integer.valueOf(WorldData.this.c.getVersion()), WorldData.this.v});
             }
 
             public Object call() throws Exception {
