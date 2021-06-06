@@ -126,6 +126,7 @@ If you find any bugs, please create an issue or contact us in the Discord server
 [IonSpigot-0035] Optimise Entity Collisions
 
 [InsanePaper-269] Cache Chunk Coordinations
+[InsanePaper-390] Heavily optimize Tuinity controlled flush patch
 
 [Akarin-0001] Avoid double I/O operation on load player file by tsao chi
 
