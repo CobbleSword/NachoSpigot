@@ -352,7 +352,7 @@ public final class CraftServer implements Server {
             setVanillaCommands(false);
             // Spigot end
             // commandMap.registerServerAliases(); // NetworkSpigot
-            loadCustomPermissions();
+            // loadCustomPermissions(); // NetworkSpigot
             DefaultPermissions.registerCorePermissions();
             CraftDefaultPermissions.registerCorePermissions();
             helpMap.initializeCommands();

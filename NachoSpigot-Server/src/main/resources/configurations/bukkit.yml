@@ -15,7 +15,6 @@
 settings:
     allow-end: false
     warn-on-overload: true
-    permissions-file: permissions.yml
     update-folder: update
     plugin-profiling: false
     connection-throttle: 4000
