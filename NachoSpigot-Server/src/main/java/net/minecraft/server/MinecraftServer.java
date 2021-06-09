@@ -876,7 +876,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
             if(this.getPlayerList().getPlayerCount() != 0) // Tuinity
             {
                 // Tuinity start - controlled flush for entity tracker packets
-                java.util.Set<NetworkManager> disabledFlushes = new java.util.HashSet<>(this.getPlayerList().getPlayerCount());
+                List<NetworkManager> disabledFlushes = new java.util.ArrayList<>(this.getPlayerList().getPlayerCount());
                 for (EntityPlayer player : this.getPlayerList().players) {
                     PlayerConnection connection = player.playerConnection;
                     if (connection != null) {
