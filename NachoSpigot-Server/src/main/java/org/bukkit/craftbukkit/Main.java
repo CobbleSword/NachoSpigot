@@ -11,6 +11,7 @@ import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import net.minecraft.server.MinecraftServer;
 
+import org.apache.commons.lang3.JavaVersion;
 import org.apache.commons.lang3.SystemUtils;
 import org.fusesource.jansi.AnsiConsole;
 
@@ -32,7 +33,7 @@ public class Main {
 //            System.exit(1);
 //        }
         try {
-            if(!SystemUtils.IS_JAVA_15) {
+            if(!SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_15)) {
                 System.err.println("It seems like you are not using Java 15!");
                 System.out.println("The use of Java 15 is strongly recommended.");
             }
