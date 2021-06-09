@@ -2,7 +2,6 @@ package net.minecraft.server;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListenableFutureTask;
@@ -26,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
@@ -42,12 +40,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 // CraftBukkit start
-import java.io.IOException;
 
 import jline.console.ConsoleReader;
 import joptsimple.OptionSet;
 
-import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.Main;
 import co.aikar.timings.SpigotTimings; // Spigot
 // CraftBukkit end
@@ -104,12 +100,12 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     private long X = 0L;
     private final GameProfileRepository Y;
     private final UserCache Z;
-    protected final Queue<FutureTask<?>> j = new java.util.concurrent.ConcurrentLinkedQueue<FutureTask<?>>(); // Spigot, PAIL: Rename
-    private Thread serverThread;
+    protected final Queue<FutureTask<?>> j = new java.util.concurrent.ConcurrentLinkedQueue<>(); // Spigot, PAIL: Rename
+    private final Thread serverThread;
     private long ab = az();
 
     // CraftBukkit start
-    public List<WorldServer> worlds = new ArrayList<WorldServer>();
+    public List<WorldServer> worlds = new ArrayList<>();
     public org.bukkit.craftbukkit.CraftServer server;
     public OptionSet options;
     public org.bukkit.command.ConsoleCommandSender console;
@@ -117,7 +113,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     public ConsoleReader reader;
     public static int currentTick = 0; // PaperSpigot - Further improve tick loop
     public final Thread primaryThread;
-    public java.util.Queue<Runnable> processQueue = new java.util.concurrent.ConcurrentLinkedQueue<Runnable>();
+    public java.util.Queue<Runnable> processQueue = new java.util.concurrent.ConcurrentLinkedQueue<>();
     public int autosavePeriod;
     // CraftBukkit end
 
@@ -323,7 +319,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
             }
 
             worlds.add(world);
-            getPlayerList().setPlayerFileData(worlds.toArray(new WorldServer[worlds.size()]));
+            getPlayerList().setPlayerFileData(worlds.toArray(new WorldServer[0]));
         }
 
         // CraftBukkit end
@@ -411,17 +407,16 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
             int i = aworldserver.length;
 
             // CraftBukkit start
-            for (int j = 0; j < worlds.size(); ++j) {
-                WorldServer worldserver = worlds.get(j);
+            for (final WorldServer worldserver : worlds) {
                 // CraftBukkit end
 
                 if (worldserver != null) {
                     if (!flag) {
-                        MinecraftServer.LOGGER.info("Saving chunks for level \'" + worldserver.getWorldData().getName() + "\'/" + worldserver.worldProvider.getName());
+                        MinecraftServer.LOGGER.info("Saving chunks for level '" + worldserver.getWorldData().getName() + "'/" + worldserver.worldProvider.getName());
                     }
 
                     try {
-                        worldserver.save(true, (IProgressUpdate) null);
+                        worldserver.save(true, null);
                         worldserver.saveLevel(); // CraftBukkit
                     } catch (ExceptionWorldConflict exceptionworldconflict) {
                         MinecraftServer.LOGGER.warn(exceptionworldconflict.getMessage());
@@ -461,7 +456,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
                 MinecraftServer.LOGGER.info("Saving players");
                 this.v.savePlayers();
                 this.v.u();
-                try { Thread.sleep(100); } catch (InterruptedException ex) {} // CraftBukkit - SPIGOT-625 - give server at least a chance to send packets
+                try { Thread.sleep(100); } catch (InterruptedException ignored) {} // CraftBukkit - SPIGOT-625 - give server at least a chance to send packets
             }
 
             if (this.worldServer != null) {
@@ -675,14 +670,14 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
             try {
                 BufferedImage bufferedimage = ImageIO.read(file);
 
-                Validate.validState(bufferedimage.getWidth() == 64, "Must be 64 pixels wide", new Object[0]);
-                Validate.validState(bufferedimage.getHeight() == 64, "Must be 64 pixels high", new Object[0]);
+                Validate.validState(bufferedimage.getWidth() == 64, "Must be 64 pixels wide");
+                Validate.validState(bufferedimage.getHeight() == 64, "Must be 64 pixels high");
                 ImageIO.write(bufferedimage, "PNG", new ByteBufOutputStream(bytebuf));
                 /*ByteBuf*/ bytebuf1 = Base64.encode(bytebuf); // Paper - cleanup favicon bytebuf
 
                 serverping.setFavicon("data:image/png;base64," + bytebuf1.toString(Charsets.UTF_8));
             } catch (Exception exception) {
-                MinecraftServer.LOGGER.error("Couldn\'t load server icon", exception);
+                MinecraftServer.LOGGER.error("Couldn't load server icon", exception);
             } finally {
                 bytebuf.release();
                 // Paper start - cleanup favicon bytebuf
@@ -723,7 +718,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
             int j = MathHelper.nextInt(this.s, 0, this.I() - agameprofile.length);
 
             for (int k = 0; k < agameprofile.length; ++k) {
-                agameprofile[k] = ((EntityPlayer) this.v.v().get(j + k)).getProfile();
+                agameprofile[k] = this.v.v().get(j + k).getProfile();
             }
 
             Collections.shuffle(Arrays.asList(agameprofile));
@@ -770,7 +765,6 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     public void B() {
         SpigotTimings.minecraftSchedulerTimer.startTiming(); // Spigot
         this.methodProfiler.a("jobs");
-        Queue queue = this.j;
 
         // Spigot start
         FutureTask<?> entry;
@@ -1118,22 +1112,22 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     }
 
     public CrashReport b(CrashReport crashreport) {
-        crashreport.g().a("Profiler Position", new Callable() {
-            public String a() throws Exception {
+        crashreport.g().a("Profiler Position", new Callable<Object>() {
+            public String a() {
                 return MinecraftServer.this.methodProfiler.a ? MinecraftServer.this.methodProfiler.c() : "N/A (disabled)";
             }
 
-            public Object call() throws Exception {
+            public Object call() {
                 return this.a();
             }
         });
         if (this.v != null) {
-            crashreport.g().a("Player Count", new Callable() {
+            crashreport.g().a("Player Count", new Callable<Object>() {
                 public String a() {
                     return MinecraftServer.this.v.getPlayerCount() + " / " + MinecraftServer.this.v.getMaxPlayers() + "; " + MinecraftServer.this.v.v();
                 }
 
-                public Object call() throws Exception {
+                public Object call() {
                     return this.a();
                 }
             });
@@ -1548,8 +1542,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
         int i = aworldserver.length;
 
         // CraftBukkit start
-        for (int j = 0; j < worlds.size(); ++j) {
-            WorldServer worldserver = worlds.get(j);
+        for (final WorldServer worldserver : worlds) {
             // CraftBukkit end
 
             if (worldserver != null) {
@@ -1577,8 +1570,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     public <V> ListenableFuture<V> a(Callable<V> callable) {
         Validate.notNull(callable);
         if (!this.isMainThread()) { // CraftBukkit && !this.isStopped()) {
-            ListenableFutureTask listenablefuturetask = ListenableFutureTask.create(callable);
-            Queue queue = this.j;
+            ListenableFutureTask<V> listenablefuturetask = ListenableFutureTask.create(callable);
 
             // Spigot start
             this.j.add(listenablefuturetask);

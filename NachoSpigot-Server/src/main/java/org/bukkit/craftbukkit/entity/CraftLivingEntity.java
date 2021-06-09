@@ -14,7 +14,6 @@ import net.minecraft.server.EntityEgg;
 import net.minecraft.server.EntityEnderPearl;
 import net.minecraft.server.EntityFishingHook;
 import net.minecraft.server.EntityHuman;
-import net.minecraft.server.EntityFireball;
 import net.minecraft.server.EntityInsentient;
 import net.minecraft.server.EntityLargeFireball;
 import net.minecraft.server.EntityLiving;
@@ -131,7 +130,7 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
         if (maxDistance > 120) {
             maxDistance = 120;
         }
-        ArrayList<Block> blocks = new ArrayList<Block>();
+        ArrayList<Block> blocks = new ArrayList<>();
         Iterator<Block> itr = new BlockIterator(this, maxDistance);
         while (itr.hasNext()) {
             Block block = itr.next();
@@ -157,7 +156,7 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
         if (maxDistance > 120) {
             maxDistance = 120;
         }
-        ArrayList<Block> blocks = new ArrayList<Block>();
+        ArrayList<Block> blocks = new ArrayList<>();
         Iterator<Block> itr = new BlockIterator(this, maxDistance);
         while (itr.hasNext()) {
             Block block = itr.next();
@@ -322,12 +321,11 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
     }
 
     public Collection<PotionEffect> getActivePotionEffects() {
-        List<PotionEffect> effects = new ArrayList<PotionEffect>();
-        for (Object raw : getHandle().effects.values()) {
-            if (!(raw instanceof MobEffect))
+        List<PotionEffect> effects = new ArrayList<>();
+        for (MobEffect raw : getHandle().effects.values()) {
+            if (raw == null)
                 continue;
-            MobEffect handle = (MobEffect) raw;
-            effects.add(new PotionEffect(PotionEffectType.getById(handle.getEffectId()), handle.getDuration(), handle.getAmplifier(), handle.isAmbient(), handle.isShowParticles()));
+            effects.add(new PotionEffect(PotionEffectType.getById(raw.getEffectId()), raw.getDuration(), raw.getAmplifier(), raw.isAmbient(), raw.isShowParticles()));
         }
         return effects;
     }
@@ -367,7 +365,7 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
                 launch = new EntityLargeFireball(world, getHandle(), direction.getX(), direction.getY(), direction.getZ());
             }
 
-            ((EntityFireball) launch).projectileSource = this;
+            launch.projectileSource = this;
             launch.setPositionRotation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
         }
 

@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.lang.Override;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -69,8 +70,8 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
     private long lastPlayed = 0;
     private boolean hasPlayedBefore = false;
     private final ConversationTracker conversationTracker = new ConversationTracker();
-    private final Set<String> channels = new HashSet<String>();
-    private final Set<UUID> hiddenPlayers = new HashSet<UUID>();
+    private final Set<String> channels = new HashSet<>();
+    private final Set<UUID> hiddenPlayers = new HashSet<>();
     private int hash = 0;
     private double health = 20;
     private boolean scaledHealth = false;
@@ -274,7 +275,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
             name = getName();
         }
         getHandle().listName = name.equals(getName()) ? null : CraftChatMessage.fromString(name)[0];
-        for (EntityPlayer player : (List<EntityPlayer>)server.getHandle().players) {
+        for (EntityPlayer player : server.getHandle().players) {
             if (player.getBukkitEntity().canSee(this)) {
                 player.playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.UPDATE_DISPLAY_NAME, getHandle()));
             }
@@ -500,7 +501,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         if (getHandle().playerConnection == null) return;
 
         RenderData data = ((CraftMapView) map).render(this);
-        Collection<MapIcon> icons = new ArrayList<MapIcon>();
+        Collection<MapIcon> icons = new ArrayList<>();
         for (MapCursor cursor : data.cursors) {
             if (cursor.isVisible()) {
                 icons.add(new MapIcon(cursor.getRawType(), cursor.getX(), cursor.getY(), cursor.getDirection()));
@@ -1010,7 +1011,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 
     @Override
     public Map<String, Object> serialize() {
-        Map<String, Object> result = new LinkedHashMap<String, Object>();
+        Map<String, Object> result = new LinkedHashMap<>();
 
         result.put("name", getName());
 
@@ -1176,7 +1177,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 
             for (String channel : listening) {
                 try {
-                    stream.write(channel.getBytes("UTF8"));
+                    stream.write(channel.getBytes(StandardCharsets.UTF_8));
                     stream.write((byte) 0);
                 } catch (IOException ex) {
                     Logger.getLogger(CraftPlayer.class.getName()).log(Level.SEVERE, "Could not send Plugin Channel REGISTER to " + getName(), ex);
@@ -1378,11 +1379,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 
     public void updateScaledHealth() {
         AttributeMapServer attributemapserver = (AttributeMapServer) getHandle().getAttributeMap();
-        Set set = attributemapserver.getAttributes();
+        Set<AttributeInstance> set = attributemapserver.getAttributes();
 
         injectScaledMaxHealth(set, true);
 
-        getHandle().getDataWatcher().watch(6, (float) getScaledHealth());
+        getHandle().getDataWatcher().watch(6, getScaledHealth());
         getHandle().playerConnection.sendPacket(new PacketPlayOutUpdateHealth(getScaledHealth(), getHandle().getFoodData().getFoodLevel(), getHandle().getFoodData().getSaturationLevel()));
         getHandle().playerConnection.sendPacket(new PacketPlayOutUpdateAttributes(getHandle().getId(), set));
 
@@ -1390,12 +1391,12 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         getHandle().maxHealthCache = getMaxHealth();
     }
 
-    public void injectScaledMaxHealth(Collection collection, boolean force) {
+    public void injectScaledMaxHealth(Collection<AttributeInstance> collection, boolean force) {
         if (!scaledHealth && !force) {
             return;
         }
-        for (Object genericInstance : collection) {
-            IAttribute attribute = ((AttributeInstance) genericInstance).getAttribute();
+        for (final AttributeInstance genericInstance : collection) {
+            IAttribute attribute = genericInstance.getAttribute();
             if (attribute.getName().equals("generic.maxHealth")) {
                 collection.remove(genericInstance);
                 break;
@@ -1481,7 +1482,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
             Validate.notNull( location, "Location cannot be null" );
             Validate.notNull( effect, "Effect cannot be null" );
             Validate.notNull( location.getWorld(), "World cannot be null" );
-            Packet packet;
+            Packet<?> packet;
             if ( effect.getType() != Effect.Type.PARTICLE )
             {
                 int packetData = effect.getId();
@@ -1541,7 +1542,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         @Override
         public Set<Player> getHiddenPlayers()
         {
-            Set<Player> ret = new HashSet<Player>();
+            Set<Player> ret = new HashSet<>();
             for ( UUID u : hiddenPlayers )
             {
                 ret.add( getServer().getPlayer( u ) );
@@ -1670,7 +1671,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
                 if (!Packet.class.isAssignableFrom(o.getClass())) {
                     throw new IllegalArgumentException("Packet sent does not implement the NMS Packet class!");
                 }
-                Packet packet = (Packet) o;
+                Packet<?> packet = (Packet<?>) o;
                 getHandle().playerConnection.sendPacket(packet);
             } catch (Exception e) {
                 e.printStackTrace();

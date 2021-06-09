@@ -37,7 +37,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      *
      * @return the friendly name
      */
-    public String getDisplayName();
+    String getDisplayName();
 
 
     /**
@@ -49,14 +49,14 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      *
      * @param name The new display name.
      */
-    public void setDisplayName(String name);
+    void setDisplayName(String name);
 
     /**
      * Gets the name that is shown on the player list.
      *
      * @return the player list name
      */
-    public String getPlayerListName();
+    String getPlayerListName();
 
     /**
      * Sets the name that is shown on the in-game player list.
@@ -79,49 +79,49 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      *     else
      * @throws IllegalArgumentException if the length of the name is too long
      */
-    public void setPlayerListName(String name);
+    void setPlayerListName(String name);
 
     /**
      * Set the target of the player's compass.
      *
      * @param loc Location to point to
      */
-    public void setCompassTarget(Location loc);
+    void setCompassTarget(Location loc);
 
     /**
      * Get the previously set compass target.
      *
      * @return location of the target
      */
-    public Location getCompassTarget();
+    Location getCompassTarget();
 
     /**
      * Gets the socket address of this player
      *
      * @return the player's address
      */
-    public InetSocketAddress getAddress();
+    InetSocketAddress getAddress();
 
     /**
      * Sends this sender a message raw
      *
      * @param message Message to be displayed
      */
-    public void sendRawMessage(String message);
+    void sendRawMessage(String message);
 
     /**
      * Kicks player with custom kick message.
      *
      * @param message kick message
      */
-    public void kickPlayer(String message);
+    void kickPlayer(String message);
 
     /**
      * Says a message (or runs a command).
      *
      * @param msg message to print
      */
-    public void chat(String msg);
+    void chat(String msg);
 
     /**
      * Makes the player perform the given command
@@ -129,42 +129,42 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @param command Command to perform
      * @return true if the command was successful, otherwise false
      */
-    public boolean performCommand(String command);
+    boolean performCommand(String command);
 
     /**
      * Returns if the player is in sneak mode
      *
      * @return true if player is in sneak mode
      */
-    public boolean isSneaking();
+    boolean isSneaking();
 
     /**
      * Sets the sneak mode the player
      *
      * @param sneak true if player should appear sneaking
      */
-    public void setSneaking(boolean sneak);
+    void setSneaking(boolean sneak);
 
     /**
      * Gets whether the player is sprinting or not.
      *
      * @return true if player is sprinting.
      */
-    public boolean isSprinting();
+    boolean isSprinting();
 
     /**
      * Sets whether the player is sprinting or not.
      *
      * @param sprinting true if the player should be sprinting
      */
-    public void setSprinting(boolean sprinting);
+    void setSprinting(boolean sprinting);
 
     /**
      * Saves the players current location, health, inventory, motion, and
      * other information into the username.dat file, in the world/player
      * folder
      */
-    public void saveData();
+    void saveData();
 
     /**
      * Loads the players current location, health, inventory, motion, and
@@ -174,7 +174,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * Note: This will overwrite the players current inventory, health,
      * motion, etc, with the state from the saved dat file.
      */
-    public void loadData();
+    void loadData();
 
     /**
      * Sets whether the player is ignored as not sleeping. If everyone is
@@ -184,14 +184,14 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      *
      * @param isSleeping Whether to ignore.
      */
-    public void setSleepingIgnored(boolean isSleeping);
+    void setSleepingIgnored(boolean isSleeping);
 
     /**
      * Returns whether the player is sleeping ignored.
      *
      * @return Whether player is ignoring sleep.
      */
-    public boolean isSleepingIgnored();
+    boolean isSleepingIgnored();
 
     /**
      * Play a note for a player at a location. This requires a note block
@@ -204,7 +204,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @deprecated Magic value
      */
     @Deprecated
-    public void playNote(Location loc, byte instrument, byte note);
+    void playNote(Location loc, byte instrument, byte note);
 
     /**
      * Play a note for a player at a location. This requires a note block
@@ -215,7 +215,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @param instrument The instrument
      * @param note The note
      */
-    public void playNote(Location loc, Instrument instrument, Note note);
+    void playNote(Location loc, Instrument instrument, Note note);
 
 
     /**
@@ -228,7 +228,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @param volume The volume of the sound
      * @param pitch The pitch of the sound
      */
-    public void playSound(Location location, Sound sound, float volume, float pitch);
+    void playSound(Location location, Sound sound, float volume, float pitch);
 
     /**
      * Play a sound for a player at the location.
@@ -242,7 +242,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @param volume the volume of the sound
      * @param pitch the pitch of the sound
      */
-    public void playSound(Location location, String sound, float volume, float pitch);
+    void playSound(Location location, String sound, float volume, float pitch);
 
     /**
      * Plays an effect to just this player.
@@ -253,7 +253,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @deprecated Magic value
      */
     @Deprecated
-    public void playEffect(Location loc, Effect effect, int data);
+    void playEffect(Location loc, Effect effect, int data);
 
     /**
      * Plays an effect to just this player.
@@ -263,7 +263,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @param effect the {@link Effect}
      * @param data a data bit needed for some effects
      */
-    public <T> void playEffect(Location loc, Effect effect, T data);
+    <T> void playEffect(Location loc, Effect effect, T data);
 
     /**
      * Send a block change. This fakes a block change packet for a user at a
@@ -275,7 +275,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @deprecated Magic value
      */
     @Deprecated
-    public void sendBlockChange(Location loc, Material material, byte data);
+    void sendBlockChange(Location loc, Material material, byte data);
 
     /**
      * Send a chunk change. This fakes a chunk change packet for a user at a
@@ -295,7 +295,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @deprecated Magic value
      */
     @Deprecated
-    public boolean sendChunkChange(Location loc, int sx, int sy, int sz, byte[] data);
+    boolean sendChunkChange(Location loc, int sx, int sy, int sz, byte[] data);
 
     /**
      * Send a block change. This fakes a block change packet for a user at a
@@ -307,7 +307,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @deprecated Magic value
      */
     @Deprecated
-    public void sendBlockChange(Location loc, int material, byte data);
+    void sendBlockChange(Location loc, int material, byte data);
 
     /**
      * Send a sign change. This fakes a sign change packet for a user at
@@ -324,7 +324,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @throws IllegalArgumentException if location is null
      * @throws IllegalArgumentException if lines is non-null and has a length less than 4
      */
-    public void sendSignChange(Location loc, String[] lines) throws IllegalArgumentException;
+    void sendSignChange(Location loc, String[] lines) throws IllegalArgumentException;
 
     /**
      * Render a map and send it to the player in its entirety. This may be
@@ -332,7 +332,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      *
      * @param map The map to be sent
      */
-    public void sendMap(MapView map);
+    void sendMap(MapView map);
 
     // Paper start
     /**
@@ -341,7 +341,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @param component the components to send
      */
     @Override
-    public void sendMessage(net.md_5.bungee.api.chat.BaseComponent component);
+    void sendMessage(net.md_5.bungee.api.chat.BaseComponent component);
 
     /**
      * Sends an array of components as a single message to the player
@@ -349,7 +349,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @param components the components to send
      */
     @Override
-    public void sendMessage(net.md_5.bungee.api.chat.BaseComponent... components);
+    void sendMessage(net.md_5.bungee.api.chat.BaseComponent... components);
 
     /**
      * Set the text displayed in the player list header and footer for this player
@@ -357,7 +357,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @param header content for the top of the player list
      * @param footer content for the bottom of the player list
      */
-    public void setPlayerListHeaderFooter(net.md_5.bungee.api.chat.BaseComponent[] header, net.md_5.bungee.api.chat.BaseComponent[] footer);
+    void setPlayerListHeaderFooter(net.md_5.bungee.api.chat.BaseComponent[] header, net.md_5.bungee.api.chat.BaseComponent[] footer);
 
     /**
      * Set the text displayed in the player list header and footer for this player
@@ -365,7 +365,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @param header content for the top of the player list
      * @param footer content for the bottom of the player list
      */
-    public void setPlayerListHeaderFooter(net.md_5.bungee.api.chat.BaseComponent header, net.md_5.bungee.api.chat.BaseComponent footer);
+    void setPlayerListHeaderFooter(net.md_5.bungee.api.chat.BaseComponent header, net.md_5.bungee.api.chat.BaseComponent footer);
 
     /**
      * Update the times for titles displayed to the player
@@ -376,35 +376,35 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @deprecated Use {@link #updateTitle(Title)}
      */
     @Deprecated
-    public void setTitleTimes(int fadeInTicks, int stayTicks, int fadeOutTicks);
+    void setTitleTimes(int fadeInTicks, int stayTicks, int fadeOutTicks);
 
     /**
      * Update the subtitle of titles displayed to the player
      * @deprecated Use {@link #updateTitle(Title)}
      */
     @Deprecated
-    public void setSubtitle(net.md_5.bungee.api.chat.BaseComponent[] subtitle);
+    void setSubtitle(net.md_5.bungee.api.chat.BaseComponent[] subtitle);
 
     /**
      * Update the subtitle of titles displayed to the player
      * @deprecated Use {@link #updateTitle(Title)}
      */
     @Deprecated
-    public void setSubtitle(net.md_5.bungee.api.chat.BaseComponent subtitle);
+    void setSubtitle(net.md_5.bungee.api.chat.BaseComponent subtitle);
 
     /**
      * Show the given title to the player, along with the last subtitle set, using the last set times
      * @deprecated Use {@link #sendTitle(Title)} or {@link #updateTitle(Title)}
      */
     @Deprecated
-    public void showTitle(net.md_5.bungee.api.chat.BaseComponent[] title);
+    void showTitle(net.md_5.bungee.api.chat.BaseComponent[] title);
 
     /**
      * Show the given title to the player, along with the last subtitle set, using the last set times
      * @deprecated Use {@link #sendTitle(Title)} or {@link #updateTitle(Title)}
      */
     @Deprecated
-    public void showTitle(net.md_5.bungee.api.chat.BaseComponent title);
+    void showTitle(net.md_5.bungee.api.chat.BaseComponent title);
 
     /**
      * Show the given title and subtitle to the player using the given times
@@ -417,7 +417,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @deprecated Use {@link #sendTitle(Title)} or {@link #updateTitle(Title)}
      */
     @Deprecated
-    public void showTitle(net.md_5.bungee.api.chat.BaseComponent[] title, net.md_5.bungee.api.chat.BaseComponent[] subtitle, int fadeInTicks, int stayTicks, int fadeOutTicks);
+    void showTitle(net.md_5.bungee.api.chat.BaseComponent[] title, net.md_5.bungee.api.chat.BaseComponent[] subtitle, int fadeInTicks, int stayTicks, int fadeOutTicks);
 
     /**
      * Show the given title and subtitle to the player using the given times
@@ -430,7 +430,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @deprecated Use {@link #sendTitle(Title)} or {@link #updateTitle(Title)}
      */
     @Deprecated
-    public void showTitle(net.md_5.bungee.api.chat.BaseComponent title, net.md_5.bungee.api.chat.BaseComponent subtitle, int fadeInTicks, int stayTicks, int fadeOutTicks);
+    void showTitle(net.md_5.bungee.api.chat.BaseComponent title, net.md_5.bungee.api.chat.BaseComponent subtitle, int fadeInTicks, int stayTicks, int fadeOutTicks);
 
     /**
      * Show the title to the player, overriding any previously displayed title.
@@ -455,7 +455,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
     /**
      * Hide any title that is currently visible to the player
      */
-    public void hideTitle();
+    void hideTitle();
     // Paper end
 
     /**
@@ -463,7 +463,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      *
      */
     //@Deprecated // Spigot - undeprecate
-    public void updateInventory();
+    void updateInventory();
 
     /**
      * Awards the given achievement and any parent achievements that the
@@ -472,7 +472,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @param achievement Achievement to award
      * @throws IllegalArgumentException if achievement is null
      */
-    public void awardAchievement(Achievement achievement);
+    void awardAchievement(Achievement achievement);
 
     /**
      * Removes the given achievement and any children achievements that the
@@ -481,7 +481,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @param achievement Achievement to remove
      * @throws IllegalArgumentException if achievement is null
      */
-    public void removeAchievement(Achievement achievement);
+    void removeAchievement(Achievement achievement);
 
     /**
      * Gets whether this player has the given achievement.
@@ -490,7 +490,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @return whether the player has the achievement
      * @throws IllegalArgumentException if achievement is null
      */
-    public boolean hasAchievement(Achievement achievement);
+    boolean hasAchievement(Achievement achievement);
 
     /**
      * Increments the given statistic for this player.
@@ -503,7 +503,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @throws IllegalArgumentException if the statistic requires an
      *     additional parameter
      */
-    public void incrementStatistic(Statistic statistic) throws IllegalArgumentException;
+    void incrementStatistic(Statistic statistic) throws IllegalArgumentException;
 
     /**
      * Decrements the given statistic for this player.
@@ -516,7 +516,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @throws IllegalArgumentException if the statistic requires an
      *     additional parameter
      */
-    public void decrementStatistic(Statistic statistic) throws IllegalArgumentException;
+    void decrementStatistic(Statistic statistic) throws IllegalArgumentException;
 
     /**
      * Increments the given statistic for this player.
@@ -528,7 +528,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @throws IllegalArgumentException if the statistic requires an
      *     additional parameter
      */
-    public void incrementStatistic(Statistic statistic, int amount) throws IllegalArgumentException;
+    void incrementStatistic(Statistic statistic, int amount) throws IllegalArgumentException;
 
     /**
      * Decrements the given statistic for this player.
@@ -540,7 +540,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @throws IllegalArgumentException if the statistic requires an
      *     additional parameter
      */
-    public void decrementStatistic(Statistic statistic, int amount) throws IllegalArgumentException;
+    void decrementStatistic(Statistic statistic, int amount) throws IllegalArgumentException;
 
     /**
      * Sets the given statistic for this player.
@@ -552,7 +552,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @throws IllegalArgumentException if the statistic requires an
      *     additional parameter
      */
-    public void setStatistic(Statistic statistic, int newValue) throws IllegalArgumentException;
+    void setStatistic(Statistic statistic, int newValue) throws IllegalArgumentException;
 
     /**
      * Gets the value of the given statistic for this player.
@@ -563,7 +563,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @throws IllegalArgumentException if the statistic requires an
      *     additional parameter
      */
-    public int getStatistic(Statistic statistic) throws IllegalArgumentException;
+    int getStatistic(Statistic statistic) throws IllegalArgumentException;
 
     /**
      * Increments the given statistic for this player for the given material.
@@ -578,7 +578,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @throws IllegalArgumentException if the given parameter is not valid
      *     for the statistic
      */
-    public void incrementStatistic(Statistic statistic, Material material) throws IllegalArgumentException;
+    void incrementStatistic(Statistic statistic, Material material) throws IllegalArgumentException;
 
     /**
      * Decrements the given statistic for this player for the given material.
@@ -593,7 +593,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @throws IllegalArgumentException if the given parameter is not valid
      *     for the statistic
      */
-    public void decrementStatistic(Statistic statistic, Material material) throws IllegalArgumentException;
+    void decrementStatistic(Statistic statistic, Material material) throws IllegalArgumentException;
 
     /**
      * Gets the value of the given statistic for this player.
@@ -606,7 +606,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @throws IllegalArgumentException if the given parameter is not valid
      *     for the statistic
      */
-    public int getStatistic(Statistic statistic, Material material) throws IllegalArgumentException;
+    int getStatistic(Statistic statistic, Material material) throws IllegalArgumentException;
 
     /**
      * Increments the given statistic for this player for the given material.
@@ -620,7 +620,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @throws IllegalArgumentException if the given parameter is not valid
      *     for the statistic
      */
-    public void incrementStatistic(Statistic statistic, Material material, int amount) throws IllegalArgumentException;
+    void incrementStatistic(Statistic statistic, Material material, int amount) throws IllegalArgumentException;
 
     /**
      * Decrements the given statistic for this player for the given material.
@@ -634,7 +634,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @throws IllegalArgumentException if the given parameter is not valid
      *     for the statistic
      */
-    public void decrementStatistic(Statistic statistic, Material material, int amount) throws IllegalArgumentException;
+    void decrementStatistic(Statistic statistic, Material material, int amount) throws IllegalArgumentException;
 
     /**
      * Sets the given statistic for this player for the given material.
@@ -648,7 +648,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @throws IllegalArgumentException if the given parameter is not valid
      *     for the statistic
      */
-    public void setStatistic(Statistic statistic, Material material, int newValue) throws IllegalArgumentException;
+    void setStatistic(Statistic statistic, Material material, int newValue) throws IllegalArgumentException;
 
     /**
      * Increments the given statistic for this player for the given entity.
@@ -663,7 +663,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @throws IllegalArgumentException if the given parameter is not valid
      *     for the statistic
      */
-    public void incrementStatistic(Statistic statistic, EntityType entityType) throws IllegalArgumentException;
+    void incrementStatistic(Statistic statistic, EntityType entityType) throws IllegalArgumentException;
 
     /**
      * Decrements the given statistic for this player for the given entity.
@@ -678,7 +678,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @throws IllegalArgumentException if the given parameter is not valid
      *     for the statistic
      */
-    public void decrementStatistic(Statistic statistic, EntityType entityType) throws IllegalArgumentException;
+    void decrementStatistic(Statistic statistic, EntityType entityType) throws IllegalArgumentException;
 
     /**
      * Gets the value of the given statistic for this player.
@@ -691,7 +691,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @throws IllegalArgumentException if the given parameter is not valid
      *     for the statistic
      */
-    public int getStatistic(Statistic statistic, EntityType entityType) throws IllegalArgumentException;
+    int getStatistic(Statistic statistic, EntityType entityType) throws IllegalArgumentException;
 
     /**
      * Increments the given statistic for this player for the given entity.
@@ -705,7 +705,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @throws IllegalArgumentException if the given parameter is not valid
      *     for the statistic
      */
-    public void incrementStatistic(Statistic statistic, EntityType entityType, int amount) throws IllegalArgumentException;
+    void incrementStatistic(Statistic statistic, EntityType entityType, int amount) throws IllegalArgumentException;
 
     /**
      * Decrements the given statistic for this player for the given entity.
@@ -719,7 +719,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @throws IllegalArgumentException if the given parameter is not valid
      *     for the statistic
      */
-    public void decrementStatistic(Statistic statistic, EntityType entityType, int amount);
+    void decrementStatistic(Statistic statistic, EntityType entityType, int amount);
 
     /**
      * Sets the given statistic for this player for the given entity.
@@ -733,7 +733,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @throws IllegalArgumentException if the given parameter is not valid
      *     for the statistic
      */
-    public void setStatistic(Statistic statistic, EntityType entityType, int newValue);
+    void setStatistic(Statistic statistic, EntityType entityType, int newValue);
 
     /**
      * Sets the current time on the player's client. When relative is true the
@@ -750,14 +750,14 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @param relative When true the player time is kept relative to its world
      *     time.
      */
-    public void setPlayerTime(long time, boolean relative);
+    void setPlayerTime(long time, boolean relative);
 
     /**
      * Returns the player's current timestamp.
      *
      * @return The player's time
      */
-    public long getPlayerTime();
+    long getPlayerTime();
 
     /**
      * Returns the player's current time offset relative to server time, or
@@ -765,7 +765,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      *
      * @return The player's time
      */
-    public long getPlayerTimeOffset();
+    long getPlayerTimeOffset();
 
     /**
      * Returns true if the player's time is relative to the server time,
@@ -774,7 +774,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      *
      * @return true if the player's time is relative to the server time.
      */
-    public boolean isPlayerTimeRelative();
+    boolean isPlayerTimeRelative();
 
     /**
      * Restores the normal condition where the player's time is synchronized
@@ -782,7 +782,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * <p>
      * Equivalent to calling setPlayerTime(0, true).
      */
-    public void resetPlayerTime();
+    void resetPlayerTime();
 
     /**
      * Sets the type of weather the player will see.  When used, the weather
@@ -791,7 +791,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      *
      * @param type The WeatherType enum type the player should experience
      */
-    public void setPlayerWeather(WeatherType type);
+    void setPlayerWeather(WeatherType type);
 
     /**
      * Returns the type of weather the player is currently experiencing.
@@ -799,20 +799,20 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @return The WeatherType that the player is currently experiencing or
      *     null if player is seeing server weather.
      */
-    public WeatherType getPlayerWeather();
+    WeatherType getPlayerWeather();
 
     /**
      * Restores the normal condition where the player's weather is controlled
      * by server conditions.
      */
-    public void resetPlayerWeather();
+    void resetPlayerWeather();
 
     /**
      * Gives the player the amount of experience specified.
      *
      * @param amount Exp amount to give
      */
-    public void giveExp(int amount);
+    void giveExp(int amount);
 
     /**
      * Gives the player the amount of experience levels specified. Levels can
@@ -820,7 +820,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      *
      * @param amount amount of experience levels to give or take
      */
-    public void giveExpLevels(int amount);
+    void giveExpLevels(int amount);
 
     /**
      * Gets the players current experience points towards the next level.
@@ -829,7 +829,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      *
      * @return Current experience points
      */
-    public float getExp();
+    float getExp();
 
     /**
      * Sets the players current experience points towards the next level
@@ -838,35 +838,35 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      *
      * @param exp New experience points
      */
-    public void setExp(float exp);
+    void setExp(float exp);
 
     /**
      * Gets the players current experience level
      *
      * @return Current experience level
      */
-    public int getLevel();
+    int getLevel();
 
     /**
      * Sets the players current experience level
      *
      * @param level New experience level
      */
-    public void setLevel(int level);
+    void setLevel(int level);
 
     /**
      * Gets the players total experience points
      *
      * @return Current total experience points
      */
-    public int getTotalExperience();
+    int getTotalExperience();
 
     /**
      * Sets the players current experience level
      *
      * @param exp New experience level
      */
-    public void setTotalExperience(int exp);
+    void setTotalExperience(int exp);
 
     /**
      * Gets the players current exhaustion level.
@@ -877,14 +877,14 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      *
      * @return Exhaustion level
      */
-    public float getExhaustion();
+    float getExhaustion();
 
     /**
      * Sets the players current exhaustion level
      *
      * @param value Exhaustion level
      */
-    public void setExhaustion(float value);
+    void setExhaustion(float value);
 
     /**
      * Gets the players current saturation level.
@@ -894,28 +894,28 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      *
      * @return Saturation level
      */
-    public float getSaturation();
+    float getSaturation();
 
     /**
      * Sets the players current saturation level
      *
      * @param value Saturation level
      */
-    public void setSaturation(float value);
+    void setSaturation(float value);
 
     /**
      * Gets the players current food level
      *
      * @return Food level
      */
-    public int getFoodLevel();
+    int getFoodLevel();
 
     /**
      * Sets the players current food level
      *
      * @param value New food level
      */
-    public void setFoodLevel(int value);
+    void setFoodLevel(int value);
 
     /**
      * Gets the Location where the player will spawn at their bed, null if
@@ -923,14 +923,14 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      *
      * @return Bed Spawn Location if bed exists, otherwise null.
      */
-    public Location getBedSpawnLocation();
+    Location getBedSpawnLocation();
 
     /**
      * Sets the Location where the player will spawn at their bed.
      *
      * @param location where to set the respawn location
      */
-    public void setBedSpawnLocation(Location location);
+    void setBedSpawnLocation(Location location);
 
     /**
      * Sets the Location where the player will spawn at their bed.
@@ -939,7 +939,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @param force whether to forcefully set the respawn location even if a
      *     valid bed is not present
      */
-    public void setBedSpawnLocation(Location location, boolean force);
+    void setBedSpawnLocation(Location location, boolean force);
 
     /**
      * Determines if the Player is allowed to fly via jump key double-tap like
@@ -947,7 +947,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      *
      * @return True if the player is allowed to fly.
      */
-    public boolean getAllowFlight();
+    boolean getAllowFlight();
 
     /**
      * Sets if the Player is allowed to fly via jump key double-tap like in
@@ -955,21 +955,21 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      *
      * @param flight If flight should be allowed.
      */
-    public void setAllowFlight(boolean flight);
+    void setAllowFlight(boolean flight);
 
     /**
      * Hides a player from this player
      *
      * @param player Player to hide
      */
-    public void hidePlayer(Player player);
+    void hidePlayer(Player player);
 
     /**
      * Allows this player to see a player that was previously hidden
      *
      * @param player Player to show
      */
-    public void showPlayer(Player player);
+    void showPlayer(Player player);
 
     /**
      * Checks to see if a player has been hidden from this player
@@ -978,7 +978,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @return True if the provided player is not being hidden from this
      *     player
      */
-    public boolean canSee(Player player);
+    boolean canSee(Player player);
 
     /**
      * Checks to see if this player is currently standing on a block. This
@@ -990,21 +990,21 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      *     org.bukkit.entity.Entity#isOnGround()}
      */
     @Deprecated
-    public boolean isOnGround();
+    boolean isOnGround();
 
     /**
      * Checks to see if this player is currently flying or not.
      *
      * @return True if the player is flying, else false.
      */
-    public boolean isFlying();
+    boolean isFlying();
 
     /**
      * Makes this player start or stop flying.
      *
      * @param value True to fly.
      */
-    public void setFlying(boolean value);
+    void setFlying(boolean value);
 
     /**
      * Sets the speed at which a client will fly. Negative values indicate
@@ -1014,7 +1014,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @throws IllegalArgumentException If new speed is less than -1 or
      *     greater than 1
      */
-    public void setFlySpeed(float value) throws IllegalArgumentException;
+    void setFlySpeed(float value) throws IllegalArgumentException;
 
     /**
      * Sets the speed at which a client will walk. Negative values indicate
@@ -1024,21 +1024,21 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @throws IllegalArgumentException If new speed is less than -1 or
      *     greater than 1
      */
-    public void setWalkSpeed(float value) throws IllegalArgumentException;
+    void setWalkSpeed(float value) throws IllegalArgumentException;
 
     /**
      * Gets the current allowed speed that a client can fly.
      *
      * @return The current allowed speed, from -1 to 1
      */
-    public float getFlySpeed();
+    float getFlySpeed();
 
     /**
      * Gets the current allowed speed that a client can walk.
      *
      * @return The current allowed speed, from -1 to 1
      */
-    public float getWalkSpeed();
+    float getWalkSpeed();
 
     /**
      * Request that the player's client download and switch texture packs.
@@ -1069,7 +1069,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      *     should use {@link #setResourcePack(String)}.
      */
     @Deprecated
-    public void setTexturePack(String url);
+    void setTexturePack(String url);
 
     /**
      * Request that the player's client download and switch resource packs.
@@ -1100,14 +1100,14 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @deprecated use {@link #setResourcePack(String, String)}
      */
     @Deprecated // TacoSpigot
-    public void setResourcePack(String url);
+    void setResourcePack(String url);
 
     /**
      * Gets the Scoreboard displayed to this player
      *
      * @return The current scoreboard seen by this player
      */
-    public Scoreboard getScoreboard();
+    Scoreboard getScoreboard();
 
     /**
      * Sets the player's visible Scoreboard.
@@ -1119,7 +1119,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @throws IllegalStateException if this is a player that is not logged
      *     yet or has logged out
      */
-    public void setScoreboard(Scoreboard scoreboard) throws IllegalArgumentException, IllegalStateException;
+    void setScoreboard(Scoreboard scoreboard) throws IllegalArgumentException, IllegalStateException;
 
     /**
      * Gets if the client is displayed a 'scaled' health, that is, health on a
@@ -1128,7 +1128,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @return if client health display is scaled
      * @see Player#setHealthScaled(boolean)
      */
-    public boolean isHealthScaled();
+    boolean isHealthScaled();
 
     /**
      * Sets if the client is displayed a 'scaled' health, that is, health on a
@@ -1139,7 +1139,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      *
      * @param scale if the client health display is scaled
      */
-    public void setHealthScaled(boolean scale);
+    void setHealthScaled(boolean scale);
 
     /**
      * Sets the number to scale health to for the client; this will also
@@ -1153,7 +1153,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @throws IllegalArgumentException if scale is {@link Double#NaN}
      * @throws IllegalArgumentException if scale is too high
      */
-    public void setHealthScale(double scale) throws IllegalArgumentException;
+    void setHealthScale(double scale) throws IllegalArgumentException;
 
     /**
      * Gets the number that health is scaled to for the client.
@@ -1163,7 +1163,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @see Player#setHealthScale(double)
      * @see Player#setHealthScaled(boolean)
      */
-    public double getHealthScale();
+    double getHealthScale();
 
     /**
      * Gets the entity which is followed by the camera when in
@@ -1172,7 +1172,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @return the followed entity, or null if not in spectator mode or not
      * following a specific entity.
      */
-    public Entity getSpectatorTarget();
+    Entity getSpectatorTarget();
 
     /**
      * Sets the entity which is followed by the camera when in
@@ -1182,7 +1182,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @throws IllegalStateException if the player is not in
      * {@link GameMode#SPECTATOR}
      */
-    public void setSpectatorTarget(Entity entity);
+    void setSpectatorTarget(Entity entity);
 
     /**
      * Sends a title and a subtitle message to the player. If either of these
@@ -1196,13 +1196,13 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @deprecated API subject to change
      */
     @Deprecated
-    public void sendTitle(String title, String subtitle);
+    void sendTitle(String title, String subtitle);
 
     /**
      * Resets the title displayed to the player.
      */
     // Paper - Undeprecate
-    public void resetTitle();
+    void resetTitle();
 
     // TacoSpigot start
     /**
@@ -1256,7 +1256,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
     // TacoSpigot end
 
     // Spigot start
-    public class Spigot extends Entity.Spigot
+    class Spigot extends Entity.Spigot
     {
 
         /**
@@ -1315,7 +1315,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
         }
 
         /**
-         * Gets all players hidden with {@link hidePlayer(org.bukkit.entity.Player)}.
+         * Gets all players hidden with {@link Player#hidePlayer(org.bukkit.entity.Player)}.
          *
          * @return a Set with all hidden players
          */

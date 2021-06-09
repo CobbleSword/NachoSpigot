@@ -2,8 +2,6 @@ package net.minecraft.server;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.Proxy;
 import java.util.Random;
@@ -13,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.commons.IPUtils;
 import dev.cobblesword.nachospigot.knockback.Knockback;
-import dev.cobblesword.nachospigot.patches.RuntimePatches;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,7 +18,6 @@ import org.apache.logging.log4j.Logger;
 import java.io.PrintStream;
 import org.apache.logging.log4j.Level;
 
-import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.LoggerOutputStream;
 import co.aikar.timings.SpigotTimings; // Spigot
 import org.bukkit.event.server.ServerCommandEvent;
@@ -55,7 +51,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                 while (true) {
                     try {
                         Thread.sleep(2147483647L);
-                    } catch (InterruptedException interruptedexception) {
+                    } catch (InterruptedException ignored) {
                         ;
                     }
                 }
@@ -156,9 +152,9 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
             this.setForceGamemode(this.propertyManager.getBoolean("force-gamemode", false));
             this.setIdleTimeout(this.propertyManager.getInt("player-idle-timeout", 0));
             if (this.propertyManager.getInt("difficulty", 1) < 0) {
-                this.propertyManager.setProperty("difficulty", Integer.valueOf(0));
+                this.propertyManager.setProperty("difficulty", 0);
             } else if (this.propertyManager.getInt("difficulty", 1) > 3) {
-                this.propertyManager.setProperty("difficulty", Integer.valueOf(3));
+                this.propertyManager.setProperty("difficulty", 3);
             }
 
             this.generateStructures = this.propertyManager.getBoolean("generate-structures", true);
@@ -273,7 +269,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                             k = l;
                         }
                     } catch (NumberFormatException numberformatexception) {
-                        k = (long) s.hashCode();
+                        k = s.hashCode();
                     }
                 }
 
@@ -378,23 +374,23 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 
     public CrashReport b(CrashReport crashreport) {
         crashreport = super.b(crashreport);
-        crashreport.g().a("Is Modded", new Callable() {
-            public String a() throws Exception {
+        crashreport.g().a("Is Modded", new Callable<Object>() {
+            public String a() {
                 String s = DedicatedServer.this.getServerModName();
 
-                return !s.equals("vanilla") ? "Definitely; Server brand changed to \'" + s + "\'" : "Unknown (can\'t tell)";
+                return !s.equals("vanilla") ? "Definitely; Server brand changed to '" + s + "'" : "Unknown (can't tell)";
             }
 
-            public Object call() throws Exception {
+            public Object call() {
                 return this.a();
             }
         });
-        crashreport.g().a("Type", new Callable() {
-            public String a() throws Exception {
+        crashreport.g().a("Type", new Callable<Object>() {
+            public String a() {
                 return "Dedicated Server (map_server.txt)";
             }
 
-            public Object call() throws Exception {
+            public Object call() {
                 return this.a();
             }
         });
@@ -538,7 +534,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 
     public void setIdleTimeout(int i) {
         super.setIdleTimeout(i);
-        this.propertyManager.setProperty("player-idle-timeout", Integer.valueOf(i));
+        this.propertyManager.setProperty("player-idle-timeout", i);
         this.a();
     }
 
@@ -582,7 +578,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                 this.aU();
             }
 
-            flag = NameReferencingFileConverter.a((MinecraftServer) this);
+            flag = NameReferencingFileConverter.a(this);
         }
 
         boolean flag1 = false;
@@ -593,7 +589,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                 this.aU();
             }
 
-            flag1 = NameReferencingFileConverter.b((MinecraftServer) this);
+            flag1 = NameReferencingFileConverter.b(this);
         }
 
         boolean flag2 = false;
@@ -604,7 +600,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                 this.aU();
             }
 
-            flag2 = NameReferencingFileConverter.c((MinecraftServer) this);
+            flag2 = NameReferencingFileConverter.c(this);
         }
 
         boolean flag3 = false;
@@ -615,7 +611,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                 this.aU();
             }
 
-            flag3 = NameReferencingFileConverter.d((MinecraftServer) this);
+            flag3 = NameReferencingFileConverter.d(this);
         }
 
         boolean flag4 = false;
@@ -635,9 +631,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
     private void aU() {
         try {
             Thread.sleep(5000L);
-        } catch (InterruptedException interruptedexception) {
-            ;
-        }
+        } catch (InterruptedException ignored) {}
     }
 
     public long aS() {

@@ -2,21 +2,10 @@ package org.bukkit.craftbukkit;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
@@ -77,7 +66,6 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerChatTabCompleteEvent;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
-import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.help.HelpMap;
@@ -114,7 +102,6 @@ import com.avaje.ebean.config.ServerConfig;
 import com.avaje.ebean.config.dbplatform.SQLitePlatform;
 import com.avaje.ebeaninternal.server.lib.sql.TransactionIsolation;
 import com.google.common.base.Charsets;
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
@@ -200,7 +187,7 @@ public final class CraftServer implements Server {
 
         configuration = YamlConfiguration.loadConfiguration(getConfigFile());
         configuration.options().copyDefaults(true);
-        configuration.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(getClass().getClassLoader().getResourceAsStream("configurations/bukkit.yml"), Charsets.UTF_8)));
+        configuration.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("configurations/bukkit.yml")), Charsets.UTF_8)));
         ConfigurationSection legacyAlias = null;
         if (!configuration.isString("aliases")) {
             legacyAlias = configuration.getConfigurationSection("aliases");
@@ -352,7 +339,7 @@ public final class CraftServer implements Server {
             setVanillaCommands(false);
             // Spigot end
             // commandMap.registerServerAliases(); // NetworkSpigot
-            // loadCustomPermissions(); // NetworkSpigot
+            // eloadCustomPermissions(); // NetworkSpigot
             DefaultPermissions.registerCorePermissions();
             CraftDefaultPermissions.registerCorePermissions();
             helpMap.initializeCommands();
@@ -415,7 +402,6 @@ public final class CraftServer implements Server {
 
     @Override
     @Deprecated
-    @SuppressWarnings("unchecked")
     public Player[] _INVALID_getOnlinePlayers() {
         return getOnlinePlayers().toArray(EMPTY_PLAYER_ARRAY);
     }
@@ -485,7 +471,7 @@ public final class CraftServer implements Server {
     public List<Player> matchPlayer(String partialName) {
         Validate.notNull(partialName, "PartialName cannot be null");
 
-        List<Player> matchedPlayers = new ArrayList<Player>();
+        List<Player> matchedPlayers = new ArrayList<>();
 
         for (Player iterPlayer : this.getOnlinePlayers()) {
             String iterPlayerName = iterPlayer.getName();
@@ -707,7 +693,7 @@ public final class CraftServer implements Server {
     public void reload() {
         reloadCount++;
         configuration = YamlConfiguration.loadConfiguration(getConfigFile());
-        commandsConfiguration = YamlConfiguration.loadConfiguration(getCommandsConfigFile());
+        //  commandsConfiguration = YamlConfiguration.loadConfiguration(getCommandsConfigFile()); // NetworkSpigot
         PropertyManager config = new PropertyManager(console.options);
 
         ((DedicatedServer) console).propertyManager = config;
@@ -782,7 +768,7 @@ public final class CraftServer implements Server {
         while (pollCount < 50 && getScheduler().getActiveWorkers().size() > 0) {
             try {
                 Thread.sleep(50);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException ignored) {}
             pollCount++;
         }
 
@@ -878,7 +864,7 @@ public final class CraftServer implements Server {
         try {
             perms = (Map<String, Map<String, Object>>) yaml.load(stream);
         } catch (MarkedYAMLException ex) {
-            getLogger().log(Level.WARNING, "Server permissions file " + file + " is not valid YAML: " + ex.toString());
+            getLogger().log(Level.WARNING, "Server permissions file " + file + " is not valid YAML: " + ex);
             return;
         } catch (Throwable ex) {
             getLogger().log(Level.WARNING, "Server permissions file " + file + " is not valid YAML.", ex);
@@ -886,7 +872,7 @@ public final class CraftServer implements Server {
         } finally {
             try {
                 stream.close();
-            } catch (IOException ex) {}
+            } catch (IOException ignored) {}
         }
 
         if (perms == null) {
@@ -1226,7 +1212,7 @@ public final class CraftServer implements Server {
     public List<Recipe> getRecipesFor(ItemStack result) {
         Validate.notNull(result, "Result cannot be null");
 
-        List<Recipe> results = new ArrayList<Recipe>();
+        List<Recipe> results = new ArrayList<>();
         Iterator<Recipe> iter = recipeIterator();
         while (iter.hasNext()) {
             Recipe recipe = iter.next();
@@ -1476,9 +1462,8 @@ public final class CraftServer implements Server {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Set<String> getIPBans() {
-        return new HashSet<String>(Arrays.asList(playerList.getIPBans().getEntries()));
+        return new HashSet<>(Arrays.asList(playerList.getIPBans().getEntries()));
     }
 
     @Override
@@ -1497,9 +1482,9 @@ public final class CraftServer implements Server {
 
     @Override
     public Set<OfflinePlayer> getBannedPlayers() {
-        Set<OfflinePlayer> result = new HashSet<OfflinePlayer>();
+        Set<OfflinePlayer> result = new HashSet<>();
 
-        for (JsonListEntry entry : playerList.getProfileBans().getValues()) {
+        for (JsonListEntry<?> entry : playerList.getProfileBans().getValues()) {
             result.add(getOfflinePlayer((GameProfile) entry.getKey()));
         }        
 
@@ -1527,9 +1512,9 @@ public final class CraftServer implements Server {
 
     @Override
     public Set<OfflinePlayer> getWhitelistedPlayers() {
-        Set<OfflinePlayer> result = new LinkedHashSet<OfflinePlayer>();
+        Set<OfflinePlayer> result = new LinkedHashSet<>();
 
-        for (JsonListEntry entry : playerList.getWhitelist().getValues()) {
+        for (JsonListEntry<?> entry : playerList.getWhitelist().getValues()) {
             result.add(getOfflinePlayer((GameProfile) entry.getKey()));
         }
 
@@ -1538,9 +1523,9 @@ public final class CraftServer implements Server {
 
     @Override
     public Set<OfflinePlayer> getOperators() {
-        Set<OfflinePlayer> result = new HashSet<OfflinePlayer>();
+        Set<OfflinePlayer> result = new HashSet<>();
 
-        for (JsonListEntry entry : playerList.getOPs().getValues()) {
+        for (JsonListEntry<?> entry : playerList.getOPs().getValues()) {
             result.add(getOfflinePlayer((GameProfile) entry.getKey()));
         }
 
@@ -1615,8 +1600,9 @@ public final class CraftServer implements Server {
     public OfflinePlayer[] getOfflinePlayers() {
         WorldNBTStorage storage = (WorldNBTStorage) console.worlds.get(0).getDataManager();
         String[] files = storage.getPlayerDir().list(new DatFileFilter());
-        Set<OfflinePlayer> players = new HashSet<OfflinePlayer>();
+        Set<OfflinePlayer> players = new HashSet<>();
 
+        assert files != null;
         for (String file : files) {
             try {
                 players.add(getOfflinePlayer(FastUUID.parseUUID(file.substring(0, file.length() - 4))));
@@ -1627,7 +1613,7 @@ public final class CraftServer implements Server {
 
         players.addAll(getOnlinePlayers());
 
-        return players.toArray(new OfflinePlayer[players.size()]);
+        return players.toArray(new OfflinePlayer[0]);
     }
 
     @Override
@@ -1646,7 +1632,7 @@ public final class CraftServer implements Server {
 
     @Override
     public Set<String> getListeningPluginChannels() {
-        Set<String> result = new HashSet<String>();
+        Set<String> result = new HashSet<>();
 
         for (Player player : getOnlinePlayers()) {
             result.addAll(player.getListeningPluginChannels());
@@ -1775,12 +1761,12 @@ public final class CraftServer implements Server {
             getLogger().log(Level.SEVERE, "Exception when " + player.getName() + " attempted to tab complete " + message, ex);
         }
 
-        return completions == null ? ImmutableList.<String>of() : completions;
+        return completions == null ? ImmutableList.of() : completions;
     }
     // PaperSpigot end
 
     public List<String> tabCompleteChat(Player player, String message) {
-        List<String> completions = new ArrayList<String>();
+        List<String> completions = new ArrayList<>();
         PlayerChatTabCompleteEvent event = new PlayerChatTabCompleteEvent(player, message, completions);
         String token = event.getLastToken();
         for (Player p : getOnlinePlayers()) {
@@ -1790,15 +1776,9 @@ public final class CraftServer implements Server {
         }
         pluginManager.callEvent(event);
 
-        Iterator<?> it = completions.iterator();
-        while (it.hasNext()) {
-            Object current = it.next();
-            if (!(current instanceof String)) {
-                // Sanity
-                it.remove();
-            }
-        }
-        Collections.sort(completions, String.CASE_INSENSITIVE_ORDER);
+        // Sanity
+        completions.removeIf(Objects::isNull);
+        completions.sort(String.CASE_INSENSITIVE_ORDER);
         return completions;
     }
 
