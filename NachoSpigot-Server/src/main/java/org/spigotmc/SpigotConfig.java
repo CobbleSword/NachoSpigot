@@ -190,7 +190,7 @@ public class SpigotConfig
     public static String unknownCommandMessage;
     public static String serverFullMessage;
     public static String outdatedClientMessage = "Outdated client! Please use {0}";
-    public static String outdatedServerMessage = "Outdated server! I\'m still on {0}";
+    public static String outdatedServerMessage = "Outdated server! I'm still on {0}";
     private static String transform(String s)
     {
         return ChatColor.translateAlternateColorCodes( '&', s ).replaceAll( "\\n", "\n" );
@@ -228,7 +228,7 @@ public class SpigotConfig
     private static void bungee() {
         if ( version < 4 )
         {
-            set( "settings.bungeecord", false );
+            set( "settings.bungeecord", true );
             System.out.println( "Oudated config, disabling BungeeCord support!" );
         }
         bungee = getBoolean( "settings.bungeecord", false );

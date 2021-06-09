@@ -143,7 +143,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
             if (this.T()) {
                 this.c("127.0.0.1");
             } else {
-                this.setOnlineMode(this.propertyManager.getBoolean("online-mode", true));
+                this.setOnlineMode(this.propertyManager.getBoolean("online-mode", false));
                 this.c(this.propertyManager.getString("server-ip", ""));
             }
 
@@ -411,7 +411,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
     }
 
     public boolean getAllowNether() {
-        return this.propertyManager.getBoolean("allow-nether", true);
+        return this.propertyManager.getBoolean("allow-nether", false);
     }
 
     public boolean getSpawnMonsters() {

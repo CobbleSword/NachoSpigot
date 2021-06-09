@@ -556,7 +556,7 @@ public final class CraftServer implements Server {
 
     @Override
     public boolean getAllowNether() {
-        return this.getConfigBoolean("allow-nether", true);
+        return this.getConfigBoolean("allow-nether", false);
     }
 
     public boolean getWarnOnOverload() {
