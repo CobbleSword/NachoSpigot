@@ -1,6 +1,6 @@
-# NachoSpigot ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/CobbleSword/NachoSpigot/NachoSpigot%20Build)
+# NetworkSpigot ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/CobbleSword/NachoSpigot/NachoSpigot%20Build)
 
-#### NachoSpigot is a fork of TacoSpigot 1.8.8.
+#### NetworkSpigot is a fork of NachoSpigot (https://github.com/CobbleSword/NachoSpigot) 1.8.8.
 NachoSpigot offers a number of enhancements to performance as well as bug fixes such as a built-in Anti-Crash system and being able to perform well with a large number of players.
 
 ## Current State
@@ -9,11 +9,7 @@ Nacho can now be used in production environments.
 
 If you find any bugs, please create an issue or contact us in the Discord server!
 
-**NachoSpigot supports Java 8 to Java 15!**
-
-## Download
-**Stable:** [https://nacho.sculas.xyz/](https://nacho.sculas.xyz/)
-**Development:** [https://nachodev.sculas.xyz/](https://nachodev.sculas.xyz/)
+**NetworkSpigot supports Java 8 to Java 16!**
 
 ### Building / Compiling
 > To build, clone the repo, and run `mvn clean package` in the NachoSpigot directory.
@@ -151,12 +147,3 @@ If you find any bugs, please create an issue or contact us in the Discord server
 [MineTick-0006] Fix Occasional Client Side Unloading of Chunk 0 0
 [MineTick-0017] Fix Insane Nether Portal Lag
 ```
-
-## Discord
-[Join the Discord server!](https://discord.gg/SBTEbSx)
-
-## Supporters
-
-[Lucas (aka Sculas)](https://sculas.xyz/)
-
-[LewUwU](https://github.com/LewUwU/)
