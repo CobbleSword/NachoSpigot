@@ -207,7 +207,8 @@ public final class CraftServer implements Server {
             configuration.set("aliases", "now-in-commands.yml");
         }
         saveConfig();
-        if (getCommandsConfigFile().isFile()) {
+        // NetworkSpigot Start - removed commands.yml
+        /*if (getCommandsConfigFile().isFile()) {
             legacyAlias = null;
         }
         commandsConfiguration = YamlConfiguration.loadConfiguration(getCommandsConfigFile());
@@ -234,7 +235,8 @@ public final class CraftServer implements Server {
         }
 
         saveCommandsConfig();
-        overrideAllCommandBlockCommands = commandsConfiguration.getStringList("command-block-overrides").contains("*");
+        overrideAllCommandBlockCommands = commandsConfiguration.getStringList("command-block-overrides").contains("*");*/
+        // NetworkSpigot End
         ((SimplePluginManager) pluginManager).useTimings(configuration.getBoolean("settings.plugin-profiling"));
         monsterSpawn = configuration.getInt("spawn-limits.monsters");
         animalSpawn = configuration.getInt("spawn-limits.animals");
@@ -262,8 +264,9 @@ public final class CraftServer implements Server {
         return (File) console.options.valueOf("bukkit-settings");
     }
 
+    @Deprecated
     private File getCommandsConfigFile() {
-        return (File) console.options.valueOf("commands-settings");
+        return null;
     }
 
     private void saveConfig() {
@@ -348,7 +351,7 @@ public final class CraftServer implements Server {
             commandMap.setFallbackCommands();
             setVanillaCommands(false);
             // Spigot end
-            commandMap.registerServerAliases();
+            // commandMap.registerServerAliases(); // NetworkSpigot
             loadCustomPermissions();
             DefaultPermissions.registerCorePermissions();
             CraftDefaultPermissions.registerCorePermissions();
@@ -1259,7 +1262,7 @@ public final class CraftServer implements Server {
 
     @Override
     public Map<String, String[]> getCommandAliases() {
-        ConfigurationSection section = commandsConfiguration.getConfigurationSection("aliases");
+        /*ConfigurationSection section = commandsConfiguration.getConfigurationSection("aliases");
         Map<String, String[]> result = new LinkedHashMap<String, String[]>();
 
         if (section != null) {
@@ -1276,7 +1279,8 @@ public final class CraftServer implements Server {
             }
         }
 
-        return result;
+        return result;*/
+        return new LinkedHashMap<>();
     }
 
     public void removeBukkitSpawnRadius() {

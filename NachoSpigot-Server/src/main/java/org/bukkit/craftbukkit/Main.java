@@ -123,11 +123,11 @@ public class Main {
                         .defaultsTo(new File("bukkit.yml"))
                         .describedAs("Yml file");
 
-                acceptsAll(asList("C", "commands-settings"), "File for command settings")
+                /*acceptsAll(asList("C", "commands-settings"), "File for command settings")
                         .withRequiredArg()
                         .ofType(File.class)
                         .defaultsTo(new File("commands.yml"))
-                        .describedAs("Yml file");
+                        .describedAs("Yml file");*/ // NetworkSpigot
 
                 acceptsAll(asList("nojline"), "Disables jline and emulates the vanilla console");
 
