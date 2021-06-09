@@ -14,5 +14,5 @@ public class NachoConfig {
     public boolean constantExplosions = false;
     public boolean explosionProtectedRegions = true;
     public int playerTimeStatisticsInterval = 20;
-    public String serverBrandName = "NachoSpigot";
+    public String serverBrandName = "NetworkSpigot";
 }
