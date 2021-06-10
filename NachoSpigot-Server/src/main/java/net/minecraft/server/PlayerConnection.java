@@ -190,9 +190,9 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
      * so must we consider this issue */
     private boolean isDownloading; 
     
-    public boolean isDownloading() {
-		return isDownloading;
-	}
+    public boolean isDownloading() { return isDownloading; }
+
+    public static final long KEEPALIVE_LIMIT = 30000;
     
     private boolean noKeepalives; // Prevent spamming the warning
     
