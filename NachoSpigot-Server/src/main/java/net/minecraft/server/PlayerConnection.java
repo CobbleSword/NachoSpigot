@@ -135,7 +135,9 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
     {
         this.h = false;
         ++this.e;
-        this.minecraftServer.methodProfiler.a("keepAlive");
+        
+        // Feather start back port 1.12.2 keepalive handling
+        /* this.minecraftServer.methodProfiler.a("keepAlive");
         if ((long) this.e - this.k > 40L)
         {
             this.k = (long) this.e;
@@ -144,7 +146,22 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
             this.sendPacket(new PacketPlayOutKeepAlive(this.i));
         }
 
-        this.minecraftServer.methodProfiler.b();
+        this.minecraftServer.methodProfiler.b(); */
+        
+        final long currentTime = this.getCurrentMillis();
+        final long elapsedTime = currentTime - this.getLastPing();
+        if (isPendingPing) {
+            if (!this.processedDisconnect && elapsedTime >= KEEPALIVE_LIMIT) {
+                this.disconnect("Timed out");
+            }
+        } else if (elapsedTime >= 15000L) {
+        	isPendingPing = true;
+            this.setLastPing(currentTime);
+            this.setKeepAliveID((int) /*casting to an integer is the vanilla behavior*/ currentTime );
+            this.sendPacket(new PacketPlayOutKeepAlive(this.getKeepAliveID()));
+        }
+        // Feather end
+        
         // CraftBukkit start
         for (int spam; (spam = this.chatThrottle) > 0 && !chatSpamField.compareAndSet(this, spam, spam - 1); ) ;
         /* Use thread-safe field access instead
@@ -165,6 +182,65 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
         }
 
     }
+    
+    
+    /* A 1.8.8 client is sending KeepAlive packets with 0 id
+     * while rendering the GUIDownloadWorld
+     * The server would disconnect the client
+     * so must we consider this issue */
+    private boolean isDownloading; 
+    
+    public boolean isDownloading() {
+		return isDownloading;
+	}
+    
+    private boolean noKeepalives; // Prevent spamming the warning
+    
+    //Feather start
+    @Override
+   	public void a(PacketPlayInKeepAlive packetplayinkeepalive) {
+    	if(noKeepalives) return;
+        if (packetplayinkeepalive.a() == getKeepAliveID()) {
+           int i = (int) (this.d() - getLastPing());
+           this.player.ping = (this.player.ping * 3 + i) / 4;
+           isPendingPing = false;
+		   isDownloading = false;
+
+       }else {
+    	   if(packetplayinkeepalive.a() == 0) {
+    		   isDownloading = true;
+    	   }else {
+    		   noKeepalives = true;
+    		   c.warn("{} sent an invalid keepalive! pending keepalive: {} got id: {} expected id: {}", this.player.getName(), isPendingPing, packetplayinkeepalive.a(), this.getKeepAliveID());
+    		   this.minecraftServer.postToMainThread(() -> disconnect("invalid keepalive"));
+    	   }    	   
+       }
+    }
+    //Feather end
+
+       
+    // Feather start obf help
+    private boolean isPendingPing;
+   
+    private void setLastPing(final long lastPing) {
+        this.j = lastPing;
+    }
+     private long getLastPing() {
+        return this.j;
+    }
+   
+    private void setKeepAliveID(final int keepAliveID) {
+        this.i = keepAliveID;
+    }
+    
+    private int getKeepAliveID() {
+        return this.i;
+    }
+    
+    private long getCurrentMillis() {
+        return this.d();
+    }
+    // Feather end
 
     public NetworkManager getNetworkManager() {
         return this.networkManager;
@@ -2000,15 +2076,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 
     }
 
-    public void a(PacketPlayInKeepAlive packetplayinkeepalive)
-    {
-        if (packetplayinkeepalive.a() == this.i) {
-            int i = (int) (this.d() - this.j);
 
-            this.player.ping = (this.player.ping * 3 + i) / 4;
-        }
-
-    }
 
     private long d() {
         return System.nanoTime() / 1000000L;
