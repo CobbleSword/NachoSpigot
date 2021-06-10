@@ -28,7 +28,7 @@ public class RuntimePatches {
                 // This was the line of code I'm representing here in Reflection.
                 // Via.getManager().getLoader().storeListener(new PaperPatch(plugin)).register();
                 // Fun, isn't it?
-                Class<?> via = Class.forName("us.myles.ViaVersion.api.Via", true, cl);
+                Class<?> via = Class.forName("com.viaversion.viaversion.api.Via", true, cl);
                 Method getManager = via.getMethod("getManager");
                 Object viaManager = getManager.invoke(null);
                 Class<?> viaManagerClass = viaManager.getClass();
@@ -38,8 +38,8 @@ public class RuntimePatches {
                 Class<?> bukkitViaLoaderClass = bukkitViaLoader.getClass();
                 Method storeListener = getMethod(bukkitViaLoaderClass, "storeListener");
                 if(storeListener == null) throw new IllegalStateException("storeListener was not found in the BukkitViaLoader class");
-                Class<?> paperPatchClass = Class.forName("us.myles.ViaVersion.bukkit.listeners.protocol1_9to1_8.PaperPatch", true, cl);
-                Class<?> viaVersionPlugin = Class.forName("us.myles.ViaVersion.ViaVersionPlugin", true, cl);
+                Class<?> paperPatchClass = Class.forName("com.viaversion.viaversion.bukkit.listeners.protocol1_9to1_8.PaperPatch", true, cl);
+                Class<?> viaVersionPlugin = Class.forName("com.viaversion.viaversion.ViaVersionPlugin", true, cl);
                 Method getInstance = viaVersionPlugin.getDeclaredMethod("getInstance");
                 Object plugin = getInstance.invoke(viaVersionPlugin);
                 Object paperPatch = paperPatchClass.getDeclaredConstructor(Plugin.class).newInstance(plugin);
