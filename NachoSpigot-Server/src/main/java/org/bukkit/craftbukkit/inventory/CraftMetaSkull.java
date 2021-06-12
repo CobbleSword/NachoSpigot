@@ -122,23 +122,22 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
     }
 
     public boolean setOwner(String name) {
-        if (name != null && name.length() > MAX_OWNER_LENGTH) {
+        // Feather - Null name would break everything and makes no sense and causes NPE
+        if (name == null || (name != null && name.length() > MAX_OWNER_LENGTH)) {
             return false;
         }
-
-        if (name == null) {
-            profile = null;
-        } else {
-            // PaperSpigot start - Check usercache if the player is online
-            EntityPlayer player = MinecraftServer.getServer().getPlayerList().getPlayer(name);
-            if (profile == null && player != null) profile = player.getProfile();
-            // PaperSpigot end
+        
+        // PaperSpigot start - Check usercache if the player is online
+		EntityPlayer player = MinecraftServer.getServer().getPlayerList().getPlayer(name); // Try get player and set it
+		if (profile == null && player != null) profile = player.getProfile(); 
+		// PaperSpigot end
+		   
+        if (profile == null) {
+        	// name.toLowerCase(java.util.Locale.ROOT) causes the NPE
+        	profile = TileEntitySkull.skinCache.getIfPresent(name.toLowerCase(java.util.Locale.ROOT)); // Paper // tries to get from skincache
         }
-
-        if (profile == null) profile = TileEntitySkull.skinCache.getIfPresent(name.toLowerCase(java.util.Locale.ROOT)); // Paper
         if (profile == null) profile = new GameProfile(null, name);
-
-
+        
         return true;
     }
 
