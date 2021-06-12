@@ -15,4 +15,5 @@ public class NachoConfig {
     public boolean explosionProtectedRegions = true;
     public int playerTimeStatisticsInterval = 20;
     public String serverBrandName = "NachoSpigot";
+    public boolean enableAntiCrash = true;
 }
