@@ -12,12 +12,12 @@ public class AntiCrash implements PacketListener {
                 playerConnection.getNetworkManager().close(new ChatMessage("Wrong ref count!"));
                 return false;
             }
-            if (ab.readableBytes() > 16000) {
+            if (ab.readableBytes() > 25780) {
                 playerConnection.getNetworkManager().close(new ChatMessage("Readable bytes exceeds limit!"));
                 return false;
             }
             // ty Lew_x :)
-            if (ab.capacity() > 16000 || ab.capacity() < 1) {
+            if (ab.capacity() > 25780 || ab.capacity() < 1) {
                 playerConnection.getNetworkManager().close(new ChatMessage("Wrong capacity!"));
                 return false;
             }
