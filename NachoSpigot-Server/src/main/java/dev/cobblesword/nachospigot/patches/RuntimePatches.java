@@ -30,9 +30,9 @@ public class RuntimePatches {
                 try {
                 	Class.forName("com.viaversion.viaversion.api.Via", true, cl); // Checking for the new ViaVersion version
                 	viaVersionPackage = "com.viaversion.viaversion."; // new
-				} catch (ClassNotFoundException ignore) {
-					logger.info("Using a old ViaVersion version, please update!");
-				}
+		} catch (ClassNotFoundException ignore) {
+			logger.info("Using a old ViaVersion version, please update!");
+		}
                 // This was the line of code I'm representing here in Reflection.
                 // Via.getManager().getLoader().storeListener(new PaperPatch(plugin)).register();
                 // Fun, isn't it?
