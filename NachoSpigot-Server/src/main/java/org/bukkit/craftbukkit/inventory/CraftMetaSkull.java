@@ -123,12 +123,12 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
 
     public boolean setOwner(String name) {
         // Feather - Null name would break everything and makes no sense and causes NPE
-        if (name == null || (name != null && name.length() > MAX_OWNER_LENGTH)) {
+        if (name == null || name.length() > MAX_OWNER_LENGTH) {
             return false;
         }
         
         // PaperSpigot start - Check usercache if the player is online
-	EntityPlayer player = MinecraftServer.getServer().getPlayerList().getPlayer(name); // Try get player and set it
+	EntityPlayer player = MinecraftServer.getServer().getPlayerList().getPlayer(name);
 	if (profile == null && player != null) profile = player.getProfile(); 
 	// PaperSpigot end
 		   
