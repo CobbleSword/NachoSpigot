@@ -4,7 +4,7 @@
 NachoSpigot offers a number of enhancements to performance as well as bug fixes such as a built-in Anti-Crash system and being able to perform well with a large number of players.
 
 ## Current State
-Java 15 is now natively supported, and ProtocolLib and Citizens are patched at runtime to work with Nacho's patches.
+Java 16 is now natively supported, and ProtocolLib and Citizens are patched at runtime to work with Nacho's patches.
 Nacho can now be used in production environments.
 
 If you find any bugs, please create an issue or contact us in the [Discord server](https://discord.gg/ewcYeERKJw)!
