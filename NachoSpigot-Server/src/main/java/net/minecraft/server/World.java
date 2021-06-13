@@ -3023,7 +3023,14 @@ public abstract class World implements IBlockAccess {
     public boolean a(Block block, BlockPosition blockposition, boolean flag, EnumDirection enumdirection, Entity entity, ItemStack itemstack) {
         Block block1 = this.getType(blockposition).getBlock();
         AxisAlignedBB axisalignedbb = flag ? null : block.a(this, blockposition, block.getBlockData());
-
+        
+	/* Fixed a paper issue whitch causes issues with viaversion
+	*  the b method checks if the boundingboxes are overlapping
+	   if they do we need to cancel the block place             */ 
+        if(blockAxis != null && blockAxis.b(entity.getBoundingBox())) {
+            return false; 
+        }
+	
         // CraftBukkit start - store default return
         boolean defaultReturn = axisalignedbb != null && !this.a(axisalignedbb, entity) ? false : (block1.getMaterial() == Material.ORIENTABLE && block == Blocks.ANVIL ? true : block1.getMaterial().isReplaceable() && block.canPlace(this, blockposition, enumdirection, itemstack));
         BlockCanBuildEvent event = new BlockCanBuildEvent(this.getWorld().getBlockAt(blockposition.getX(), blockposition.getY(), blockposition.getZ()), CraftMagicNumbers.getId(block), defaultReturn);
