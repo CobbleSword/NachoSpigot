@@ -153,9 +153,10 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
         if (isPendingPing) {
             if (!this.processedDisconnect && elapsedTime >= KEEPALIVE_LIMIT) {
                 this.disconnect("Timed out");
+		return;
             }
         } else if (elapsedTime >= 15000L) {
-        	isPendingPing = true;
+            isPendingPing = true;
             this.setLastPing(currentTime);
             this.setKeepAliveID((int) /*casting to an integer is the vanilla behavior*/ currentTime );
             this.sendPacket(new PacketPlayOutKeepAlive(this.getKeepAliveID()));
@@ -198,23 +199,21 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
     
     //Feather start
     @Override
-   	public void a(PacketPlayInKeepAlive packetplayinkeepalive) {
-    	if(noKeepalives) return;
-        if (packetplayinkeepalive.a() == getKeepAliveID()) {
-           int i = (int) (this.d() - getLastPing());
-           this.player.ping = (this.player.ping * 3 + i) / 4;
-           isPendingPing = false;
-		   isDownloading = false;
-
-       }else {
-    	   if(packetplayinkeepalive.a() == 0) {
-    		   isDownloading = true;
-    	   }else {
-    		   noKeepalives = true;
-    		   c.warn("{} sent an invalid keepalive! pending keepalive: {} got id: {} expected id: {}", this.player.getName(), isPendingPing, packetplayinkeepalive.a(), this.getKeepAliveID());
-    		   this.minecraftServer.postToMainThread(() -> disconnect("invalid keepalive"));
-    	   }    	   
-       }
+    public void a(PacketPlayInKeepAlive packetplayinkeepalive) {
+        if(noKeepalives) return;
+        if (isPendingPing && packetplayinkeepalive.a() == getKeepAliveID()) {
+            int i = (int) (this.d() - getLastPing());
+            this.player.ping = (this.player.ping * 3 + i) / 4;
+            isPendingPing = false; isDownloading = false;
+        }else {
+            if(packetplayinkeepalive.a() == 0) {
+                isDownloading = true;
+            }else {
+                noKeepalives = true;
+                c.warn("{} sent an invalid keepalive! pending keepalive: {} got id: {} expected id: {}", this.player.getName(), isPendingPing, packetplayinkeepalive.a(), this.getKeepAliveID());
+                this.minecraftServer.postToMainThread(() -> disconnect("invalid keepalive"));
+            }    	   
+        }
     }
     //Feather end
 
