@@ -3027,7 +3027,7 @@ public abstract class World implements IBlockAccess {
 	/* Fixed a paper issue whitch causes issues with viaversion
 	*  the b method checks if the boundingboxes are overlapping
 	   if they do we need to cancel the block place             */ 
-        if(axisalignedbb != null && axisalignedbb.b(entity.getBoundingBox())) {
+        if(axisalignedbb != null && entity != null && axisalignedbb.b(entity.getBoundingBox())) {
             return false; 
         }
 	
