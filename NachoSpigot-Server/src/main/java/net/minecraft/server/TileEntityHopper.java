@@ -16,7 +16,7 @@ import net.techcable.tacospigot.HopperHelper; // TacoSpigot
 
 public class TileEntityHopper extends TileEntityContainer implements IHopper, IUpdatePlayerListBox {
 
-    private ItemStack[] items = new ItemStack[5];
+    public ItemStack[] items = new ItemStack[5];
     private String f;
     private int g = -1;
 
