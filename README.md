@@ -29,6 +29,7 @@ If you find any bugs, please create an issue or contact us in the [Discord serve
             <groupId>com.github.CobbleSword.NachoSpigot</groupId>
             <artifactId>NachoSpigot</artifactId>
             <version>68712d7223</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 ```
