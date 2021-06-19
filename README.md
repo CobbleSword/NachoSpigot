@@ -16,7 +16,7 @@ If you find any bugs, please create an issue or contact us in the [Discord serve
 **Development:** [https://nachodev.sculas.xyz/](https://nachodev.sculas.xyz/)
 
 ## Maven
-```
+```xml
     <repositories>
         <repository>
             <id>jitpack.io</id>
