@@ -15,6 +15,24 @@ If you find any bugs, please create an issue or contact us in the [Discord serve
 **Stable:** [https://nacho.sculas.xyz/](https://nacho.sculas.xyz/)
 **Development:** [https://nachodev.sculas.xyz/](https://nachodev.sculas.xyz/)
 
+## Maven
+```
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.github.CobbleSword.NachoSpigot</groupId>
+            <artifactId>NachoSpigot</artifactId>
+            <version>1.4_PC97</version>
+        </dependency>
+    </dependencies>
+```
+
 ### Building / Compiling
 > To build, clone the repo, and run `mvn clean package` in the NachoSpigot directory.
 
