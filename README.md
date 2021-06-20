@@ -15,22 +15,22 @@ If you find any bugs, please create an issue or contact us in the [Discord serve
 **Stable:** [https://nacho.sculas.xyz/](https://nacho.sculas.xyz/)
 **Development:** [https://nachodev.sculas.xyz/](https://nachodev.sculas.xyz/)
 
-## Maven
+## API Download (Maven)
 ```xml
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
-    <dependencies>
-        <dependency>
-            <groupId>com.github.CobbleSword.NachoSpigot</groupId>
-            <artifactId>api</artifactId>
-            <version>master-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+<dependencies>
+    <dependency>
+        <groupId>com.github.CobbleSword.NachoSpigot</groupId>
+        <artifactId>api</artifactId>
+        <version>master-SNAPSHOT</version>
+        <scope>provided</scope>
+    </dependency>
+</dependencies>
 ```
 
 ### Building / Compiling
