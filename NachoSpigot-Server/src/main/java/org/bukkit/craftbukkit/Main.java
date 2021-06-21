@@ -34,8 +34,9 @@ public class Main {
 //        }
         try {
             if(!SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_15)) {
-                System.err.println("It seems like you are not using Java 15!");
-                System.out.println("The use of Java 15 is strongly recommended.");
+                System.err.println("It seems like you are not using Java 15 (or higher)!");
+                System.out.println("The use of Java 15 (or even better, Java 16) is strongly recommended");
+                System.out.println("At some point this recommendation may get bumped to Java 17, the next LTS (long-term support) Java release.");
             }
         } catch (Exception ignored) {
             System.err.println("Failed to get Java version! Continuing either way..");
@@ -117,7 +118,7 @@ public class Main {
 
                 acceptsAll(asList("log-strip-color"), "Strips color codes from log file");
 
-                acceptsAll(asList("b", "bukkit-settings"), "File for bukkit settings")
+                acceptsAll(asList("b", "bukkit-settings"), "File for Bukkit settings")
                         .withRequiredArg()
                         .ofType(File.class)
                         .defaultsTo(new File("bukkit.yml"))
@@ -129,7 +130,7 @@ public class Main {
                         .defaultsTo(new File("commands.yml"))
                         .describedAs("Yml file");
 
-                acceptsAll(asList("nojline"), "Disables jline and emulates the vanilla console");
+                acceptsAll(asList("nojline"), "Disables jLine and emulates the vanilla console");
 
                 acceptsAll(asList("noconsole"), "Disables the console");
 
@@ -142,7 +143,7 @@ public class Main {
                         .withRequiredArg()
                         .ofType(File.class)
                         .defaultsTo(new File("spigot.yml"))
-                        .describedAs("Yml file");
+                        .describedAs("YAML file");
                 // Spigot End
 
                 // PaperSpigot Start
@@ -150,7 +151,7 @@ public class Main {
                         .withRequiredArg()
                         .ofType(File.class)
                         .defaultsTo(new File("paper.yml"))
-                        .describedAs("Yml file");
+                        .describedAs("YAML file");
                 // PaperSpigot End
 
                 // TacoSpigot start
@@ -158,7 +159,7 @@ public class Main {
                         .withRequiredArg()
                         .ofType(File.class)
                         .defaultsTo(new File("taco.yml"))
-                        .describedAs("Yml file");
+                        .describedAs("YAML file");
                 // TacoSpigot end
             }
         };
