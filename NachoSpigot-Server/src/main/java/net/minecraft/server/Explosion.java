@@ -69,11 +69,12 @@ public class Explosion {
                 int z = org.bukkit.util.NumberConversions.floor(posZ);
                 list.add(chunk.bukkitChunk.getBlock(x, y, z));
 
-                EntityExplodeEvent event = new EntityExplodeEvent(source.getBukkitEntity(), location, list, 0.3F);
-                world.getServer().getPluginManager().callEvent(event);
-
-                if (event.isCancelled() || event.blockList().isEmpty()) {
-                    protection = true;
+                if(source != null) {
+                    EntityExplodeEvent event = new EntityExplodeEvent(source.getBukkitEntity(), location, list, 0.3F);
+                    world.getServer().getPluginManager().callEvent(event);
+                    if (event.isCancelled() || event.blockList().isEmpty()) {
+                        protection = true;
+                    }
                 }
             }
             if (!protection) {
