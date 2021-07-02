@@ -11,7 +11,8 @@ import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
-public class RuntimePatches {
+public class RuntimePatches 
+{
 
     private static final Logger logger = Bukkit.getLogger();
 
@@ -31,7 +32,7 @@ public class RuntimePatches {
                 	Class.forName("com.viaversion.viaversion.api.Via", true, cl); // Checking for the new ViaVersion version
                 	viaVersionPackage = "com.viaversion.viaversion."; // new
 		} catch (ClassNotFoundException ignore) {
-			logger.info("Using a old ViaVersion version, please update!");
+			logger.info("Using an old ViaVersion version, please update!");
 		}
                 // This was the line of code I'm representing here in Reflection.
                 // Via.getManager().getLoader().storeListener(new PaperPatch(plugin)).register();
@@ -74,7 +75,7 @@ public class RuntimePatches {
                                 "breaking update is done to the ProtocolInjector this WILL break ProtocolLib. " +
                                 "Please do note that the latest update on the ProtocolInjector class was made " +
                                 "before 2018, so there shouldn't be anything to worry about. " +
-                                "If you do know how to fix this though, please make a PR at: https://github.com/Sculas/NachoSpigot"
+                                "If you do know how to fix this though, please make a PR at: https://github.com/CobbleSword/NachoSpigot"
                 );
 
                 ClassPool pool = ClassPool.getDefault();
