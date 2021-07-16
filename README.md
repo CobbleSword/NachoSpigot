@@ -1,12 +1,5 @@
 # NachoSpigot [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/CobbleSword/NachoSpigot/NachoSpigot%20Build)](https://nacho.sculas.xyz/)
 
-## No longer maintained
-This project is no longer maintained, and bugs won't be fixed.
-I (Sculas) don't have time to work on this project anymore, and I think it's the same for Heath.
-So please, use something else. IonSpigot is a good alternative if you can't update 1.16 (Tuinity/Airplane/Purpur)
-
-Thank you.
-
 #### NachoSpigot is a fork of TacoSpigot 1.8.8
 NachoSpigot offers a number of enhancements to performance as well as bug fixes such as a built-in Anti-Crash system and being able to perform well with a large number of players.
 
