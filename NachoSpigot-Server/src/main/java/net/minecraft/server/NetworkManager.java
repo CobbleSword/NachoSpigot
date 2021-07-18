@@ -107,15 +107,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     {
         if (this.channel.eventLoop().inEventLoop()) {
             this.channel.flush();
-        } else {
-            // [Nacho-0043] Fix ProtocolLib
-            this.channel.eventLoop().execute(new Runnable() {
-                @Override
-                public void run() {
-                    NetworkManager.this.channel.flush();
-                }
-            });
-        }
+        } //[Nacho-Spigot] Fixed RejectedExecutionException: event executor terminated by BeyazPolis
     }
     // Tuinity end - allow controlled flushing
 
