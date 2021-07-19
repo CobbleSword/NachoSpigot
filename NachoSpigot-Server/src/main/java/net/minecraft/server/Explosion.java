@@ -118,13 +118,13 @@ public class Explosion {
             if (!entity.aW()) {
                 if (!entity.dead) {
                     double d8 = entity.locX - this.posX;
-                    double d9 = entity.locY + (double) entity.getHeadHeight() - this.posY;
+                    double d9 = entity.locY + entity.getHeadHeight() - this.posY;
                     double d10 = entity.locZ - this.posZ;
                     double distanceSquared = d8 * d8 + d9 * d9 + d10 * d10;
 
                     if (distanceSquared <= 64.0D && distanceSquared != 0.0D) {
                         double d11 = MathHelper.sqrt(distanceSquared);
-                        double d7 = d11 / f3;
+                        double d7 = d11 / (double) f3;
                         d8 /= d11;
                         d9 /= d11;
                         d10 /= d11;
@@ -390,10 +390,72 @@ public class Explosion {
         int key = createKey(this, aabb);
         float blockDensity = this.world.explosionDensityCache.get(key);
         if (blockDensity == -1.0f) {
-            blockDensity = this.world.a(vec3d, aabb);
+            blockDensity = calculateDensity(vec3d, aabb);
             this.world.explosionDensityCache.put(key, blockDensity);
         }
         return blockDensity;
+    }
+
+    private float calculateDensity(Vec3D vec3d, AxisAlignedBB aabb) {
+        if (Nacho.get().getConfig().reducedDensityRays) {
+            return calculateDensityReducedRays(vec3d, aabb);
+        } else {
+            return this.world.a(vec3d, aabb);
+        }
+    }
+
+    private float calculateDensityReducedRays(Vec3D vec3d, AxisAlignedBB aabb) {
+        int arrived = 0;
+        int rays = 0;
+
+        for (Vec3D vector : calculateVectors(aabb)) {
+            // If rays from the corners don't hit a block
+            // it should be safe to return the best outcome
+            if (rays == 8 && arrived == 8) {
+                return 1.0F;
+            }
+
+            if (world.rayTrace(vector, vec3d) == null) {
+                ++arrived;
+            }
+
+            ++rays;
+        }
+
+        return (float) arrived / (float) rays;
+    }
+
+    private List<Vec3D> calculateVectors(AxisAlignedBB aabb) {
+        double d0 = 1.0D / ((aabb.d - aabb.a) * 2.0D + 1.0D);
+        double d1 = 1.0D / ((aabb.e - aabb.b) * 2.0D + 1.0D);
+        double d2 = 1.0D / ((aabb.f - aabb.c) * 2.0D + 1.0D);
+        double d3 = (1.0D - Math.floor(1.0D / d0) * d0) / 2.0D;
+        double d4 = (1.0D - Math.floor(1.0D / d2) * d2) / 2.0D;
+
+        if (d0 < 0.0 || d1 < 0.0 || d2 < 0.0) {
+            return Collections.emptyList();
+        }
+
+        List<Vec3D> vectors = new LinkedList<>();
+
+        for (float f = 0.0F; f <= 1.0F; f = (float) ((double) f + d0)) {
+            for (float f1 = 0.0F; f1 <= 1.0F; f1 = (float) ((double) f1 + d1)) {
+                for (float f2 = 0.0F; f2 <= 1.0F; f2 = (float) ((double) f2 + d2)) {
+                    double d5 = aabb.a + (aabb.d - aabb.a) * (double) f;
+                    double d6 = aabb.b + (aabb.e - aabb.b) * (double) f1;
+                    double d7 = aabb.c + (aabb.f - aabb.c) * (double) f2;
+                    Vec3D vector = new Vec3D(d5 + d3, d6, d7 + d4);
+
+                    if ((f == 0 || f + d0 > 1.0F) && (f1 == 0 || f1 + d1 > 1.0F) && (f2 == 0 || f2 + d2 > 1.0F)) {
+                        vectors.add(0, vector);
+                    } else {
+                        vectors.add(vector);
+                    }
+                }
+            }
+        }
+
+        return vectors;
     }
 
     static int createKey(Explosion explosion, AxisAlignedBB aabb) {

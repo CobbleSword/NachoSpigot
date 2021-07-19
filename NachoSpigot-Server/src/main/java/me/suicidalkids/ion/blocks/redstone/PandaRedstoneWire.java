@@ -276,14 +276,14 @@ public class PandaRedstoneWire extends BlockRedstoneWire {
             BlockPosition offsetPos = pos.shift(facing);
             IBlockData state = worldIn.getType(offsetPos);
             // canConnectTo() is not the nicest solution here as it returns true for e.g. the front of a repeater
-            // canBlockBePowereFromSide catches these cases
+            // canBlockBePoweredFromSide catches these cases
             boolean flag = connectedSides.contains(facing.opposite()) || facing == EnumDirection.DOWN;
             if (flag || (facing.k().c() && a(state, facing))) {
                 if (canBlockBePoweredFromSide(state, facing, true)) set.add(offsetPos);
             }
 
             // Later add blocks around the surrounding blocks that get powered
-            if (flag && worldIn.getType(offsetPos).getBlock().isOccluding()) {
+            if (flag && state.getBlock().isOccluding()) {
                 for (EnumDirection facing1 : facings) {
                     if (canBlockBePoweredFromSide(worldIn.getType(offsetPos.shift(facing1)), facing1, false)) set.add(offsetPos.shift(facing1));
                 }
@@ -358,7 +358,7 @@ public class PandaRedstoneWire extends BlockRedstoneWire {
             }
         }
         if (retval.isEmpty()) {
-            return true;
+            return side != EnumDirection.DOWN && side != EnumDirection.UP;
         }
         boolean northsouth = retval.contains(EnumDirection.NORTH) || retval.contains(EnumDirection.SOUTH);
         boolean eastwest = retval.contains(EnumDirection.EAST) || retval.contains(EnumDirection.WEST);
