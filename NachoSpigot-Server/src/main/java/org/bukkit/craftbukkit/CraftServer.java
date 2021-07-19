@@ -129,8 +129,8 @@ import net.md_5.bungee.api.chat.BaseComponent;
 
 public final class CraftServer implements Server {
     private static final Player[] EMPTY_PLAYER_ARRAY = new Player[0];
-    private String serverName = "NachoSpigot";
-    private final String serverVersion = "1.8.8";
+    private String serverName = Nacho.get().getConfig().serverBrandName;
+    private final String serverVersion = Nacho.get().getConfig().serverBrandName + "-1.8.8";
     private final String bukkitVersion = Versioning.getBukkitVersion();
     private final Logger logger = Logger.getLogger("Minecraft");
     private final ServicesManager servicesManager = new SimpleServicesManager();
