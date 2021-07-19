@@ -468,7 +468,7 @@ public abstract class Entity implements ICommandListener {
         }
         */
         int chunkX = org.bukkit.util.NumberConversions.floor(locX) >> 4;
-        int chunkZ = org.bukkit.util.NumberConversions.floor(locX) >> 4;
+        int chunkZ = org.bukkit.util.NumberConversions.floor(locZ) >> 4;
         ((ChunkProviderServer) world.chunkProvider).getChunkAt(chunkX, chunkZ);
         // IonSpigot end
     }
