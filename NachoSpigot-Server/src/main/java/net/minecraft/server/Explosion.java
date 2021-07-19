@@ -48,7 +48,7 @@ public class Explosion {
             return;
         }
         // CraftBukkit end
-        HashSet<BlockPosition> hashset = Sets.newHashSet();
+        // HashSet<BlockPosition> hashset = Sets.newHashSet();
 
         int i;
         int j;
@@ -83,7 +83,8 @@ public class Explosion {
                 }
             }
         }
-        this.blocks.addAll(hashset);
+
+        // this.blocks.addAll(hashset);
         float f3 = this.size * 2.0F;
 
         // IonSpigot start - Faster Entity Iteration
