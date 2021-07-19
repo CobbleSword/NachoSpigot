@@ -46,6 +46,7 @@ import joptsimple.OptionSet;
 
 import org.bukkit.craftbukkit.Main;
 import co.aikar.timings.SpigotTimings; // Spigot
+import xyz.sculas.nacho.async.AsyncExplosions;
 // CraftBukkit end
 
 public abstract class MinecraftServer implements Runnable, ICommandListener, IAsyncTaskHandler, IMojangStatistics {
@@ -483,6 +484,8 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
                 this.Z.c();
             }
             //Spigot end
+
+            AsyncExplosions.stopExecutor(); // Nacho
         }
     }
 
