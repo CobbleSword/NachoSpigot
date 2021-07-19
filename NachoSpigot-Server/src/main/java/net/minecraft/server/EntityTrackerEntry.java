@@ -469,7 +469,7 @@ public class EntityTrackerEntry {
             && this.tracker.a(entityplayer);
     }
 
-    private boolean e(EntityPlayer entityplayer) {
+    protected boolean e(EntityPlayer entityplayer) { // IonSpigot - private -> protected
         return entityplayer.u().getPlayerChunkMap().a(entityplayer, this.tracker.ae, this.tracker.ag);
     }
 
@@ -480,7 +480,7 @@ public class EntityTrackerEntry {
 
     }
 
-    private Packet c() {
+    protected Packet c() {
         if (this.tracker.dead) {
             // CraftBukkit start - Remove useless error spam, just return
             // EntityTrackerEntry.p.warn("Fetching addPacket for removed entity");
