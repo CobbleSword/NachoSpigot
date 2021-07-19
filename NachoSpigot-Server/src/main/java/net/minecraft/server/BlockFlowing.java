@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
+import dev.cobblesword.nachospigot.Nacho;
+
 // CraftBukkit start
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.block.BlockFromToEvent;
@@ -64,7 +66,7 @@ public class BlockFlowing extends BlockFluids {
                 }
             }
 
-            if (this.a >= 2 && this.material == Material.WATER) {
+            if ((Nacho.get().getConfig().infiniteWaterSources) && (this.a >= 2) && (this.material == Material.WATER)) {
                 IBlockData iblockdata1 = world.getType(blockposition.down());
 
                 if (iblockdata1.getBlock().getMaterial().isBuildable()) {
@@ -112,7 +114,7 @@ public class BlockFlowing extends BlockFluids {
                 server.getPluginManager().callEvent(event);
             }
             if (!event.isCancelled()) {
-            if (this.material == Material.LAVA && world.getType(blockposition.down()).getBlock().getMaterial() == Material.WATER) {
+            if ((this.material == Material.LAVA) && (world.getType(blockposition.down()).getBlock().getMaterial() == Material.WATER) && (Nacho.get().getConfig().enableLavaToCobblestone)) {
                 world.setTypeUpdate(blockposition.down(), Blocks.STONE.getBlockData());
                 this.fizz(world, blockposition.down());
                 return;

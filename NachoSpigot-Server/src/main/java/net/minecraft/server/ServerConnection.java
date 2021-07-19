@@ -1,50 +1,51 @@
 package net.minecraft.server;
 
 import com.google.common.collect.Lists;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import dev.cobblesword.nachospigot.protocol.MinecraftPipeline;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.epoll.Epoll;
 import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.epoll.EpollServerSocketChannel;
-import io.netty.channel.local.LocalEventLoopGroup;
+import io.netty.channel.kqueue.KQueue;
+import io.netty.channel.kqueue.KQueueEventLoopGroup;
+import io.netty.channel.kqueue.KQueueServerSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.ServerSocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.timeout.ReadTimeoutHandler;
-import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.Callable;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ServerConnection {
 
-    private static final Logger e = LogManager.getLogger();
+    public enum EventGroupType {
+        EPOLL,
+        KQUEUE,
+        DEFAULT
+    }
 
-    private static boolean isUsingEpoll = false;
+    private static final WriteBufferWaterMark SERVER_WRITE_MARK = new WriteBufferWaterMark(1 << 20, 1 << 21);
 
-    public static LazyInitVar<NioEventLoopGroup> a;
-    public static LazyInitVar<EpollEventLoopGroup> b;
-    public static final LazyInitVar<DefaultEventLoopGroup> c = new LazyInitVar() {
-        protected DefaultEventLoopGroup a() {
-            return new DefaultEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Local Server IO #%d").setDaemon(true).build());
-        }
+    private static final Logger LOGGER = LogManager.getLogger();
 
-        protected Object init() {
-            return this.a();
-        }
-    };
-    public final MinecraftServer f;
-    public volatile boolean d;
-    private final List<ChannelFuture> g = Collections.synchronizedList(Lists.<ChannelFuture>newArrayList()); public List<ChannelFuture> getListeningChannels() { return this.g; } //OBFHELPER
-    private final List<NetworkManager> h = Collections.synchronizedList(Lists.<NetworkManager>newArrayList()); public List<NetworkManager> getConnectedChannels() { return this.h; } //OBFHELPER
+    private final EventGroupType eventGroupType;
+    private EventLoopGroup boss, worker;
+
+    public final MinecraftServer server;
+    public volatile boolean started;
+
+    private final List<ChannelFuture> g = Collections.synchronizedList(Lists.<ChannelFuture>newArrayList());
+    public List<ChannelFuture> getListeningChannels() { return this.g; } //OBFHELPER
+
+    private final List<NetworkManager> h = Collections.synchronizedList(Lists.<NetworkManager>newArrayList());
+    public List<NetworkManager> getConnectedChannels() { return this.h; } //OBFHELPER
+
     // Paper start - prevent blocking on adding a new network manager while the server is ticking
     public final java.util.Queue<NetworkManager> pending = new java.util.concurrent.ConcurrentLinkedQueue<>();
     private void addPending() {
@@ -56,93 +57,61 @@ public class ServerConnection {
     // Paper end
 
 
-    public ServerConnection(MinecraftServer minecraftserver) {
-        this.f = minecraftserver;
-        this.d = true;
+    public ServerConnection(MinecraftServer server) {
+        this.server = server;
+        this.started = true;
+        this.eventGroupType = server.getTransport();
     }
 
-    public void a(InetAddress inetaddress, int i) throws IOException {
-        synchronized (this.g) {
-            Class oclass;
-            LazyInitVar lazyinitvar;
+    public void a(InetAddress ip, int port) throws IOException {
+        synchronized (this.getListeningChannels()) {
+            Class<? extends ServerChannel> channel;
+            final int workerThreadCount = Runtime.getRuntime().availableProcessors();
 
-            // [Nacho-0039] Fixed a bug in Netty epoll, and by the way; shouldn't it first check if you even want to use native transport before checking if its available?
-            // I mean, why check if its available when in the end you don't even want to use it.
-            // Minecraft is weird :)
-            // ----------------------
-            // Added late init and only shuts it down when it is assigned to do so, maybe this will fix it?
-            // Yes, I keep the variables "a" and "b" because other classes might use these.
-            if (this.f.ai() && Epoll.isAvailable()) {
-                oclass = EpollServerSocketChannel.class;
-                ServerConnection.b = new LazyInitVar() {
-                    protected EpollEventLoopGroup a() {
-                        return new EpollEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Epoll Server IO #%d").setDaemon(true).build());
-                    }
-                    protected Object init() {
-                        return this.a();
-                    }
-                };
-                lazyinitvar = ServerConnection.b;
-                isUsingEpoll = true;
-                ServerConnection.e.info("Using epoll channel type");
-            } else {
-                oclass = NioServerSocketChannel.class;
-                ServerConnection.a = new LazyInitVar() {
-                    protected NioEventLoopGroup a() {
-                        return new NioEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Server IO #%d").setDaemon(true).build());
-                    }
+            {
+                if ((eventGroupType == EventGroupType.EPOLL || eventGroupType == EventGroupType.DEFAULT) && Epoll.isAvailable()) {
+                    boss = new EpollEventLoopGroup(2);
+                    worker = new EpollEventLoopGroup(workerThreadCount);
 
-                    protected Object init() {
-                        return this.a();
-                    }
-                };
-                lazyinitvar = ServerConnection.a;
-                isUsingEpoll = false;
-                ServerConnection.e.info("Using default channel type");
+                    channel = EpollServerSocketChannel.class;
+
+                    LOGGER.info("Using epoll");
+                } else if ((eventGroupType == EventGroupType.KQUEUE || eventGroupType == EventGroupType.DEFAULT) && KQueue.isAvailable()) {
+                    boss = new KQueueEventLoopGroup(2);
+                    worker = new KQueueEventLoopGroup(workerThreadCount);
+
+                    channel = KQueueServerSocketChannel.class;
+
+                    LOGGER.info("Using kqueue");
+                } else {
+                    boss = new NioEventLoopGroup(2);
+                    worker = new NioEventLoopGroup(workerThreadCount);
+
+                    channel = NioServerSocketChannel.class;
+
+                    LOGGER.info("Using NIO");
+                }
             }
 
-            this.g.add(((new ServerBootstrap()
-                    .channel(oclass))
+            this.getListeningChannels().add(((new ServerBootstrap()
+                    .channel(channel))
+                    .childOption(ChannelOption.WRITE_BUFFER_WATER_MARK, SERVER_WRITE_MARK)
                     .childHandler(new MinecraftPipeline(this))
-                    .group((EventLoopGroup) lazyinitvar.c())
-                    .localAddress(inetaddress, i))
+                    .group(boss, worker)
+                    .localAddress(ip, port))
                     .bind()
                     .syncUninterruptibly());
-
-                        /*    new ChannelInitializer()
-            {
-                protected void initChannel(Channel channel) throws Exception {
-                    try {
-                        channel.config().setOption(ChannelOption.TCP_NODELAY, true);
-                    } catch (ChannelException channelexception) {
-                        ;
-                    }
-
-                    channel.pipeline().addLast("timeout", new ReadTimeoutHandler(30))
-                                      .addLast("legacy_query", new LegacyPingHandler(ServerConnection.this))
-                                      .addLast("splitter", PacketSplitter.INSTANCE)
-                                      .addLast("decoder", new PacketDecoder(EnumProtocolDirection.SERVERBOUND))
-                                      .addLast("prepender", PacketPrepender.INSTANCE)
-                                      .addLast("encoder", new PacketEncoder(EnumProtocolDirection.CLIENTBOUND));
-                    NetworkManager networkmanager = new NetworkManager(EnumProtocolDirection.SERVERBOUND);
-
-                    pending.add(networkmanager); // Paper
-                    channel.pipeline().addLast("packet_handler", networkmanager);
-                    networkmanager.a((PacketListener) (new HandshakeListener(ServerConnection.this.f, networkmanager)));
-                }
-            }*/
         }
     }
 
-    public void b() throws InterruptedException {
-        this.d = false;
-        for (ChannelFuture channelfuture : this.g) {
+    public void stopServer() throws InterruptedException {
+        this.started = false;
+        for (ChannelFuture channelfuture : this.getListeningChannels()) {
             try {
                 channelfuture.channel().close().sync();
             } finally {
-                if(isUsingEpoll) b.c().shutdownGracefully();
-                else a.c().shutdownGracefully();
-                c.c().shutdownGracefully();
+                this.boss.shutdownGracefully().sync();
+                this.worker.shutdownGracefully().sync();
             }
         }
 
@@ -182,7 +151,7 @@ public class ServerConnection {
                                 throw new ReportedException(crashreport);
                             }
 
-                            ServerConnection.e.warn("Failed to handle packet for " + networkmanager.getSocketAddress(), exception);
+                            ServerConnection.LOGGER.warn("Failed to handle packet for " + networkmanager.getSocketAddress(), exception);
                             final ChatComponentText chatcomponenttext = new ChatComponentText("Internal server error");
 
                             networkmanager.a(new PacketPlayOutKickDisconnect(chatcomponenttext), (GenericFutureListener) future -> networkmanager.close(chatcomponenttext), new GenericFutureListener[0]);
@@ -196,6 +165,6 @@ public class ServerConnection {
     }
 
     public MinecraftServer d() {
-        return this.f;
+        return this.server;
     }
 }

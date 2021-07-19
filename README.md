@@ -9,7 +9,7 @@ Nacho can now be used in production environments.
 
 If you find any bugs, please create an issue or contact us in the [Discord server](https://discord.gg/ewcYeERKJw)!
 
-**NachoSpigot supports Java 8 to Java 16!**
+**NachoSpigot supports Java 8 to Java 15!**
 
 ## Download
 **Stable:** [https://nacho.sculas.xyz/](https://nacho.sculas.xyz/)
@@ -130,6 +130,7 @@ If you find any bugs, please create an issue or contact us in the [Discord serve
 [Nacho-0047] Little anti-malware
 [Nacho-0048] Little anti-crash
 [Nacho-0051] Custom knockback
+[Nacho-0052] Rework ServerConnection and MinecraftPipeline (credits to Minestom)
 
 [Yatopia-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 [Yatopia-0047] Smarter statistics ticking
