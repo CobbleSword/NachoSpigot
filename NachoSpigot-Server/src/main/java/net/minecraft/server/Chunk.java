@@ -33,7 +33,7 @@ public class Chunk {
     public final int locZ;
     private boolean k;
     public final Map<BlockPosition, TileEntity> tileEntities;
-    public final List[] entitySlices; // Spigot
+    public final List<Entity>[] entitySlices; // Spigot
     // PaperSpigot start - track the number of minecarts and items
     // Keep this synced with entitySlices.add() and entitySlices.remove()
     private final int[] itemCounts = new int[16];
