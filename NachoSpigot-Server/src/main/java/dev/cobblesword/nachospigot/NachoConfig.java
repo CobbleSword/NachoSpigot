@@ -33,5 +33,4 @@ public class NachoConfig {
     public int chunkThreads = 2; // PaperSpigot - Bumped value
     public int playersPerThread = 50;
     public boolean enableTCPNODELAY = true;
-    public int nettyBufferSize = 65535;
 }

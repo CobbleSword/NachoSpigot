@@ -21,7 +21,6 @@ public class MinecraftPipeline extends ChannelInitializer<SocketChannel>
             config.setOption(ChannelOption.TCP_NODELAY, Nacho.get().getConfig().enableTCPNODELAY);
             config.setOption(ChannelOption.IP_TOS, 0x18); // [Nacho-0027] :: Optimize networking
             config.setOption(ChannelOption.SO_KEEPALIVE, true);
-            config.setOption(ChannelOption.SO_SNDBUF, Nacho.get().getConfig().nettyBufferSize);
             config.setAllocator(ByteBufAllocator.DEFAULT);
         } catch (Exception ignored) {}
 
