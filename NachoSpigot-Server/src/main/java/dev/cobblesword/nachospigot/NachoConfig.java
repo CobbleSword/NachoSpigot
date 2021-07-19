@@ -16,4 +16,19 @@ public class NachoConfig {
     public int playerTimeStatisticsInterval = 20;
     public String serverBrandName = "NachoSpigot";
     public boolean enableAntiCrash = true;
+    public boolean infiniteWaterSources = true;
+    public boolean leavesDecayEvent = true;
+    public boolean enableMobAI = true;
+    public boolean enableMobSound = true;
+    public boolean enableEntityActivation = true;
+    public boolean enableLavaToCobblestone = true;
+    public boolean firePlayerMoveEvent = true; // Higly recommend disable this for lobby/limbo/minigames servers.
+    public boolean endermiteSpawning = true;
+    public boolean disablePhysicsPlace = false;
+    public boolean disablePhysicsUpdate = false;
+    public boolean doBlocksOperations = true;
+    public boolean doChunkUnload = true;
+    public int chunkThreads = 2; // PaperSpigot - Bumped value
+    public int playersPerThread = 50;
+    public boolean enableTCPNODELAY = true;
 }

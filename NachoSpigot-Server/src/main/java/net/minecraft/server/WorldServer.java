@@ -28,6 +28,7 @@ import org.bukkit.craftbukkit.util.HashTreeSet;
 import org.bukkit.event.block.BlockFormEvent;
 import org.bukkit.event.weather.LightningStrikeEvent;
 // CraftBukkit end
+import dev.cobblesword.nachospigot.Nacho;
 
 public class WorldServer extends World implements IAsyncTaskHandler {
 
@@ -229,12 +230,14 @@ public class WorldServer extends World implements IAsyncTaskHandler {
             // CraftBukkit end
         }
         // CraftBukkit end
-        timings.doChunkUnload.startTiming(); // Spigot
-        this.methodProfiler.c("chunkSource");
+        if (Nacho.get().getConfig().doChunkUnload) {
+            timings.doChunkUnload.startTiming(); // Spigot
+            this.methodProfiler.c("chunkSource");
 
-        // Only unload if chunkProvider isn't null
-        if (this.chunkProvider != null) {
-            this.chunkProvider.unloadChunks();
+            // Only unload if chunkProvider isn't null
+            if (this.chunkProvider != null) {
+                this.chunkProvider.unloadChunks();
+            }
         }
 
         int j = this.a(1.0F);
@@ -474,26 +477,28 @@ public class WorldServer extends World implements IAsyncTaskHandler {
                     }
                 }
 
-                this.methodProfiler.c("tickBlocks");
-                timings.chunkTicksBlocks.startTiming(); // Spigot
-                int randomTickSpeed = this.getGameRules().c("randomTickSpeed");
-                if (randomTickSpeed > 0) {
-                    for (ChunkSection section : chunk.getSections()) {
-                        if (section != null && section.shouldTick()) {
-                            for (int l1 = 0; l1 < randomTickSpeed; ++l1) {
-                                this.m = this.m * 3 + 1013904223;
-                                int i2 = this.m >> 2;
-                                int j2 = i2 & 15;
-                                int k2 = i2 >> 8 & 15;
-                                int l2 = i2 >> 16 & 15;
+                if (Nacho.get().getConfig().doBlocksOperations) {
+                    this.methodProfiler.c("tickBlocks");
+                    timings.chunkTicksBlocks.startTiming(); // Spigot
+                    int randomTickSpeed = this.getGameRules().c("randomTickSpeed");
+                    if (randomTickSpeed > 0) {
+                        for (ChunkSection section : chunk.getSections()) {
+                            if (section != null && section.shouldTick()) {
+                                for (int l1 = 0; l1 < randomTickSpeed; ++l1) {
+                                    this.m = this.m * 3 + 1013904223;
+                                    int i2 = this.m >> 2;
+                                    int j2 = i2 & 15;
+                                    int k2 = i2 >> 8 & 15;
+                                    int l2 = i2 >> 16 & 15;
 
-                                ++j;
-                                IBlockData iblockdata = section.getType(j2, l2, k2);
-                                Block block = iblockdata.getBlock();
+                                    ++j;
+                                    IBlockData iblockdata = section.getType(j2, l2, k2);
+                                    Block block = iblockdata.getBlock();
 
-                                if (block.isTicking()) {
-                                    ++i;
-                                    block.a(this, new BlockPosition(j2 + k, l2 + section.getYPosition(), k2 + l), iblockdata, this.random);
+                                    if (block.isTicking()) {
+                                        ++i;
+                                        block.a(this, new BlockPosition(j2 + k, l2 + section.getYPosition(), k2 + l), iblockdata, this.random);
+                                    }
                                 }
                             }
                         }
