@@ -18,11 +18,12 @@ public class RuntimePatches
 
     public static void applyViaVersionBlockPatch() {
         try {
+            final String name = Nacho.get().getConfig().serverBrandName.toLowerCase();
             if(
                     Bukkit.getPluginManager().isPluginEnabled("ViaVersion") &&
-                            !Nacho.get().getConfig().serverBrandName.toLowerCase().contains("paper") &&
-                            !Nacho.get().getConfig().serverBrandName.toLowerCase().contains("taco") &&
-                            !Nacho.get().getConfig().serverBrandName.toLowerCase().contains("torch")
+                            !name.contains("paper") &&
+                            !name.contains("taco") &&
+                            !name.contains("torch")
             ) {
                 logger.info("Patching block placement, please wait.");
                 ClassLoader cl = Bukkit.getPluginManager().getPlugin("ViaVersion").getClass().getClassLoader();

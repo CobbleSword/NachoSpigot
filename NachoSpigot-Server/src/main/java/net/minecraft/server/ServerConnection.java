@@ -69,7 +69,7 @@ public class ServerConnection {
     public ServerConnection(MinecraftServer server) {
         this.server = server;
         this.started = true;
-        this.eventGroupType = server.getTransport();
+        this.eventGroupType = server.ai() ? EventGroupType.EPOLL : server.getTransport();
     }
 
     public void a(InetAddress ip, int port) throws IOException {
