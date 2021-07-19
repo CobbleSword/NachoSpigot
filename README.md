@@ -165,6 +165,8 @@ If you find any bugs, please create an issue or contact us in the [Discord serve
 [FlamePaper-0103] Limit CraftChatMessage iterations
 [FlamePaper-0104] Return last slot by default
 [FlamePaper-0105] Fix memory leaks by Minetick
+[FlamePaper-0106] Fix sending irrelevant block updates to the client
+[FlamePaper-0110] Fix NullPointerException exploits for invalid logins
 [FlamePaper-0113] Remove unused code from beacons
 [FlamePaper-0115] Patch Book Exploits
 [FlamePaper-0117] Pearl through blocks
