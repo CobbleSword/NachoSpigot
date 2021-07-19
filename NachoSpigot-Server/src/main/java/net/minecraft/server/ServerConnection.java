@@ -28,6 +28,7 @@ public class ServerConnection {
     public enum EventGroupType {
         EPOLL,
         KQUEUE,
+        NIO,
         DEFAULT
     }
 
@@ -38,8 +39,8 @@ public class ServerConnection {
     private final EventGroupType eventGroupType;
 
     public static LazyInitVar<EventLoopGroup> a, b;
-    public LazyInitVar<EventLoopGroup> boss() { return a; } //OBFHELPER
-    public LazyInitVar<EventLoopGroup> worker() { return b; } //OBFHELPER
+    public LazyInitVar<EventLoopGroup> boss() { return a; } // OBFHELPER
+    public LazyInitVar<EventLoopGroup> worker() { return b; } // OBFHELPER
 
     public static final LazyInitVar<DefaultEventLoopGroup> c = new LazyInitVar<DefaultEventLoopGroup>() {
         protected DefaultEventLoopGroup init() {
@@ -50,11 +51,11 @@ public class ServerConnection {
     public final MinecraftServer server;
     public volatile boolean started;
 
-    private final List<ChannelFuture> g = Collections.synchronizedList(Lists.<ChannelFuture>newArrayList());
-    public List<ChannelFuture> getListeningChannels() { return this.g; } //OBFHELPER
+    private final List<ChannelFuture> g = Collections.synchronizedList(Lists.newArrayList());
+    public List<ChannelFuture> getListeningChannels() { return this.g; } // OBFHELPER
 
-    private final List<NetworkManager> h = Collections.synchronizedList(Lists.<NetworkManager>newArrayList());
-    public List<NetworkManager> getConnectedChannels() { return this.h; } //OBFHELPER
+    private final List<NetworkManager> h = Collections.synchronizedList(Lists.newArrayList());
+    public List<NetworkManager> getConnectedChannels() { return this.h; } // OBFHELPER
 
     // Paper start - prevent blocking on adding a new network manager while the server is ticking
     public final java.util.Queue<NetworkManager> pending = new java.util.concurrent.ConcurrentLinkedQueue<>();
@@ -75,61 +76,81 @@ public class ServerConnection {
 
     public void a(InetAddress ip, int port) throws IOException {
         synchronized (this.getListeningChannels()) {
-            Class<? extends ServerChannel> channel;
+            Class<? extends ServerChannel> channel = null;
             final int workerThreadCount = Runtime.getRuntime().availableProcessors();
 
             {
-                if ((eventGroupType == EventGroupType.EPOLL || eventGroupType == EventGroupType.DEFAULT) && Epoll.isAvailable()) {
-                    a = new LazyInitVar<EventLoopGroup>() {
-                        @Override
-                        protected EventLoopGroup init() {
-                            return new EpollEventLoopGroup(2);
-                        }
-                    };
-                    b = new LazyInitVar<EventLoopGroup>() {
-                        @Override
-                        protected EventLoopGroup init() {
-                            return new EpollEventLoopGroup(workerThreadCount);
-                        }
-                    };
+                // First time using fall-through, lol
+                switch (eventGroupType) {
+                    default:
+                    case DEFAULT: {
+                        LOGGER.info("Finding best event group type using fall-through");
+                    }
 
-                    channel = EpollServerSocketChannel.class;
+                    case EPOLL: {
+                        if (Epoll.isAvailable()) {
+                            a = new LazyInitVar<EventLoopGroup>() {
+                                @Override
+                                protected EventLoopGroup init() {
+                                    return new EpollEventLoopGroup(2);
+                                }
+                            };
+                            b = new LazyInitVar<EventLoopGroup>() {
+                                @Override
+                                protected EventLoopGroup init() {
+                                    return new EpollEventLoopGroup(workerThreadCount);
+                                }
+                            };
 
-                    LOGGER.info("Using epoll");
-                } else if ((eventGroupType == EventGroupType.KQUEUE || eventGroupType == EventGroupType.DEFAULT) && KQueue.isAvailable()) {
-                    a = new LazyInitVar<EventLoopGroup>() {
-                        @Override
-                        protected EventLoopGroup init() {
-                            return new KQueueEventLoopGroup(2);
+                            channel = EpollServerSocketChannel.class;
+
+                            LOGGER.info("Using epoll");
+
+                            break;
                         }
-                    };
-                    b = new LazyInitVar<EventLoopGroup>() {
-                        @Override
-                        protected EventLoopGroup init() {
-                            return new KQueueEventLoopGroup(workerThreadCount);
+                    }
+                    case KQUEUE: {
+                        if (KQueue.isAvailable()) {
+                            a = new LazyInitVar<EventLoopGroup>() {
+                                @Override
+                                protected EventLoopGroup init() {
+                                    return new KQueueEventLoopGroup(2);
+                                }
+                            };
+                            b = new LazyInitVar<EventLoopGroup>() {
+                                @Override
+                                protected EventLoopGroup init() {
+                                    return new KQueueEventLoopGroup(workerThreadCount);
+                                }
+                            };
+
+                            channel = KQueueServerSocketChannel.class;
+
+                            LOGGER.info("Using kqueue");
+
+                            break;
                         }
-                    };
+                    }
+                    case NIO: {
+                        a = new LazyInitVar<EventLoopGroup>() {
+                            @Override
+                            protected EventLoopGroup init() {
+                                return new NioEventLoopGroup(2);
+                            }
+                        };
+                        b = new LazyInitVar<EventLoopGroup>() {
+                            @Override
+                            protected EventLoopGroup init() {
+                                return new NioEventLoopGroup(workerThreadCount);
+                            }
+                        };
 
-                    channel = KQueueServerSocketChannel.class;
+                        channel = NioServerSocketChannel.class;
 
-                    LOGGER.info("Using kqueue");
-                } else {
-                    a = new LazyInitVar<EventLoopGroup>() {
-                        @Override
-                        protected EventLoopGroup init() {
-                            return new NioEventLoopGroup(2);
-                        }
-                    };
-                    b = new LazyInitVar<EventLoopGroup>() {
-                        @Override
-                        protected EventLoopGroup init() {
-                            return new NioEventLoopGroup(workerThreadCount);
-                        }
-                    };
+                        LOGGER.info("Using NIO");
 
-                    channel = NioServerSocketChannel.class;
-
-                    LOGGER.info("Using NIO");
+                        break;
+                    }
                 }
             }
 
