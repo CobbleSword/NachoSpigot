@@ -38,9 +38,7 @@ public class ServerConnection {
 
     private final EventGroupType eventGroupType;
 
-    public static LazyInitVar<EventLoopGroup> a, b;
-    public LazyInitVar<EventLoopGroup> boss() { return a; } // OBFHELPER
-    public LazyInitVar<EventLoopGroup> worker() { return b; } // OBFHELPER
+    public static LazyInitVar<EventLoopGroup> a, b; // a = boss, b = worker
 
     public static final LazyInitVar<DefaultEventLoopGroup> c = new LazyInitVar<DefaultEventLoopGroup>() {
         protected DefaultEventLoopGroup init() {

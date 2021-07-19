@@ -22,7 +22,7 @@ public class NachoConfig {
     public boolean enableMobSound = true;
     public boolean enableEntityActivation = true;
     public boolean enableLavaToCobblestone = true;
-    public boolean firePlayerMoveEvent = true; // Higly recommend disable this for lobby/limbo/minigames servers.
+    public boolean firePlayerMoveEvent = true; // Highly recommend disable this for lobby/limbo/minigames servers.
     public boolean endermiteSpawning = true;
     public boolean disablePhysicsPlace = false;
     public boolean disablePhysicsUpdate = false;
@@ -31,4 +31,5 @@ public class NachoConfig {
     public int chunkThreads = 2; // PaperSpigot - Bumped value
     public int playersPerThread = 50;
     public boolean enableTCPNODELAY = true;
+    public int nettyBufferSize = 65535;
 }
