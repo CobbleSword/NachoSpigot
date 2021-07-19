@@ -5,10 +5,11 @@ import net.minecraft.server.ChunkProviderServer;
 import net.minecraft.server.ChunkRegionLoader;
 import net.minecraft.server.World;
 import org.bukkit.craftbukkit.util.AsynchronousExecutor;
+import dev.cobblesword.nachospigot.Nacho;
 
 public class ChunkIOExecutor {
-    static final int BASE_THREADS = 2; // PaperSpigot - Bumped value
-    static final int PLAYERS_PER_THREAD = 50;
+    static final int BASE_THREADS = Nacho.get().getConfig().chunkThreads;
+    static final int PLAYERS_PER_THREAD = Nacho.get().getConfig().playersPerThread;
 
     private static final AsynchronousExecutor<QueuedChunk, Chunk, Runnable, RuntimeException> instance = new AsynchronousExecutor<QueuedChunk, Chunk, Runnable, RuntimeException>(new ChunkIOProvider(), BASE_THREADS);
 

@@ -21,6 +21,8 @@ import co.aikar.timings.SpigotTimings;
 import java.util.*;
 import java.util.concurrent.Callable;
 
+import dev.cobblesword.nachospigot.Nacho;
+
 // PaperSpigot start
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -1836,7 +1838,7 @@ public abstract class World implements IBlockAccess {
         byte b0 = 32;
 
         // Spigot start
-        if (!org.spigotmc.ActivationRange.checkIfActive(entity)) {
+        if ((!org.spigotmc.ActivationRange.checkIfActive(entity)) && (Nacho.get().getConfig().enableEntityActivation)) {
             entity.ticksLived++;
             entity.inactiveTick();
             // PaperSpigot start - Remove entities in unloaded chunks
