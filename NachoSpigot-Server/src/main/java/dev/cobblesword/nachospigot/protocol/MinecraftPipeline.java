@@ -5,6 +5,7 @@ import io.netty.channel.*;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import net.minecraft.server.*;
+import dev.cobblesword.nachospigot.Nacho;
 
 public class MinecraftPipeline extends ChannelInitializer<SocketChannel>
 {
@@ -17,7 +18,7 @@ public class MinecraftPipeline extends ChannelInitializer<SocketChannel>
     protected void initChannel(SocketChannel channel) {
         try {
             ChannelConfig config = channel.config();
-            config.setOption(ChannelOption.TCP_NODELAY, true);
+            config.setOption(ChannelOption.TCP_NODELAY, Nacho.get().getConfig().enableTCPNODELAY);
             config.setOption(ChannelOption.IP_TOS, 0x18); // [Nacho-0027] :: Optimize networking
             config.setOption(ChannelOption.SO_KEEPALIVE, true);
             config.setOption(ChannelOption.SO_SNDBUF, 65535);

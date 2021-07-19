@@ -364,7 +364,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                     this.lastPitch = to.getPitch();
 
                     // Skip the first time we do this
-                    if (true) { // Spigot - don't skip any move events
+                    if (Nacho.get().getConfig().firePlayerMoveEvent) { // Spigot - don't skip any move events
                         Location oldTo = to.clone();
                         PlayerMoveEvent event = new PlayerMoveEvent(player, from, to);
                         this.server.getPluginManager().callEvent(event);

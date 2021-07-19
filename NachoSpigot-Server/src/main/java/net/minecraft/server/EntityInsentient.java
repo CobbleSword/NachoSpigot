@@ -13,6 +13,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityUnleashEvent;
 import org.bukkit.event.entity.EntityUnleashEvent.UnleashReason;
 // CraftBukkit end
+import dev.cobblesword.nachospigot.Nacho;
 
 public abstract class EntityInsentient extends EntityLiving {
 
@@ -163,7 +164,7 @@ public abstract class EntityInsentient extends EntityLiving {
     public void x() {
         String s = this.z();
 
-        if (s != null) {
+        if ((s != null) && (Nacho.get().getConfig().enableMobSound)) {
             this.makeSound(s, this.bB(), this.bC());
         }
 
@@ -493,30 +494,32 @@ public abstract class EntityInsentient extends EntityLiving {
             return;
         }
         // Spigot End
-        this.world.methodProfiler.a("sensing");
-        this.bk.a();
-        this.world.methodProfiler.b();
-        this.world.methodProfiler.a("targetSelector");
-        this.targetSelector.a();
-        this.world.methodProfiler.b();
-        this.world.methodProfiler.a("goalSelector");
-        this.goalSelector.a();
-        this.world.methodProfiler.b();
-        this.world.methodProfiler.a("navigation");
-        this.navigation.k();
-        this.world.methodProfiler.b();
-        this.world.methodProfiler.a("mob tick");
-        this.E();
-        this.world.methodProfiler.b();
-        this.world.methodProfiler.a("controls");
-        this.world.methodProfiler.a("move");
-        this.moveController.c();
-        this.world.methodProfiler.c("look");
-        this.lookController.a();
-        this.world.methodProfiler.c("jump");
-        this.g.b();
-        this.world.methodProfiler.b();
-        this.world.methodProfiler.b();
+        if (Nacho.get().getConfig().enableMobAI) {
+            this.world.methodProfiler.a("sensing");
+            this.bk.a();
+            this.world.methodProfiler.b();
+            this.world.methodProfiler.a("targetSelector");
+            this.targetSelector.a();
+            this.world.methodProfiler.b();
+            this.world.methodProfiler.a("goalSelector");
+            this.goalSelector.a();
+            this.world.methodProfiler.b();
+            this.world.methodProfiler.a("navigation");
+            this.navigation.k();
+            this.world.methodProfiler.b();
+            this.world.methodProfiler.a("mob tick");
+            this.E();
+            this.world.methodProfiler.b();
+            this.world.methodProfiler.a("controls");
+            this.world.methodProfiler.a("move");
+            this.moveController.c();
+            this.world.methodProfiler.c("look");
+            this.lookController.a();
+            this.world.methodProfiler.c("jump");
+            this.g.b();
+            this.world.methodProfiler.b();
+            this.world.methodProfiler.b();
+        }
     }
 
     protected void E() {}

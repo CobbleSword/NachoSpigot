@@ -20,7 +20,7 @@ import it.unimi.dsi.fastutil.longs.LongArraySet;
 import it.unimi.dsi.fastutil.longs.LongIterator;
 import it.unimi.dsi.fastutil.longs.LongSet;
 // TacoSpigot end
-
+import dev.cobblesword.nachospigot.Nacho;
 public class ChunkProviderServer implements IChunkProvider {
 
     private static final Logger b = LogManager.getLogger();
@@ -52,6 +52,10 @@ public class ChunkProviderServer implements IChunkProvider {
     }
 
     public void queueUnload(int i, int j) {
+        if (!Nacho.get().getConfig().doChunkUnload) {
+            return;
+        }
+
         // PaperSpigot start - Asynchronous lighting updates
         Chunk chunk = chunks.get(LongHash.toLong(i, j));
         if (chunk != null && chunk.world.paperSpigotConfig.useAsyncLighting && (chunk.pendingLightUpdates.get() > 0 || chunk.world.getTime() - chunk.lightUpdateTime < 20)) {
