@@ -65,7 +65,7 @@ public class RestartCommand extends Command
                 {
                 }
                 // Close the socket so we can rebind with the new process
-                MinecraftServer.getServer().getServerConnection().b();
+                MinecraftServer.getServer().getServerConnection().stopServer();
 
                 // Give time for it to kick in
                 try

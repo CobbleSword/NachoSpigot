@@ -2,7 +2,6 @@ package net.minecraft.server;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListenableFutureTask;
@@ -26,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
@@ -42,12 +40,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 // CraftBukkit start
-import java.io.IOException;
 
 import jline.console.ConsoleReader;
 import joptsimple.OptionSet;
 
-import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.Main;
 import co.aikar.timings.SpigotTimings; // Spigot
 // CraftBukkit end
@@ -454,7 +450,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
             }
             // CraftBukkit end
             if (this.aq() != null) {
-                this.aq().b();
+                this.aq().stopServer();
             }
 
             if (this.v != null) {
@@ -829,8 +825,6 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
             }
         }
         SpigotTimings.timeUpdateTimer.stopTiming(); // Spigot
-
-
 
         for (i = 0; i < this.worlds.size(); ++i) {
             WorldServer worldserver = this.worlds.get(i);
@@ -1384,6 +1378,8 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     }
 
     public abstract boolean ai();
+
+    public abstract ServerConnection.EventGroupType getTransport();
 
     public void setSpawnNPCs(boolean flag) {
         this.spawnNPCs = flag;
