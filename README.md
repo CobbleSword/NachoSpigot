@@ -9,7 +9,7 @@ Nacho can now be used in production environments.
 
 If you find any bugs, please create an issue or contact us in the [Discord server](https://discord.gg/ewcYeERKJw)!
 
-**NachoSpigot supports Java 8 to Java 15!**
+**NachoSpigot supports Java 8 to Java 16!**
 
 ## Download
 **Stable:** [https://nacho.sculas.xyz/](https://nacho.sculas.xyz/)
