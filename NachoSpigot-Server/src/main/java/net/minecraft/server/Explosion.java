@@ -61,7 +61,7 @@ public class Explosion {
 
         if (!this.world.tacoSpigotConfig.optimizeLiquidExplosions || !b.getMaterial().isLiquid()) { // TacoSpigot - skip calculating what blocks to blow up in water/lava
             boolean protection = false;
-            if (Nacho.get().getConfig().explosionProtectedRegions && source != null) {
+            if ((Nacho.get().getConfig().fireEntityExplodeEvent || Nacho.get().getConfig().explosionProtectedRegions) && source != null) {
                 Location location = new Location(world.getWorld(), posX, posY, posZ);
 
                 List<org.bukkit.block.Block> list = new java.util.ArrayList<>(1);
