@@ -501,10 +501,6 @@ public abstract class World implements IBlockAccess {
             this.notify(blockposition);
         }
 
-
-            this.notify(blockposition);
-        }
-
         if (!this.isClientSide && (flag & 1) != 0) {
             this.update(blockposition, oldBlock);
             if (newBLock.isComplexRedstone()) {
