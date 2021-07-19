@@ -1,6 +1,7 @@
 package net.minecraft.server;
 
 import com.google.common.collect.Lists;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import dev.cobblesword.nachospigot.protocol.MinecraftPipeline;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -35,7 +36,16 @@ public class ServerConnection {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private final EventGroupType eventGroupType;
-    private EventLoopGroup boss, worker;
+
+    public static LazyInitVar<EventLoopGroup> a, b;
+    public LazyInitVar<EventLoopGroup> boss() { return a; } //OBFHELPER
+    public LazyInitVar<EventLoopGroup> worker() { return b; } //OBFHELPER
+
+    public static final LazyInitVar<DefaultEventLoopGroup> c = new LazyInitVar<DefaultEventLoopGroup>() {
+        protected DefaultEventLoopGroup init() {
+            return new DefaultEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Local Server IO #%d").setDaemon(true).build());
+        }
+    };
 
     public final MinecraftServer server;
     public volatile boolean started;
@@ -70,22 +80,52 @@ public class ServerConnection {
 
             {
                 if ((eventGroupType == EventGroupType.EPOLL || eventGroupType == EventGroupType.DEFAULT) && Epoll.isAvailable()) {
-                    boss = new EpollEventLoopGroup(2);
-                    worker = new EpollEventLoopGroup(workerThreadCount);
+                    a = new LazyInitVar<EventLoopGroup>() {
+                        @Override
+                        protected EventLoopGroup init() {
+                            return new EpollEventLoopGroup(2);
+                        }
+                    };
+                    b = new LazyInitVar<EventLoopGroup>() {
+                        @Override
+                        protected EventLoopGroup init() {
+                            return new EpollEventLoopGroup(workerThreadCount);
+                        }
+                    };
 
                     channel = EpollServerSocketChannel.class;
 
                     LOGGER.info("Using epoll");
                 } else if ((eventGroupType == EventGroupType.KQUEUE || eventGroupType == EventGroupType.DEFAULT) && KQueue.isAvailable()) {
-                    boss = new KQueueEventLoopGroup(2);
-                    worker = new KQueueEventLoopGroup(workerThreadCount);
+                    a = new LazyInitVar<EventLoopGroup>() {
+                        @Override
+                        protected EventLoopGroup init() {
+                            return new KQueueEventLoopGroup(2);
+                        }
+                    };
+                    b = new LazyInitVar<EventLoopGroup>() {
+                        @Override
+                        protected EventLoopGroup init() {
+                            return new KQueueEventLoopGroup(workerThreadCount);
+                        }
+                    };
 
                     channel = KQueueServerSocketChannel.class;
 
                     LOGGER.info("Using kqueue");
                 } else {
-                    boss = new NioEventLoopGroup(2);
-                    worker = new NioEventLoopGroup(workerThreadCount);
+                    a = new LazyInitVar<EventLoopGroup>() {
+                        @Override
+                        protected EventLoopGroup init() {
+                            return new NioEventLoopGroup(2);
+                        }
+                    };
+                    b = new LazyInitVar<EventLoopGroup>() {
+                        @Override
+                        protected EventLoopGroup init() {
+                            return new NioEventLoopGroup(workerThreadCount);
+                        }
+                    };
 
                     channel = NioServerSocketChannel.class;
 
@@ -97,7 +137,7 @@ public class ServerConnection {
                     .channel(channel))
                     .childOption(ChannelOption.WRITE_BUFFER_WATER_MARK, SERVER_WRITE_MARK)
                     .childHandler(new MinecraftPipeline(this))
-                    .group(boss, worker)
+                    .group(a.c(), b.c())
                     .localAddress(ip, port))
                     .bind()
                     .syncUninterruptibly());
@@ -110,8 +150,9 @@ public class ServerConnection {
             try {
                 channelfuture.channel().close().sync();
             } finally {
-                this.boss.shutdownGracefully().sync();
-                this.worker.shutdownGracefully().sync();
+                a.c().shutdownGracefully().sync();
+                b.c().shutdownGracefully().sync();
+                c.c().shutdownGracefully().sync();
             }
         }
 
