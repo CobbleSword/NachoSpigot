@@ -222,4 +222,36 @@ public class PaperSpigotConfig
     {
         warnForExcessiveVelocity = getBoolean("warnWhenSettingExcessiveVelocity", true);
     }
+
+    // FlamePaper start - 0117-Pearl-through-blocks    
+    public static boolean pearlPassthroughFenceGate;
+    private static void pearlPassthroughFenceGate()
+    {
+        pearlPassthroughFenceGate = getBoolean( "pearl-passthrough.fence_gate", true );
+    }
+    
+    public static boolean pearlPassthroughTripwire;
+    private static void pearlPassthroughTripwire()
+    {
+        pearlPassthroughTripwire = getBoolean( "pearl-passthrough.tripwire", true );
+    }
+    
+    public static boolean pearlPassthroughSlab;
+    private static void pearlPassthroughSlab()
+    {
+        pearlPassthroughSlab = getBoolean( "pearl-passthrough.slab", true );
+    }
+
+    public static boolean pearlPassthroughCobweb;
+    private static void pearlPassthroughCobweb()
+    {
+        pearlPassthroughSlab = getBoolean( "pearl-passthrough.cobweb", true );
+    }
+
+    public static boolean pearlPassthroughBed;
+    private static void pearlPassthroughBed()
+    {
+        pearlPassthroughSlab = getBoolean( "pearl-passthrough.bed", false );
+    }
+    // FlamePaper end
 }

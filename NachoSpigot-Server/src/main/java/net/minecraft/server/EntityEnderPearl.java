@@ -3,8 +3,11 @@ package net.minecraft.server;
 // CraftBukkit start
 import dev.cobblesword.nachospigot.commons.Constants;
 import org.bukkit.Bukkit;
+import org.github.paperspigot.PaperSpigotConfig;
+import net.minecraft.server.BlockPosition;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.event.player.PlayerTeleportEvent;
+
 // CraftBukkit end
 
 public class EntityEnderPearl extends EntityProjectile {
@@ -38,6 +41,25 @@ public class EntityEnderPearl extends EntityProjectile {
             this.die();
         }
         // PaperSpigot end
+
+        // FlamePaper start - 0117-Pearl-through-blocks
+        BlockPosition blockPosition = movingobjectposition.a();
+        
+        if (blockPosition != null) {
+            IBlockData blockData = world.getType(blockPosition);
+            Block block = blockData.getBlock();
+            boolean collides = 
+                PaperSpigotConfig.pearlPassthroughTripwire && block == Blocks.TRIPWIRE
+                || PaperSpigotConfig.pearlPassthroughCobweb && block == Blocks.WEB
+                || PaperSpigotConfig.pearlPassthroughBed && block == Blocks.BED
+                || PaperSpigotConfig.pearlPassthroughFenceGate && (block == Blocks.FENCE_GATE || block == Blocks.SPRUCE_FENCE_GATE || block == Blocks.BIRCH_FENCE_GATE || block == Blocks.JUNGLE_FENCE_GATE || block == Blocks.DARK_OAK_FENCE_GATE || block == Blocks.ACACIA_FENCE_GATE) && ((Boolean) blockData.get(BlockFenceGate.OPEN)).booleanValue()
+                || PaperSpigotConfig.pearlPassthroughSlab && (block == Blocks.STONE_SLAB || block == Blocks.WOODEN_SLAB || block == Blocks.STONE_SLAB2);
+        
+            if (collides) {
+                return;
+            }
+        }
+        // FlamePaper end
 
         for (int i = 0; i < 32; ++i) {
             this.world.addParticle(EnumParticle.PORTAL, this.locX, this.locY + this.random.nextDouble() * 2.0D, this.locZ, this.random.nextGaussian(), 0.0D, this.random.nextGaussian(), Constants.EMPTY_ARRAY);
