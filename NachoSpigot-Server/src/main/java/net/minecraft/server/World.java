@@ -1726,7 +1726,11 @@ public abstract class World implements IBlockAccess {
                 BlockPosition blockposition = tileentity.getPosition();
 
                 if (this.isLoaded(blockposition) && this.N.a(blockposition)) {
-                    try {
+                    try {                            
+			if (this.getTileEntity(tileentity.getPosition()) == null){
+                            tileEntityList.remove(tileentity); //[Nacho-Spigot] Ghost Spawner Bug fixed By BeyazPolis
+                            continue;
+                        }
                         tileentity.tickTimer.startTiming(); // Spigot
                         ((IUpdatePlayerListBox) tileentity).c();
                     } catch (Throwable throwable2) {
