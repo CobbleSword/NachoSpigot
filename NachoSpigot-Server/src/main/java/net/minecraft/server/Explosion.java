@@ -60,7 +60,7 @@ public class Explosion {
 
         if (!this.world.tacoSpigotConfig.optimizeLiquidExplosions || !b.getMaterial().isLiquid()) { // TacoSpigot - skip calculating what blocks to blow up in water/lava
             boolean protection = false;
-            if (Nacho.get().getConfig().explosionProtectedRegions) {
+            if (Nacho.get().getConfig().explosionProtectedRegions && source != null) {
                 Location location = new Location(world.getWorld(), posX, posY, posZ);
 
                 List<org.bukkit.block.Block> list = new java.util.ArrayList<>(1);
@@ -69,12 +69,10 @@ public class Explosion {
                 int z = org.bukkit.util.NumberConversions.floor(posZ);
                 list.add(chunk.bukkitChunk.getBlock(x, y, z));
 
-                if(source != null) {
-                    EntityExplodeEvent event = new EntityExplodeEvent(source.getBukkitEntity(), location, list, 0.3F);
-                    world.getServer().getPluginManager().callEvent(event);
-                    if (event.isCancelled() || event.blockList().isEmpty()) {
-                        protection = true;
-                    }
+                EntityExplodeEvent event = new EntityExplodeEvent(source.getBukkitEntity(), location, list, 0.3F);
+                world.getServer().getPluginManager().callEvent(event);
+                if (event.isCancelled() || event.blockList().isEmpty()) {
+                    protection = true;
                 }
             }
             if (!protection) {

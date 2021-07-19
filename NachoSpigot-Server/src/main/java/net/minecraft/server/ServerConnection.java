@@ -69,7 +69,18 @@ public class ServerConnection {
     public ServerConnection(MinecraftServer server) {
         this.server = server;
         this.started = true;
-        this.eventGroupType = server.ai() ? EventGroupType.EPOLL : server.getTransport();
+
+        if (server.ai()) /* use-native-transport */ {
+            if (Epoll.isAvailable()) {
+                this.eventGroupType = EventGroupType.EPOLL;
+                return;
+            } else if (KQueue.isAvailable()) {
+                this.eventGroupType = EventGroupType.KQUEUE;
+                return;
+            }
+        }
+
+        this.eventGroupType = server.getTransport();
     }
 
     public void a(InetAddress ip, int port) throws IOException {
