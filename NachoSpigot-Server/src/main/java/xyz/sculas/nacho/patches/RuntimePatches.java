@@ -1,8 +1,7 @@
-package dev.cobblesword.nachospigot.patches;
+package xyz.sculas.nacho.patches;
 
 import dev.cobblesword.nachospigot.Nacho;
 import javassist.*;
-import javassist.expr.ExprEditor;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.plugin.Plugin;

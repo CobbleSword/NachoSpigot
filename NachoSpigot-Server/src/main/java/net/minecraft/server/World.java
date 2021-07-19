@@ -2134,6 +2134,7 @@ public abstract class World implements IBlockAccess {
 
         explosion.a();
         explosion.a(true);
+
         return explosion;
     }
 

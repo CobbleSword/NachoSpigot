@@ -1,4 +1,4 @@
-package dev.cobblesword.nachospigot.anticrash;
+package xyz.sculas.nacho.anticrash;
 
 import dev.cobblesword.nachospigot.protocol.PacketListener;
 import net.minecraft.server.*;

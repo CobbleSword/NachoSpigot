@@ -1,8 +1,9 @@
 package dev.cobblesword.nachospigot;
 
-import dev.cobblesword.nachospigot.anticrash.AntiCrash;
+import xyz.sculas.nacho.anticrash.AntiCrash;
 import dev.cobblesword.nachospigot.commons.FileUtils;
-import dev.cobblesword.nachospigot.patches.RuntimePatches;
+import xyz.sculas.nacho.async.AsyncExplosions;
+import xyz.sculas.nacho.patches.RuntimePatches;
 import dev.cobblesword.nachospigot.protocol.PacketListener;
 import net.minecraft.server.MinecraftServer;
 import org.bukkit.command.defaults.nacho.SetMaxSlotCommand;
@@ -23,9 +24,12 @@ public class Nacho {
 
     public Nacho() {
         INSTANCE = this;
+
         this.config = new NachoConfig();
         while (!CONFIG_FILE.exists()) FileUtils.toFile(this.config, CONFIG_FILE);
         this.config = FileUtils.toObject(CONFIG_FILE, NachoConfig.class);
+        assert this.config != null;
+
         if(this.config.enableAntiCrash) {
             System.out.println("[NS-AntiCrash] Activating Anti Crash.");
             Nacho.get().registerPacketListener(new AntiCrash());
