@@ -167,13 +167,14 @@ public class ServerConnection {
 
     public void stopServer() throws InterruptedException {
         this.started = false;
+        LOGGER.info("Shutting down event loops");
         for (ChannelFuture channelfuture : this.getListeningChannels()) {
             try {
                 channelfuture.channel().close().sync();
             } finally {
-                a.c().shutdownGracefully().sync();
-                b.c().shutdownGracefully().sync();
-                c.c().shutdownGracefully().sync();
+                a.c().shutdownGracefully();
+                b.c().shutdownGracefully();
+                c.c().shutdownGracefully();
             }
         }
 
