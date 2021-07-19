@@ -37,13 +37,13 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
-            <version>4.1.65.Final</version>
+            <version>4.1.66.Final</version>
         </dependency>
 
         <dependency>
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
-            <version>3.27.0-GA</version>
+            <version>3.28.0-GA</version>
         </dependency>
 
         <dependency>
