@@ -165,6 +165,7 @@ If you find any bugs, please create an issue or contact us in the [Discord serve
 [FlamePaper-0104] Return last slot by default
 [FlamePaper-0105] Fix memory leaks by Minetick
 [FlamePaper-0115] Patch Book Exploits
+[FlamePaper-0117] Pearl through blocks
 
 [MineTick-0006] Fix Occasional Client Side Unloading of Chunk 0 0
 [MineTick-0017] Fix Insane Nether Portal Lag
