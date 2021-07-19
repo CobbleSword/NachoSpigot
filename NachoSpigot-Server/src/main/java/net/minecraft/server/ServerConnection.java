@@ -38,9 +38,7 @@ public class ServerConnection {
 
     private final EventGroupType eventGroupType;
 
-    public static LazyInitVar<EventLoopGroup> a, b;
-    public LazyInitVar<EventLoopGroup> boss() { return a; } // OBFHELPER
-    public LazyInitVar<EventLoopGroup> worker() { return b; } // OBFHELPER
+    public static LazyInitVar<EventLoopGroup> a, b; // a = boss, b = worker
 
     public static final LazyInitVar<DefaultEventLoopGroup> c = new LazyInitVar<DefaultEventLoopGroup>() {
         protected DefaultEventLoopGroup init() {
@@ -71,6 +69,17 @@ public class ServerConnection {
     public ServerConnection(MinecraftServer server) {
         this.server = server;
         this.started = true;
+
+        if (server.ai()) /* use-native-transport */ {
+            if (Epoll.isAvailable()) {
+                this.eventGroupType = EventGroupType.EPOLL;
+                return;
+            } else if (KQueue.isAvailable()) {
+                this.eventGroupType = EventGroupType.KQUEUE;
+                return;
+            }
+        }
+
         this.eventGroupType = server.getTransport();
     }
 
