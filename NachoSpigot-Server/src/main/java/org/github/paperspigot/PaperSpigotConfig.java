@@ -241,5 +241,17 @@ public class PaperSpigotConfig
     {
         pearlPassthroughSlab = getBoolean( "pearl-passthrough.slab", true );
     }
+
+    public static boolean pearlPassthroughCobweb;
+    private static void pearlPassthroughCobweb()
+    {
+        pearlPassthroughSlab = getBoolean( "pearl-passthrough.cobweb", true );
+    }
+
+    public static boolean pearlPassthroughBed;
+    private static void pearlPassthroughBed()
+    {
+        pearlPassthroughSlab = getBoolean( "pearl-passthrough.bed", false );
+    }
     // FlamePaper end
 }
