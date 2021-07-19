@@ -20,9 +20,9 @@ public class RuntimePatches
         try {
             if(
                     Bukkit.getPluginManager().isPluginEnabled("ViaVersion") &&
-                            !Nacho.get().getConfig().serverBrandName.contains("paper") &&
-                            !Nacho.get().getConfig().serverBrandName.contains("taco") &&
-                            !Nacho.get().getConfig().serverBrandName.contains("torch")
+                            !Nacho.get().getConfig().serverBrandName.toLowerCase().contains("paper") &&
+                            !Nacho.get().getConfig().serverBrandName.toLowerCase().contains("taco") &&
+                            !Nacho.get().getConfig().serverBrandName.toLowerCase().contains("torch")
             ) {
                 logger.info("Patching block placement, please wait.");
                 ClassLoader cl = Bukkit.getPluginManager().getPlugin("ViaVersion").getClass().getClassLoader();
@@ -31,9 +31,9 @@ public class RuntimePatches
                 try {
                 	Class.forName("com.viaversion.viaversion.api.Via", true, cl); // Checking for the new ViaVersion version
                 	viaVersionPackage = "com.viaversion.viaversion."; // new
-		} catch (ClassNotFoundException ignore) {
-			logger.info("Using an old ViaVersion version, please update!");
-		}
+                } catch (ClassNotFoundException ignore) {
+                    logger.info("Using an old ViaVersion version, please update!");
+                }
                 // This was the line of code I'm representing here in Reflection.
                 // Via.getManager().getLoader().storeListener(new PaperPatch(plugin)).register();
                 // Fun, isn't it?
@@ -59,7 +59,8 @@ public class RuntimePatches
                 logger.info("Successfully patched block placement!");
             }
         } catch (Exception e) {
-            logger.warning("Could not patch block placement.");
+            logger.warning("Could not patch block placement. Setting brand name to TacoSpigot to make it work properly.");
+            Nacho.get().getConfig().serverBrandName = "TacoSpigot";
             e.printStackTrace();
         }
     }
@@ -69,14 +70,22 @@ public class RuntimePatches
             try {
                 logger.info("Patching ProtocolLib, please wait.");
 
-                // TODO Remove this message if you know a better way for this!
-                logger.warning(
-                        "This patch is a nasty way to patch ProtocolLib, since if an " +
-                                "breaking update is done to the ProtocolInjector this WILL break ProtocolLib. " +
-                                "Please do note that the latest update on the ProtocolInjector class was made " +
-                                "before 2018, so there shouldn't be anything to worry about. " +
-                                "If you do know how to fix this though, please make a PR at: https://github.com/CobbleSword/NachoSpigot"
-                );
+                try {
+                    String[] tmp = plugin.getDescription().getVersion().split("\\.");
+                    if (Integer.parseInt(tmp[0]) <= 4 && Integer.parseInt(tmp[1]) <= 6) {
+                        logger.warning(
+                                "Please update to ProtocolLib version 4.7.0 or higher!\n" +
+                                        "In version 4.6.0 and lower, we have to do a nasty fix to make it work.\n" +
+                                        "So.. once again, please update!\n" +
+                                        "Sleeping for 10s so this message can be read."
+                        );
+                        Thread.sleep(10000);
+                    } else {
+                        logger.info("It seems that you are using ProtocolLib version 4.7 or higher, which is supported!");
+                        logger.info("No need to patch ProtocolLib, skipping.");
+                        return true;
+                    }
+                } catch (Exception ignored) {}
 
                 ClassPool pool = ClassPool.getDefault();
                 pool.insertClassPath(new LoaderClassPath(plugin.getClass().getClassLoader()));

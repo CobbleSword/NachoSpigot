@@ -1,6 +1,7 @@
 package net.minecraft.server;
 
 import com.google.common.collect.Lists;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import dev.cobblesword.nachospigot.protocol.MinecraftPipeline;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -27,6 +28,7 @@ public class ServerConnection {
     public enum EventGroupType {
         EPOLL,
         KQUEUE,
+        NIO,
         DEFAULT
     }
 
@@ -35,16 +37,25 @@ public class ServerConnection {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private final EventGroupType eventGroupType;
-    private EventLoopGroup boss, worker;
+
+    public static LazyInitVar<EventLoopGroup> a, b;
+    public LazyInitVar<EventLoopGroup> boss() { return a; } // OBFHELPER
+    public LazyInitVar<EventLoopGroup> worker() { return b; } // OBFHELPER
+
+    public static final LazyInitVar<DefaultEventLoopGroup> c = new LazyInitVar<DefaultEventLoopGroup>() {
+        protected DefaultEventLoopGroup init() {
+            return new DefaultEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Local Server IO #%d").setDaemon(true).build());
+        }
+    };
 
     public final MinecraftServer server;
     public volatile boolean started;
 
-    private final List<ChannelFuture> g = Collections.synchronizedList(Lists.<ChannelFuture>newArrayList());
-    public List<ChannelFuture> getListeningChannels() { return this.g; } //OBFHELPER
+    private final List<ChannelFuture> g = Collections.synchronizedList(Lists.newArrayList());
+    public List<ChannelFuture> getListeningChannels() { return this.g; } // OBFHELPER
 
-    private final List<NetworkManager> h = Collections.synchronizedList(Lists.<NetworkManager>newArrayList());
-    public List<NetworkManager> getConnectedChannels() { return this.h; } //OBFHELPER
+    private final List<NetworkManager> h = Collections.synchronizedList(Lists.newArrayList());
+    public List<NetworkManager> getConnectedChannels() { return this.h; } // OBFHELPER
 
     // Paper start - prevent blocking on adding a new network manager while the server is ticking
     public final java.util.Queue<NetworkManager> pending = new java.util.concurrent.ConcurrentLinkedQueue<>();
@@ -65,31 +76,81 @@ public class ServerConnection {
 
     public void a(InetAddress ip, int port) throws IOException {
         synchronized (this.getListeningChannels()) {
-            Class<? extends ServerChannel> channel;
+            Class<? extends ServerChannel> channel = null;
             final int workerThreadCount = Runtime.getRuntime().availableProcessors();
 
             {
-                if ((eventGroupType == EventGroupType.EPOLL || eventGroupType == EventGroupType.DEFAULT) && Epoll.isAvailable()) {
-                    boss = new EpollEventLoopGroup(2);
-                    worker = new EpollEventLoopGroup(workerThreadCount);
+                // First time using fall-through, lol
+                switch (eventGroupType) {
+                    default:
+                    case DEFAULT: {
+                        LOGGER.info("Finding best event group type using fall-through");
+                    }
 
-                    channel = EpollServerSocketChannel.class;
+                    case EPOLL: {
+                        if (Epoll.isAvailable()) {
+                            a = new LazyInitVar<EventLoopGroup>() {
+                                @Override
+                                protected EventLoopGroup init() {
+                                    return new EpollEventLoopGroup(2);
+                                }
+                            };
+                            b = new LazyInitVar<EventLoopGroup>() {
+                                @Override
+                                protected EventLoopGroup init() {
+                                    return new EpollEventLoopGroup(workerThreadCount);
+                                }
+                            };
 
-                    LOGGER.info("Using epoll");
-                } else if ((eventGroupType == EventGroupType.KQUEUE || eventGroupType == EventGroupType.DEFAULT) && KQueue.isAvailable()) {
-                    boss = new KQueueEventLoopGroup(2);
-                    worker = new KQueueEventLoopGroup(workerThreadCount);
+                            channel = EpollServerSocketChannel.class;
 
-                    channel = KQueueServerSocketChannel.class;
+                            LOGGER.info("Using epoll");
 
-                    LOGGER.info("Using kqueue");
-                } else {
-                    boss = new NioEventLoopGroup(2);
-                    worker = new NioEventLoopGroup(workerThreadCount);
+                            break;
+                        }
+                    }
+                    case KQUEUE: {
+                        if (KQueue.isAvailable()) {
+                            a = new LazyInitVar<EventLoopGroup>() {
+                                @Override
+                                protected EventLoopGroup init() {
+                                    return new KQueueEventLoopGroup(2);
+                                }
+                            };
+                            b = new LazyInitVar<EventLoopGroup>() {
+                                @Override
+                                protected EventLoopGroup init() {
+                                    return new KQueueEventLoopGroup(workerThreadCount);
+                                }
+                            };
 
-                    channel = NioServerSocketChannel.class;
+                            channel = KQueueServerSocketChannel.class;
 
-                    LOGGER.info("Using NIO");
+                            LOGGER.info("Using kqueue");
+
+                            break;
+                        }
+                    }
+                    case NIO: {
+                        a = new LazyInitVar<EventLoopGroup>() {
+                            @Override
+                            protected EventLoopGroup init() {
+                                return new NioEventLoopGroup(2);
+                            }
+                        };
+                        b = new LazyInitVar<EventLoopGroup>() {
+                            @Override
+                            protected EventLoopGroup init() {
+                                return new NioEventLoopGroup(workerThreadCount);
+                            }
+                        };
+
+                        channel = NioServerSocketChannel.class;
+
+                        LOGGER.info("Using NIO");
+
+                        break;
+                    }
                 }
             }
 
@@ -97,7 +158,7 @@ public class ServerConnection {
                     .channel(channel))
                     .childOption(ChannelOption.WRITE_BUFFER_WATER_MARK, SERVER_WRITE_MARK)
                     .childHandler(new MinecraftPipeline(this))
-                    .group(boss, worker)
+                    .group(a.c(), b.c())
                     .localAddress(ip, port))
                     .bind()
                     .syncUninterruptibly());
@@ -106,12 +167,14 @@ public class ServerConnection {
 
     public void stopServer() throws InterruptedException {
         this.started = false;
+        LOGGER.info("Shutting down event loops");
         for (ChannelFuture channelfuture : this.getListeningChannels()) {
             try {
                 channelfuture.channel().close().sync();
             } finally {
-                this.boss.shutdownGracefully().sync();
-                this.worker.shutdownGracefully().sync();
+                a.c().shutdownGracefully();
+                b.c().shutdownGracefully();
+                c.c().shutdownGracefully();
             }
         }
 
