@@ -158,6 +158,7 @@ If you find any bugs, please create an issue or contact us in the [Discord serve
 [SportPaper-0043] Get blocks in Chunk API
 [SportPaper-0162] Fix PlayerInteractEvent not cancelling properly
 [SportPaper-0197] Optimize head rotation patch
+[SportPaper-0201] Cache block break animation packet
 [SportPaper-0203] Fix Teleport Invisibility
 
 [PaperBin-????] WorldServer#everyoneDeeplySleeping optimization

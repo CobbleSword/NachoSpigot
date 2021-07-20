@@ -66,26 +66,28 @@ public class WorldManager implements IWorldAccess {
         // CraftBukkit end
 
         java.util.List<? extends EntityHuman> list = entity != null ? entity.world.players : this.a.getPlayerList().v();
-        Iterator<? extends EntityHuman> iterator = list.iterator();
+        PacketPlayOutBlockBreakAnimation packet = null; // SportPaper - cache packet
 
-        while (iterator.hasNext()) {
-            EntityHuman human = iterator.next();
+        for (EntityHuman human : list) {
             if (!(human instanceof EntityPlayer)) continue;
             EntityPlayer entityplayer = (EntityPlayer) human;
 
-            if (entityplayer != null && entityplayer.world == this.world && entityplayer.getId() != i) {
+            if (entityplayer.world == this.world && entityplayer.getId() != i) {
                 double d0 = (double) blockposition.getX() - entityplayer.locX;
                 double d1 = (double) blockposition.getY() - entityplayer.locY;
                 double d2 = (double) blockposition.getZ() - entityplayer.locZ;
 
                 // CraftBukkit start
-                if (entityhuman != null && entityhuman instanceof EntityPlayer && !entityplayer.getBukkitEntity().canSee(((EntityPlayer) entityhuman).getBukkitEntity())) {
+                if (entityhuman instanceof EntityPlayer && !entityplayer.getBukkitEntity().canSee(((EntityPlayer) entityhuman).getBukkitEntity())) {
                     continue;
                 }
                 // CraftBukkit end
 
                 if (d0 * d0 + d1 * d1 + d2 * d2 < 1024.0D) {
-                    entityplayer.playerConnection.sendPacket(new PacketPlayOutBlockBreakAnimation(i, blockposition, j));
+                    // SportPaper start
+                    if (packet == null) packet = new PacketPlayOutBlockBreakAnimation(i, blockposition, j);
+                    entityplayer.playerConnection.sendPacket(packet);
+                    // SportPaper end
                 }
             }
         }
