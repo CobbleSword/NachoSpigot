@@ -23,6 +23,7 @@ import org.bukkit.craftbukkit.chunkio.ChunkIOExecutor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.TravelAgent;
+import org.bukkit.craftbukkit.inventory.CraftInventoryView;
 import org.bukkit.craftbukkit.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
@@ -349,8 +350,8 @@ public abstract class PlayerList {
         // CraftBukkit start - Quitting must be before we do final save of data, in case plugins need to modify it
         org.bukkit.craftbukkit.event.CraftEventFactory.handleInventoryCloseEvent(entityplayer);
 
-        PlayerQuitEvent playerQuitEvent = new PlayerQuitEvent(cserver.getPlayer(entityplayer), "\u00A7e" + entityplayer.getName() + " left the game.");
-        cserver.getPluginManager().callEvent(playerQuitEvent);
+        Player bukkit = cserver.getPlayer(entityplayer); // KigPaper
+        PlayerQuitEvent playerQuitEvent = new PlayerQuitEvent(bukkit, "\u00A7e" + entityplayer.getName() + " left the game.");cserver.getPluginManager().callEvent(playerQuitEvent);
         entityplayer.getBukkitEntity().disconnect(playerQuitEvent.getQuitMessage());
         // CraftBukkit end
         
@@ -391,6 +392,12 @@ public abstract class PlayerList {
         // CraftBukkit end
 
         ChunkIOExecutor.adjustPoolSize(this.getPlayerCount()); // CraftBukkit
+
+        // KigPaper start - fix memory leak
+        CraftingManager craftingManager = CraftingManager.getInstance();
+        CraftInventoryView lastView = (CraftInventoryView) craftingManager.lastCraftView;
+        if (lastView != null && lastView.getHandle() instanceof ContainerPlayer && lastView.getPlayer() == bukkit) craftingManager.lastCraftView = null;
+        // KigPaper end
 
         return playerQuitEvent.getQuitMessage(); // CraftBukkit
     }
