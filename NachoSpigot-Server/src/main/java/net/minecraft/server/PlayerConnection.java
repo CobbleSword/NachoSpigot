@@ -844,8 +844,10 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
             this.player.g = false;
             // CraftBukkit - TODO CHECK IF NEEDED -- new if structure might not need 'always'. Kept it in for now, but may be able to remove in future
             // KigPaper-0172
-//            if (!ItemStack.matches(this.player.inventory.getItemInHand(), packetplayinblockplace.getItemStack()) || always) {
-            if (always) {
+            if (
+                    Nacho.get().getConfig().stopDecodingItemStackOnPlace ? always :
+                            (!ItemStack.matches(this.player.inventory.getItemInHand(), packetplayinblockplace.getItemStack()) || always)
+            ) {
                 this.sendPacket(new PacketPlayOutSetSlot(this.player.activeContainer.windowId, slot.rawSlotIndex, this.player.inventory.getItemInHand()));
             }
         }

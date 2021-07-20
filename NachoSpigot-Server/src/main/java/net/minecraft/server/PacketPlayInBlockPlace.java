@@ -1,5 +1,6 @@
 package net.minecraft.server;
 
+import dev.cobblesword.nachospigot.Nacho;
 import io.netty.handler.codec.DecoderException;
 
 import java.io.IOException;
@@ -35,14 +36,19 @@ public class PacketPlayInBlockPlace implements Packet<PacketListenerPlayIn> {
         timestamp = System.currentTimeMillis(); // CraftBukkit
         this.b = packetdataserializer.c();
         this.c = packetdataserializer.readUnsignedByte();
+
         // KigPaper-0172 start - don't parse itemstack
 
-        // this.d = packetdataserializer.decodeItemStack();
-        // Consume everything and leave 3 bytes at the end
-        if (packetdataserializer.readableBytes() < 3) throw new DecoderException("Expected 3 facing bytes");
-        packetdataserializer.skipBytes(packetdataserializer.readableBytes() - 3);
+        if (!Nacho.get().getConfig().stopDecodingItemStackOnPlace) {
+            this.d = packetdataserializer.decodeItemStack();
+        } else {
+            // Consume everything and leave 3 bytes at the end
+            if (packetdataserializer.readableBytes() < 3) throw new DecoderException("Expected 3 facing bytes");
+            packetdataserializer.skipBytes(packetdataserializer.readableBytes() - 3);
+        }
 
         // KigPaper-0172 end
+
         this.e = (float) packetdataserializer.readUnsignedByte() / 16.0F;
         this.f = (float) packetdataserializer.readUnsignedByte() / 16.0F;
         this.g = (float) packetdataserializer.readUnsignedByte() / 16.0F;
