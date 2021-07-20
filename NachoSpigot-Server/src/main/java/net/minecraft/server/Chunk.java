@@ -586,7 +586,8 @@ public class Chunk {
         return this.g(blockposition.getX() & 15, blockposition.getY(), blockposition.getZ() & 15);
     }
 
-    public IBlockData a(BlockPosition blockposition, IBlockData iblockdata) {
+    public IBlockData a(BlockPosition blockposition, IBlockData iblockdata, boolean updateLight) {
+		// KigPaper - add updateLight param
         int i = blockposition.getX() & 15;
         int j = blockposition.getY();
         int k = blockposition.getZ() & 15;
@@ -628,9 +629,9 @@ public class Chunk {
             if (chunksection.b(i, j & 15, k) != block) {
                 return null;
             } else {
-                if (flag) {
+                if (updateLight && flag) { // KigPaper 0191 - Don't calculate initial light if not requested
                     this.initLighting();
-                } else {
+                } else if (updateLight) { // KigPaper - conditional light update
                     int j1 = block.p();
                     int k1 = block1.p();
 

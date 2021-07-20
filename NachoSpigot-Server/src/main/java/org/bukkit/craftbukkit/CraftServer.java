@@ -55,6 +55,7 @@ import org.bukkit.craftbukkit.generator.CraftChunkData;
 import org.bukkit.craftbukkit.help.SimpleHelpMap;
 import org.bukkit.craftbukkit.inventory.CraftFurnaceRecipe;
 import org.bukkit.craftbukkit.inventory.CraftInventoryCustom;
+import org.bukkit.craftbukkit.inventory.CraftInventoryView; // KigPaper
 import org.bukkit.craftbukkit.inventory.CraftItemFactory;
 import org.bukkit.craftbukkit.inventory.CraftRecipe;
 import org.bukkit.craftbukkit.inventory.CraftShapedRecipe;
@@ -1094,7 +1095,14 @@ public final class CraftServer implements Server {
         }
 
         worlds.remove(world.getName().toLowerCase());
-        console.worlds.remove(handle);
+        console.worlds.remove(console.worlds.indexOf(handle)); // KigPaper
+		
+		// KigPaper start - Fix CraftingManager memory leak
+        CraftingManager craftingManager = CraftingManager.getInstance();
+        CraftInventoryView lastView = (CraftInventoryView) craftingManager.lastCraftView;
+        if (lastView != null && lastView.getHandle() instanceof ContainerWorkbench
+                && ((ContainerWorkbench) lastView.getHandle()).g == handle) craftingManager.lastCraftView = null;
+        // KigPaper end
 
         File parentFolder = world.getWorldFolder().getAbsoluteFile();
 
