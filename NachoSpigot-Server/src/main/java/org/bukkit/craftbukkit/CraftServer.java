@@ -22,6 +22,7 @@ import javax.imageio.ImageIO;
 import com.eatthepath.uuid.FastUUID;
 import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.knockback.Knockback;
+import org.bukkit.craftbukkit.inventory.*;
 import xyz.sculas.nacho.malware.AntiMalware;
 import xyz.sculas.nacho.patches.RuntimePatches;
 import net.minecraft.server.*;
@@ -52,13 +53,6 @@ import org.bukkit.craftbukkit.command.VanillaCommandWrapper;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.craftbukkit.generator.CraftChunkData;
 import org.bukkit.craftbukkit.help.SimpleHelpMap;
-import org.bukkit.craftbukkit.inventory.CraftFurnaceRecipe;
-import org.bukkit.craftbukkit.inventory.CraftInventoryCustom;
-import org.bukkit.craftbukkit.inventory.CraftItemFactory;
-import org.bukkit.craftbukkit.inventory.CraftRecipe;
-import org.bukkit.craftbukkit.inventory.CraftShapedRecipe;
-import org.bukkit.craftbukkit.inventory.CraftShapelessRecipe;
-import org.bukkit.craftbukkit.inventory.RecipeIterator;
 import org.bukkit.craftbukkit.map.CraftMapView;
 import org.bukkit.craftbukkit.metadata.EntityMetadataStore;
 import org.bukkit.craftbukkit.metadata.PlayerMetadataStore;
@@ -1092,6 +1086,13 @@ public final class CraftServer implements Server {
 
         worlds.remove(world.getName().toLowerCase());
         console.worlds.remove(handle);
+
+        // KigPaper start - fix memory leak
+        CraftingManager craftingManager = CraftingManager.getInstance();
+        CraftInventoryView lastView = (CraftInventoryView) craftingManager.lastCraftView;
+        if (lastView != null && lastView.getHandle() instanceof ContainerWorkbench
+                && ((ContainerWorkbench) lastView.getHandle()).g == handle) craftingManager.lastCraftView = null;
+        // KigPaper end
 
         File parentFolder = world.getWorldFolder().getAbsoluteFile();
 

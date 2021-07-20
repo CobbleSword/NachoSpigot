@@ -9,7 +9,7 @@ public class ContainerWorkbench extends Container {
 
     public InventoryCrafting craftInventory; // CraftBukkit - move initialization into constructor
     public IInventory resultInventory; // CraftBukkit - move initialization into constructor
-    private World g;
+    public World g; // KigPaper - make public
     private BlockPosition h;
     // CraftBukkit start
     private CraftInventoryView bukkitEntity = null;
