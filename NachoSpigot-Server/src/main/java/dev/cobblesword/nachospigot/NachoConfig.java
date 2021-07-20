@@ -17,6 +17,7 @@ public class NachoConfig {
     public boolean reducedDensityRays = true;
     public int playerTimeStatisticsInterval = 20;
     public String serverBrandName = "NachoSpigot";
+    public boolean stopDecodingItemStackOnPlace = true;
     public boolean enableAntiCrash = true;
     public boolean infiniteWaterSources = true;
     public boolean leavesDecayEvent = true;
