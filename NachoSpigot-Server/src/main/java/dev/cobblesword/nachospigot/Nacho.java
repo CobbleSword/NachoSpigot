@@ -2,7 +2,7 @@ package dev.cobblesword.nachospigot;
 
 import xyz.sculas.nacho.anticrash.AntiCrash;
 import dev.cobblesword.nachospigot.commons.FileUtils;
-import xyz.sculas.nacho.async.AsyncExplosions;
+import xyz.sculas.nacho.async.AsyncExecutor;
 import xyz.sculas.nacho.patches.RuntimePatches;
 import dev.cobblesword.nachospigot.protocol.PacketListener;
 import dev.cobblesword.nachospigot.protocol.MovementListener;
@@ -32,7 +32,8 @@ public class Nacho {
         this.config = FileUtils.toObject(CONFIG_FILE, NachoConfig.class);
         assert this.config != null;
 
-        AsyncExplosions.initExecutor(config.useFixedPoolForTNT, config.fixedPoolSize);
+        AsyncExecutor.initExplosions(config.useFixedPoolForTNT, config.fixedPoolSize);
+        AsyncExecutor.initTracker();
 
         if(this.config.enableAntiCrash) {
             System.out.println("[NS-AntiCrash] Activating Anti Crash.");

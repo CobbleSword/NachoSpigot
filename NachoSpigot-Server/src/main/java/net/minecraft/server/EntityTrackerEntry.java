@@ -95,10 +95,10 @@ public class EntityTrackerEntry {
 
             if (itemstack != null && itemstack.getItem() instanceof ItemWorldMap) { // Paper - moved back up
                 WorldMap worldmap = Items.FILLED_MAP.getSavedMap(itemstack, this.tracker.world);
-                Iterator iterator = this.trackedPlayers.iterator(); // CraftBukkit
+                // CraftBukkit
 
-                while (iterator.hasNext()) {
-                    EntityHuman entityhuman = (EntityHuman) iterator.next();
+                for (EntityPlayer trackedPlayer : this.trackedPlayers) {
+                    EntityHuman entityhuman = (EntityHuman) trackedPlayer;
                     EntityPlayer entityplayer = (EntityPlayer) entityhuman;
 
                     worldmap.a(entityplayer, itemstack);
@@ -302,15 +302,9 @@ public class EntityTrackerEntry {
     }
 
     public void broadcast(Packet packet) {
-        Iterator iterator = this.trackedPlayers.iterator();
-
-        while (iterator.hasNext())
-        {
-            EntityPlayer entityplayer = (EntityPlayer) iterator.next();
-
+        for (EntityPlayer entityplayer : this.trackedPlayers) {
             entityplayer.playerConnection.sendPacket(packet);
         }
-
     }
 
     public void broadcastIncludingSelf(Packet packet) {
@@ -322,14 +316,9 @@ public class EntityTrackerEntry {
     }
 
     public void a() {
-        Iterator iterator = this.trackedPlayers.iterator();
-
-        while (iterator.hasNext()) {
-            EntityPlayer entityplayer = (EntityPlayer) iterator.next();
-
+        for (EntityPlayer entityplayer : this.trackedPlayers) {
             entityplayer.d(this.tracker);
         }
-
     }
 
     public void a(EntityPlayer entityplayer) {

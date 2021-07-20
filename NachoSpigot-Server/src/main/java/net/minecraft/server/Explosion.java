@@ -13,7 +13,7 @@ import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.Location;
 import org.bukkit.event.block.BlockExplodeEvent;
-import xyz.sculas.nacho.async.AsyncExplosions;
+import xyz.sculas.nacho.async.AsyncExecutor;
 // CraftBukkit end
 
 public class Explosion {
@@ -406,7 +406,7 @@ public class Explosion {
                 this.world.explosionDensityCache.put(key, blockDensity);
             }
             return blockDensity;
-        }, AsyncExplosions.EXECUTOR);
+        }, AsyncExecutor.EXPLOSIONS_EXECUTOR);
     }
 
     private float calculateDensity(Vec3D vec3d, AxisAlignedBB aabb) {

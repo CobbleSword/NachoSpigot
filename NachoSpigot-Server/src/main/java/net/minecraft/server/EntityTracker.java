@@ -4,18 +4,21 @@ import com.google.common.collect.Lists;
 
 import java.util.*;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
 
 import dev.cobblesword.nachospigot.Nacho;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import xyz.sculas.nacho.async.AsyncExecutor;
+import xyz.sculas.nacho.async.util.IndexedLinkedHashSet;
 
 public class EntityTracker {
 
     private static final Logger a = LogManager.getLogger();
     private final WorldServer world;
 
-    public Set<EntityTrackerEntry> c = new io.papermc.paper.util.maplist.ObjectMapList<>(); // IonSpigot - HashSet -> ObjectMapList
-    public Set<EntityTrackerEntry> getTrackedEntities() { return c; }
+    public IndexedLinkedHashSet<EntityTrackerEntry> c = new IndexedLinkedHashSet<>(); // IonSpigot - HashSet -> ObjectMapList // Nacho - Async Entity Tracker
+    public IndexedLinkedHashSet<EntityTrackerEntry> getTrackedEntities() { return c; }
 
     public IntHashMap<EntityTrackerEntry> trackedEntities = new IntHashMap<>();
     public IntHashMap<EntityTrackerEntry> getTrackedEntityHashTable() { return trackedEntities; }
@@ -185,6 +188,27 @@ public class EntityTracker {
                 }
             }
         }
+//        int offset = 0;
+//        CountDownLatch latch = new CountDownLatch(4);
+//        for (int i = 1; i <= 4; i++) {
+//            int localOffset = offset++;
+//            Runnable runnable = () -> {
+//                for (int in = localOffset; in < this.c.size(); in += 4) {
+//                    this.c.get(in).a(); // TODO this is not the proper call! make sure to fix this.
+//                }
+//                latch.countDown();
+//            };
+//            if (i < 4) {
+//                AsyncExecutor.TRACKER_EXECUTOR.execute(runnable);
+//            } else {
+//                runnable.run();
+//            }
+//        }
+//        try {
+//            latch.await();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     public void a(EntityPlayer entityplayer) {

@@ -38,30 +38,31 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     public static final AttributeKey<EnumProtocol> ATTRIBUTE_PROTOCOL = AttributeKey.valueOf("protocol");
     public static final AttributeKey<EnumProtocol> c = ATTRIBUTE_PROTOCOL;
     // Nacho start - gave LazyInitVars a type
-    public static final LazyInitVar<NioEventLoopGroup> NETWORK_WORKER_GROUP = new LazyInitVar<NioEventLoopGroup>() {
-        protected NioEventLoopGroup a() {
-            return new NioEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Client IO #%d").setDaemon(true).build());
-        }
-        protected NioEventLoopGroup init() {
-            return this.a();
-        }
-    };
-    public static final LazyInitVar<EpollEventLoopGroup> NETWORK_EPOLL_WORKER_GROUP = new LazyInitVar<EpollEventLoopGroup>() {
-        protected EpollEventLoopGroup a() {
-            return new EpollEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Epoll Client IO #%d").setDaemon(true).build());
-        }
-        protected EpollEventLoopGroup init() {
-            return this.a();
-        }
-    };
-    public static final LazyInitVar<DefaultEventLoopGroup> LOCAL_WORKER_GROUP = new LazyInitVar<DefaultEventLoopGroup>() {
-        protected DefaultEventLoopGroup a() {
-            return new DefaultEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Local Client IO #%d").setDaemon(true).build());
-        }
-        protected DefaultEventLoopGroup init() {
-            return this.a();
-        }
-    };
+    // This is never used? Commented out.
+//    public static final LazyInitVar<NioEventLoopGroup> NETWORK_WORKER_GROUP = new LazyInitVar<NioEventLoopGroup>() {
+//        protected NioEventLoopGroup a() {
+//            return new NioEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Client IO #%d").setDaemon(true).build());
+//        }
+//        protected NioEventLoopGroup init() {
+//            return this.a();
+//        }
+//    };
+//    public static final LazyInitVar<EpollEventLoopGroup> NETWORK_EPOLL_WORKER_GROUP = new LazyInitVar<EpollEventLoopGroup>() {
+//        protected EpollEventLoopGroup a() {
+//            return new EpollEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Epoll Client IO #%d").setDaemon(true).build());
+//        }
+//        protected EpollEventLoopGroup init() {
+//            return this.a();
+//        }
+//    };
+//    public static final LazyInitVar<DefaultEventLoopGroup> LOCAL_WORKER_GROUP = new LazyInitVar<DefaultEventLoopGroup>() {
+//        protected DefaultEventLoopGroup a() {
+//            return new DefaultEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Local Client IO #%d").setDaemon(true).build());
+//        }
+//        protected DefaultEventLoopGroup init() {
+//            return this.a();
+//        }
+//    };
     // Nacho end
 
     private final EnumProtocolDirection h;
