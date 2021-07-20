@@ -110,7 +110,7 @@ public abstract class EntityInsentient extends EntityLiving {
     }
 
     public EntityLiving getGoalTarget() {
-        return this.goalTarget.get(); // KigPaper - WeakReference
+        return this.goalTarget == null ? null : this.goalTarget.get(); // KigPaper - WeakReference
     }
 
     public void setGoalTarget(EntityLiving entityliving) {
