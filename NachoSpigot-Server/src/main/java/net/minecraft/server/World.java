@@ -413,7 +413,12 @@ public abstract class World implements IBlockAccess {
         return this.chunkProvider.getOrCreateChunk(i, j);
     }
 
+    // KigPaper start
     public boolean setTypeAndData(BlockPosition blockposition, IBlockData iblockdata, int i) {
+        return this.setTypeAndData(blockposition, iblockdata, i, true);
+    }
+
+    public boolean setTypeAndData(BlockPosition blockposition, IBlockData iblockdata, int i, boolean updateLight) { // KigPaper end - add updateLight param
         // CraftBukkit start - tree generation
         if (this.captureTreeGeneration) {
             BlockState blockstate = null;
@@ -451,7 +456,7 @@ public abstract class World implements IBlockAccess {
             }
             // CraftBukkit end
 
-            IBlockData iblockdata1 = chunk.a(blockposition, iblockdata);
+            IBlockData iblockdata1 = chunk.a(blockposition, iblockdata, updateLight); // KigPaper - add updateLight
 
             if (iblockdata1 == null) {
                 // CraftBukkit start - remove blockstate if failed
@@ -463,7 +468,7 @@ public abstract class World implements IBlockAccess {
             } else {
                 Block block1 = iblockdata1.getBlock();
 
-                if (block.p() != block1.p() || block.r() != block1.r()) {
+                if (updateLight && (block.p() != block1.p() || block.r() != block1.r())) { // KigPaper - add updateLight param
                     this.methodProfiler.a("checkLight");
                     this.x(blockposition);
                     this.methodProfiler.b();
