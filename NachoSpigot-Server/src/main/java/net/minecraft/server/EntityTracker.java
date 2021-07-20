@@ -147,7 +147,7 @@ public class EntityTracker {
 
     // IonSpigot start
     private EntityTrackerEntry createTracker(Entity entity, int i, int j, boolean flag) {
-        if (entity.isCannoningEntity && Nacho.get().getConfig().useCannonTracker) {
+        if (entity.isCannoningEntity && Nacho.get().getConfig().useFasterCannonTracker) {
             return new me.suicidalkids.ion.visuals.CannonTrackerEntry(entity, i, j, flag);
         } else {
             return new EntityTrackerEntry(entity, i, j, flag);

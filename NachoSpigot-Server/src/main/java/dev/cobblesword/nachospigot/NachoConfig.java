@@ -37,5 +37,5 @@ public class NachoConfig {
     public boolean enableTCPNODELAY = true;
     public boolean useFixedPoolForTNT = false;
     public int fixedPoolSize = 500;
-    public boolean useCannonTracker = true;
+    public boolean useFasterCannonTracker = true;
 }
