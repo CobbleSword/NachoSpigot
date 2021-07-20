@@ -9,6 +9,7 @@ public class NachoConfig {
     public boolean patchProtocolLib = true;
     public boolean stopNotifyBungee = false;
     public boolean checkForMalware = false;
+    public boolean kickOnIllegalBehavior = true;
     public boolean shouldTickEnchantmentTables = true;
     public boolean usePandaWire = true;
     public boolean constantExplosions = false;
