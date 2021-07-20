@@ -1,9 +1,7 @@
 package net.minecraft.server;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -161,21 +159,9 @@ public class EntityTrackerEntry {
                         this.lastOnGround = this.tracker.onGround;
                         this.ticksSinceLastForcedTeleport = 0;
                         // CraftBukkit start - Refresh list of who can see a player before sending teleport packet
-                        if (this.tracker instanceof EntityPlayer)
-                        {
-                            this.scanPlayers(new java.util.ArrayList(this.trackedPlayers));
-
-                            // EDIT: Learning the list makes it thread safe... lol
-                            // Nacho start
-                            // No need to create a whole new list every teleport
-//                            Iterator<EntityPlayer> iterator = trackedPlayers.iterator();
-//                            while (iterator.hasNext())
-//                            {
-//                                EntityPlayer next = iterator.next();
-//                                this.updatePlayer(next);
-//                            }
-//                            this.scanPlayers(new java.util.ArrayList(this.trackedPlayers));
-                            // Nacho end
+                        if (this.tracker instanceof EntityPlayer) {
+                            // SportPaper - Fix invisibility on teleport
+                            this.scanPlayers(new ArrayList<>(this.tracker.world.players));
                         }
                         // CraftBukkit end
                         object = new PacketPlayOutEntityTeleport(this.tracker.getId(), i, j, k, (byte) l, (byte) i1, this.tracker.onGround);
