@@ -36,7 +36,15 @@ If you find any bugs, please create an issue or contact us in the [Discord serve
 ### Building / Compiling
 > To build, clone the repo, and run `mvn clean package` in the NachoSpigot directory.
 
+### Discord
+[Join the Discord server!](https://discord.gg/SBTEbSx)
+
+### Supporters / Contributors
+See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contributors)
+
 ## Patches
+**All credit goes to the people that made these patches.**<br>
+*Give credit where credit is due!*
 ```
 [Spigot-0097] Remove DataWatcher Locking by spottedleaf
 [Spigot-0138] Branchless NibbleArray by md5
@@ -185,12 +193,3 @@ If you find any bugs, please create an issue or contact us in the [Discord serve
 [MineTick-0006] Fix Occasional Client Side Unloading of Chunk 0 0
 [MineTick-0017] Fix Insane Nether Portal Lag
 ```
-
-## Discord
-[Join the Discord server!](https://discord.gg/SBTEbSx)
-
-## Supporters
-
-[Lucas (aka Sculas)](https://sculas.xyz/)
-
-[LewUwU](https://github.com/LewUwU/)
