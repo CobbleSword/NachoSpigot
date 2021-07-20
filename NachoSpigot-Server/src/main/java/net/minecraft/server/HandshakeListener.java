@@ -4,14 +4,14 @@ import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 
 // CraftBukkit start
 import java.net.InetAddress;
-import java.util.HashMap;
+import java.util.Map;
 // CraftBukkit end
 
 public class HandshakeListener implements PacketHandshakingInListener {
 
     private static final com.google.gson.Gson gson = new com.google.gson.Gson(); // Spigot
     // CraftBukkit start - add fields
-    private static final HashMap<InetAddress, Long> throttleTracker = new new Object2LongOpenHashMap<>();
+    private static final Map<InetAddress, Long> throttleTracker = new new Object2LongOpenHashMap<>();
     private static int throttleCounter = 0;
     // CraftBukkit end
 
