@@ -163,6 +163,8 @@ If you find any bugs, please create an issue or contact us in the [Discord serve
 
 [PaperBin-????] WorldServer#everyoneDeeplySleeping optimization
 
+[KigPaper-0039] Fix Entity and Command Block memory leaks
+[KigPaper-0128] Fix Entity and Command Block memory leaks
 [KigPaper-0129] Fix more EnchantmentManager leaks
 [KigPaper-0138] Fix some more memory leaks
 [KigPaper-0161] Fix CraftingManager memory leak

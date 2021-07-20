@@ -12,18 +12,19 @@ import org.bukkit.plugin.Plugin;
 import java.util.Set;
 
 public abstract class ServerCommandSender implements CommandSender {
-    private static PermissibleBase blockPermInst;
+    // private static PermissibleBase blockPermInst; // KigPaper - fix memory leak
     private final PermissibleBase perm;
 
     public ServerCommandSender() {
-        if (this instanceof CraftBlockCommandSender) {
+        /* if (this instanceof CraftBlockCommandSender) {
             if (blockPermInst == null) {
                 blockPermInst = new PermissibleBase(this);
             }
             this.perm = blockPermInst;
         } else {
             this.perm = new PermissibleBase(this);
-        }
+        } */// KigPaper
+        this.perm = new PermissibleBase(this);
     }
 
     public boolean isPermissionSet(String name) {
