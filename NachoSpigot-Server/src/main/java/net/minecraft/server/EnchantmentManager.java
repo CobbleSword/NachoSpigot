@@ -134,6 +134,12 @@ public class EnchantmentManager {
             EnchantmentManager.b.a = 0;
         }
 
+        // KigPaper start
+        EnchantmentManager.d.a = null;
+        EnchantmentManager.d.b = null;
+        EnchantmentManager.b.b = null;
+        // KigPaper end
+
         return (EnchantmentManager.b.a + 1 >> 1) + EnchantmentManager.a.nextInt((EnchantmentManager.b.a >> 1) + 1);
     }
 

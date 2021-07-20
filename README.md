@@ -162,6 +162,8 @@ If you find any bugs, please create an issue or contact us in the [Discord serve
 
 [PaperBin-????] WorldServer#everyoneDeeplySleeping optimization
 
+[KigPaper-0129] Fix more EnchantmentManager leaks
+[KigPaper-0138] Fix some more memory leaks
 [KigPaper-0172] NBT no-op for block place packet
 
 [FlamePaper-0102] Fixed chunk memory leak
