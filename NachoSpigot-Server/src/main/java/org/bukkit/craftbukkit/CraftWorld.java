@@ -150,7 +150,7 @@ public class CraftWorld implements World {
     }
 
     public boolean isChunkLoaded(int x, int z) {
-        return world.chunkProviderServer.isChunkLoaded(x, z);
+        return this.world.getChunkSource().getChunkAtIfLoadedImmediately(x, z) != null; // Paper
     }
 
     public Chunk[] getLoadedChunks() {
