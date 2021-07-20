@@ -164,7 +164,9 @@ If you find any bugs, please create an issue or contact us in the [Discord serve
 
 [KigPaper-0129] Fix more EnchantmentManager leaks
 [KigPaper-0138] Fix some more memory leaks
+[KigPaper-0167] Add setType without lighting update API
 [KigPaper-0172] NBT no-op for block place packet
+[KigPaper-0191] Don't calculate initial light if not requested
 
 [FlamePaper-0102] Fixed chunk memory leak
 [FlamePaper-0103] Limit CraftChatMessage iterations
