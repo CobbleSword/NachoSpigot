@@ -21,6 +21,8 @@ import co.aikar.timings.SpigotTimings;
 import java.util.*;
 import java.util.concurrent.Callable;
 
+import dev.cobblesword.nachospigot.Nacho;
+
 // PaperSpigot start
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -495,7 +497,7 @@ public abstract class World implements IBlockAccess {
 
     // CraftBukkit start - Split off from original setTypeAndData(int i, int j, int k, Block block, int l, int i1) method in order to directly send client and physic updates
     public void notifyAndUpdatePhysics(BlockPosition blockposition, Chunk chunk, Block oldBlock, Block newBLock, int flag) {
-        if ((flag & 2) != 0 && (chunk == null || chunk.isReady())) {  // allow chunk to be null here as chunk.isReady() is false when we send our notification during block placement
+        if ((flag & 2) != 0 && (!this.isClientSide || (flag & 4) == 0) && (chunk == null || chunk.isReady())) {  // allow chunk to be null here as chunk.isReady() is false when we send our notification during block placement
             this.notify(blockposition);
         }
 
@@ -1284,8 +1286,8 @@ public abstract class World implements IBlockAccess {
     }
 
     protected void b(Entity entity) {
-        for (int i = 0; i < this.u.size(); ++i) {
-            ((IWorldAccess) this.u.get(i)).b(entity);
+        for (IWorldAccess iWorldAccess : this.u) {
+            iWorldAccess.b(entity);
         }
 
         entity.valid = false; // CraftBukkit
@@ -1726,7 +1728,11 @@ public abstract class World implements IBlockAccess {
                 BlockPosition blockposition = tileentity.getPosition();
 
                 if (this.isLoaded(blockposition) && this.N.a(blockposition)) {
-                    try {
+                    try {                            
+			if (this.getTileEntity(tileentity.getPosition()) == null){
+                            tileEntityList.remove(tileentity); //[Nacho-Spigot] Ghost Spawner Bug fixed By BeyazPolis
+                            continue;
+                        }
                         tileentity.tickTimer.startTiming(); // Spigot
                         ((IUpdatePlayerListBox) tileentity).c();
                     } catch (Throwable throwable2) {
@@ -1836,7 +1842,7 @@ public abstract class World implements IBlockAccess {
         byte b0 = 32;
 
         // Spigot start
-        if (!org.spigotmc.ActivationRange.checkIfActive(entity)) {
+        if ((!org.spigotmc.ActivationRange.checkIfActive(entity)) && (Nacho.get().getConfig().enableEntityActivation)) {
             entity.ticksLived++;
             entity.inactiveTick();
             // PaperSpigot start - Remove entities in unloaded chunks
@@ -2128,6 +2134,7 @@ public abstract class World implements IBlockAccess {
 
         explosion.a();
         explosion.a(true);
+
         return explosion;
     }
 
@@ -3023,7 +3030,14 @@ public abstract class World implements IBlockAccess {
     public boolean a(Block block, BlockPosition blockposition, boolean flag, EnumDirection enumdirection, Entity entity, ItemStack itemstack) {
         Block block1 = this.getType(blockposition).getBlock();
         AxisAlignedBB axisalignedbb = flag ? null : block.a(this, blockposition, block.getBlockData());
-
+        
+	/* Fixed a paper issue whitch causes issues with viaversion
+	*  the b method checks if the boundingboxes are overlapping
+	   if they do we need to cancel the block place             */ 
+        if(axisalignedbb != null && entity != null && axisalignedbb.b(entity.getBoundingBox())) {
+            return false; 
+        }
+	
         // CraftBukkit start - store default return
         boolean defaultReturn = axisalignedbb != null && !this.a(axisalignedbb, entity) ? false : (block1.getMaterial() == Material.ORIENTABLE && block == Blocks.ANVIL ? true : block1.getMaterial().isReplaceable() && block.canPlace(this, blockposition, enumdirection, itemstack));
         BlockCanBuildEvent event = new BlockCanBuildEvent(this.getWorld().getBlockAt(blockposition.getX(), blockposition.getY(), blockposition.getZ()), CraftMagicNumbers.getId(block), defaultReturn);
@@ -3333,7 +3347,7 @@ public abstract class World implements IBlockAccess {
         } else {
             BiomeBase biomebase = this.getBiome(blockposition);
 
-            return biomebase.d() ? false : (this.f(blockposition, false) ? false : biomebase.e());
+            return !biomebase.d() && (!this.f(blockposition, false) && biomebase.e());
         }
     }
 

@@ -2,6 +2,8 @@ package net.minecraft.server;
 
 import java.util.Random;
 
+import dev.cobblesword.nachospigot.Nacho;
+
 import org.bukkit.event.block.LeavesDecayEvent; // CraftBukkit
 
 public abstract class BlockLeaves extends BlockTransparent {
@@ -132,6 +134,10 @@ public abstract class BlockLeaves extends BlockTransparent {
     }
 
     private void e(World world, BlockPosition blockposition) {
+        if (!Nacho.get().getConfig().leavesDecayEvent) {
+            return;
+        }
+
         // CraftBukkit start
         LeavesDecayEvent event = new LeavesDecayEvent(world.getWorld().getBlockAt(blockposition.getX(), blockposition.getY(), blockposition.getZ()));
         world.getServer().getPluginManager().callEvent(event);

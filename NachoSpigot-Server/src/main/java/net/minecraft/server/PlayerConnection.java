@@ -135,7 +135,9 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
     {
         this.h = false;
         ++this.e;
-        this.minecraftServer.methodProfiler.a("keepAlive");
+        
+        // Feather start back port 1.12.2 keepalive handling
+        /* this.minecraftServer.methodProfiler.a("keepAlive");
         if ((long) this.e - this.k > 40L)
         {
             this.k = (long) this.e;
@@ -144,7 +146,23 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
             this.sendPacket(new PacketPlayOutKeepAlive(this.i));
         }
 
-        this.minecraftServer.methodProfiler.b();
+        this.minecraftServer.methodProfiler.b(); */
+        
+        final long currentTime = this.getCurrentMillis();
+        final long elapsedTime = currentTime - this.getLastPing();
+        if (isPendingPing) {
+            if (!this.processedDisconnect && elapsedTime >= KEEPALIVE_LIMIT) {
+                this.disconnect("Timed out");
+		return;
+            }
+        } else if (elapsedTime >= 15000L) {
+            isPendingPing = true;
+            this.setLastPing(currentTime);
+            this.setKeepAliveID((int) /*casting to an integer is the vanilla behavior*/ currentTime );
+            this.sendPacket(new PacketPlayOutKeepAlive(this.getKeepAliveID()));
+        }
+        // Feather end
+        
         // CraftBukkit start
         for (int spam; (spam = this.chatThrottle) > 0 && !chatSpamField.compareAndSet(this, spam, spam - 1); ) ;
         /* Use thread-safe field access instead
@@ -165,6 +183,63 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
         }
 
     }
+    
+    
+    /* A 1.8.8 client is sending KeepAlive packets with 0 id
+     * while rendering the GUIDownloadWorld
+     * The server would disconnect the client
+     * so must we consider this issue */
+    private boolean isDownloading; 
+    
+    public boolean isDownloading() { return isDownloading; }
+
+    public static final long KEEPALIVE_LIMIT = 30000;
+    
+    private boolean noKeepalives; // Prevent spamming the warning
+    
+    //Feather start
+    @Override
+    public void a(PacketPlayInKeepAlive packetplayinkeepalive) {
+        if(noKeepalives) return;
+        if (isPendingPing && packetplayinkeepalive.a() == getKeepAliveID()) {
+            int i = (int) (this.d() - getLastPing());
+            this.player.ping = (this.player.ping * 3 + i) / 4;
+            isPendingPing = false; isDownloading = false;
+        }else {
+            if(packetplayinkeepalive.a() == 0) {
+                isDownloading = true;
+            }else {
+                noKeepalives = true;
+                c.warn("{} sent an invalid keepalive! pending keepalive: {} got id: {} expected id: {}", this.player.getName(), isPendingPing, packetplayinkeepalive.a(), this.getKeepAliveID());
+                this.minecraftServer.postToMainThread(() -> disconnect("invalid keepalive"));
+            }    	   
+        }
+    }
+    //Feather end
+
+       
+    // Feather start obf help
+    private boolean isPendingPing;
+   
+    private void setLastPing(final long lastPing) {
+        this.j = lastPing;
+    }
+     private long getLastPing() {
+        return this.j;
+    }
+   
+    private void setKeepAliveID(final int keepAliveID) {
+        this.i = keepAliveID;
+    }
+    
+    private int getKeepAliveID() {
+        return this.i;
+    }
+    
+    private long getCurrentMillis() {
+        return this.d();
+    }
+    // Feather end
 
     public NetworkManager getNetworkManager() {
         return this.networkManager;
@@ -280,6 +355,26 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                 double delta = Math.pow(this.lastPosX - to.getX(), 2) + Math.pow(this.lastPosY - to.getY(), 2) + Math.pow(this.lastPosZ - to.getZ(), 2);
                 float deltaAngle = Math.abs(this.lastYaw - to.getYaw()) + Math.abs(this.lastPitch - to.getPitch());
 
+                if ((packetplayinflying.hasPos) && ((delta > 0.0D) && (this.checkMovement && !this.player.dead))) {
+                    for (dev.cobblesword.nachospigot.protocol.MovementListener movementListener : Nacho.get().getMovementListeners()) {
+                        try {
+                            movementListener.updateLocation(player, to, from, packetplayinflying);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                  
+                if ((packetplayinflying.hasLook) && ((deltaAngle > 0.0F) && (this.checkMovement && !this.player.dead))) {
+                    for (dev.cobblesword.nachospigot.protocol.MovementListener movementListener : Nacho.get().getMovementListeners()) {
+                        try {
+                            movementListener.updateRotation(player, to, from, packetplayinflying);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
                 if ((delta > 1f / 256 || deltaAngle > 10f) && (this.checkMovement && !this.player.dead))
                 {
                     this.lastPosX = to.getX();
@@ -289,7 +384,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                     this.lastPitch = to.getPitch();
 
                     // Skip the first time we do this
-                    if (true) { // Spigot - don't skip any move events
+                    if (Nacho.get().getConfig().firePlayerMoveEvent) { // Spigot - don't skip any move events
                         Location oldTo = to.clone();
                         PlayerMoveEvent event = new PlayerMoveEvent(player, from, to);
                         this.server.getPluginManager().callEvent(event);
@@ -2004,15 +2099,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 
     }
 
-    public void a(PacketPlayInKeepAlive packetplayinkeepalive)
-    {
-        if (packetplayinkeepalive.a() == this.i) {
-            int i = (int) (this.d() - this.j);
 
-            this.player.ping = (this.player.ping * 3 + i) / 4;
-        }
-
-    }
 
     private long d() {
         return System.nanoTime() / 1000000L;

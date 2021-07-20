@@ -1,21 +1,37 @@
-# NachoSpigot ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/CobbleSword/NachoSpigot/NachoSpigot%20Build)
+# NachoSpigot [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/CobbleSword/NachoSpigot/NachoSpigot%20Build)](https://nacho.sculas.xyz/)
 
-#### NachoSpigot is a fork of TacoSpigot 1.8.9.
+#### NachoSpigot is a fork of TacoSpigot 1.8.8
 NachoSpigot offers a number of enhancements to performance as well as bug fixes such as a built-in Anti-Crash system and being able to perform well with a large number of players.
 
 ## Current State
 Java 15 is now natively supported, and ProtocolLib and Citizens are patched at runtime to work with Nacho's patches.
 Nacho can now be used in production environments.
 
-If you find any bugs, please create an issue or contact us in the Discord server!
+If you find any bugs, please create an issue or contact us in the [Discord server](https://discord.gg/ewcYeERKJw)!
 
-> Test Server: `nacho.sucks-ass.lol`
-
-**NachoSpigot supports Java 8 to Java 15!**
+**NachoSpigot supports Java 8 to Java 16!**
 
 ## Download
 **Stable:** [https://nacho.sculas.xyz/](https://nacho.sculas.xyz/)
 **Development:** [https://nachodev.sculas.xyz/](https://nachodev.sculas.xyz/)
+
+## API Download (Maven)
+```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+<dependencies>
+    <dependency>
+        <groupId>com.github.CobbleSword.NachoSpigot</groupId>
+        <artifactId>api</artifactId>
+        <version>master-SNAPSHOT</version>
+        <scope>provided</scope>
+    </dependency>
+</dependencies>
+```
 
 ### Building / Compiling
 > To build, clone the repo, and run `mvn clean package` in the NachoSpigot directory.
@@ -114,6 +130,7 @@ If you find any bugs, please create an issue or contact us in the Discord server
 [Nacho-0047] Little anti-malware
 [Nacho-0048] Little anti-crash
 [Nacho-0051] Custom knockback
+[Nacho-0052] Rework ServerConnection and MinecraftPipeline (credits to Minestom)
 
 [Yatopia-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 [Yatopia-0047] Smarter statistics ticking
@@ -126,6 +143,9 @@ If you find any bugs, please create an issue or contact us in the Discord server
 [IonSpigot-0014] Faster Chunk Entity List
 [IonSpigot-0020] Faster EntityTracker Collections
 [IonSpigot-0035] Optimise Entity Collisions
+
+[InsanePaper-269] Cache Chunk Coordinations
+[InsanePaper-390] Heavily optimize Tuinity controlled flush patch
 
 [Akarin-0001] Avoid double I/O operation on load player file by tsao chi
 
@@ -147,7 +167,11 @@ If you find any bugs, please create an issue or contact us in the Discord server
 [FlamePaper-0103] Limit CraftChatMessage iterations
 [FlamePaper-0104] Return last slot by default
 [FlamePaper-0105] Fix memory leaks by Minetick
+[FlamePaper-0106] Fix sending irrelevant block updates to the client
+[FlamePaper-0110] Fix NullPointerException exploits for invalid logins
+[FlamePaper-0113] Remove unused code from beacons
 [FlamePaper-0115] Patch Book Exploits
+[FlamePaper-0117] Pearl through blocks
 
 [MineTick-0006] Fix Occasional Client Side Unloading of Chunk 0 0
 [MineTick-0017] Fix Insane Nether Portal Lag
@@ -159,3 +183,5 @@ If you find any bugs, please create an issue or contact us in the Discord server
 ## Supporters
 
 [Lucas (aka Sculas)](https://sculas.xyz/)
+
+[LewUwU](https://github.com/LewUwU/)

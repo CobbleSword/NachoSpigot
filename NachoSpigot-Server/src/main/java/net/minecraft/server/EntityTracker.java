@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import java.util.*;
 import java.util.concurrent.Callable;
 
+import dev.cobblesword.nachospigot.Nacho;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -105,7 +106,7 @@ public class EntityTracker {
                 throw new IllegalStateException("Entity is already tracked!");
             }
 
-            EntityTrackerEntry entitytrackerentry = new EntityTrackerEntry(entity, i, j, flag);
+            EntityTrackerEntry entitytrackerentry = createTracker(entity, i, j, flag); // IonSpigot
 
             this.c.add(entitytrackerentry);
             this.trackedEntities.a(entity.getId(), entitytrackerentry);
@@ -143,6 +144,16 @@ public class EntityTracker {
             }
         }
     }
+
+    // IonSpigot start
+    private EntityTrackerEntry createTracker(Entity entity, int i, int j, boolean flag) {
+        if (entity.isCannoningEntity && Nacho.get().getConfig().useCannonTracker) {
+            return new me.suicidalkids.ion.visuals.CannonTrackerEntry(entity, i, j, flag);
+        } else {
+            return new EntityTrackerEntry(entity, i, j, flag);
+        }
+    }
+    // IonSpigot end
 
     public void untrackEntity(Entity entity) {
         org.spigotmc.AsyncCatcher.catchOp( "entity untrack"); // Spigot
@@ -204,7 +215,6 @@ public class EntityTracker {
         for (EntityTrackerEntry entitytrackerentry : this.c) {
             entitytrackerentry.clear(entityplayer);
         }
-
     }
 
     public void a(EntityPlayer entityplayer, Chunk chunk) {

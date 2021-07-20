@@ -1,8 +1,7 @@
-package dev.cobblesword.nachospigot.patches;
+package xyz.sculas.nacho.patches;
 
 import dev.cobblesword.nachospigot.Nacho;
 import javassist.*;
-import javassist.expr.ExprEditor;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.plugin.Plugin;
@@ -11,24 +10,34 @@ import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
-public class RuntimePatches {
+public class RuntimePatches 
+{
 
     private static final Logger logger = Bukkit.getLogger();
 
     public static void applyViaVersionBlockPatch() {
         try {
+            final String name = Nacho.get().getConfig().serverBrandName.toLowerCase();
             if(
                     Bukkit.getPluginManager().isPluginEnabled("ViaVersion") &&
-                            !Nacho.get().getConfig().serverBrandName.contains("paper") &&
-                            !Nacho.get().getConfig().serverBrandName.contains("taco") &&
-                            !Nacho.get().getConfig().serverBrandName.contains("torch")
+                            !name.contains("paper") &&
+                            !name.contains("taco") &&
+                            !name.contains("torch")
             ) {
                 logger.info("Patching block placement, please wait.");
                 ClassLoader cl = Bukkit.getPluginManager().getPlugin("ViaVersion").getClass().getClassLoader();
+                
+                String viaVersionPackage = "us.myles.ViaVersion."; // old
+                try {
+                	Class.forName("com.viaversion.viaversion.api.Via", true, cl); // Checking for the new ViaVersion version
+                	viaVersionPackage = "com.viaversion.viaversion."; // new
+                } catch (ClassNotFoundException ignore) {
+                    logger.info("Using an old ViaVersion version, please update!");
+                }
                 // This was the line of code I'm representing here in Reflection.
                 // Via.getManager().getLoader().storeListener(new PaperPatch(plugin)).register();
                 // Fun, isn't it?
-                Class<?> via = Class.forName("us.myles.ViaVersion.api.Via", true, cl);
+                Class<?> via = Class.forName(viaVersionPackage + "api.Via", true, cl);
                 Method getManager = via.getMethod("getManager");
                 Object viaManager = getManager.invoke(null);
                 Class<?> viaManagerClass = viaManager.getClass();
@@ -38,8 +47,8 @@ public class RuntimePatches {
                 Class<?> bukkitViaLoaderClass = bukkitViaLoader.getClass();
                 Method storeListener = getMethod(bukkitViaLoaderClass, "storeListener");
                 if(storeListener == null) throw new IllegalStateException("storeListener was not found in the BukkitViaLoader class");
-                Class<?> paperPatchClass = Class.forName("us.myles.ViaVersion.bukkit.listeners.protocol1_9to1_8.PaperPatch", true, cl);
-                Class<?> viaVersionPlugin = Class.forName("us.myles.ViaVersion.ViaVersionPlugin", true, cl);
+                Class<?> paperPatchClass = Class.forName(viaVersionPackage + "bukkit.listeners.protocol1_9to1_8.PaperPatch", true, cl);
+                Class<?> viaVersionPlugin = Class.forName(viaVersionPackage + "ViaVersionPlugin", true, cl);
                 Method getInstance = viaVersionPlugin.getDeclaredMethod("getInstance");
                 Object plugin = getInstance.invoke(viaVersionPlugin);
                 Object paperPatch = paperPatchClass.getDeclaredConstructor(Plugin.class).newInstance(plugin);
@@ -50,7 +59,8 @@ public class RuntimePatches {
                 logger.info("Successfully patched block placement!");
             }
         } catch (Exception e) {
-            logger.warning("Could not patch block placement.");
+            logger.warning("Could not patch block placement. Setting brand name to TacoSpigot to make it work properly.");
+            Nacho.get().getConfig().serverBrandName = "TacoSpigot";
             e.printStackTrace();
         }
     }
@@ -60,14 +70,22 @@ public class RuntimePatches {
             try {
                 logger.info("Patching ProtocolLib, please wait.");
 
-                // TODO Remove this message if you know a better way for this!
-                logger.warning(
-                        "This patch is a nasty way to patch ProtocolLib, since if an " +
-                                "breaking update is done to the ProtocolInjector this WILL break ProtocolLib. " +
-                                "Please do note that the latest update on the ProtocolInjector class was made " +
-                                "before 2018, so there shouldn't be anything to worry about. " +
-                                "If you do know how to fix this though, please make a PR at: https://github.com/Sculas/NachoSpigot"
-                );
+                try {
+                    String[] tmp = plugin.getDescription().getVersion().split("\\.");
+                    if (Integer.parseInt(tmp[0]) <= 4 && Integer.parseInt(tmp[1]) <= 6) {
+                        logger.warning(
+                                "Please update to ProtocolLib version 4.7.0 or higher!\n" +
+                                        "In version 4.6.0 and lower, we have to do a nasty fix to make it work.\n" +
+                                        "So.. once again, please update!\n" +
+                                        "Sleeping for 10s so this message can be read."
+                        );
+                        Thread.sleep(10000);
+                    } else {
+                        logger.info("It seems that you are using ProtocolLib version 4.7 or higher, which is supported!");
+                        logger.info("No need to patch ProtocolLib, skipping.");
+                        return true;
+                    }
+                } catch (Exception ignored) {}
 
                 ClassPool pool = ClassPool.getDefault();
                 pool.insertClassPath(new LoaderClassPath(plugin.getClass().getClassLoader()));

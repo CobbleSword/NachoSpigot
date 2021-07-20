@@ -2,8 +2,6 @@ package net.minecraft.server;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.Proxy;
 import java.util.Random;
@@ -13,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.commons.IPUtils;
 import dev.cobblesword.nachospigot.knockback.Knockback;
-import dev.cobblesword.nachospigot.patches.RuntimePatches;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,7 +18,6 @@ import org.apache.logging.log4j.Logger;
 import java.io.PrintStream;
 import org.apache.logging.log4j.Level;
 
-import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.LoggerOutputStream;
 import co.aikar.timings.SpigotTimings; // Spigot
 import org.bukkit.event.server.ServerCommandEvent;
@@ -295,7 +291,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                 DedicatedServer.LOGGER.info("Preparing level \"" + this.U() + "\"");
                 this.a(this.U(), this.U(), k, worldtype, s2);
                 long i1 = System.nanoTime() - j;
-                String s3 = String.format("%.3fs", new Object[] {(double) i1 / 1.0E9D});
+                String s3 = String.format("%.3fs", (double) i1 / 1.0E9D);
 
                 DedicatedServer.LOGGER.info("Done (" + s3 + ")! For help, type \"help\" or \"?\"");
                 if (this.propertyManager.getBoolean("enable-query", false)) {
@@ -459,7 +455,15 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 
     public boolean ai() {
         // [Nacho-0039] Add a check to see if we are using Linux or not, if not ignore this.
-        return this.propertyManager.getBoolean("use-native-transport", true) && org.apache.commons.lang.SystemUtils.IS_OS_LINUX;
+        return this.getTransport() == ServerConnection.EventGroupType.EPOLL && org.apache.commons.lang.SystemUtils.IS_OS_LINUX;
+    }
+
+    public ServerConnection.EventGroupType getTransport() {
+        try {
+            return ServerConnection.EventGroupType.valueOf(this.propertyManager.getString("transport-to-use", "default").toUpperCase());
+        } catch (Exception ignored) {
+            return ServerConnection.EventGroupType.DEFAULT;
+        }
     }
 
     public DedicatedPlayerList aP() {

@@ -338,7 +338,7 @@ public class BlockChest extends BlockContainer {
         }
     }
 
-    //Paper - OBF HELPER
+    // Paper - OBF HELPER
     public ITileInventory getInventory(World world, BlockPosition blockposition) {
         return f(world, blockposition, false);
     }
@@ -353,15 +353,12 @@ public class BlockChest extends BlockContainer {
         if (!(tileentity instanceof TileEntityChest))
             return null;
 
-        Object object = (TileEntityChest) tileentity;
+        Object object = tileentity;
 
         if (flag && this.n(world, blockposition))
             return null;
 
-        Iterator iterator = EnumDirection.EnumDirectionLimit.HORIZONTAL.iterator();
-
-        while (iterator.hasNext()) {
-            EnumDirection enumdirection = (EnumDirection) iterator.next();
+        for (EnumDirection enumdirection : EnumDirection.EnumDirectionLimit.HORIZONTAL) {
             BlockPosition blockposition1 = blockposition.shift(enumdirection);
             IBlockData typeIfLoaded = world.getTypeIfLoaded(blockposition1);
 
@@ -370,7 +367,7 @@ public class BlockChest extends BlockContainer {
             Block block = typeIfLoaded.getBlock();
 
             if (block == this) {
-                if (this.n(world, blockposition1)) {
+                if (this.n(world, blockposition1)) { // Paper - check for allowBlocked flag - MC-99321
                     return null;
                 }
 
@@ -472,6 +469,6 @@ public class BlockChest extends BlockContainer {
     }
 
     protected BlockStateList getStateList() {
-        return new BlockStateList(this, new IBlockState[] { BlockChest.FACING});
+        return new BlockStateList(this, BlockChest.FACING);
     }
 }

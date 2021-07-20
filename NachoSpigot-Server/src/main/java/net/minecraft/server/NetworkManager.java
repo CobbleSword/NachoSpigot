@@ -107,15 +107,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     {
         if (this.channel.eventLoop().inEventLoop()) {
             this.channel.flush();
-        } else {
-            // [Nacho-0043] Fix ProtocolLib
-            this.channel.eventLoop().execute(new Runnable() {
-                @Override
-                public void run() {
-                    NetworkManager.this.channel.flush();
-                }
-            });
-        }
+        } //[Nacho-Spigot] Fixed RejectedExecutionException: event executor terminated by BeyazPolis
     }
     // Tuinity end - allow controlled flushing
 
@@ -464,7 +456,11 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelhandlercontext, Packet object) throws Exception { // CraftBukkit - fix decompile error
-        this.a(channelhandlercontext, object);
+        // this.a(channelhandlercontext, object);
+        // FlamePaper - Check if channel is opened before reading packet
+        if (g()) {
+            this.a(channelhandlercontext, object);
+        }
     }
 
     static class QueuedPacket {

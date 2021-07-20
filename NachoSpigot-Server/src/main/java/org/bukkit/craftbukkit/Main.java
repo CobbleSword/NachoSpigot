@@ -11,6 +11,7 @@ import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import net.minecraft.server.MinecraftServer;
 
+import org.apache.commons.lang3.JavaVersion;
 import org.apache.commons.lang3.SystemUtils;
 import org.fusesource.jansi.AnsiConsole;
 
@@ -19,20 +20,8 @@ public class Main {
     public static boolean useConsole = true;
 
     public static void main(String[] args) {
-//        [Nacho-0034]
-//        Remove this message from TacoSpigot, this won't work on Java 8 or higher because JAVA_1_8 doesn't exist on the JavaVersion enum when using these versions. (I have no clue why)
-//        So what was the point of making it support Java 14 if it never worked because of this ¯\_(ツ)_/¯
-//        Changed Java 8 message to Java 15.
-//        ---------------------------------------------------------------
-//        if (!SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_1_8)) {
-//            System.err.println("TacoSpigot requires java 8");
-//            System.err.println("Oracle dropped all support for java " + SystemUtils.JAVA_VERSION);
-//            System.err.println("Please update to use TacoSpigot and the numerous bug-fixes, performance improvements, and security fixes");
-//            System.err.println("Shutting down");
-//            System.exit(1);
-//        }
         try {
-            if(!SystemUtils.IS_JAVA_15) {
+            if(!SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_15)) {
                 System.err.println("It seems like you are not using Java 15!");
                 System.out.println("The use of Java 15 is strongly recommended.");
             }

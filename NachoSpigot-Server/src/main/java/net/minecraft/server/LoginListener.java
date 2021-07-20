@@ -152,7 +152,8 @@ public class LoginListener implements PacketLoginInListener, IUpdatePlayerListBo
     }
 
     public String d() {
-        return this.i != null ? this.i + " (" + this.networkManager.getSocketAddress().toString() + ")" : String.valueOf(this.networkManager.getSocketAddress());
+        String socketAddress = networkManager == null ? "null" : (networkManager.getSocketAddress() == null ? "null" : networkManager.getSocketAddress().toString());
+        return this.i != null ? this.i.toString() + " (" + socketAddress + ")" : socketAddress;
     }
 
     public void a(PacketLoginInStart packetlogininstart) {
