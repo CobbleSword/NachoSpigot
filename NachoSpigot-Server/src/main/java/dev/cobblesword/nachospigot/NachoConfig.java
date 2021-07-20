@@ -38,4 +38,5 @@ public class NachoConfig {
     public boolean useFixedPoolForTNT = false;
     public int fixedPoolSize = 500;
     public boolean useFasterCannonTracker = true;
+    public boolean disableSpongeAbsorption = false;
 }
