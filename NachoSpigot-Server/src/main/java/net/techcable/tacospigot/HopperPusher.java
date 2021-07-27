@@ -3,7 +3,7 @@ package net.techcable.tacospigot;
 import net.minecraft.server.AxisAlignedBB;
 import net.minecraft.server.BlockPosition;
 import net.minecraft.server.Entity;
-import net.minecraft.server.IHopper;
+import net.minecraft.server.MathHelper;
 import net.minecraft.server.TileEntityHopper;
 import net.minecraft.server.World;
 

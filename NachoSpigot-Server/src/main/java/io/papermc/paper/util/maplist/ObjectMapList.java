@@ -3,11 +3,11 @@ package io.papermc.paper.util.maplist;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.AbstractReferenceList;
 import it.unimi.dsi.fastutil.objects.ObjectListIterator;
+import it.unimi.dsi.fastutil.objects.ObjectSpliterator;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import java.util.Spliterator;
 
 /**
  * list with O(1) remove & contains
@@ -132,7 +132,7 @@ public final class ObjectMapList<T> extends AbstractReferenceList<T> implements 
     }
 
     @Override
-    public Spliterator<T> spliterator() {
+    public ObjectSpliterator<T> spliterator() {
         return super.spliterator();
     }
 
