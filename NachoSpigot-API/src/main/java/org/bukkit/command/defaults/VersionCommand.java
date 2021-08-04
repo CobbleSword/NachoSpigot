@@ -174,13 +174,7 @@ public class VersionCommand extends BukkitCommand {
             sender.sendMessage("Checking version, please wait...");
             if (!versionTaskStarted) {
                 versionTaskStarted = true;
-                new Thread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        obtainVersion();
-                    }
-                }).start();
+                new Thread(this::obtainVersion).start();
             }
         } finally {
             versionLock.unlock();
