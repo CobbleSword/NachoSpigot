@@ -191,7 +191,23 @@ public class VersionCommand extends BukkitCommand {
         String version = Bukkit.getVersion();
         if (version == null) version = "Custom";
         // TacoSpigot start
-        if (version.startsWith("git-TacoSpigot-")) {
+        if (version.startsWith("git-NachoSpigot-")) {
+            String[] parts = version.substring("git-NachoSpigot-".length()).split("[-\\s]");
+            int distance = getDistance("CobbleSword/NachoSpigot", parts[0]);
+            switch (distance) {
+                case -1:
+                    setVersionMessage("Error obtaining version information");
+                    break;
+                case 0:
+                    setVersionMessage("You are running the latest version");
+                    break;
+                case -2:
+                    setVersionMessage("Unknown version");
+                    break;
+                default:
+                    setVersionMessage("You are " + distance + " version(s) behind");
+            }
+        /*if (version.startsWith("git-TacoSpigot-")) {
             String[] parts = version.substring("git-Tacospigot-".length()).split("[-\\s]");
             int distance = getDistance("TacoSpigot/TacoSpigot", parts[0]);
             switch (distance) {
@@ -208,7 +224,6 @@ public class VersionCommand extends BukkitCommand {
                     setVersionMessage("You are " + distance + " version(s) behind");
             }
             // remove checking for other forks
-        /*
         // PaperSpigot start
         if (version.startsWith("git-PaperSpigot-")) {
             String[] parts = version.substring("git-PaperSpigot-".length()).split("[-\\s]");
@@ -278,7 +293,7 @@ public class VersionCommand extends BukkitCommand {
         return getFromRepo(repo, currentVerInt);
     }
 
-    private static final String BRANCH = "version/1.8.8";
+    private static final String BRANCH = "master";
     private static int getFromRepo(String repo, String hash) {
         try {
             /*

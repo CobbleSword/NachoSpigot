@@ -171,6 +171,7 @@
                         <manifestEntries>
                             <Main-Class>org.bukkit.craftbukkit.Main</Main-Class>
                             <Implementation-Title>CraftBukkit</Implementation-Title>
+                            <Implementation-Version>${describe}</Implementation-Version>
                             <Implementation-Vendor>Bukkit Team</Implementation-Vendor>
                             <Specification-Title>Bukkit</Specification-Title>
                             <Specification-Version>${api.version}</Specification-Version>
