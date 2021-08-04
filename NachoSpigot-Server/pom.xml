@@ -60,7 +60,7 @@
         <dependency>
             <groupId>it.unimi.dsi</groupId>
             <artifactId>fastutil</artifactId>
-            <version>8.4.4</version>
+            <version>8.5.4</version>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
@@ -171,6 +171,7 @@
                         <manifestEntries>
                             <Main-Class>org.bukkit.craftbukkit.Main</Main-Class>
                             <Implementation-Title>CraftBukkit</Implementation-Title>
+                            <Implementation-Version>${describe}</Implementation-Version>
                             <Implementation-Vendor>Bukkit Team</Implementation-Vendor>
                             <Specification-Title>Bukkit</Specification-Title>
                             <Specification-Version>${api.version}</Specification-Version>
