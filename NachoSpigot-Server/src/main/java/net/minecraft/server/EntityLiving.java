@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import dev.cobblesword.nachospigot.commons.Constants;
+import dev.cobblesword.nachospigot.knockback.Knockback;
+import dev.cobblesword.nachospigot.knockback.KnockbackConfig;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Vehicle;
@@ -899,17 +901,17 @@ public abstract class EntityLiving extends Entity {
     public void a(Entity entity, float f, double d0, double d1) {
         if (this.random.nextDouble() >= this.getAttributeInstance(GenericAttributes.c).getValue()) {
             this.ai = true;
-            float f1 = MathHelper.sqrt(d0 * d0 + d1 * d1);
-            float f2 = 0.4F;
+            float magnitude  = MathHelper.sqrt(d0 * d0 + d1 * d1);
 
-            this.motX /= 2.0D;
-            this.motY /= 2.0D;
-            this.motZ /= 2.0D;
-            this.motX -= d0 / (double) f1 * (double) f2;
-            this.motY += (double) f2;
-            this.motZ -= d1 / (double) f1 * (double) f2;
-            if (this.motY > 0.4000000059604645D) {
-                this.motY = 0.4000000059604645D;
+            final KnockbackConfig config = Knockback.get().getConfig();
+            this.motX /= config.knockbackFriction;
+            this.motY /= config.knockbackFriction;
+            this.motZ /= config.knockbackFriction;
+            this.motX -= d0 / (double) magnitude * config.knockbackHorizontal;
+            this.motY += config.knockbackVertical;
+            this.motZ -= d1 / (double) magnitude * config.knockbackHorizontal;
+            if (this.motY > config.knockbackVerticalLimit) {
+                this.motY = config.knockbackVerticalLimit;
             }
 
         }
