@@ -43,7 +43,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
     
     protected final CraftServer server;
     protected Entity entity;
-    // private EntityDamageEvent lastDamageEvent;  // KigPaper - this is almost never used and only leads to memory leaks
+    private EntityDamageEvent lastDamageEvent;  // KigPaper - this is almost never used and only leads to memory leaks // We must take lastDamageEvent because "on death" skript's code uses lastDamageEvent. // AhmHkn
 
     public CraftEntity(final CraftServer server, final Entity entity) {
         this.server = server;
@@ -352,12 +352,11 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
     }
 
     public void setLastDamageCause(EntityDamageEvent event) {
-        // lastDamageEvent = event; // KigPaper - this is never used and only leads to memory leaks when unloading worlds
+        lastDamageEvent = event; // KigPaper - this is never used and only leads to memory leaks when unloading worlds - No this is using by Skript. "on death" skript's code uses lastDamageEvent. // AhmHkn
     }
 
     public EntityDamageEvent getLastDamageCause() {
-        // return lastDamageEvent;
-        return null; // KigPaper
+        return lastDamageEvent;
     }
 
     public UUID getUniqueId() {
