@@ -1,6 +1,8 @@
 package org.bukkit.craftbukkit.entity;
 
 import com.google.common.base.Preconditions;
+
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -43,7 +45,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
     
     protected final CraftServer server;
     protected Entity entity;
-    private EntityDamageEvent lastDamageEvent;  // KigPaper - this is almost never used and only leads to memory leaks // We must take lastDamageEvent because "on death" skript's code uses lastDamageEvent. // AhmHkn
+    private WeakReference<EntityDamageEvent> lastDamageEvent;  // KigPaper - this is almost never used and only leads to memory leaks // Nacho - Some plugins still use this - credit to AhmHkn0 // Nacho - Convert to WeakReference
 
     public CraftEntity(final CraftServer server, final Entity entity) {
         this.server = server;
@@ -352,12 +354,12 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
     }
 
     public void setLastDamageCause(EntityDamageEvent event) {
-        lastDamageEvent = event; // KigPaper - this is never used and only leads to memory leaks when unloading worlds - No this is using by Skript. "on death" skript's code uses lastDamageEvent. // AhmHkn
+        lastDamageEvent = new WeakReference<>(event); // KigPaper - this is almost never used and only leads to memory leaks // Nacho - Some plugins still use this - credit to AhmHkn0 // Nacho - Convert to WeakReference
     }
 
     public EntityDamageEvent getLastDamageCause() {
-        return lastDamageEvent;
-    }
+        return lastDamageEvent.get();
+    } // Nacho - Convert to WeakReference
 
     public UUID getUniqueId() {
         return getHandle().getUniqueID();
