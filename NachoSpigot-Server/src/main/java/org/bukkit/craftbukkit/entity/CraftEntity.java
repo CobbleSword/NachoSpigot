@@ -358,7 +358,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
     }
 
     public EntityDamageEvent getLastDamageCause() {
-        return lastDamageEvent.get();
+        return this.lastDamageEvent == null ? null : this.lastDamageEvent.get();
     } // Nacho - Convert to WeakReference
 
     public UUID getUniqueId() {
