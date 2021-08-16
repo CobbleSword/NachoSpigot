@@ -15,26 +15,11 @@ If you find any bugs, please create an issue or contact us in the [Discord serve
 **Stable:** [https://nacho.sculas.xyz/](https://nacho.sculas.xyz/)
 **Development:** [https://nachodev.sculas.xyz/](https://nachodev.sculas.xyz/)
 
-## API Download (Maven)
-```xml
-<repositories>
-    <repository>
-        <id>jitpack.io</id>
-        <url>https://jitpack.io</url>
-    </repository>
-</repositories>
-<dependencies>
-    <dependency>
-        <groupId>com.github.CobbleSword.NachoSpigot</groupId>
-        <artifactId>api</artifactId>
-        <version>master-SNAPSHOT</version>
-        <scope>provided</scope>
-    </dependency>
-</dependencies>
-```
+## API Download
+[JitPack](https://jitpack.io/#CobbleSword/NachoSpigot/master-SNAPSHOT)
 
 ### Building / Compiling
-> To build, clone the repo, and run `mvn clean package` in the NachoSpigot directory.
+> To build, clone the repo, and run `mvn clean install` in the NachoSpigot directory.
 
 ### Discord
 [Join the Discord server!](https://discord.gg/SBTEbSx)
