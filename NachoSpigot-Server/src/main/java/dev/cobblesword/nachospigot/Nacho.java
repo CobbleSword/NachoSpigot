@@ -31,6 +31,7 @@ public class Nacho {
         while (!CONFIG_FILE.exists()) FileUtils.toFile(this.config, CONFIG_FILE);
         this.config = FileUtils.toObject(CONFIG_FILE, NachoConfig.class);
         assert this.config != null;
+        FileUtils.toFile(this.config, CONFIG_FILE);
 
         AsyncExplosions.initExecutor(config.useFixedPoolForTNT, config.fixedPoolSize);
 
