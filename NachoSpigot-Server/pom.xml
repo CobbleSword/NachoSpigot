@@ -10,8 +10,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <api.version>unknown</api.version>
         <junit.version>4.13.2</junit.version>
-        <minecraft.version>1.8.8</minecraft.version>
-        <minecraft_version>1_8_R3</minecraft_version>
         <buildtag.prefix>git-Bukkit-</buildtag.prefix>
         <buildtag.suffix/>
         <maven.compiler.source>15</maven.compiler.source>
@@ -65,7 +63,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>minecraft-server</artifactId>
-            <version>${minecraft.version}-SNAPSHOT</version>
+            <version>1.8.8-SNAPSHOT</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
@@ -173,6 +171,7 @@
                             <Implementation-Version>${describe}</Implementation-Version>
                             <Implementation-Vendor>${maven.build.timestamp}</Implementation-Vendor>
                             <Specification-Title>Bukkit</Specification-Title>
+                            <!-- I don't see why this is necessary but I'll leave it alone for now -->
                             <Specification-Version>${api.version}</Specification-Version>
                             <Specification-Vendor>Bukkit Team</Specification-Vendor>
                         </manifestEntries>
@@ -244,7 +243,7 @@
                                 </relocation>
                                 <relocation>
                                     <pattern>net.minecraft.server</pattern>
-                                    <shadedPattern>net.minecraft.server.v${minecraft_version}</shadedPattern>
+                                    <shadedPattern>net.minecraft.server.v1_8_R3</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
