@@ -10,29 +10,19 @@
     </parent>
 
     <artifactId>api</artifactId>
-    <version>1.8.8-R0.2-SNAPSHOT</version>
+    <version>1.8.8-R0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>NachoSpigot-API</name>
     <description>An enhanced plugin API for Minecraft servers.</description>
 
     <properties>
-        <!--PaperSpigot - Bump to 1.8 - This will haunt me -->
         <additionalparam>-Xdoclint:none</additionalparam>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>15</maven.compiler.source>
+        <maven.compiler.target>15</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/Sculas/NachoSpigot</url>
-        </repository>
-    </distributionManagement>
-
-    <!-- required until fixed plexus-compiler-eclipse is deployed -->
     <pluginRepositories>
         <pluginRepository>
             <id>spigotmc-public</id>
@@ -90,7 +80,7 @@
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
-            <version>1.15</version>
+            <version>1.29</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -105,7 +95,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13.1</version>
+            <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -142,7 +132,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>2.3</version>
+                <version>3.2.4</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
