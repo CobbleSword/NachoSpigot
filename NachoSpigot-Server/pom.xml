@@ -12,8 +12,8 @@
         <junit.version>4.13.2</junit.version>
         <buildtag.prefix>git-Bukkit-</buildtag.prefix>
         <buildtag.suffix/>
-        <maven.compiler.source>15</maven.compiler.source>
-        <maven.compiler.target>15</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <parent>
