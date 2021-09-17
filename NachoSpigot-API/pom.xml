@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>api</artifactId>
-    <version>1.8.8-R0.3-SNAPSHOT</version>
+    <version>1.8.8-R0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>NachoSpigot-API</name>
@@ -80,7 +80,7 @@
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
-            <version>1.29</version>
+            <version>1.15</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
