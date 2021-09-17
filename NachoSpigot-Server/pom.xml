@@ -275,12 +275,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
-                <configuration>
-                    <!-- we use the Eclipse compiler as it doesn't need a JDK -->
-                    <compilerId>eclipse</compilerId>
-                    <!-- source and target are ignored if this isn't true -->
-                    <optimize>true</optimize>
-                </configuration>
                 <dependencies>
                     <!-- we need our custom version as it fixes some bugs on case sensitive file systems -->
                     <dependency>
