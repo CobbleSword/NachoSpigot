@@ -586,6 +586,10 @@ public class Chunk {
         return this.g(blockposition.getX() & 15, blockposition.getY(), blockposition.getZ() & 15);
     }
 
+    public IBlockData a(BlockPosition blockposition, IBlockData iblockdata) {
+        return a(blockposition,iblockdata,true);
+    }
+
     // KigPaper - add updateLight param
     public IBlockData a(BlockPosition blockposition, IBlockData iblockdata, boolean updateLight) {
         int i = blockposition.getX() & 15;
