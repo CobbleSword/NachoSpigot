@@ -586,6 +586,12 @@ public class Chunk {
         return this.g(blockposition.getX() & 15, blockposition.getY(), blockposition.getZ() & 15);
     }
 
+    // NachoSpigot start
+    public IBlockData a(BlockPosition blockposition, IBlockData iblockdata) {
+        return a(blockposition,iblockdata,true);
+    }
+    // NachoSpigot end
+
     // KigPaper - add updateLight param
     public IBlockData a(BlockPosition blockposition, IBlockData iblockdata, boolean updateLight) {
         int i = blockposition.getX() & 15;
