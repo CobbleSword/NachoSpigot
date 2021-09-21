@@ -10,11 +10,11 @@ Nacho can now be used in production environments with some degree of stability.
 
 If you find any bugs, please create an issue or contact us in the [Discord server](https://discord.gg/ewcYeERKJw)!
 
-**NachoSpigot supports Java 8 to Java 16!**
+**NachoSpigot supports Java 8 to Java 17!**
 
 ## Download
 **Stable:** [https://nacho.sculas.xyz/](https://nacho.sculas.xyz/)
-**Development:** Use `git` or GitHub's `gh` CLI to clone the repository, or [Download as ZIP](https://github.com/CobbleSword/NachoSpigot/archive/refs/heads/master.zip)
+**Development:** [https://nachodev.sculas.xyz/](https://nachodev.sculas.xyz/)
 
 ## API Download
 [JitPack](https://jitpack.io/#CobbleSword/NachoSpigot/master-SNAPSHOT)
