@@ -125,12 +125,6 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <!-- versions after this appear to be broken -->
                 <version>3.1</version>
-                <configuration>
-                    <!-- we use the Eclipse compiler as it doesn't need a JDK -->
-                    <compilerId>eclipse</compilerId>
-                    <!-- source and target are ignored if this isn't true -->
-                    <optimize>true</optimize>
-                </configuration>
                 <dependencies>
                     <!-- we need our custom version as it fixes some bugs on case sensitive file systems -->
                     <dependency>
