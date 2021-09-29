@@ -1,15 +1,16 @@
 # NachoSpigot [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/CobbleSword/NachoSpigot/NachoSpigot%20Build)](https://nacho.sculas.xyz/)
 
 #### NachoSpigot is a fork of TacoSpigot 1.8.8
-NachoSpigot offers a number of enhancements to performance as well as bug fixes such as a built-in Anti-Crash system and being able to perform well with a large number of players.
+NachoSpigot offers a number of enhancements to performance as well as bug fixes such as a built-in anti-crash system and being able to perform well with a large number of players.
 
 ## Current State
-Java 15 is now natively supported, and ProtocolLib and Citizens are patched at runtime to work with Nacho's patches.
-Nacho can now be used in production environments.
+Java 15 is now natively supported, and [ProtocolLib](https://github.com/dmulloy2/ProtocolLib) and [Citizens2](https://github.com/CitizensDev/Citizens2) are patched at runtime to work with Nacho's modifications.
+
+Nacho can now be used in production environments with some degree of stability.
 
 If you find any bugs, please create an issue or contact us in the [Discord server](https://discord.gg/ewcYeERKJw)!
 
-**NachoSpigot supports Java 8 to Java 16!**
+**NachoSpigot supports Java 8 to Java 17!**
 
 ## Download
 **Stable:** [https://nacho.sculas.xyz/](https://nacho.sculas.xyz/)
