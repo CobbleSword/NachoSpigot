@@ -13,8 +13,7 @@ If you find any bugs, please create an issue or contact us in the [Discord serve
 **NachoSpigot supports Java 8 to Java 17!**
 
 ## Download
-**Stable:** [https://nacho.sculas.xyz/](https://nacho.sculas.xyz/)
-**Development:** [https://nachodev.sculas.xyz/](https://nachodev.sculas.xyz/)
+[Stable](https://nacho.sculas.xyz/)
 
 ## API Download
 [JitPack](https://jitpack.io/#CobbleSword/NachoSpigot/master-SNAPSHOT)
