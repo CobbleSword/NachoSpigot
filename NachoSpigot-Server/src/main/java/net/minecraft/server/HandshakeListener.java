@@ -68,8 +68,34 @@ public class HandshakeListener implements PacketHandshakingInListener {
                     this.b.close(text);
                 } else {
                     this.b.a(new LoginListener(this.a, this.b));
+                    // NachoSpigot start - handshake event
+                    boolean proxyLogicEnabled = org.spigotmc.SpigotConfig.bungee;
+                    boolean handledByEvent = false;
+                    // Try and handle the handshake through the event
+                    if (com.destroystokyo.paper.event.player.PlayerHandshakeEvent.getHandlerList().getRegisteredListeners().length != 0) { // Hello? Can you hear me?
+                        com.destroystokyo.paper.event.player.PlayerHandshakeEvent event = new com.destroystokyo.paper.event.player.PlayerHandshakeEvent(packethandshakinginsetprotocol.hostname, !proxyLogicEnabled);
+                        org.bukkit.Bukkit.getPluginManager().callEvent(event);
+                        if (!event.isCancelled()) {
+                            // If we've failed somehow, let the client know so and go no further.
+                            if (event.isFailed()) {
+                                text = new ChatComponentText(event.getFailMessage());
+                                this.b.handle(new PacketLoginOutDisconnect(text));
+                                this.b.close(text);
+                                return;
+                            }
+            
+                            packethandshakinginsetprotocol.hostname = event.getServerHostname();
+                            this.b.l = new java.net.InetSocketAddress(event.getSocketAddressHostname(), ((java.net.InetSocketAddress) this.b.getSocketAddress()).getPort());
+                            this.b.spoofedUUID = event.getUniqueId();
+                            this.b.spoofedProfile = gson.fromJson(event.getPropertiesJson(), com.mojang.authlib.properties.Property[].class);
+                            handledByEvent = true; // Hooray, we did it!
+                        }
+                    }
+                    // Don't try and handle default logic if it's been handled by the event.
+                    if (!handledByEvent && proxyLogicEnabled) {
+                    // NachoSpigot end
                     // Spigot Start
-                    if (org.spigotmc.SpigotConfig.bungee) {
+                    //if (org.spigotmc.SpigotConfig.bungee) { // NachoSpigot - comment out, we check above!
                         String[] split = packethandshakinginsetprotocol.hostname.split("\00");
                         if (split.length == 3 || split.length == 4) {
                             packethandshakinginsetprotocol.hostname = split[0];
