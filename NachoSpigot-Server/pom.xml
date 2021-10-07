@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>NachoSpigot</artifactId>
     <packaging>jar</packaging>
-    <version>1.8.8-R0.1-SNAPSHOT</version>
+    <version>1.8.8-R0.2-SNAPSHOT</version>
     <name>NachoSpigot</name>
 
     <properties>
@@ -228,7 +228,7 @@
                                 </relocation>
                                 <relocation>
                                     <pattern>org.bukkit.craftbukkit</pattern>
-                                    <shadedPattern>org.bukkit.craftbukkit.v${minecraft_version}</shadedPattern>
+                                    <shadedPattern>org.bukkit.craftbukkit.v1_8_R3</shadedPattern>
                                     <excludes>
                                         <exclude>org.bukkit.craftbukkit.Main*</exclude>
                                     </excludes>
