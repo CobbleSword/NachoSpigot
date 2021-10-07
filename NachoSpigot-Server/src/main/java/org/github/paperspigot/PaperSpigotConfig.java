@@ -254,4 +254,15 @@ public class PaperSpigotConfig
         pearlPassthroughSlab = getBoolean( "pearl-passthrough.bed", false );
     }
     // FlamePaper end
+
+    // Nacho start
+    public static boolean savePlayerData = true;
+    private static void savePlayerData() {
+            savePlayerData = getBoolean("settings.save-player-data", savePlayerData);
+            if(!savePlayerData) {
+                Bukkit.getLogger().log(Level.WARNING, "Player Data Saving is currently disabled. Any changes to your players data, " +
+                        "such as inventories, experience points, advancements and the like will not be saved when they log out.");
+            }
+    }
+    // Nacho end
 }
