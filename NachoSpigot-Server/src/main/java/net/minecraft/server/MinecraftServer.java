@@ -611,7 +611,13 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
                     }
                     lastTick = curTime;
 
+                    // NachoSpigot start - backport tick events from Paper
+                    this.server.getPluginManager().callEvent(new com.destroystokyo.paper.event.server.ServerTickStartEvent(this.ticks+1));
                     this.A();
+                    long endTime = System.nanoTime();
+                    long remaining = (TICK_TIME - (endTime - lastTick)) - catchupTime;
+                    this.server.getPluginManager().callEvent(new com.destroystokyo.paper.event.server.ServerTickEndEvent(this.ticks, ((double)(endTime - lastTick) / 1000000D), remaining));
+                    // NachoSpigot end
                     this.Q = true;
                 }
                 // Spigot end
