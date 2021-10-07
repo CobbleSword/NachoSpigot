@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>api</artifactId>
-    <version>1.8.8-R0.1-SNAPSHOT</version>
+    <version>1.8.8-R0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>NachoSpigot-API</name>
