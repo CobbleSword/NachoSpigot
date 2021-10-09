@@ -17,10 +17,10 @@ public class AntiCrash implements PacketListener {
                 return false;
             }
             // ty Lew_x :)
-            if (ab.capacity() > 25780 || ab.capacity() < 1) {
+/*            if (ab.capacity() > 25780 || ab.capacity() < 1) {
                 playerConnection.getNetworkManager().close(new ChatMessage("Wrong capacity!"));
                 return false;
-            }
+            } */
         }
         return true;
     }
