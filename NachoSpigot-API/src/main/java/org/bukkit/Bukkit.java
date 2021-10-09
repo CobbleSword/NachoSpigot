@@ -572,6 +572,11 @@ public final class Bukkit {
         server.reloadKB();
     }
 
+    /**
+     * Checks if custom knockback is enabled.
+     */
+    public static boolean customKnockback() { return server.customKnockback(); }
+
     public static void setKnockbackFriction(double d) {
         server.setKnockbackFriction(d);
     }
