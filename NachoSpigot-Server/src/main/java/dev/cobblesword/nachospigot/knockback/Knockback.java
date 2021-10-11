@@ -19,6 +19,7 @@ public class Knockback {
         this.config = new KnockbackConfig();
         while (!CONFIG_FILE.exists()) FileUtils.toFile(this.config, CONFIG_FILE);
         this.config = FileUtils.toObject(CONFIG_FILE, KnockbackConfig.class);
+        this.saveConfig();
     }
 
     public void registerCommands() {

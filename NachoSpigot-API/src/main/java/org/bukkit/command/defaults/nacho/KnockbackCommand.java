@@ -24,11 +24,12 @@ public class KnockbackCommand extends Command {
         switch (str[0].toLowerCase()) {
             case "reload": {
                 sender.sendMessage(CC.gray + "Reloading KB config..");
-                Bukkit.getServer().reloadKB();
+                Bukkit.reloadKB();
                 sender.sendMessage(CC.gray + "Reloaded KB config!");
                 break;
             }
             case "set": {
+                if(!Bukkit.customKnockback()) {sender.sendMessage(CC.red + "Custom knockback is disabled."); return false;}
                 String[] args = Arrays.copyOfRange(str, 1, str.length);
                 if (args.length < 2) {
                     sendHelpKB(sender);
@@ -44,27 +45,27 @@ public class KnockbackCommand extends Command {
                 boolean success = true;
                 switch (args[0].toLowerCase()) {
                     case "f": {
-                        Bukkit.getServer().setKnockbackFriction(value);
+                        Bukkit.setKnockbackFriction(value);
                         break;
                     }
                     case "h": {
-                        Bukkit.getServer().setKnockbackHorizontal(value);
+                        Bukkit.setKnockbackHorizontal(value);
                         break;
                     }
                     case "v": {
-                        Bukkit.getServer().setKnockbackVertical(value);
+                        Bukkit.setKnockbackVertical(value);
                         break;
                     }
                     case "vl": {
-                        Bukkit.getServer().setKnockbackVerticalLimit(value);
+                        Bukkit.setKnockbackVerticalLimit(value);
                         break;
                     }
                     case "eh": {
-                        Bukkit.getServer().setKnockbackExtraHorizontal(value);
+                        Bukkit.setKnockbackExtraHorizontal(value);
                         break;
                     }
                     case "ev": {
-                        Bukkit.getServer().setKnockbackExtraVertical(value);
+                        Bukkit.setKnockbackExtraVertical(value);
                         break;
                     }
                     default: {
