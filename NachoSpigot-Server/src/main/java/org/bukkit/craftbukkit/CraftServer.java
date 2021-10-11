@@ -800,6 +800,9 @@ public final class CraftServer implements Server {
     }
 
     @Override
+    public boolean customKnockback() { return Knockback.get().getConfig().customKnockback; };
+
+    @Override
     public void setKnockbackFriction(double d) {
         Knockback.get().getConfig().knockbackFriction = d;
         Knockback.get().saveConfig();

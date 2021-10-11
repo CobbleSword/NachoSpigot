@@ -878,7 +878,7 @@ public abstract class EntityLiving extends Entity {
 
             if (this.ba() && this.world.getGameRules().getBoolean("doMobLoot")) {
                 this.drops = new ArrayList<org.bukkit.inventory.ItemStack>(); // CraftBukkit - Setup drop capture
-                
+
                 this.dropDeathLoot(this.lastDamageByPlayerTime > 0, i);
                 this.dropEquipment(this.lastDamageByPlayerTime > 0, i);
                 if (this.lastDamageByPlayerTime > 0 && this.random.nextFloat() < 0.025F + (float) i * 0.01F) {
@@ -904,16 +904,26 @@ public abstract class EntityLiving extends Entity {
             float magnitude  = MathHelper.sqrt(d0 * d0 + d1 * d1);
 
             final KnockbackConfig config = Knockback.get().getConfig();
-            this.motX /= config.knockbackFriction;
-            this.motY /= config.knockbackFriction;
-            this.motZ /= config.knockbackFriction;
-            this.motX -= d0 / (double) magnitude * config.knockbackHorizontal;
-            this.motY += config.knockbackVertical;
-            this.motZ -= d1 / (double) magnitude * config.knockbackHorizontal;
-            if (this.motY > config.knockbackVerticalLimit) {
-                this.motY = config.knockbackVerticalLimit;
+            if(config.customKnockback) {
+                this.motX /= config.knockbackFriction;
+                this.motY /= config.knockbackFriction;
+                this.motZ /= config.knockbackFriction;
+                this.motX -= d0 / (double) magnitude * config.knockbackHorizontal;
+                this.motY += config.knockbackVertical;
+                this.motZ -= d1 / (double) magnitude * config.knockbackHorizontal;
+                if (this.motY > config.knockbackVerticalLimit) {
+                    this.motY = config.knockbackVerticalLimit;
+                }
+            } else {
+                float f2 = 0.4F;
+                this.motX /= 2.0D;
+                this.motY /= 2.0D;
+                this.motZ /= 2.0D;
+                this.motX -= d0 / (double) magnitude * (double) f2;
+                this.motY += f2;
+                this.motZ -= d1 / (double) magnitude * (double) f2;
+                if (this.motY > 0.4000000059604645D) this.motY = 0.4000000059604645D;
             }
-
         }
     }
 
@@ -1013,7 +1023,7 @@ public abstract class EntityLiving extends Entity {
             int i;
             int j;
             float f1;
-            
+
             // CraftBukkit - Moved to d(DamageSource, float)
             if (false && this.hasEffect(MobEffectList.RESISTANCE) && damagesource != DamageSource.OUT_OF_WORLD) {
                 i = (this.getEffect(MobEffectList.RESISTANCE).getAmplifier() + 1) * 5;

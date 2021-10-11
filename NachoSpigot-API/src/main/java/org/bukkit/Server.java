@@ -974,6 +974,11 @@ public interface Server extends PluginMessageRecipient {
      * @return the active command map
      */
     CommandMap getCommandMap();
+
+    /**
+     * Checks if custom knockback is enabled.
+     */
+    boolean customKnockback();
     // Paper end
 
     public class Spigot

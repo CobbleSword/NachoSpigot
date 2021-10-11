@@ -11,6 +11,7 @@ import java.util.UUID;
 // CraftBukkit start
 import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.knockback.Knockback;
+import dev.cobblesword.nachospigot.knockback.KnockbackConfig;
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 import org.bukkit.craftbukkit.entity.CraftItem;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
@@ -1013,10 +1014,12 @@ public abstract class EntityHuman extends EntityLiving {
 
                     if (flag2) {
                         if (i > 0) {
+                            KnockbackConfig config = Knockback.get().getConfig();
+                            if(!config.customKnockback) entity.g(-MathHelper.sin(this.yaw * 3.1415927F / 180.0F) * (float) i * 0.5F, 0.1D, (double) (MathHelper.cos(this.yaw * 3.1415927F / 180.0F) * (float) i * 0.5F)); else
                             entity.g(
-                                    (-MathHelper.sin(this.yaw * 3.1415927F / 180.0F) * (float) i * Knockback.get().getConfig().knockbackExtraHorizontal),
-                                    Knockback.get().getConfig().knockbackExtraVertical,
-                                    (MathHelper.cos(this.yaw * 3.1415927F / 180.0F) * (float) i * Knockback.get().getConfig().knockbackExtraHorizontal));
+                                    (-MathHelper.sin(this.yaw * 3.1415927F / 180.0F) * (float) i * config.knockbackExtraHorizontal),
+                                    config.knockbackExtraVertical,
+                                    (MathHelper.cos(this.yaw * 3.1415927F / 180.0F) * (float) i * config.knockbackExtraHorizontal));
                             this.motX *= 0.6D;
                             this.motZ *= 0.6D;
                             this.setSprinting(false);
