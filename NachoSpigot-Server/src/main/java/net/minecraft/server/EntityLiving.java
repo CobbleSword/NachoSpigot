@@ -915,14 +915,13 @@ public abstract class EntityLiving extends Entity {
                     this.motY = config.knockbackVerticalLimit;
                 }
             } else {
-                float f1 = MathHelper.sqrt(d0 * d0 + d1 * d1);
                 float f2 = 0.4F;
                 this.motX /= 2.0D;
                 this.motY /= 2.0D;
                 this.motZ /= 2.0D;
-                this.motX -= d0 / (double) f1 * (double) f2;
+                this.motX -= d0 / (double) magnitude * (double) f2;
                 this.motY += f2;
-                this.motZ -= d1 / (double) f1 * (double) f2;
+                this.motZ -= d1 / (double) magnitude * (double) f2;
                 if (this.motY > 0.4000000059604645D) this.motY = 0.4000000059604645D;
             }
         }
