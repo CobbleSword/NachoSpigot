@@ -14,11 +14,11 @@ public class MathHelper {
     private static final double[] f;
 
     public static float sin(float var0) {
-        return (float) FastMath.sin(var0);
+        return b[(int)(var0 * 10430.378F) & '\uffff'];
     }
 
     public static float cos(float var0) {
-        return (float) FastMath.cos(var0);
+        return b[(int)(var0 * 10430.378F + 16384.0F) & '\uffff'];
     }
 
     public static float c(float var0) {
