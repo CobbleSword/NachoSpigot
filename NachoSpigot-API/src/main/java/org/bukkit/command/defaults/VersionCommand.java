@@ -46,12 +46,8 @@ public class VersionCommand extends BukkitCommand {
 
     @Override
     public boolean execute(CommandSender sender, String currentAlias, String[] args) {
-        if (!testPermission(sender)) return true;
-        
-        if(!sender.hasPermission("ns.version")) {
-            sender.sendMessage(CC.red + "You don't have permissions");
+        if (!testPermission(sender)) 
             return true;
-        }
         
         if (args.length == 0) {
             sender.sendMessage("This server is running " + Bukkit.getName() + " version " + Bukkit.getVersion() + " (Implementing API version " + Bukkit.getBukkitVersion() + ")");
