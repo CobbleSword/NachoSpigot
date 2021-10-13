@@ -272,7 +272,7 @@ public class MathHelper {
 
     static {
         for (int var0 = 0; var0 < 65536; ++var0) {
-            b[var0] = (float) FastMath.sin((double) var0 * FastMath.PI * 2.0 / 65536.0);
+            b[var0] = (float) Math.sin((double) var0 * FastMath.PI * 2.0 / 65536.0);
         }
 
         c = new int[]{0, 1, 28, 2, 29, 14, 24, 3, 30, 22, 20, 15, 25, 17, 4, 8, 31, 27, 13, 23, 21, 19, 16, 7, 26, 12, 18, 6, 11, 5, 10, 9};
@@ -283,7 +283,7 @@ public class MathHelper {
         for (int var5 = 0; var5 < 257; ++var5) {
             double var1 = (double) var5 / 256.0;
             double var3 = FastMath.asin(var1);
-            f[var5] = FastMath.cos(var3);
+            f[var5] = Math.cos(var3);
             e[var5] = var3;
         }
 
