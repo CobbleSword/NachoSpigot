@@ -2,8 +2,7 @@ package dev.cobblesword.nachospigot;
 
 import org.bukkit.ChatColor;
 
-public class CC
-{
+public class CC {
     public static String
     blue = ChatColor.BLUE.toString(),
     aqua = ChatColor.AQUA.toString(),

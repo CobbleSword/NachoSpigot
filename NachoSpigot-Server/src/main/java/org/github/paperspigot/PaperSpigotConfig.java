@@ -38,17 +38,13 @@ public class PaperSpigotConfig
     static Map<String, Command> commands;
     /*========================================================================*/
 
-    public static void init(File configFile)
-    {
+    public static void init(File configFile) {
         CONFIG_FILE = configFile;
         config = new YamlConfiguration();
-        try
-        {
-            config.load ( CONFIG_FILE );
-        } catch ( IOException ex )
-        {
-        } catch ( InvalidConfigurationException ex )
-        {
+        try {
+            config.load (CONFIG_FILE);
+        } catch (IOException ex) {
+        } catch (InvalidConfigurationException ex) {
             Bukkit.getLogger().log( Level.SEVERE, "Could not load paper.yml, please correct your syntax errors", ex );
             throw Throwables.propagate( ex );
         }
@@ -62,65 +58,50 @@ public class PaperSpigotConfig
         readConfig( PaperSpigotConfig.class, null );
     }
 
-    public static void registerCommands()
-    {
-        for ( Map.Entry<String, Command> entry : commands.entrySet() )
-        {
-            MinecraftServer.getServer().server.getCommandMap().register( entry.getKey(), "PaperSpigot", entry.getValue() );
+    public static void registerCommands() {
+        for (Map.Entry<String, Command> entry : commands.entrySet()) {
+            MinecraftServer.getServer().server.getCommandMap().register(entry.getKey(), "PaperSpigot", entry.getValue());
         }
     }
 
-    static void readConfig(Class<?> clazz, Object instance)
-    {
-        for ( Method method : clazz.getDeclaredMethods() )
-        {
-            if ( Modifier.isPrivate( method.getModifiers() ) )
-            {
-                if ( method.getParameterTypes().length == 0 && method.getReturnType() == Void.TYPE )
-                {
-                    try
-                    {
-                        method.setAccessible( true );
-                        method.invoke( instance );
-                    } catch ( InvocationTargetException ex )
-                    {
-                        throw Throwables.propagate( ex.getCause() );
-                    } catch ( Exception ex )
-                    {
+    static void readConfig(Class<?> clazz, Object instance)  {
+        for (Method method : clazz.getDeclaredMethods()) {
+            if (Modifier.isPrivate( method.getModifiers())) {
+                if (method.getParameterTypes().length == 0 && method.getReturnType() == Void.TYPE) {
+                    try {
+                        method.setAccessible(true);
+                        method.invoke(instance);
+                    } catch (InvocationTargetException ex) {
+                        throw Throwables.propagate(ex.getCause());
+                    } catch (Exception ex) {
                         Bukkit.getLogger().log( Level.SEVERE, "Error invoking " + method, ex );
                     }
                 }
             }
         }
 
-        try
-        {
+        try {
             config.save( CONFIG_FILE );
-        } catch ( IOException ex )
-        {
+        } catch ( IOException ex )  {
             Bukkit.getLogger().log( Level.SEVERE, "Could not save " + CONFIG_FILE, ex );
         }
     }
 
-    private static void set(String path, Object val)
-    {
+    private static void set(String path, Object val) {
         config.set( path, val );
     }
 
-    private static boolean getBoolean(String path, boolean def)
-    {
+    private static boolean getBoolean(String path, boolean def) {
         config.addDefault( path, def );
         return config.getBoolean( path, config.getBoolean( path ) );
     }
 
-    private static double getDouble(String path, double def)
-    {
+    private static double getDouble(String path, double def) {
         config.addDefault( path, def );
         return config.getDouble( path, config.getDouble( path ) );
     }
 
-    private static float getFloat(String path, float def)
-    {
+    private static float getFloat(String path, float def) {
         // TODO: Figure out why getFloat() always returns the default value.
         return (float) getDouble( path, (double) def );
     }

@@ -50,8 +50,7 @@ public class Nacho {
         return INSTANCE == null ? new Nacho() : INSTANCE;
     }
 
-    public NachoConfig getConfig()
-    {
+    public NachoConfig getConfig() {
         return config;
     }
 
@@ -80,7 +79,9 @@ public class Nacho {
         this.movementListeners.remove(movementListener);
     }
 
-    public Set<MovementListener> getMovementListeners() { return movementListeners; }
+    public Set<MovementListener> getMovementListeners() { 
+        return movementListeners; 
+    }
 
     public void applyPatches() {
         // Nacho start - [Nacho-0041] Fix block placement

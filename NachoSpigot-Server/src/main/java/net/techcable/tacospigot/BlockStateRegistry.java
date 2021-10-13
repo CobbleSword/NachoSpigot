@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import net.minecraft.server.IBlockState;
 
 public class BlockStateRegistry {
+    
     private BlockStateRegistry() {} // Utility class
     private static final ConcurrentMap<IBlockState<?>, Integer> idsByObj = new ConcurrentHashMap<>();
     private static volatile IBlockState[] byId = new IBlockState[0];

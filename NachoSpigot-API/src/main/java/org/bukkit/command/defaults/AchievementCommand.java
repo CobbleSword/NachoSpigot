@@ -22,6 +22,7 @@ import com.google.common.collect.ImmutableList;
 
 @Deprecated
 public class AchievementCommand extends VanillaCommand {
+    
     public AchievementCommand() {
         super("achievement");
         this.description = "Gives the specified player an achievement or changes a statistic value. Use '*' to give all achievements.";

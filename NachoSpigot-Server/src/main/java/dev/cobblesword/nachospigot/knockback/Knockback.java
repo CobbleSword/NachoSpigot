@@ -7,7 +7,7 @@ import org.bukkit.command.defaults.nacho.KnockbackCommand;
 import java.io.File;
 import java.util.Collections;
 
-public class Knockback {
+public final class Knockback {
 
     private static Knockback INSTANCE;
 
@@ -39,8 +39,7 @@ public class Knockback {
         return INSTANCE == null ? new Knockback() : INSTANCE;
     }
 
-    public KnockbackConfig getConfig()
-    {
+    public KnockbackConfig getConfig() {
         return config;
     }
 }

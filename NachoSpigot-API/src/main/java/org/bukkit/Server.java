@@ -979,6 +979,8 @@ public interface Server extends PluginMessageRecipient {
      * Checks if custom knockback is enabled.
      */
     boolean customKnockback();
+    
+    void toggleKnockback(Boolean b);
     // Paper end
 
     public class Spigot

@@ -15,6 +15,7 @@ import org.bukkit.util.StringUtil;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Resources;
+import dev.cobblesword.nachospigot.CC;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.URL;
@@ -46,7 +47,12 @@ public class VersionCommand extends BukkitCommand {
     @Override
     public boolean execute(CommandSender sender, String currentAlias, String[] args) {
         if (!testPermission(sender)) return true;
-
+        
+        if(!sender.hasPermission("ns.version")) {
+            sender.sendMessage(CC.red + "You don't have permissions");
+            return true;
+        }
+        
         if (args.length == 0) {
             sender.sendMessage("This server is running " + Bukkit.getName() + " version " + Bukkit.getVersion() + " (Implementing API version " + Bukkit.getBukkitVersion() + ")");
             sendVersion(sender);

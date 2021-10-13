@@ -40,7 +40,7 @@ public class KickCommand extends VanillaCommand {
             player.kickPlayer(reason);
             Command.broadcastCommandMessage(sender, "Kicked player " + player.getName() + ". With reason:\n" + reason);
         } else {
-            sender.sendMessage( args[0] + " not found.");
+            sender.sendMessage(args[0] + " not found.");
         }
 
         return true;

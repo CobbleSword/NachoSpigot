@@ -7,14 +7,15 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 import net.minecraft.server.*;
 import dev.cobblesword.nachospigot.Nacho;
 
-public class MinecraftPipeline extends ChannelInitializer<SocketChannel>
-{
+public class MinecraftPipeline extends ChannelInitializer<SocketChannel> {
+    
     private final ServerConnection serverConnection;
 
     public MinecraftPipeline(ServerConnection serverConnection) {
         this.serverConnection = serverConnection;
     }
 
+    @Override
     protected void initChannel(SocketChannel channel) {
         try {
             ChannelConfig config = channel.config();
