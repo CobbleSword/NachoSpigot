@@ -37,6 +37,10 @@ public class MathHelper {
         return FastMath.floorToInt(var0);
     }
 
+    public static long d(double var0) {
+        return floor(var0);
+    }
+
     public static float e(float var0) {
         return var0 >= 0.0F ? var0 : -var0;
     }
