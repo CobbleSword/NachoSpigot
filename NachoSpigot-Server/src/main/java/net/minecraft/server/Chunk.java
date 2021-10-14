@@ -134,7 +134,9 @@ public class Chunk {
     public PacketPlayOutMapChunk cachedEmptyPacket;
 
     private final ChunkCoordIntPair chunkCoords; // InsanePaper-269 - Cache Chunk Coordinations
-    
+    private final BlockPosition blockPos;
+    private final BlockPosition cachedArea;
+
     public Chunk(World world, int i, int j) {
         this.sections = new ChunkSection[16];
         this.e = new byte[256];
@@ -161,6 +163,8 @@ public class Chunk {
             this.bukkitChunk = new org.bukkit.craftbukkit.CraftChunk(this);
         }
         this.chunkCoords = new ChunkCoordIntPair(this.locX, this.locZ); // InsanePaper-269 - Cache Chunk Coordinations
+        this.blockPos = new BlockPosition(this.locX << 4, 0, this.locZ << 4);
+        this.cachedArea = new BlockPosition(this.locX * 16 + 8, 0, this.locZ * 16 + 8);
     }
 
     public org.bukkit.Chunk bukkitChunk;
@@ -285,7 +289,7 @@ public class Chunk {
 
     private void h(boolean flag) {
         this.world.methodProfiler.a("recheckGaps");
-        if (this.world.areChunksLoaded(new BlockPosition(this.locX * 16 + 8, 0, this.locZ * 16 + 8), 16)) {
+        if (this.world.areChunksLoaded(this.cachedArea, 16)) {
             for (int i = 0; i < 16; ++i) {
                 for (int j = 0; j < 16; ++j) {
                     if (this.g[i + j * 16]) {
@@ -1426,8 +1430,6 @@ public class Chunk {
     }
 
     public void m() {
-        BlockPosition blockposition = new BlockPosition(this.locX << 4, 0, this.locZ << 4);
-
         for (int i = 0; i < 8; ++i) {
             if (this.v >= 4096) {
                 return;
@@ -1440,7 +1442,7 @@ public class Chunk {
             ++this.v;
 
             for (int i1 = 0; i1 < 16; ++i1) {
-                BlockPosition blockposition1 = blockposition.a(k, (j << 4) + i1, l);
+                BlockPosition blockposition1 = this.blockPos.a(k, (j << 4) + i1, l);
                 boolean flag = i1 == 0 || i1 == 15 || k == 0 || k == 15 || l == 0 || l == 15;
 
                 if (this.sections[j] == null && flag || this.sections[j] != null && this.sections[j].b(k, i1, l).getMaterial() == Material.AIR) {
@@ -1466,10 +1468,9 @@ public class Chunk {
     public void n() {
         this.done = true;
         this.lit = true;
-        BlockPosition blockposition = new BlockPosition(this.locX << 4, 0, this.locZ << 4);
 
         if (!this.world.worldProvider.o()) {
-            if (this.world.areChunksLoadedBetween(blockposition.a(-1, 0, -1), blockposition.a(16, this.world.F(), 16))) {
+            if (this.world.areChunksLoadedBetween(this.blockPos.a(-1, 0, -1), this.blockPos.a(16, this.world.F(), 16))) {
                 label42:
                 for (int i = 0; i < 16; ++i) {
                     for (int j = 0; j < 16; ++j) {
@@ -1481,13 +1482,10 @@ public class Chunk {
                 }
 
                 if (this.lit) {
-                    Iterator iterator = EnumDirection.EnumDirectionLimit.HORIZONTAL.iterator();
-
-                    while (iterator.hasNext()) {
-                        EnumDirection enumdirection = (EnumDirection) iterator.next();
+                    for (EnumDirection enumdirection : EnumDirection.EnumDirectionLimit.HORIZONTAL) {
                         int k = enumdirection.c() == EnumDirection.EnumAxisDirection.POSITIVE ? 16 : 1;
 
-                        this.world.getChunkAtWorldCoords(blockposition.shift(enumdirection, k)).a(enumdirection.opposite());
+                        this.world.getChunkAtWorldCoords(this.blockPos.shift(enumdirection, k)).a(enumdirection.opposite());
                     }
 
                     this.y();
