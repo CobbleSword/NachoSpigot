@@ -121,6 +121,13 @@
         </dependency>
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>elmakers-repo</id>
+            <url>https://maven.elmakers.com/repository/</url>
+        </repository>
+    </repositories>
+
     <!-- This builds a completely 'ready to start' jar with all dependencies inside -->
     <build>
         <finalName>NachoSpigot-Server</finalName>
