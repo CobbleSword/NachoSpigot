@@ -169,6 +169,10 @@ public class MathHelper {
         }
     }
 
+    public static double a(String var0, double var1, double var3) {
+        return FastMath.max(var3, a(var0, var1));
+    }
+
     public static int b(int var0) {
         int var1 = var0 - 1;
         var1 |= var1 >> 1;
