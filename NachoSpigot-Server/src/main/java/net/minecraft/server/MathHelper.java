@@ -1,7 +1,5 @@
 package net.minecraft.server;
 
-import net.jafama.FastMath;
-
 import java.util.Random;
 import java.util.UUID;
 
@@ -14,27 +12,34 @@ public class MathHelper {
     private static final double[] f;
 
     public static float sin(float var0) {
-        return (float) FastMath.sin(var0);
+        return b[(int)(var0 * 10430.378F) & '\uffff'];
     }
 
     public static float cos(float var0) {
-        return (float) FastMath.cos(var0);
+        return b[(int)(var0 * 10430.378F + 16384.0F) & '\uffff'];
     }
 
     public static float c(float var0) {
-        return (float) FastMath.sqrt(var0);
+        return (float)Math.sqrt(var0);
     }
 
     public static float sqrt(double var0) {
-        return (float) FastMath.sqrt(var0);
+        return (float) Math.sqrt(var0);
     }
 
     public static int d(float var0) {
-        return FastMath.floorToInt(var0);
+        int var1 = (int)var0;
+        return var0 < (float)var1 ? var1 - 1 : var1;
     }
 
     public static int floor(double var0) {
-        return FastMath.floorToInt(var0);
+        int var2 = (int)var0;
+        return var0 < (double)var2 ? var2 - 1 : var2;
+    }
+
+    public static long d(double var0) {
+        long var2 = (long)var0;
+        return var0 < (double)var2 ? var2 - 1L : var2;
     }
 
     public static float e(float var0) {
@@ -46,11 +51,13 @@ public class MathHelper {
     }
 
     public static int f(float var0) {
-        return FastMath.ceilToInt(var0);
+        int var1 = (int)var0;
+        return var0 > (float)var1 ? var1 + 1 : var1;
     }
 
     public static int f(double var0) {
-        return FastMath.ceilToInt(var0);
+        int var2 = (int)var0;
+        return var0 > (double)var2 ? var2 + 1 : var2;
     }
 
     public static int clamp(int var0, int var1, int var2) {
@@ -61,11 +68,11 @@ public class MathHelper {
         }
     }
 
-    public static float a(float min, float max, float value) {
-        if (min < max) {
-            return max;
+    public static float a(float var0, float var1, float var2) {
+        if (var0 < var1) {
+            return var1;
         } else {
-            return Math.min(min, value);
+            return Math.min(var0, var2);
         }
     }
 
@@ -73,24 +80,24 @@ public class MathHelper {
         if (var0 < var2) {
             return var2;
         } else {
-            return FastMath.min(var0, var4);
+            return Math.min(var0, var4);
         }
     }
 
     public static double b(double var0, double var2, double var4) {
-        if (var4 < 0.0) {
+        if (var4 < 0.0D) {
             return var0;
         } else {
-            return var4 > 1.0 ? var2 : var0 + (var2 - var0) * var4;
+            return var4 > 1.0D ? var2 : var0 + (var2 - var0) * var4;
         }
     }
 
     public static double a(double var0, double var2) {
-        if (var0 < 0.0) {
+        if (var0 < 0.0D) {
             var0 = -var0;
         }
 
-        if (var2 < 0.0) {
+        if (var2 < 0.0D) {
             var2 = -var2;
         }
 
@@ -116,7 +123,7 @@ public class MathHelper {
             var1 += var6;
         }
 
-        return (double) var1 / (double) var0.length;
+        return (double)var1 / (double)var0.length;
     }
 
     public static float g(float var0) {
@@ -133,13 +140,13 @@ public class MathHelper {
     }
 
     public static double g(double var0) {
-        var0 %= 360.0;
-        if (var0 >= 180.0) {
-            var0 -= 360.0;
+        var0 %= 360.0D;
+        if (var0 >= 180.0D) {
+            var0 -= 360.0D;
         }
 
-        if (var0 < -180.0) {
-            var0 += 360.0;
+        if (var0 < -180.0D) {
+            var0 += 360.0D;
         }
 
         return var0;
@@ -154,7 +161,7 @@ public class MathHelper {
     }
 
     public static int a(String var0, int var1, int var2) {
-        return FastMath.max(var2, a(var0, var1));
+        return Math.max(var2, a(var0, var1));
     }
 
     public static double a(String var0, double var1) {
@@ -163,6 +170,10 @@ public class MathHelper {
         } catch (Throwable var4) {
             return var1;
         }
+    }
+
+    public static double a(String var0, double var1, double var3) {
+        return Math.max(var3, a(var0, var1));
     }
 
     public static int b(int var0) {
@@ -181,7 +192,7 @@ public class MathHelper {
 
     private static int e(int var0) {
         var0 = d(var0) ? var0 : b(var0);
-        return c[(int) ((long) var0 * 125613361L >> 27) & 31];
+        return c[(int)((long)var0 * 125613361L >> 27) & 31];
     }
 
     public static int c(int var0) {
@@ -205,7 +216,7 @@ public class MathHelper {
 
     public static UUID a(Random var0) {
         long var1 = var0.nextLong() & -61441L | 16384L;
-        long var3 = var0.nextLong() & 4611686018427387903L | Long.MIN_VALUE;
+        long var3 = var0.nextLong() & 4611686018427387903L | -9223372036854775808L;
         return new UUID(var1, var3);
     }
 
@@ -216,42 +227,43 @@ public class MathHelper {
     public static double b(double var0, double var2) {
         double var4 = var2 * var2 + var0 * var0;
         if (Double.isNaN(var4)) {
-            return Double.NaN;
+            return 0.0D / 0.0;
         } else {
-            boolean var6 = var0 < 0.0;
+            boolean var6 = var0 < 0.0D;
             if (var6) {
                 var0 = -var0;
             }
 
-            boolean var7 = var2 < 0.0;
+            boolean var7 = var2 < 0.0D;
             if (var7) {
                 var2 = -var2;
             }
 
             boolean var8 = var0 > var2;
+            double var9;
             if (var8) {
-                double var9 = var2;
+                var9 = var2;
                 var2 = var0;
                 var0 = var9;
             }
 
-            double var28 = i(var4);
-            var2 *= var28;
-            var0 *= var28;
+            var9 = i(var4);
+            var2 *= var9;
+            var0 *= var9;
             double var11 = d + var0;
-            int var13 = (int) Double.doubleToRawLongBits(var11);
+            int var13 = (int)Double.doubleToRawLongBits(var11);
             double var14 = e[var13];
             double var16 = f[var13];
             double var18 = var11 - d;
             double var20 = var0 * var16 - var2 * var18;
-            double var22 = (6.0 + var20 * var20) * var20 * 0.16666666666666666;
+            double var22 = (6.0D + var20 * var20) * var20 * 0.16666666666666666D;
             double var24 = var14 + var22;
             if (var8) {
-                var24 = FastMath.PI / 2 - var24;
+                var24 = 1.5707963267948966D - var24;
             }
 
             if (var7) {
-                var24 = FastMath.PI - var24;
+                var24 = 3.141592653589793D - var24;
             }
 
             if (var6) {
@@ -263,16 +275,18 @@ public class MathHelper {
     }
 
     public static double i(double var0) {
-        double var2 = 0.5 * var0;
+        double var2 = 0.5D * var0;
         long var4 = Double.doubleToRawLongBits(var0);
         var4 = 6910469410427058090L - (var4 >> 1);
         var0 = Double.longBitsToDouble(var4);
-        return var0 * (1.5 - var2 * var0 * var0);
+        var0 *= 1.5D - var2 * var0 * var0;
+        return var0;
     }
 
     static {
-        for (int var0 = 0; var0 < 65536; ++var0) {
-            b[var0] = (float) FastMath.sin((double) var0 * FastMath.PI * 2.0 / 65536.0);
+        int var0;
+        for(var0 = 0; var0 < 65536; ++var0) {
+            b[var0] = (float)Math.sin((double)var0 * 3.141592653589793D * 2.0D / 65536.0D);
         }
 
         c = new int[]{0, 1, 28, 2, 29, 14, 24, 3, 30, 22, 20, 15, 25, 17, 4, 8, 31, 27, 13, 23, 21, 19, 16, 7, 26, 12, 18, 6, 11, 5, 10, 9};
@@ -280,11 +294,11 @@ public class MathHelper {
         e = new double[257];
         f = new double[257];
 
-        for (int var5 = 0; var5 < 257; ++var5) {
-            double var1 = (double) var5 / 256.0;
-            double var3 = FastMath.asin(var1);
-            f[var5] = FastMath.cos(var3);
-            e[var5] = var3;
+        for(var0 = 0; var0 < 257; ++var0) {
+            double var1 = (double)var0 / 256.0D;
+            double var3 = Math.asin(var1);
+            f[var0] = Math.cos(var3);
+            e[var0] = var3;
         }
 
     }
