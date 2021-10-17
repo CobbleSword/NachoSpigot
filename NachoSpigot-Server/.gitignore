@@ -25,9 +25,6 @@ dependency-reduced-pom.xml
 
 /world
 
-# Mac filesystem dust
-.DS_Store
-
 # intellij
 *.iml
 *.ipr
