@@ -42,11 +42,13 @@ public class RuntimePatches
                 Object viaManager = getManager.invoke(null);
                 Class<?> viaManagerClass = viaManager.getClass();
                 Method getLoader = getMethod(viaManagerClass, "getLoader");
-                if(getLoader == null) throw new IllegalStateException("getLoader was not found in the ViaManager class");
+                if(getLoader == null)
+                    throw new IllegalStateException("getLoader was not found in the ViaManager class");
                 Object bukkitViaLoader = getLoader.invoke(viaManager);
                 Class<?> bukkitViaLoaderClass = bukkitViaLoader.getClass();
                 Method storeListener = getMethod(bukkitViaLoaderClass, "storeListener");
-                if(storeListener == null) throw new IllegalStateException("storeListener was not found in the BukkitViaLoader class");
+                if(storeListener == null)
+                    throw new IllegalStateException("storeListener was not found in the BukkitViaLoader class");
                 Class<?> paperPatchClass = Class.forName(viaVersionPackage + "bukkit.listeners.protocol1_9to1_8.PaperPatch", true, cl);
                 Class<?> viaVersionPlugin = Class.forName(viaVersionPackage + "ViaVersionPlugin", true, cl);
                 Method getInstance = viaVersionPlugin.getDeclaredMethod("getInstance");
@@ -54,7 +56,8 @@ public class RuntimePatches
                 Object paperPatch = paperPatchClass.getDeclaredConstructor(Plugin.class).newInstance(plugin);
                 Object listener = storeListener.invoke(bukkitViaLoader, paperPatch);
                 Method register = getMethod(listener.getClass().getSuperclass(), "register");
-                if(register == null) throw new IllegalStateException("register was not found in the Listener class");
+                if(register == null)
+                    throw new IllegalStateException("register was not found in the Listener class");
                 register.invoke(listener);
                 logger.info("Successfully patched block placement!");
             }
@@ -77,6 +80,8 @@ public class RuntimePatches
                                 "Please update to ProtocolLib version 4.7.0 or higher!\n" +
                                         "In version 4.6.0 and lower, we have to do a nasty fix to make it work.\n" +
                                         "So.. once again, please update!\n" +
+                                        "You can update with this link: " +
+                                        "https://github.com/dmulloy2/ProtocolLib/releases/latest\n" +
                                         "Sleeping for 10s so this message can be read."
                         );
                         Thread.sleep(10000);
@@ -91,9 +96,8 @@ public class RuntimePatches
                 pool.insertClassPath(new LoaderClassPath(plugin.getClass().getClassLoader()));
 
                 CtClass defaultProtocolInjector = pool.get("com.comphenix.protocol.injector.netty.ProtocolInjector$1");
-                if (defaultProtocolInjector.isFrozen()) {
-                    defaultProtocolInjector.defrost();
-                }
+                if (defaultProtocolInjector.isFrozen()) defaultProtocolInjector.defrost();
+
 
                 CtClass clazz = pool.makeClass(CraftServer.class.getClassLoader().getResourceAsStream("protpatch.class"));
                 clazz.replaceClassName(clazz.getName(), "com.comphenix.protocol.injector.netty.ProtocolInjector$1");
@@ -119,12 +123,9 @@ public class RuntimePatches
                 pool.importPackage("io.netty.channel.ChannelMetadata");
 
                 CtClass emptyChannel = pool.get("net.citizensnpcs.nms.v1_8_R3.network.EmptyChannel");
-                if (emptyChannel.isFrozen()) {
-                    emptyChannel.defrost();
-                }
+                if (emptyChannel.isFrozen()) emptyChannel.defrost();
 
                 CtMethod metaData = emptyChannel.getDeclaredMethods("metadata")[0];
-
                 metaData.setBody("{ return new ChannelMetadata(true); }");
 
                 emptyChannel.toClass(plugin.getClass().getClassLoader(), plugin.getClass().getProtectionDomain());
