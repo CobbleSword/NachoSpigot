@@ -2194,12 +2194,12 @@ public abstract class World implements IBlockAccess {
             return null;
         } else {
             // CraftBukkit start
-            if (capturedTileEntities.containsKey(blockposition)) {
-                return capturedTileEntities.get(blockposition);
+            TileEntity tileentity = null;
+            if (!capturedTileEntities.isEmpty() && (tileentity = capturedTileEntities.get(blockposition)) != null) {
+                return tileentity;
             }
             // CraftBukkit end
 
-            TileEntity tileentity = null;
             int i;
             TileEntity tileentity1;
 
