@@ -46,6 +46,10 @@ import joptsimple.OptionSet;
 
 import org.bukkit.craftbukkit.Main;
 import co.aikar.timings.SpigotTimings; // Spigot
+import org.jline.reader.LineReader;
+import org.jline.reader.LineReaderBuilder;
+import org.jline.terminal.Terminal;
+import org.jline.terminal.TerminalBuilder;
 import xyz.sculas.nacho.async.AsyncExplosions;
 // CraftBukkit end
 
@@ -111,14 +115,16 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     public OptionSet options;
     public org.bukkit.command.ConsoleCommandSender console;
     public org.bukkit.command.RemoteConsoleCommandSender remoteConsole;
-    public ConsoleReader reader;
+    Terminal terminal = TerminalBuilder.builder().streams(System.in, System.out).build();
+    LineReader reader = LineReaderBuilder.builder().terminal(terminal).build();
+    // public ConsoleReader reader;
     public static int currentTick = 0; // PaperSpigot - Further improve tick loop
     public final Thread primaryThread;
     public java.util.Queue<Runnable> processQueue = new java.util.concurrent.ConcurrentLinkedQueue<Runnable>();
     public int autosavePeriod;
     // CraftBukkit end
 
-    public MinecraftServer(OptionSet options, Proxy proxy, File file1) {
+    public MinecraftServer(OptionSet options, Proxy proxy, File file1) throws IOException {
         io.netty.util.ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.DISABLED); // [Nacho-0040] Change deprecated Netty parameter // Spigot - disable
         this.e = proxy;
         MinecraftServer.l = this;
@@ -139,7 +145,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
         }
 
         try {
-            reader = new ConsoleReader(System.in, System.out);
+            reader = new LineReader;
             reader.setExpandEvents(false); // Avoid parsing exceptions for uncommonly used event designators
         } catch (Throwable e) {
             try {
