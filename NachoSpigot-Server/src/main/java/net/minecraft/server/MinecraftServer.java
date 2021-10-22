@@ -41,7 +41,6 @@ import org.apache.logging.log4j.Logger;
 
 // CraftBukkit start
 
-import jline.console.ConsoleReader;
 import joptsimple.OptionSet;
 
 import org.bukkit.craftbukkit.Main;
@@ -115,8 +114,11 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     public OptionSet options;
     public org.bukkit.command.ConsoleCommandSender console;
     public org.bukkit.command.RemoteConsoleCommandSender remoteConsole;
-    Terminal terminal = TerminalBuilder.builder().streams(System.in, System.out).build();
-    LineReader reader = LineReaderBuilder.builder().terminal(terminal).build();
+
+    TerminalBuilder terminalBuilder = TerminalBuilder.builder();
+    Terminal terminal = terminalBuilder.streams(System.in, System.out).build();
+    LineReaderBuilder readerBuilder = LineReaderBuilder.builder();
+    LineReader reader = readerBuilder.terminal(terminal).build();
     // public ConsoleReader reader;
     public static int currentTick = 0; // PaperSpigot - Further improve tick loop
     public final Thread primaryThread;
@@ -145,8 +147,9 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
         }
 
         try {
-            reader = new LineReader;
+            LineReader reader = readerBuilder.build(); // ik this doesn't work
             reader.setExpandEvents(false); // Avoid parsing exceptions for uncommonly used event designators
+            // ^ idk about this yet
         } catch (Throwable e) {
             try {
                 // Try again with jline disabled for Windows users without C++ 2008 Redistributable
