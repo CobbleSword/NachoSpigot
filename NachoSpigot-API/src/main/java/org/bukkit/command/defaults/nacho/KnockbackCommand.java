@@ -28,8 +28,17 @@ public class KnockbackCommand extends Command {
                 sender.sendMessage(CC.gray + "Reloaded KB config!");
                 break;
             }
+            case "toggle": {
+                Bukkit.toggleKnockback(!Bukkit.customKnockback());
+                sender.sendMessage(CC.yellow + "Custom Knockback value has been changed to " + Bukkit.customKnockback());
+                break;
+            }
+            
             case "set": {
-                if(!Bukkit.customKnockback()) {sender.sendMessage(CC.red + "Custom knockback is disabled."); return false;}
+                if(!Bukkit.customKnockback()) {
+                    sender.sendMessage(CC.red + "Custom knockback is disabled."); 
+                    return false;
+                }
                 String[] args = Arrays.copyOfRange(str, 1, str.length);
                 if (args.length < 2) {
                     sendHelpKB(sender);
@@ -91,6 +100,7 @@ public class KnockbackCommand extends Command {
         sender.sendMessage(CC.red + "Please specify a subcommand. Possible subcommands:");
         sender.sendMessage(CC.gray + "<subcommand> | <description>");
         sender.sendMessage(CC.red + "reload | reload the config");
+        sender.sendMessage(CC.red + "toggle | toggle the custom kb");
         sender.sendMessage(CC.red + "set <what to set> <value> | set a kb value to something and save to config");
     }
 
