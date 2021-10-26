@@ -462,6 +462,7 @@ public interface Server extends PluginMessageRecipient {
      * Reloads the knockback config.
      */
     public void reloadKB();
+    public void toggleKnockback(Boolean b);
 
     public void setKnockbackFriction(double d);
     public void setKnockbackHorizontal(double d);

@@ -39,4 +39,5 @@ public class NachoConfig {
     public int fixedPoolSize = 500;
     public boolean useFasterCannonTracker = true;
     public boolean disableSpongeAbsorption = false;
+    public boolean fixEatWhileRunning = false;
 }

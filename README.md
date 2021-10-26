@@ -4,16 +4,16 @@
 NachoSpigot offers a number of enhancements to performance as well as bug fixes such as a built-in anti-crash system and being able to perform well with a large number of players.
 
 ## Current State
-Java 15 is now natively supported, and [ProtocolLib](https://github.com/dmulloy2/ProtocolLib) and [Citizens2](https://github.com/CitizensDev/Citizens2) are patched at runtime to work with Nacho's modifications.
+Java 15 is now natively supported, and [ProtocolLib](https://github.com/dmulloy2/ProtocolLib), [ViaVersion](https://github.com/ViaVersion/ViaVersion), and [Citizens2](https://github.com/CitizensDev/Citizens2) are patched at runtime to work with Nacho's modifications.
 
 Nacho can now be used in production environments with some degree of stability.
 
-If you find any bugs, please create an issue or contact us in the [Discord server](https://discord.gg/ewcYeERKJw)!
+If you find any bugs, please [create an issue](../../issues/new) or contact us in the [Discord server](https://discord.gg/ewcYeERKJw)!
 
 **NachoSpigot supports Java 8 to Java 17!**
 
 ## Download
-[Stable](https://nacho.sculas.xyz/)
+You can download the CI build for the [latest commit here](https://nacho.sculas.xyz/).
 
 ## API Download
 [JitPack](https://jitpack.io/#CobbleSword/NachoSpigot/master-SNAPSHOT)
