@@ -40,4 +40,5 @@ public class NachoConfig {
     public boolean useFasterCannonTracker = true;
     public boolean disableSpongeAbsorption = false;
     public boolean fixEatWhileRunning = false;
+    public boolean hideProjectilesFromHiddenPlayers = false;
 }

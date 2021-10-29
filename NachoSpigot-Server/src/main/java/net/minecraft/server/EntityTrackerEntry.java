@@ -347,11 +347,8 @@ public class EntityTrackerEntry {
             if (this.c(entityplayer)) {
                 if (!isPlayerEntityTracked && (this.e(entityplayer) || this.tracker.attachedToPlayer)) {
                     // CraftBukkit start - respect vanish API
-                    if (this.tracker instanceof EntityPlayer) {
-                        Player player = ((EntityPlayer) this.tracker).getBukkitEntity();
-                        if (!entityplayer.getBukkitEntity().canSee(player)) {
-                            return;
-                        }
+                    if (!entityplayer.getBukkitEntity().canSee(this.tracker.getBukkitEntity())) {
+                        return;
                     }
 
                     entityplayer.removeQueue.remove(Integer.valueOf(this.tracker.getId()));
@@ -460,8 +457,12 @@ public class EntityTrackerEntry {
     }
 
     public void scanPlayers(List<EntityHuman> list) {
-        for (int i = 0; i < list.size(); ++i) {
-            this.updatePlayer((EntityPlayer) list.get(i));
+        for (EntityHuman entityHuman : list) {
+            // Don't update if player cannot see entity
+            if (!((EntityPlayer) entityHuman).getBukkitEntity().canSee((this.tracker).getBukkitEntity())) {
+                return;
+            }
+            this.updatePlayer((EntityPlayer) entityHuman);
         }
 
     }

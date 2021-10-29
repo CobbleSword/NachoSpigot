@@ -1,9 +1,9 @@
 package org.bukkit.craftbukkit.entity;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.authlib.GameProfile;
+import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.commons.Constants;
 import io.netty.buffer.Unpooled;
 
@@ -1006,6 +1006,37 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
     @Override
     public boolean canSee(Player player) {
         return !hiddenPlayers.contains(player.getUniqueId());
+    }
+
+    @Override
+    public boolean canSee(org.bukkit.entity.Entity entity) {
+        Entity nmsEntity = ((CraftEntity) entity).getHandle();
+        if (nmsEntity instanceof EntityPlayer) {
+            return this.canSee((Player) entity);
+        }
+
+        // Projectiles from hidden players
+        if(Nacho.get().getConfig().hideProjectilesFromHiddenPlayers) {
+            if (nmsEntity instanceof EntityProjectile) {
+                EntityProjectile entityProjectile = (EntityProjectile) nmsEntity;
+
+                if (entityProjectile.getShooter() instanceof EntityPlayer) {
+                    return this.canSee(((EntityPlayer) entityProjectile.getShooter()).getBukkitEntity());
+                }
+            }
+
+            if (nmsEntity instanceof EntityArrow) {
+                EntityArrow entityProjectile = (EntityArrow) nmsEntity;
+
+                if (entityProjectile.shooter instanceof EntityPlayer) {
+                    return this.canSee(((EntityPlayer) entityProjectile.shooter).getBukkitEntity());
+                }
+            }
+
+
+        }
+
+        return true;
     }
 
     @Override

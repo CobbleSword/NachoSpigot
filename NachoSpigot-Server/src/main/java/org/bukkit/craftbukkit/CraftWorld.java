@@ -40,6 +40,7 @@ import org.bukkit.craftbukkit.util.CraftMagicNumbers;
 import org.bukkit.craftbukkit.util.LongHash;
 import org.bukkit.entity.*;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.minecart.ExplosiveMinecart;
 import org.bukkit.entity.minecart.HopperMinecart;
 import org.bukkit.entity.minecart.PoweredMinecart;
