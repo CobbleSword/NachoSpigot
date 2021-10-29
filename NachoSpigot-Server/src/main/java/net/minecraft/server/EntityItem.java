@@ -22,6 +22,7 @@ public class EntityItem extends Entity implements HopperPusher {
     private String g;
     public float a;
     private int lastTick = MinecraftServer.currentTick; // CraftBukkit
+    public Entity owner; // Paper
 
     public EntityItem(World world, double d0, double d1, double d2) {
         super(world);
@@ -326,7 +327,7 @@ public class EntityItem extends Entity implements HopperPusher {
                 this.world.getServer().getPluginManager().callEvent(event);
                 itemstack.count = canHold + remaining;
 
-                if (event.isCancelled()) {
+                if (event.isCancelled() || !((EntityPlayer) entityhuman).getBukkitEntity().canSeeEntity(this.getBukkitEntity())) {
                     return;
                 }
 

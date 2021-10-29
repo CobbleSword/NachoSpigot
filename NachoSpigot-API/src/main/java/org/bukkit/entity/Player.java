@@ -981,6 +981,15 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
     public boolean canSee(Player player);
 
     /**
+     * Checks to see if a entity has been hidden from this player compared to shooter
+     *
+     * @param entity Entity to check
+     * @return True if the provided player is not being hidden from this
+     *     entity
+     */
+    public boolean canSeeEntity(Entity entity);
+
+    /**
      * Checks to see if this player is currently standing on a block. This
      * information may not be reliable, as it is a state provided by the
      * client, and may therefore not be accurate.

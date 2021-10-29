@@ -40,6 +40,7 @@ import org.bukkit.craftbukkit.util.CraftMagicNumbers;
 import org.bukkit.craftbukkit.util.LongHash;
 import org.bukkit.entity.*;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.minecart.ExplosiveMinecart;
 import org.bukkit.entity.minecart.HopperMinecart;
 import org.bukkit.entity.minecart.PoweredMinecart;
@@ -329,12 +330,17 @@ public class CraftWorld implements World {
         return world;
     }
 
-    public org.bukkit.entity.Item dropItem(Location loc, ItemStack item) {
+    public Item dropItem(Location loc, ItemStack item) {
+        return this.dropItem(loc, item, null);
+    }
+
+    public org.bukkit.entity.Item dropItem(Location loc, ItemStack item, net.minecraft.server.Entity owner) {
         Validate.notNull(item, "Cannot drop a Null item.");
         Validate.isTrue(item.getTypeId() != 0, "Cannot drop AIR.");
         EntityItem entity = new EntityItem(world, loc.getX(), loc.getY(), loc.getZ(), CraftItemStack.asNMSCopy(item));
         entity.pickupDelay = 10;
         world.addEntity(entity);
+        entity.owner = owner;
         // TODO this is inconsistent with how Entity.getBukkitEntity() works.
         // However, this entity is not at the moment backed by a server entity class so it may be left.
         return new CraftItem(world.getServer(), entity);

@@ -294,7 +294,7 @@ public class EntityArrow extends Entity implements IProjectile {
                             }
                         }
 
-                        this.makeSound("random.bowhit", 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
+                        world.makeSound(this.shooter,"random.bowhit", 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
                         if (!(movingobjectposition.entity instanceof EntityEnderman)) {
                             this.die();
                         }
@@ -323,7 +323,7 @@ public class EntityArrow extends Entity implements IProjectile {
                     this.locX -= this.motX / (double) f1 * 0.05000000074505806D;
                     this.locY -= this.motY / (double) f1 * 0.05000000074505806D;
                     this.locZ -= this.motZ / (double) f1 * 0.05000000074505806D;
-                    this.makeSound("random.bowhit", 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
+                    world.makeSound(this.shooter,"random.bowhit", 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
                     this.inGround = true;
                     this.shake = 7;
                     this.setCritical(false);
@@ -440,7 +440,7 @@ public class EntityArrow extends Entity implements IProjectile {
                 // event.setCancelled(!entityhuman.canPickUpLoot); TODO
                 this.world.getServer().getPluginManager().callEvent(event);
 
-                if (event.isCancelled()) {
+                if (event.isCancelled() || !((EntityPlayer) entityhuman).getBukkitEntity().canSeeEntity(this.getBukkitEntity())) {
                     return;
                 }
             }
@@ -452,7 +452,7 @@ public class EntityArrow extends Entity implements IProjectile {
             }
 
             if (flag) {
-                this.makeSound("random.pop", 0.2F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                world.makeSound(this.shooter,"random.pop", 0.2F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 entityhuman.receive(this, 1);
                 this.die();
             }

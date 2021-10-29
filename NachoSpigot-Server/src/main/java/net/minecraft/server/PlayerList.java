@@ -1095,6 +1095,25 @@ public abstract class PlayerList {
 
     }
 
+    public void sendPacketNearbyIncludingSelf(EntityHuman entityhuman, double d0, double d1, double d2, double d3, int i, Packet packet) { // Saith
+        for (int j = 0; j < this.players.size(); ++j) {
+            EntityPlayer entityplayer = this.players.get(j);
+            if (entityhuman != null && !entityplayer.getBukkitEntity().canSeeEntity(entityhuman.getBukkitEntity())) {
+                continue;
+            }
+
+            if (entityplayer.dimension == i) {
+                double d4 = d0 - entityplayer.locX;
+                double d5 = d1 - entityplayer.locY;
+                double d6 = d2 - entityplayer.locZ;
+
+                if (d4 * d4 + d5 * d5 + d6 * d6 < d3 * d3) {
+                    entityplayer.playerConnection.sendPacket(packet);
+                }
+            }
+        }
+    }
+
     public void savePlayers() {
         for (int i = 0; i < this.players.size(); ++i) {
             this.savePlayerFile((EntityPlayer) this.players.get(i));

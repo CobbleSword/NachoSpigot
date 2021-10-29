@@ -1009,6 +1009,37 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
     }
 
     @Override
+    public boolean canSeeEntity(org.bukkit.entity.Entity entity) {
+        Entity nmsEntity = ((CraftEntity) entity).getHandle();
+
+        if (nmsEntity instanceof EntityProjectile) {
+            EntityProjectile entityProjectile = (EntityProjectile) nmsEntity;
+
+            if (entityProjectile.getShooter() instanceof EntityPlayer) {
+                return this.canSee(((EntityPlayer) entityProjectile.getShooter()).getBukkitEntity());
+            }
+        }
+
+        if (nmsEntity instanceof EntityItem) {
+            EntityItem entityItem = (EntityItem) nmsEntity;
+
+            if (entityItem.owner instanceof EntityPlayer) {
+                return this.canSee(((EntityPlayer) entityItem.owner).getBukkitEntity());
+            }
+        }
+
+        if (nmsEntity instanceof EntityArrow) {
+            EntityArrow entityProjectile = (EntityArrow) nmsEntity;
+
+            if (entityProjectile.shooter instanceof EntityPlayer) {
+                return this.canSee(((EntityPlayer) entityProjectile.shooter).getBukkitEntity());
+            }
+        }
+
+        return !(entity instanceof Player) || this.canSee((Player) entity);
+    }
+
+    @Override
     public Map<String, Object> serialize() {
         Map<String, Object> result = new LinkedHashMap<String, Object>();
 
