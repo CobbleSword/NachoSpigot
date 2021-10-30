@@ -180,4 +180,6 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [MineTick-0017] Fix Insane Nether Portal Lag
 
 [Migot-0009] Prevent Creature Spawning in Unloaded Chunks
+
+[Sugarcane-0022] Add YAML comments
 ```
