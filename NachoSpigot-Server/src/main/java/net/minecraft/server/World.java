@@ -175,7 +175,8 @@ public abstract class World implements IBlockAccess {
     public final org.github.paperspigot.PaperSpigotWorldConfig paperSpigotConfig; // PaperSpigot
 
     public final co.aikar.timings.WorldTimingsHandler timings; // Spigot
-    public final net.techcable.tacospigot.TacoSpigotWorldConfig tacoSpigotConfig;
+    public final net.techcable.tacospigot.TacoSpigotWorldConfig tacoSpigotConfig; // TacoSpigot
+    public final me.elier.nachospigot.config.NachoSpigotWorldConfig nachoSpigotConfig; // NachoSpigot
 
     public CraftWorld getWorld() {
         return this.world;
@@ -193,6 +194,7 @@ public abstract class World implements IBlockAccess {
         this.spigotConfig = new org.spigotmc.SpigotWorldConfig( worlddata.getName() ); // Spigot
         this.paperSpigotConfig = new org.github.paperspigot.PaperSpigotWorldConfig( worlddata.getName() ); // PaperSpigot
         this.tacoSpigotConfig = new net.techcable.tacospigot.TacoSpigotWorldConfig(worlddata.getName()); // TacoSpigot
+        this.nachoSpigotConfig = new me.elier.nachospigot.config.NachoSpigotWorldConfig(worlddata.getName()); // NachoSpigot
         this.generator = gen;
         this.world = new CraftWorld((WorldServer) this, gen, env);
         this.ticksPerAnimalSpawns = this.getServer().getTicksPerAnimalSpawns(); // CraftBukkit

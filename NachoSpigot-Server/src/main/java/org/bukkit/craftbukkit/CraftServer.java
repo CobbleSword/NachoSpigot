@@ -735,7 +735,8 @@ public final class CraftServer implements Server {
         org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
         org.github.paperspigot.PaperSpigotConfig.init((File) console.options.valueOf("paper-settings")); // PaperSpigot
         net.techcable.tacospigot.TacoSpigotConfig.init((File) console.options.valueOf("taco-settings")); // TacoSpigot
-        if(Nacho.get() == null) new Nacho();
+        me.elier.nachospigot.config.NachoSpigotConfig.init((File) console.options.valueOf("taco-settings")); // NachoSpigot
+        new Nacho(); // NachoSpigot
         for (WorldServer world : console.worlds) {
             world.worldData.setDifficulty(difficulty);
             world.setSpawnFlags(monsters, animals);
