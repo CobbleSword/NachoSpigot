@@ -33,8 +33,6 @@ public class NachoConfig {
 
     public static void init(File configFile) {
         CONFIG_FILE = configFile;
-        File old_config = new File("nacho.json");
-        if(old_config.exists()) migrate(old_config);
         config = new YamlConfiguration();
         try {
             System.out.println("Loading NachoSpigot config from " + configFile.getName());
@@ -46,6 +44,8 @@ public class NachoConfig {
         }
         config.options().header(HEADER);
         config.options().copyDefaults(true);
+        File old_config = new File("nacho.json");
+        if(old_config.exists()) migrate(old_config);
 
         int configVersion = -1; // Update this every new configuration update
         version = getInt("config-version", configVersion);
@@ -53,14 +53,55 @@ public class NachoConfig {
         readConfig(NachoConfig.class, null);
     }
 
+    @SuppressWarnings("ConstantConditions")
     private static void migrate(File old_config) {
         OldNachoConfig nachoJson = FileUtils.toObject(old_config, OldNachoConfig.class);
         try {
             Files.delete(old_config.toPath());
         } catch (IOException e) {
-            Bukkit.getLogger().log(Level.WARNING, "Failed to delete nacho.json during migration to nacho.yml", e);
+            Bukkit.getLogger().log(Level.SEVERE, "Failed to delete nacho.json during migration to nacho.yml");
+            throw Throwables.propagate(e);
         }
         // TODO
+        set("settings.save-empty-scoreboard-teams", nachoJson.saveEmptyScoreboardTeams);
+        set("settings.commands.enable-version-command", nachoJson.enableVersionCommand);
+        set("settings.commands.enable-plugins-command", nachoJson.enablePluginsCommand);
+        set("settings.commands.enable-reload-command", nachoJson.enableReloadCommand);
+        set("settings.fast-operators", nachoJson.useFastOperators);
+        set("settings.patch-protocollib", nachoJson.patchProtocolLib);
+        set("settings.stop-notify-bungee", nachoJson.stopNotifyBungee);
+        set("settings.anti-malware", nachoJson.checkForMalware);
+        set("settings.kick-on-illegal-behavior", nachoJson.kickOnIllegalBehavior);
+        set("settings.tick-enchantment-tables", nachoJson.shouldTickEnchantmentTables);
+        set("settings.panda-wire", nachoJson.usePandaWire);
+        set("settings.explosions.constant-explosions", nachoJson.constantExplosions);
+        set("settings.explosions.explode-protected-regions", nachoJson.explosionProtectedRegions);
+        set("settings.fire-entity-explode-event", nachoJson.fireEntityExplodeEvent);
+        set("settings.reduced-density-rays", nachoJson.reducedDensityRays);
+        set("settings.player-time-statistics-interval", nachoJson.playerTimeStatisticsInterval);
+        set("settings.brand-name", nachoJson.serverBrandName);
+        set("settings.stop-decoding-itemstack-on-place", nachoJson.stopDecodingItemStackOnPlace);
+        set("settings.anti-crash", nachoJson.enableAntiCrash);
+        set("settings.infinite-water-sources", nachoJson.infiniteWaterSources);
+        set("settings.leaves-decay-event", nachoJson.leavesDecayEvent);
+        set("settings.entity.mob-ai", nachoJson.enableMobAI);
+        set("settings.entity.mob-sound", nachoJson.enableMobSound);
+        set("settings.entity.entity-activation", nachoJson.enableEntityActivation);
+        set("settings.entity.endermite-spawning", nachoJson.endermiteSpawning);
+        set("settings.enable-lava-to-cobblestone", nachoJson.enableLavaToCobblestone);
+        set("settings.fire-player-move-event", nachoJson.firePlayerMoveEvent);
+        set("settings.physics.disable-place", nachoJson.disablePhysicsPlace);
+        set("settings.physics.disable-update", nachoJson.disablePhysicsUpdate);
+        set("settings.block-operations", nachoJson.doBlocksOperations);
+        set("settings.chunk.unload-chunks", nachoJson.doChunkUnload);
+        set("settings.chunk.threads", nachoJson.chunkThreads);
+        set("settings.chunk.players-per-thread", nachoJson.playersPerThread);
+        set("settings.enable-tcpnodelay", nachoJson.enableTCPNODELAY);
+        set("settings.fixed-pools.use-fixed-pools-for-tnt", nachoJson.useFixedPoolForTNT);
+        set("settings.fixed-pools.size", nachoJson.fixedPoolSize);
+        set("settings.faster-cannon-tracker", nachoJson.useFasterCannonTracker);
+        set("settings.disable-sponge-absorption", nachoJson.disableSpongeAbsorption);
+        set("settings.fix-eat-while-running", nachoJson.fixEatWhileRunning);
     }
 
     static void readConfig(Class<?> clazz, Object instance) {
@@ -138,7 +179,7 @@ public class NachoConfig {
     public static boolean useFastOperators;
 
     private static void useFastOperators() {
-        useFastOperators = getBoolean("settings.use-fast-operators", false);
+        useFastOperators = getBoolean("settings.fast-operators", false);
     }
     public static boolean patchProtocolLib;
 
@@ -178,8 +219,8 @@ public class NachoConfig {
     public static boolean explosionProtectedRegions;
 
     private static void explosions() {
-        constantExplosions = getBoolean("settings.constant-explosions", false);
-        explosionProtectedRegions = getBoolean("settings.explode-protected-regions", true);
+        constantExplosions = getBoolean("settings.explosions.constant-explosions", false);
+        explosionProtectedRegions = getBoolean("settings.explosions.explode-protected-regions", true);
     }
 
     public static boolean fireEntityExplodeEvent;
@@ -267,17 +308,13 @@ public class NachoConfig {
     }
 
     public static boolean doChunkUnload = true;
-
-    private static void doChunkUnload() {
-        doChunkUnload = getBoolean("settings.unload-chunks", true);
-    }
-
     public static int chunkThreads = 2; // PaperSpigot - Bumped value
     public static int playersPerThread = 50;
 
     private static void chunk() {
-        chunkThreads = getInt("settings.chunks.threads", 2);
-        playersPerThread = getInt("settings.chunks.players-per-thread", 50);
+        doChunkUnload = getBoolean("settings.chunk.unload-chunks", true);
+        chunkThreads = getInt("settings.chunk.threads", 2);
+        playersPerThread = getInt("settings.chunk.players-per-thread", 50);
     }
 
     public static boolean enableTCPNODELAY = true;
