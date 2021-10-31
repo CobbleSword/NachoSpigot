@@ -234,45 +234,45 @@ public class NachoConfig {
     private static void reducedDensityRays() {
         reducedDensityRays = getBoolean("settings.reduced-density-rays", true);
     }
-    public static int playerTimeStatisticsInterval = 20;
+    public static int playerTimeStatisticsInterval;
 
     private static void playerTimeStatisticsInterval() {
         playerTimeStatisticsInterval = getInt("settings.player-time-statistics-interval", 20);
     }
 
-    public static String serverBrandName = "NachoSpigot";
+    public static String serverBrandName;
 
     private static void serverBrandName() {
         serverBrandName = getString("settings.brand-name", "NachoSpigot");
     }
 
-    public static boolean stopDecodingItemStackOnPlace = true;
+    public static boolean stopDecodingItemStackOnPlace;
 
     private static void stopDecodingItemStackOnPlace() {
         stopDecodingItemStackOnPlace = getBoolean("settings.stop-decoding-itemstack-on-place", true);
     }
 
-    public static boolean enableAntiCrash = true;
+    public static boolean enableAntiCrash;
 
     private static void enableAntiCrash() {
         enableAntiCrash = getBoolean("settings.anti-crash", true);
     }
 
-    public static boolean infiniteWaterSources = true;
+    public static boolean infiniteWaterSources;
 
     private static void infiniteWaterSources() {
         infiniteWaterSources = getBoolean("settings.infinite-water-sources", true); // TODO: move to world config
     }
-    public static boolean leavesDecayEvent = true;
+    public static boolean leavesDecayEvent;
 
     private static void leavesDecayEvent() {
         leavesDecayEvent = getBoolean("settings.leaves-decay-event", true);
     }
 
-    public static boolean enableMobAI = true;
-    public static boolean enableMobSound = true;
-    public static boolean enableEntityActivation = true;
-    public static boolean endermiteSpawning = true;
+    public static boolean enableMobAI;
+    public static boolean enableMobSound;
+    public static boolean enableEntityActivation;
+    public static boolean endermiteSpawning;
 
     private static void entity() {
         enableMobAI = getBoolean("settings.entity.mob-ai", true);
@@ -281,35 +281,35 @@ public class NachoConfig {
         endermiteSpawning = getBoolean("settings.entity.endermite-spawning", true);
     }
 
-    public static boolean enableLavaToCobblestone = true;
+    public static boolean enableLavaToCobblestone;
 
     private static void setEnableLavaToCobblestone() {
         enableLavaToCobblestone = getBoolean("settings.enable-lava-to-cobblestone", true);
     }
 
-    public static boolean firePlayerMoveEvent = true; // Highly recommend disable this for lobby/limbo/minigames servers.
+    public static boolean firePlayerMoveEvent; // Highly recommend disable this for lobby/limbo/minigames servers.
 
     private static void firePlayerMoveEvent() {
         firePlayerMoveEvent = getBoolean("settings.fire-player-move-event", true);
     }
 
-    public static boolean disablePhysicsPlace = false;
-    public static boolean disablePhysicsUpdate = false;
+    public static boolean disablePhysicsPlace;
+    public static boolean disablePhysicsUpdate;
 
     private static void physics() {
         disablePhysicsPlace = getBoolean("settings.physics.disable-place", false);
         disablePhysicsUpdate = getBoolean("settings.physics.disable-update", false);
     }
 
-    public static boolean doBlocksOperations = true;
+    public static boolean doBlocksOperations;
 
     private static void doBlocksOperations() {
         doBlocksOperations = getBoolean("settings.block-operations", true);
     }
 
-    public static boolean doChunkUnload = true;
-    public static int chunkThreads = 2; // PaperSpigot - Bumped value
-    public static int playersPerThread = 50;
+    public static boolean doChunkUnload;
+    public static int chunkThreads; // PaperSpigot - Bumped value
+    public static int playersPerThread;
 
     private static void chunk() {
         doChunkUnload = getBoolean("settings.chunk.unload-chunks", true);
@@ -317,32 +317,32 @@ public class NachoConfig {
         playersPerThread = getInt("settings.chunk.players-per-thread", 50);
     }
 
-    public static boolean enableTCPNODELAY = true;
+    public static boolean enableTCPNODELAY;
 
     private static void enableTCPNODELAY() {
         enableTCPNODELAY = getBoolean("settings.enable-tcpnodelay", true);
     }
 
-    public static boolean useFixedPoolForTNT = false;
-    public static int fixedPoolSize = 500;
+    public static boolean useFixedPoolForTNT;
+    public static int fixedPoolSize;
 
     private static void fixedPools() {
         useFixedPoolForTNT = getBoolean("settings.fixed-pools.use-fixed-pools-for-tnt", false);
         fixedPoolSize = getInt("settings.fixed-pools.size", 500);
     }
-    public static boolean useFasterCannonTracker = true;
+    public static boolean useFasterCannonTracker;
 
     private static void useFasterCannonTracker() {
         useFasterCannonTracker = getBoolean("settings.faster-cannon-tracker", true);
     }
 
-    public static boolean disableSpongeAbsorption = false;
+    public static boolean disableSpongeAbsorption;
 
     private static void disableSpongeAbsorption() {
         disableSpongeAbsorption = getBoolean("settings.disable-sponge-absorption", false);
     }
 
-    public static boolean fixEatWhileRunning = false;
+    public static boolean fixEatWhileRunning;
 
     private static void fixEatWhileRunning() {
         fixEatWhileRunning = getBoolean("settings.fix-eat-while-running", false);
