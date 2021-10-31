@@ -1,6 +1,6 @@
 package dev.cobblesword.nachospigot;
 
-public class NachoConfig {
+public class OldNachoConfig {
     public boolean saveEmptyScoreboardTeams = false;
     public boolean enableVersionCommand = true;
     public boolean enablePluginsCommand = true;

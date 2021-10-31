@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.commons.IPUtils;
 import dev.cobblesword.nachospigot.knockback.Knockback;
+import me.elier.nachospigot.config.NachoConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -212,7 +213,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                 if (org.spigotmc.SpigotConfig.bungee) {
                     DedicatedServer.LOGGER.warn("Whilst this makes it possible to use BungeeCord, unless access to your server is properly restricted, it also opens up the ability for hackers to connect with any username they choose.");
                     DedicatedServer.LOGGER.warn("Please see http://www.spigotmc.org/wiki/firewall-guide/ for further information.");
-                    if (!Nacho.get().getConfig().stopNotifyBungee) {
+                    if (!NachoConfig.stopNotifyBungee) {
                         DedicatedServer.LOGGER.warn("---------------------------- NachoSpigot Checker ----------------------------");
                         DedicatedServer.LOGGER.warn("If you don't want to see this message anymore, set \"stopNotifyBungee\" to \"true\" in \"nacho.json\"!");
                         DedicatedServer.LOGGER.warn("Checking firewall..");

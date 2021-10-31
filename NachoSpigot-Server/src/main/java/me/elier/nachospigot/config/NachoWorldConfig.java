@@ -5,15 +5,15 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.List;
 
-public class NachoSpigotWorldConfig {
+public class NachoWorldConfig {
 
     private final String worldName;
     private final YamlConfiguration config;
     private boolean verbose;
 
-    public NachoSpigotWorldConfig(String worldName) {
+    public NachoWorldConfig(String worldName) {
         this.worldName = worldName;
-        this.config = NachoSpigotConfig.config;
+        this.config = NachoConfig.config;
         init();
     }
 
@@ -21,7 +21,7 @@ public class NachoSpigotWorldConfig {
         this.verbose = getBoolean("verbose", false);
 
         log("-------- World Settings For [\" + worldName + \"] --------");
-        NachoSpigotConfig.readConfig(NachoSpigotWorldConfig.class, this);
+        NachoConfig.readConfig(NachoWorldConfig.class, this);
     }
 
     private void log(String s) {

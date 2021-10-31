@@ -3,6 +3,8 @@ package net.minecraft.server;
 import java.util.Random;
 
 import dev.cobblesword.nachospigot.Nacho;
+import me.elier.nachospigot.config.NachoConfig;
+
 public class BlockFalling extends Block {
 
     public static boolean instaFall;
@@ -17,13 +19,13 @@ public class BlockFalling extends Block {
     }
 
     public void onPlace(World world, BlockPosition blockposition, IBlockData iblockdata) {
-        if (!Nacho.get().getConfig().disablePhysicsPlace) {
+        if (!NachoConfig.disablePhysicsPlace) {
             world.a(blockposition, (Block) this, this.a(world));
         }
     }
 
     public void doPhysics(World world, BlockPosition blockposition, IBlockData iblockdata, Block block) {
-        if (!Nacho.get().getConfig().disablePhysicsUpdate) {
+        if (!NachoConfig.disablePhysicsUpdate) {
             world.a(blockposition, (Block) this, this.a(world));
         }
     }

@@ -7,8 +7,8 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 // CraftBukkit start
-import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.commons.Constants;
+import me.elier.nachospigot.config.NachoConfig;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.Location;
@@ -61,7 +61,7 @@ public class Explosion {
 
         if (!this.world.tacoSpigotConfig.optimizeLiquidExplosions || !b.getMaterial().isLiquid()) { // TacoSpigot - skip calculating what blocks to blow up in water/lava
             boolean protection = false;
-            if ((Nacho.get().getConfig().fireEntityExplodeEvent || Nacho.get().getConfig().explosionProtectedRegions) && source != null) {
+            if ((NachoConfig.fireEntityExplodeEvent || NachoConfig.explosionProtectedRegions) && source != null) {
                 Location location = new Location(world.getWorld(), posX, posY, posZ);
 
                 List<org.bukkit.block.Block> list = new java.util.ArrayList<>(1);
@@ -349,7 +349,7 @@ public class Explosion {
             double d1 = vector[1];
             double d2 = vector[2];
 
-            float f = this.size * (0.7F + (Nacho.get().getConfig().constantExplosions ? 0.7F : this.world.random.nextFloat()) * 0.6F);
+            float f = this.size * (0.7F + (NachoConfig.constantExplosions ? 0.7F : this.world.random.nextFloat()) * 0.6F);
             float resistance = 0;
 
             double stepX = this.posX;
@@ -410,7 +410,7 @@ public class Explosion {
     }
 
     private float calculateDensity(Vec3D vec3d, AxisAlignedBB aabb) {
-        if (Nacho.get().getConfig().reducedDensityRays) {
+        if (NachoConfig.reducedDensityRays) {
             return calculateDensityReducedRays(vec3d, aabb);
         } else {
             return this.world.a(vec3d, aabb);

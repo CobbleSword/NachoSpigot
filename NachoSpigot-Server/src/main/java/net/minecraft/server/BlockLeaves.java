@@ -4,6 +4,7 @@ import java.util.Random;
 
 import dev.cobblesword.nachospigot.Nacho;
 
+import me.elier.nachospigot.config.NachoConfig;
 import org.bukkit.event.block.LeavesDecayEvent; // CraftBukkit
 
 public abstract class BlockLeaves extends BlockTransparent {
@@ -134,7 +135,7 @@ public abstract class BlockLeaves extends BlockTransparent {
     }
 
     private void e(World world, BlockPosition blockposition) {
-        if (!Nacho.get().getConfig().leavesDecayEvent) {
+        if (!NachoConfig.leavesDecayEvent) {
             return;
         }
 

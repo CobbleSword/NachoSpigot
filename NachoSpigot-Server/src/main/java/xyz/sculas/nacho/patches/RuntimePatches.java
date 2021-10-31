@@ -1,7 +1,7 @@
 package xyz.sculas.nacho.patches;
 
-import dev.cobblesword.nachospigot.Nacho;
 import javassist.*;
+import me.elier.nachospigot.config.NachoConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.plugin.Plugin;
@@ -17,7 +17,7 @@ public class RuntimePatches
 
     public static void applyViaVersionBlockPatch() {
         try {
-            final String name = Nacho.get().getConfig().serverBrandName.toLowerCase();
+            final String name = NachoConfig.serverBrandName.toLowerCase();
             if(
                     Bukkit.getPluginManager().isPluginEnabled("ViaVersion") &&
                             !name.contains("paper") &&
@@ -63,7 +63,7 @@ public class RuntimePatches
             }
         } catch (Exception e) {
             logger.warning("Could not patch block placement. Setting brand name to TacoSpigot to make it work properly.");
-            Nacho.get().getConfig().serverBrandName = "TacoSpigot";
+            NachoConfig.serverBrandName = "TacoSpigot";
             e.printStackTrace();
         }
     }

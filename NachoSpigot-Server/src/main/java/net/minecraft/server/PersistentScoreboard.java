@@ -3,7 +3,7 @@ package net.minecraft.server;
 import java.util.Collection;
 import java.util.Iterator;
 
-import dev.cobblesword.nachospigot.Nacho;
+import me.elier.nachospigot.config.NachoConfig;
 import net.minecraft.server.IScoreboardCriteria.EnumScoreboardHealthDisplay;
 import net.minecraft.server.ScoreboardTeamBase.EnumNameTagVisibility;
 import org.apache.logging.log4j.LogManager;
@@ -168,7 +168,7 @@ public class PersistentScoreboard extends PersistentBase {
 
         while(var3.hasNext()) {
             ScoreboardTeam scoreboardteam = (ScoreboardTeam)var3.next();
-            if (!Nacho.get().getConfig().saveEmptyScoreboardTeams && scoreboardteam.getPlayerNameSet().isEmpty()) continue; // Paper
+            if (!NachoConfig.saveEmptyScoreboardTeams && scoreboardteam.getPlayerNameSet().isEmpty()) continue; // Paper
             NBTTagCompound nbttagcompound = new NBTTagCompound();
             nbttagcompound.setString("Name", scoreboardteam.getName());
             nbttagcompound.setString("DisplayName", scoreboardteam.getDisplayName());

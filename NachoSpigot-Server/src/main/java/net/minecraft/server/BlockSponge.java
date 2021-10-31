@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import dev.cobblesword.nachospigot.Nacho;
+import me.elier.nachospigot.config.NachoConfig;
 
 public class BlockSponge extends Block {
 
@@ -25,13 +26,13 @@ public class BlockSponge extends Block {
     }
 
     public void onPlace(World world, BlockPosition blockposition, IBlockData iblockdata) {
-        if (!Nacho.get().getConfig().disableSpongeAbsorption) {
+        if (!NachoConfig.disableSpongeAbsorption) {
           this.e(world, blockposition, iblockdata);
         }
     }
 
     public void doPhysics(World world, BlockPosition blockposition, IBlockData iblockdata, Block block) {
-        if (!Nacho.get().getConfig().disableSpongeAbsorption) {
+        if (!NachoConfig.disableSpongeAbsorption) {
           this.e(world, blockposition, iblockdata);
           super.doPhysics(world, blockposition, iblockdata, block);
         }
@@ -39,7 +40,7 @@ public class BlockSponge extends Block {
     }
 
     protected void e(World world, BlockPosition blockposition, IBlockData iblockdata) {
-        if (!Nacho.get().getConfig().disableSpongeAbsorption && !((Boolean) iblockdata.get(BlockSponge.WET)).booleanValue() && this.e(world, blockposition)) {
+        if (!NachoConfig.disableSpongeAbsorption && !((Boolean) iblockdata.get(BlockSponge.WET)).booleanValue() && this.e(world, blockposition)) {
             world.setTypeAndData(blockposition, iblockdata.set(BlockSponge.WET, Boolean.valueOf(true)), 2);
             world.triggerEffect(2001, blockposition, Block.getId(Blocks.WATER));
         }
