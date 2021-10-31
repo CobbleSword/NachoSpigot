@@ -15,6 +15,9 @@ If you find any bugs, please [create an issue](../../issues/new) or contact us i
 ## Download
 You can download the CI build for the [latest commit here](https://nacho.sculas.xyz/).
 
+## If you run into a lot of plugin issues
+[Try out the more stable BurritoSpigot](https://github.com/CobbleSword/BurritoSpigot/)
+
 ## API Download
 [JitPack](https://jitpack.io/#CobbleSword/NachoSpigot/master-SNAPSHOT)
 
