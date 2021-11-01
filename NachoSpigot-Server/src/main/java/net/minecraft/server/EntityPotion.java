@@ -98,6 +98,11 @@ public class EntityPotion extends EntityProjectile {
                             }
 
                             EntityLiving entityliving = ((CraftLivingEntity) victim).getHandle();
+
+                            if (entityliving instanceof EntityPlayer && !((EntityPlayer) entityliving).getBukkitEntity().canSee(this.getShooter().getBukkitEntity())) {
+                                continue;
+                            }
+
                             double d1 = event.getIntensity(victim);
                             // CraftBukkit end
 
@@ -128,8 +133,11 @@ public class EntityPotion extends EntityProjectile {
                     }
                 }
             }
-
-            this.world.triggerEffect(2002, new BlockPosition(this), this.getPotionValue());
+            if (this.getShooter() instanceof EntityHuman) {
+                this.world.a((EntityHuman) this.getShooter(), 2002, new BlockPosition(this), this.getPotionValue());
+            } else {
+                this.world.triggerEffect(2002, new BlockPosition(this), this.getPotionValue());
+            }
             this.die();
         }
 
