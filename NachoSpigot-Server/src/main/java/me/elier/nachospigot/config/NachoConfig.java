@@ -76,20 +76,20 @@ public class NachoConfig {
         set("settings.panda-wire", nachoJson.usePandaWire);
         set("settings.explosions.constant-explosions", nachoJson.constantExplosions);
         set("settings.explosions.explode-protected-regions", nachoJson.explosionProtectedRegions);
-        set("settings.fire-entity-explode-event", nachoJson.fireEntityExplodeEvent);
+        set("settings.event.fire-entity-explode-event", nachoJson.fireEntityExplodeEvent);
         set("settings.reduced-density-rays", nachoJson.reducedDensityRays);
         set("settings.player-time-statistics-interval", nachoJson.playerTimeStatisticsInterval);
         set("settings.brand-name", nachoJson.serverBrandName);
         set("settings.stop-decoding-itemstack-on-place", nachoJson.stopDecodingItemStackOnPlace);
         set("settings.anti-crash", nachoJson.enableAntiCrash);
         set("settings.infinite-water-sources", nachoJson.infiniteWaterSources);
-        set("settings.leaves-decay-event", nachoJson.leavesDecayEvent);
+        set("settings.event.fire-leaf-decay-event", nachoJson.leavesDecayEvent);
         set("settings.entity.mob-ai", nachoJson.enableMobAI);
         set("settings.entity.mob-sound", nachoJson.enableMobSound);
         set("settings.entity.entity-activation", nachoJson.enableEntityActivation);
         set("settings.entity.endermite-spawning", nachoJson.endermiteSpawning);
         set("settings.enable-lava-to-cobblestone", nachoJson.enableLavaToCobblestone);
-        set("settings.fire-player-move-event", nachoJson.firePlayerMoveEvent);
+        set("settings.event.fire-player-move-event", nachoJson.firePlayerMoveEvent);
         set("settings.physics.disable-place", nachoJson.disablePhysicsPlace);
         set("settings.physics.disable-update", nachoJson.disablePhysicsUpdate);
         set("settings.block-operations", nachoJson.doBlocksOperations);
@@ -224,9 +224,13 @@ public class NachoConfig {
     }
 
     public static boolean fireEntityExplodeEvent;
+    public static boolean firePlayerMoveEvent; // Highly recommend disable this for lobby/limbo/minigames servers.
+    public static boolean leavesDecayEvent;
 
     private static void fireEntityExplodeEvent() {
-        fireEntityExplodeEvent = getBoolean("settings.fire-entity-explode-event", true);
+        fireEntityExplodeEvent = getBoolean("settings.event.fire-entity-explode-event", true);
+        firePlayerMoveEvent = getBoolean("settings.event.fire-player-move-event", true);
+        leavesDecayEvent = getBoolean("settings.event.fire-leaf-decay-event", true);
     }
 
     public static boolean reducedDensityRays;
@@ -263,11 +267,6 @@ public class NachoConfig {
     private static void infiniteWaterSources() {
         infiniteWaterSources = getBoolean("settings.infinite-water-sources", true); // TODO: move to world config
     }
-    public static boolean leavesDecayEvent;
-
-    private static void leavesDecayEvent() {
-        leavesDecayEvent = getBoolean("settings.leaves-decay-event", true);
-    }
 
     public static boolean enableMobAI;
     public static boolean enableMobSound;
@@ -285,12 +284,6 @@ public class NachoConfig {
 
     private static void setEnableLavaToCobblestone() {
         enableLavaToCobblestone = getBoolean("settings.enable-lava-to-cobblestone", true);
-    }
-
-    public static boolean firePlayerMoveEvent; // Highly recommend disable this for lobby/limbo/minigames servers.
-
-    private static void firePlayerMoveEvent() {
-        firePlayerMoveEvent = getBoolean("settings.fire-player-move-event", true);
     }
 
     public static boolean disablePhysicsPlace;
