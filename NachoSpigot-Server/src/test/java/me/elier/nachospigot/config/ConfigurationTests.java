@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class ConfigMigrationTest {
+public class ConfigurationTests {
 
     @Test
     public void migrateFullConfig() {
@@ -25,5 +25,16 @@ public class ConfigMigrationTest {
         writer.close();
         NachoConfig.init(new File("nacho.yml"));
         assert !NachoConfig.usePandaWire;
+    }
+
+    @Test
+    public void migrateEmptyConfig() throws IOException {
+        new File("nacho.json").createNewFile();
+        NachoConfig.init(new File("nacho.yml"));
+    }
+
+    @Test
+    public void loadConfig() {
+        NachoConfig.init(new File("nacho.yml"));
     }
 }

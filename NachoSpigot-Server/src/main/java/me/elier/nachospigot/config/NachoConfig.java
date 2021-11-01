@@ -53,7 +53,6 @@ public class NachoConfig {
         readConfig(NachoConfig.class, null);
     }
 
-    @SuppressWarnings("ConstantConditions")
     private static void migrate(File old_config) {
         OldNachoConfig nachoJson = FileUtils.toObject(old_config, OldNachoConfig.class);
         try {
@@ -62,7 +61,7 @@ public class NachoConfig {
             Bukkit.getLogger().log(Level.SEVERE, "Failed to delete nacho.json during migration to nacho.yml");
             throw Throwables.propagate(e);
         }
-        // TODO
+        if(nachoJson == null) return;
         set("settings.save-empty-scoreboard-teams", nachoJson.saveEmptyScoreboardTeams);
         set("settings.commands.enable-version-command", nachoJson.enableVersionCommand);
         set("settings.commands.enable-plugins-command", nachoJson.enablePluginsCommand);
