@@ -6,6 +6,7 @@ import dev.cobblesword.nachospigot.commons.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.sugarcanemc.sugarcane.util.yaml.YamlCommenter;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.util.logging.Level;
 public class NachoConfig {
 
     private static File CONFIG_FILE;
+    private static final YamlCommenter c = new YamlCommenter();
     private static final String HEADER = "This is the main configuration file for NachoSpigot.\n"
             + "As you can see, there's tons to configure. Some options may impact gameplay, so use\n"
             + "with caution, and make sure you know what each option does before configuring.\n"
@@ -42,7 +44,6 @@ public class NachoConfig {
             Bukkit.getLogger().log(Level.SEVERE, "Could not load nacho.yml, please correct your syntax errors", ex);
             throw Throwables.propagate(ex);
         }
-        config.options().header(HEADER);
         config.options().copyDefaults(true);
         File old_config = new File("nacho.json");
         if(old_config.exists()) migrate(old_config);
@@ -51,6 +52,8 @@ public class NachoConfig {
         version = getInt("config-version", configVersion);
         set("config-version", configVersion);
         readConfig(NachoConfig.class, null);
+        c.setHeader(HEADER);
+        c.addComment("config-version", "Configuration version, do NOT modify this!");
     }
 
     private static void migrate(File old_config) {
@@ -73,7 +76,7 @@ public class NachoConfig {
         set("settings.kick-on-illegal-behavior", nachoJson.kickOnIllegalBehavior);
         set("settings.tick-enchantment-tables", nachoJson.shouldTickEnchantmentTables);
         set("settings.panda-wire", nachoJson.usePandaWire);
-        set("settings.explosions.constant-explosions", nachoJson.constantExplosions);
+        set("settings.explosions.constant-radius", nachoJson.constantExplosions);
         set("settings.explosions.explode-protected-regions", nachoJson.explosionProtectedRegions);
         set("settings.event.fire-entity-explode-event", nachoJson.fireEntityExplodeEvent);
         set("settings.reduced-density-rays", nachoJson.reducedDensityRays);
@@ -94,9 +97,9 @@ public class NachoConfig {
         set("settings.block-operations", nachoJson.doBlocksOperations);
         set("settings.chunk.unload-chunks", nachoJson.doChunkUnload);
         set("settings.chunk.threads", nachoJson.chunkThreads);
-        set("settings.chunk.players-per-thread", nachoJson.playersPerThread);
-        set("settings.enable-tcpnodelay", nachoJson.enableTCPNODELAY);
-        set("settings.fixed-pools.use-fixed-pools-for-tnt", nachoJson.useFixedPoolForTNT);
+        set("settings.players-per-thread", nachoJson.playersPerThread);
+        set("settings.use-tcp-nodelay", nachoJson.enableTCPNODELAY);
+        set("settings.fixed-pools.use-fixed-pools-for-explosions", nachoJson.useFixedPoolForTNT);
         set("settings.fixed-pools.size", nachoJson.fixedPoolSize);
         set("settings.faster-cannon-tracker", nachoJson.useFasterCannonTracker);
         set("settings.disable-sponge-absorption", nachoJson.disableSpongeAbsorption);
@@ -164,6 +167,7 @@ public class NachoConfig {
 
     private static void saveEmptyScoreboardTeams() {
         saveEmptyScoreboardTeams = getBoolean("settings.save-empty-scoreboard-teams", false);
+        c.addComment("settings.save-empty-scoreboard-teams", "Toggles whether or not the server should save empty scoreboard teams");
     }
     public static boolean enableVersionCommand;
     public static boolean enablePluginsCommand;
@@ -171,100 +175,118 @@ public class NachoConfig {
 
     private static void commands() {
         enableVersionCommand = getBoolean("settings.commands.enable-version-command", true);
+        c.addComment("settings.commands.enable-version-command", "Toggles the /version command");
         enablePluginsCommand = getBoolean("settings.commands.enable-plugins-command", true);
+        c.addComment("settings.commands.enable-plugins-command", "Toggles the /plugins command");
         enableReloadCommand = getBoolean("settings.commands.enable-reload-command", true);
+        c.addComment("settings.commands.enable-reload-command", "Toggles the /reload command");
     }
 
     public static boolean useFastOperators;
 
     private static void useFastOperators() {
         useFastOperators = getBoolean("settings.fast-operators", false);
+        c.addComment("settings.fast-operators", "Enables Fast Operators, which uses a faster method for managing operators");
     }
     public static boolean patchProtocolLib;
 
     private static void patchProtocolLib() {
         patchProtocolLib = getBoolean("settings.patch-protocollib", true);
+        c.addComment("settings.patch-protocollib", "Enables the ProtocolLib runtime patch (not required on ProtocolLib version 4.7+)");
     }
     public static boolean stopNotifyBungee;
 
     private static void stopNotifyBungee() {
         stopNotifyBungee = getBoolean("settings.stop-notify-bungee", false);
+        c.addComment("settings.stop-notify-bungee", "Disables the firewall check when running BungeeCord");
     }
     public static boolean checkForMalware;
 
     private static void antiMalware() {
         checkForMalware = getBoolean("settings.anti-malware", false);
+        c.addComment("settings.anti-malware", "Enables the built-in anti malware feature");
     }
 
     public static boolean kickOnIllegalBehavior;
 
     private static void kickOnIllegalBehavior() {
         kickOnIllegalBehavior = getBoolean("settings.kick-on-illegal-behavior", true);
+        c.addComment("settings.kick-on-illegal-behavior", "Kicks players if they try to do an illegal action (e.g. using a creative mode action while not in creative mode.)");
     }
 
     public static boolean shouldTickEnchantmentTables;
 
     private static void shouldTickEnchantmentTables() {
         shouldTickEnchantmentTables = getBoolean("settings.tick-enchantment-tables", true);
+        c.addComment("settings.tick-enchantment-tables", "Toggles whether enchantment tables should be ticked");
     }
 
     public static boolean usePandaWire;
 
     private static void usePandaWire() {
         usePandaWire = getBoolean("settings.panda-wire", true);
+        c.addComment("settings.panda-wire", "Optimizes redstone wires.");
     }
 
     public static boolean constantExplosions;
     public static boolean explosionProtectedRegions;
+    public static boolean reducedDensityRays;
 
     private static void explosions() {
-        constantExplosions = getBoolean("settings.explosions.constant-explosions", false);
+        constantExplosions = getBoolean("settings.explosions.constant-radius", false);
+        c.addComment("settings.explosions.constant-explosions", "Changes the radius of explosions to be constant.");
         explosionProtectedRegions = getBoolean("settings.explosions.explode-protected-regions", true);
+        c.addComment("settings.explosions.explode-protected-regions", "Toggles whether explosions should explode protected regions");
+        reducedDensityRays = getBoolean("settings.explosions.reduced-density-rays", true);
+        c.addComment("settings.explosions.reduced-density-rays", "Toggles whether the server should use reduced rays when calculating density");
     }
 
     public static boolean fireEntityExplodeEvent;
-    public static boolean firePlayerMoveEvent; // Highly recommend disable this for lobby/limbo/minigames servers.
+    public static boolean firePlayerMoveEvent;
     public static boolean leavesDecayEvent;
 
     private static void fireEntityExplodeEvent() {
         fireEntityExplodeEvent = getBoolean("settings.event.fire-entity-explode-event", true);
+        c.addComment("settings.event.fire-entity-explode-event", "Toggles the entity explode event");
         firePlayerMoveEvent = getBoolean("settings.event.fire-player-move-event", true);
+        c.addComment("settings.event.fire-player-move-event", "Toggles the player move event");
         leavesDecayEvent = getBoolean("settings.event.fire-leaf-decay-event", true);
+        c.addComment("settings.event.fire-leaf-decay-event", "Toggles the leaf decay event");
     }
 
-    public static boolean reducedDensityRays;
-
-    private static void reducedDensityRays() {
-        reducedDensityRays = getBoolean("settings.reduced-density-rays", true);
-    }
     public static int playerTimeStatisticsInterval;
 
     private static void playerTimeStatisticsInterval() {
         playerTimeStatisticsInterval = getInt("settings.player-time-statistics-interval", 20);
+        c.addComment("settings.player-time-statistics-interval", "Changes when statistics are ticked (e.g. 20 would be every 20th tick)");
     }
 
     public static String serverBrandName;
 
     private static void serverBrandName() {
         serverBrandName = getString("settings.brand-name", "NachoSpigot");
+        c.addComment("settings.brand-name", "Changes the brand name of the server.\nThis will show in statistics, server lists, client crashes,\n and in the client debug screen. (accessed by pressing F3)");
     }
 
     public static boolean stopDecodingItemStackOnPlace;
 
     private static void stopDecodingItemStackOnPlace() {
         stopDecodingItemStackOnPlace = getBoolean("settings.stop-decoding-itemstack-on-place", true);
+        c.addComment("settings.stop-decoding-itemstack-on-place", "Disables decoding itemstacks when not needed");
     }
 
     public static boolean enableAntiCrash;
 
     private static void enableAntiCrash() {
         enableAntiCrash = getBoolean("settings.anti-crash", true);
+        c.addComment("settings.anti-crash", "Kicks players if they try to do an action that would/might crash the server");
     }
 
     public static boolean infiniteWaterSources;
 
-    private static void infiniteWaterSources() {
+    private static void infiniteWaterSources() { // TODO: move to world config
         infiniteWaterSources = getBoolean("settings.infinite-water-sources", true); // TODO: move to world config
+        c.addComment("settings.infinite-water-sources", "Enables infinite water sources");
     }
 
     public static boolean enableMobAI;
@@ -272,17 +294,22 @@ public class NachoConfig {
     public static boolean enableEntityActivation;
     public static boolean endermiteSpawning;
 
-    private static void entity() {
+    private static void entity() { // TODO: move to world config
         enableMobAI = getBoolean("settings.entity.mob-ai", true);
+        c.addComment("settings.entity.mob-ai", "Enables mob AI");
         enableMobSound = getBoolean("settings.entity.mob-sound", true);
+        c.addComment("settings.entity.mob-sound", "Enables mob sound");
         enableEntityActivation = getBoolean("settings.entity.entity-activation", true);
+        c.addComment("settings.entity.entity-activation", "Enables active ticks for entities");
         endermiteSpawning = getBoolean("settings.entity.endermite-spawning", true);
+        c.addComment("settings.entity.endermite-spawning", "Enables endermite spawning.");
     }
 
-    public static boolean enableLavaToCobblestone;
+    public static boolean enableLavaToCobblestone; // TODO: move to world config
 
     private static void setEnableLavaToCobblestone() {
         enableLavaToCobblestone = getBoolean("settings.enable-lava-to-cobblestone", true);
+        c.addComment("settings.enable-lava-to-cobblestone", "Enables lava converting to cobblestone.");
     }
 
     public static boolean disablePhysicsPlace;
@@ -290,53 +317,69 @@ public class NachoConfig {
 
     private static void physics() {
         disablePhysicsPlace = getBoolean("settings.physics.disable-place", false);
+        c.addComment("settings.physics.disable-place", "Disables physics place");
         disablePhysicsUpdate = getBoolean("settings.physics.disable-update", false);
+        c.addComment("settings.physics.disable-update", "Disables physics update");
     }
 
     public static boolean doBlocksOperations;
 
     private static void doBlocksOperations() {
         doBlocksOperations = getBoolean("settings.block-operations", true);
+        c.addComment("settings.block-operations", "Enable block operations");
     }
 
     public static boolean doChunkUnload;
     public static int chunkThreads; // PaperSpigot - Bumped value
+
+    private static void chunk() { // TODO: Move to world config
+        doChunkUnload = getBoolean("settings.chunk.unload-chunks", true);
+        c.addComment("settings.chunk.unload-chunk", "Enable unloading chunks");
+        chunkThreads = getInt("settings.chunk.threads", 2);
+        c.addComment("settings.chunk.threads", "The amount of threads used for chunks");
+    }
+
     public static int playersPerThread;
 
-    private static void chunk() {
-        doChunkUnload = getBoolean("settings.chunk.unload-chunks", true);
-        chunkThreads = getInt("settings.chunk.threads", 2);
-        playersPerThread = getInt("settings.chunk.players-per-thread", 50);
+    private static void playersPerThread() {
+        playersPerThread = getInt("settings.players-per-thread", 50);
+        c.addComment("settings.players-per-thread", "The amount of players for each thread");
     }
 
     public static boolean enableTCPNODELAY;
 
     private static void enableTCPNODELAY() {
-        enableTCPNODELAY = getBoolean("settings.enable-tcpnodelay", true);
+        enableTCPNODELAY = getBoolean("settings.use-tcp-nodelay", true);
+        c.addComment("settings.use-tcp-nodelay", "Enables the TCP_NODELAY socket option");
     }
 
     public static boolean useFixedPoolForTNT;
     public static int fixedPoolSize;
 
     private static void fixedPools() {
-        useFixedPoolForTNT = getBoolean("settings.fixed-pools.use-fixed-pools-for-tnt", false);
+        useFixedPoolForTNT = getBoolean("settings.fixed-pools.use-fixed-pools-for-explosions", false);
+        c.addComment("settings.fixed-pools.use-fixed-pools-for-explosions", "Enables fixed thread pool for explosions");
         fixedPoolSize = getInt("settings.fixed-pools.size", 500);
+        c.addComment("settings.fixed-pools.size", "The size for the fixed thread pool for explosions.");
     }
     public static boolean useFasterCannonTracker;
 
     private static void useFasterCannonTracker() {
         useFasterCannonTracker = getBoolean("settings.faster-cannon-tracker", true);
+        c.addComment("settings.faster-cannon-tracker", "Enables a faster cannon entity tracker");
     }
 
-    public static boolean disableSpongeAbsorption;
+    public static boolean disableSpongeAbsorption; // TODO: move to world config
 
     private static void disableSpongeAbsorption() {
         disableSpongeAbsorption = getBoolean("settings.disable-sponge-absorption", false);
+        c.addComment("settings.disable-sponge-absorption", "Disables sponge absorption");
     }
 
     public static boolean fixEatWhileRunning;
 
     private static void fixEatWhileRunning() {
         fixEatWhileRunning = getBoolean("settings.fix-eat-while-running", false);
+        c.addComment("settings.fix-eat-while-running", "Fixes the eating while running bug");
     }
 }

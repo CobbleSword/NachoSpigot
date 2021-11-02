@@ -215,7 +215,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                     DedicatedServer.LOGGER.warn("Please see http://www.spigotmc.org/wiki/firewall-guide/ for further information.");
                     if (!NachoConfig.stopNotifyBungee) {
                         DedicatedServer.LOGGER.warn("---------------------------- NachoSpigot Checker ----------------------------");
-                        DedicatedServer.LOGGER.warn("If you don't want to see this message anymore, set \"stopNotifyBungee\" to \"true\" in \"nacho.json\"!");
+                        DedicatedServer.LOGGER.warn("If you don't want to see this message anymore, set \"settings.stop-notify-bungee\" to \"true\" in \"nacho.yml\"!");
                         DedicatedServer.LOGGER.warn("Checking firewall..");
                         try {
                             String external = IPUtils.getExternalAddress();
