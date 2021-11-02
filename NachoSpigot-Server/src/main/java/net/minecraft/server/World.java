@@ -11,8 +11,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.craftbukkit.util.CraftMagicNumbers;
+import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockCanBuildEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
@@ -1157,11 +1159,14 @@ public abstract class World implements IBlockAccess {
         }
     }
 
-    public void makeSound(Entity entity, String s, float f, float f1) {
-        for (IWorldAccess iWorldAccess : this.u) {
-            iWorldAccess.a(s, entity.locX, entity.locY, entity.locZ, f, f1);
+    public void makeSound(final Entity entity, final String s, final float f, final float f1) {
+        for (final IWorldAccess iWorldAccess : this.u) {
+            if (entity instanceof EntityHuman) {
+                iWorldAccess.a((EntityHuman) entity, s, entity.locX, entity.locY, entity.locZ, f, f1);
+            } else {
+                iWorldAccess.a(s, entity.locX, entity.locY, entity.locZ, f, f1);
+            }
         }
-
     }
 
     public void a(EntityHuman entityhuman, String s, float f, float f1) {

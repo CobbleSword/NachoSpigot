@@ -571,7 +571,6 @@ public abstract class EntityHuman extends EntityLiving {
         } else {
             double d0 = this.locY - 0.30000001192092896D + (double) this.getHeadHeight();
             EntityItem entityitem = new EntityItem(this.world, this.locX, d0, this.locZ, itemstack);
-
             entityitem.a(40);
             if (flag1) {
                 entityitem.c(this.getName());
