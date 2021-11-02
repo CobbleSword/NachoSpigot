@@ -19,13 +19,13 @@ public class BlockFalling extends Block {
     }
 
     public void onPlace(World world, BlockPosition blockposition, IBlockData iblockdata) {
-        if (!NachoConfig.disablePhysicsPlace) {
+        if (!world.nachoSpigotConfig.disablePhysicsPlace) {
             world.a(blockposition, (Block) this, this.a(world));
         }
     }
 
     public void doPhysics(World world, BlockPosition blockposition, IBlockData iblockdata, Block block) {
-        if (!NachoConfig.disablePhysicsUpdate) {
+        if (!world.nachoSpigotConfig.disablePhysicsUpdate) {
             world.a(blockposition, (Block) this, this.a(world));
         }
     }

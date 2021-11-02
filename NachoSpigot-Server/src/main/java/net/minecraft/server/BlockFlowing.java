@@ -65,7 +65,7 @@ public class BlockFlowing extends BlockFluids {
                 }
             }
 
-            if ((NachoConfig.infiniteWaterSources) && (this.a >= 2) && (this.material == Material.WATER)) {
+            if ((world.nachoSpigotConfig.infiniteWaterSources) && (this.a >= 2) && (this.material == Material.WATER)) {
                 IBlockData iblockdata1 = world.getType(blockposition.down());
 
                 if (iblockdata1.getBlock().getMaterial().isBuildable()) {
@@ -113,7 +113,7 @@ public class BlockFlowing extends BlockFluids {
                 server.getPluginManager().callEvent(event);
             }
             if (!event.isCancelled()) {
-            if ((this.material == Material.LAVA) && (world.getType(blockposition.down()).getBlock().getMaterial() == Material.WATER) && (NachoConfig.enableLavaToCobblestone)) {
+            if ((this.material == Material.LAVA) && (world.getType(blockposition.down()).getBlock().getMaterial() == Material.WATER) && (world.nachoSpigotConfig.enableLavaToCobblestone)) {
                 world.setTypeUpdate(blockposition.down(), Blocks.STONE.getBlockData());
                 this.fizz(world, blockposition.down());
                 return;

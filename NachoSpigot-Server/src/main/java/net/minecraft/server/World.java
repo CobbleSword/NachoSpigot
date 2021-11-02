@@ -1852,7 +1852,7 @@ public abstract class World implements IBlockAccess {
         byte b0 = 32;
 
         // Spigot start
-        if ((!org.spigotmc.ActivationRange.checkIfActive(entity)) && (NachoConfig.enableEntityActivation)) {
+        if ((!org.spigotmc.ActivationRange.checkIfActive(entity)) && (nachoSpigotConfig.enableEntityActivation)) {
             entity.ticksLived++;
             entity.inactiveTick();
             // PaperSpigot start - Remove entities in unloaded chunks

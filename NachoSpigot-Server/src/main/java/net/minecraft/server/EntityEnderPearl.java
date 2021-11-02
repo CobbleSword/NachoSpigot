@@ -82,7 +82,7 @@ public class EntityEnderPearl extends EntityProjectile {
                     Bukkit.getPluginManager().callEvent(teleEvent);
 
                     if (!teleEvent.isCancelled() && !entityplayer.playerConnection.isDisconnected()) {
-                        if ((this.random.nextFloat() < 0.05F) && (this.world.getGameRules().getBoolean("doMobSpawning")) && (NachoConfig.endermiteSpawning)) {
+                        if ((this.random.nextFloat() < 0.05F) && (this.world.getGameRules().getBoolean("doMobSpawning")) && (world.nachoSpigotConfig.endermiteSpawning)) {
                             EntityEndermite entityendermite = new EntityEndermite(this.world);
 
                             entityendermite.a(true);

@@ -20,7 +20,7 @@ import java.util.logging.Level;
 public class NachoConfig {
 
     private static File CONFIG_FILE;
-    private static final YamlCommenter c = new YamlCommenter();
+    protected static final YamlCommenter c = new YamlCommenter();
     private static final String HEADER = "This is the main configuration file for NachoSpigot.\n"
             + "As you can see, there's tons to configure. Some options may impact gameplay, so use\n"
             + "with caution, and make sure you know what each option does before configuring.\n"
@@ -74,35 +74,35 @@ public class NachoConfig {
         set("settings.stop-notify-bungee", nachoJson.stopNotifyBungee);
         set("settings.anti-malware", nachoJson.checkForMalware);
         set("settings.kick-on-illegal-behavior", nachoJson.kickOnIllegalBehavior);
-        set("settings.tick-enchantment-tables", nachoJson.shouldTickEnchantmentTables);
+        set("world-settings.default.tick-enchantment-tables", nachoJson.shouldTickEnchantmentTables);
         set("settings.panda-wire", nachoJson.usePandaWire);
-        set("settings.explosions.constant-radius", nachoJson.constantExplosions);
-        set("settings.explosions.explode-protected-regions", nachoJson.explosionProtectedRegions);
+        set("world-settings.default.explosions.constant-radius", nachoJson.constantExplosions);
+        set("world-settings.default.explosions.explode-protected-regions", nachoJson.explosionProtectedRegions);
         set("settings.event.fire-entity-explode-event", nachoJson.fireEntityExplodeEvent);
-        set("settings.explosions.reduced-density-rays", nachoJson.reducedDensityRays);
+        set("world-settings.default.explosions.reduced-density-rays", nachoJson.reducedDensityRays);
         set("settings.player-time-statistics-interval", nachoJson.playerTimeStatisticsInterval);
         set("settings.brand-name", nachoJson.serverBrandName);
         set("settings.stop-decoding-itemstack-on-place", nachoJson.stopDecodingItemStackOnPlace);
         set("settings.anti-crash", nachoJson.enableAntiCrash);
-        set("settings.infinite-water-sources", nachoJson.infiniteWaterSources);
+        set("world-settings.default.infinite-water-sources", nachoJson.infiniteWaterSources);
         set("settings.event.fire-leaf-decay-event", nachoJson.leavesDecayEvent);
-        set("settings.entity.mob-ai", nachoJson.enableMobAI);
-        set("settings.entity.mob-sound", nachoJson.enableMobSound);
-        set("settings.entity.entity-activation", nachoJson.enableEntityActivation);
-        set("settings.entity.endermite-spawning", nachoJson.endermiteSpawning);
-        set("settings.enable-lava-to-cobblestone", nachoJson.enableLavaToCobblestone);
+        set("world-settings.default.entity.mob-ai", nachoJson.enableMobAI);
+        set("world-settings.default.entity.mob-sound", nachoJson.enableMobSound);
+        set("world-settings.default.entity.entity-activation", nachoJson.enableEntityActivation);
+        set("world-settings.default.entity.endermite-spawning", nachoJson.endermiteSpawning);
+        set("world-settings.default.enable-lava-to-cobblestone", nachoJson.enableLavaToCobblestone);
         set("settings.event.fire-player-move-event", nachoJson.firePlayerMoveEvent);
-        set("settings.physics.disable-place", nachoJson.disablePhysicsPlace);
-        set("settings.physics.disable-update", nachoJson.disablePhysicsUpdate);
-        set("settings.block-operations", nachoJson.doBlocksOperations);
-        set("settings.chunk.unload-chunks", nachoJson.doChunkUnload);
+        set("world-settings.default.physics.disable-place", nachoJson.disablePhysicsPlace);
+        set("world-settings.default.physics.disable-update", nachoJson.disablePhysicsUpdate);
+        set("world-settings.default.block-operations", nachoJson.doBlocksOperations);
+        set("world-settings.default.unload-chunks", nachoJson.doChunkUnload);
         set("settings.chunk.threads", nachoJson.chunkThreads);
-        set("settings.players-per-thread", nachoJson.playersPerThread);
+        set("settings.chunk.players-per-thread", nachoJson.playersPerThread);
         set("settings.use-tcp-nodelay", nachoJson.enableTCPNODELAY);
         set("settings.fixed-pools.use-fixed-pools-for-explosions", nachoJson.useFixedPoolForTNT);
         set("settings.fixed-pools.size", nachoJson.fixedPoolSize);
         set("settings.faster-cannon-tracker", nachoJson.useFasterCannonTracker);
-        set("settings.disable-sponge-absorption", nachoJson.disableSpongeAbsorption);
+        set("world-settings.default.disable-sponge-absorption", nachoJson.disableSpongeAbsorption);
         set("settings.fix-eat-while-running", nachoJson.fixEatWhileRunning);
         set("settings.hide-projectiles-from-hidden-players", nachoJson.hideProjectilesFromHiddenPlayers);
     }
@@ -215,31 +215,11 @@ public class NachoConfig {
         c.addComment("settings.kick-on-illegal-behavior", "Kicks players if they try to do an illegal action (e.g. using a creative mode action while not in creative mode.)");
     }
 
-    public static boolean shouldTickEnchantmentTables;
-
-    private static void shouldTickEnchantmentTables() {
-        shouldTickEnchantmentTables = getBoolean("settings.tick-enchantment-tables", true);
-        c.addComment("settings.tick-enchantment-tables", "Toggles whether enchantment tables should be ticked");
-    }
-
     public static boolean usePandaWire;
 
     private static void usePandaWire() {
         usePandaWire = getBoolean("settings.panda-wire", true);
         c.addComment("settings.panda-wire", "Optimizes redstone wires.");
-    }
-
-    public static boolean constantExplosions;
-    public static boolean explosionProtectedRegions;
-    public static boolean reducedDensityRays;
-
-    private static void explosions() {
-        constantExplosions = getBoolean("settings.explosions.constant-radius", false);
-        c.addComment("settings.explosions.constant-explosions", "Changes the radius of explosions to be constant.");
-        explosionProtectedRegions = getBoolean("settings.explosions.explode-protected-regions", true);
-        c.addComment("settings.explosions.explode-protected-regions", "Toggles whether explosions should explode protected regions");
-        reducedDensityRays = getBoolean("settings.explosions.reduced-density-rays", true);
-        c.addComment("settings.explosions.reduced-density-rays", "Toggles whether the server should use reduced rays when calculating density");
     }
 
     public static boolean fireEntityExplodeEvent;
@@ -283,68 +263,14 @@ public class NachoConfig {
         c.addComment("settings.anti-crash", "Kicks players if they try to do an action that would/might crash the server");
     }
 
-    public static boolean infiniteWaterSources;
-
-    private static void infiniteWaterSources() { // TODO: move to world config
-        infiniteWaterSources = getBoolean("settings.infinite-water-sources", true); // TODO: move to world config
-        c.addComment("settings.infinite-water-sources", "Enables infinite water sources");
-    }
-
-    public static boolean enableMobAI;
-    public static boolean enableMobSound;
-    public static boolean enableEntityActivation;
-    public static boolean endermiteSpawning;
-
-    private static void entity() { // TODO: move to world config
-        enableMobAI = getBoolean("settings.entity.mob-ai", true);
-        c.addComment("settings.entity.mob-ai", "Enables mob AI");
-        enableMobSound = getBoolean("settings.entity.mob-sound", true);
-        c.addComment("settings.entity.mob-sound", "Enables mob sound");
-        enableEntityActivation = getBoolean("settings.entity.entity-activation", true);
-        c.addComment("settings.entity.entity-activation", "Enables active ticks for entities");
-        endermiteSpawning = getBoolean("settings.entity.endermite-spawning", true);
-        c.addComment("settings.entity.endermite-spawning", "Enables endermite spawning.");
-    }
-
-    public static boolean enableLavaToCobblestone; // TODO: move to world config
-
-    private static void setEnableLavaToCobblestone() {
-        enableLavaToCobblestone = getBoolean("settings.enable-lava-to-cobblestone", true);
-        c.addComment("settings.enable-lava-to-cobblestone", "Enables lava converting to cobblestone.");
-    }
-
-    public static boolean disablePhysicsPlace;
-    public static boolean disablePhysicsUpdate;
-
-    private static void physics() {
-        disablePhysicsPlace = getBoolean("settings.physics.disable-place", false);
-        c.addComment("settings.physics.disable-place", "Disables physics place");
-        disablePhysicsUpdate = getBoolean("settings.physics.disable-update", false);
-        c.addComment("settings.physics.disable-update", "Disables physics update");
-    }
-
-    public static boolean doBlocksOperations;
-
-    private static void doBlocksOperations() {
-        doBlocksOperations = getBoolean("settings.block-operations", true);
-        c.addComment("settings.block-operations", "Enable block operations");
-    }
-
-    public static boolean doChunkUnload;
     public static int chunkThreads; // PaperSpigot - Bumped value
-
-    private static void chunk() { // TODO: Move to world config
-        doChunkUnload = getBoolean("settings.chunk.unload-chunks", true);
-        c.addComment("settings.chunk.unload-chunk", "Enable unloading chunks");
-        chunkThreads = getInt("settings.chunk.threads", 2);
-        c.addComment("settings.chunk.threads", "The amount of threads used for chunks");
-    }
-
     public static int playersPerThread;
 
-    private static void playersPerThread() {
-        playersPerThread = getInt("settings.players-per-thread", 50);
-        c.addComment("settings.players-per-thread", "The amount of players for each thread");
+    private static void chunk() {
+        chunkThreads = getInt("settings.chunk.threads", 2);
+        c.addComment("settings.chunk.threads", "The amount of threads used for chunks");
+        playersPerThread = getInt("settings.chunk.players-per-thread", 50);
+        c.addComment("settings.chunk.players-per-thread", "The amount of players for each thread");
     }
 
     public static boolean enableTCPNODELAY;
@@ -368,13 +294,6 @@ public class NachoConfig {
     private static void useFasterCannonTracker() {
         useFasterCannonTracker = getBoolean("settings.faster-cannon-tracker", true);
         c.addComment("settings.faster-cannon-tracker", "Enables a faster cannon entity tracker");
-    }
-
-    public static boolean disableSpongeAbsorption; // TODO: move to world config
-
-    private static void disableSpongeAbsorption() {
-        disableSpongeAbsorption = getBoolean("settings.disable-sponge-absorption", false);
-        c.addComment("settings.disable-sponge-absorption", "Disables sponge absorption");
     }
 
     public static boolean fixEatWhileRunning;

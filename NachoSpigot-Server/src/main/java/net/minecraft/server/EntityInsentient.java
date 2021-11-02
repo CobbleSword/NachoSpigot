@@ -7,7 +7,6 @@ import java.util.UUID;
 
 // CraftBukkit start
 import dev.cobblesword.nachospigot.commons.Constants;
-import me.elier.nachospigot.config.NachoConfig;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.craftbukkit.entity.CraftLivingEntity;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
@@ -165,7 +164,7 @@ public abstract class EntityInsentient extends EntityLiving {
     public void x() {
         String s = this.z();
 
-        if ((s != null) && (NachoConfig.enableMobSound)) {
+        if ((s != null) && (world.nachoSpigotConfig.enableMobSound)) {
             this.makeSound(s, this.bB(), this.bC());
         }
 
@@ -495,7 +494,7 @@ public abstract class EntityInsentient extends EntityLiving {
             return;
         }
         // Spigot End
-        if (NachoConfig.enableMobAI) {
+        if (world.nachoSpigotConfig.enableMobAI) {
             this.world.methodProfiler.a("sensing");
             this.bk.a();
             this.world.methodProfiler.b();

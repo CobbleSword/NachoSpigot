@@ -228,7 +228,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
             // CraftBukkit end
         }
         // CraftBukkit end
-        if (NachoConfig.doChunkUnload) {
+        if (this.nachoSpigotConfig.doChunkUnload) {
             timings.doChunkUnload.startTiming(); // Spigot
             this.methodProfiler.c("chunkSource");
 
@@ -475,7 +475,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
                     }
                 }
 
-                if (NachoConfig.doBlocksOperations) {
+                if (this.nachoSpigotConfig.doBlocksOperations) {
                     this.methodProfiler.c("tickBlocks");
                     timings.chunkTicksBlocks.startTiming(); // Spigot
                     int randomTickSpeed = this.getGameRules().c("randomTickSpeed");

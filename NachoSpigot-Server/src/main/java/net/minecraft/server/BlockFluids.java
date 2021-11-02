@@ -150,7 +150,7 @@ public abstract class BlockFluids extends Block {
                 }
             }
 
-            if ((flag) && (NachoConfig.enableLavaToCobblestone)) {
+            if ((flag) && (world.nachoSpigotConfig.enableLavaToCobblestone)) {
                 Integer integer = (Integer) iblockdata.get(BlockFluids.LEVEL);
 
                 if (integer.intValue() == 0) {
