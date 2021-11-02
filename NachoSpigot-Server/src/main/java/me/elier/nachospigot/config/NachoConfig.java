@@ -104,6 +104,7 @@ public class NachoConfig {
         set("settings.faster-cannon-tracker", nachoJson.useFasterCannonTracker);
         set("settings.disable-sponge-absorption", nachoJson.disableSpongeAbsorption);
         set("settings.fix-eat-while-running", nachoJson.fixEatWhileRunning);
+        set("settings.hide-projectiles-from-hidden-players", nachoJson.hideProjectilesFromHiddenPlayers);
     }
 
     static void readConfig(Class<?> clazz, Object instance) {
@@ -381,5 +382,12 @@ public class NachoConfig {
     private static void fixEatWhileRunning() {
         fixEatWhileRunning = getBoolean("settings.fix-eat-while-running", false);
         c.addComment("settings.fix-eat-while-running", "Fixes the eating while running bug");
+    }
+
+    public static boolean hideProjectilesFromHiddenPlayers;
+
+    public static void hideProjectilesFromHiddenPlayers() {
+        hideProjectilesFromHiddenPlayers = getBoolean("settings.hide-projectiles-from-hidden-players", false);
+        c.addComment("settings.hide-projectiles-from-hidden-players", "Hides projectiles from hidden players");
     }
 }
