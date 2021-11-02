@@ -79,7 +79,7 @@ public class NachoConfig {
         set("settings.explosions.constant-radius", nachoJson.constantExplosions);
         set("settings.explosions.explode-protected-regions", nachoJson.explosionProtectedRegions);
         set("settings.event.fire-entity-explode-event", nachoJson.fireEntityExplodeEvent);
-        set("settings.reduced-density-rays", nachoJson.reducedDensityRays);
+        set("settings.explosions.reduced-density-rays", nachoJson.reducedDensityRays);
         set("settings.player-time-statistics-interval", nachoJson.playerTimeStatisticsInterval);
         set("settings.brand-name", nachoJson.serverBrandName);
         set("settings.stop-decoding-itemstack-on-place", nachoJson.stopDecodingItemStackOnPlace);
