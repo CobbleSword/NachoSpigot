@@ -1,7 +1,7 @@
 package net.minecraft.server;
 
-import dev.cobblesword.nachospigot.Nacho;
 import io.netty.handler.codec.DecoderException;
+import me.elier.nachospigot.config.NachoConfig;
 
 import java.io.IOException;
 
@@ -39,7 +39,7 @@ public class PacketPlayInBlockPlace implements Packet<PacketListenerPlayIn> {
 
         // KigPaper-0172 start - don't parse itemstack
 
-        if (!Nacho.get().getConfig().stopDecodingItemStackOnPlace) {
+        if (!NachoConfig.stopDecodingItemStackOnPlace) {
             this.d = packetdataserializer.decodeItemStack();
         } else {
             // Consume everything and leave 3 bytes at the end

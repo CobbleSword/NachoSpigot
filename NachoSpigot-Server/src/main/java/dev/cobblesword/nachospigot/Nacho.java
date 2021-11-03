@@ -1,7 +1,7 @@
 package dev.cobblesword.nachospigot;
 
+import me.elier.nachospigot.config.NachoConfig;
 import xyz.sculas.nacho.anticrash.AntiCrash;
-import dev.cobblesword.nachospigot.commons.FileUtils;
 import xyz.sculas.nacho.async.AsyncExplosions;
 import xyz.sculas.nacho.patches.RuntimePatches;
 import dev.cobblesword.nachospigot.protocol.PacketListener;
@@ -12,14 +12,10 @@ import org.bukkit.command.defaults.nacho.SpawnMobCommand;
 
 import com.google.common.collect.Sets;
 import java.util.Set;
-import java.io.File;
 
 public class Nacho {
 
     private static Nacho INSTANCE;
-
-    private static final File CONFIG_FILE = new File("nacho.json");
-    private NachoConfig config;
 
     private final Set<PacketListener> packetListeners = Sets.newConcurrentHashSet();
     private final Set<MovementListener> movementListeners = Sets.newConcurrentHashSet();
@@ -27,32 +23,17 @@ public class Nacho {
     public Nacho() {
         INSTANCE = this;
 
-        this.config = new NachoConfig();
-        while (!CONFIG_FILE.exists()) FileUtils.toFile(this.config, CONFIG_FILE);
-        this.config = FileUtils.toObject(CONFIG_FILE, NachoConfig.class);
-        assert this.config != null;
-        FileUtils.toFile(this.config, CONFIG_FILE);
+        AsyncExplosions.initExecutor(NachoConfig.useFixedPoolForTNT, NachoConfig.fixedPoolSize);
 
-        AsyncExplosions.initExecutor(config.useFixedPoolForTNT, config.fixedPoolSize);
-
-        if(this.config.enableAntiCrash) {
+        if(NachoConfig.enableAntiCrash) {
             System.out.println("[NS-AntiCrash] Activating Anti Crash.");
             Nacho.get().registerPacketListener(new AntiCrash());
             System.out.println("[NS-AntiCrash] Activated Anti Crash.");
         }
     }
 
-    public void reloadConfig() {
-        this.config = FileUtils.toObject(CONFIG_FILE, NachoConfig.class);
-    }
-
     public static Nacho get() {
         return INSTANCE == null ? new Nacho() : INSTANCE;
-    }
-
-    public NachoConfig getConfig()
-    {
-        return config;
     }
 
     public void registerCommands() {

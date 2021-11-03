@@ -12,6 +12,7 @@ import java.net.SocketAddress;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import me.elier.nachospigot.config.NachoConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -76,7 +77,7 @@ public abstract class PlayerList {
         this.l = new IpBanList(PlayerList.b);
         this.operators = new OpList(PlayerList.c);
         // [Nacho-0037] Add toggle for "Faster Operator"
-        if(Nacho.get().getConfig().useFastOperators) {
+        if(NachoConfig.useFastOperators) {
             for (OpListEntry value : this.operators.getValues()) {
                 this.fastOperator.add(value.getKey().getId());
             }
@@ -1010,7 +1011,7 @@ public abstract class PlayerList {
     public void addOp(GameProfile gameprofile) {
         this.operators.add(new OpListEntry(gameprofile, this.server.p(), this.operators.b(gameprofile)));
         // [Nacho-0037] Add toggle for "Faster Operator"
-        if(Nacho.get().getConfig().useFastOperators) {
+        if(NachoConfig.useFastOperators) {
             this.fastOperator.add(gameprofile.getId());
         }
         // CraftBukkit start
@@ -1024,7 +1025,7 @@ public abstract class PlayerList {
     public void removeOp(GameProfile gameprofile) {
         this.operators.remove(gameprofile);
         // [Nacho-0037] Add toggle for "Faster Operator"
-        if(Nacho.get().getConfig().useFastOperators) {
+        if(NachoConfig.useFastOperators) {
             this.fastOperator.remove(gameprofile.getId());
         }
 
@@ -1038,12 +1039,12 @@ public abstract class PlayerList {
 
     public boolean isWhitelisted(GameProfile gameprofile) {
         // [Nacho-0037] Add toggle for "Faster Operator"
-        return !this.hasWhitelist || (Nacho.get().getConfig().useFastOperators ? this.fastOperator.contains(gameprofile.getId()) : this.operators.d(gameprofile)) || this.whitelist.d(gameprofile);
+        return !this.hasWhitelist || (NachoConfig.useFastOperators ? this.fastOperator.contains(gameprofile.getId()) : this.operators.d(gameprofile)) || this.whitelist.d(gameprofile);
     }
 
     public boolean isOp(GameProfile gameprofile) {
         // [Nacho-0037] Add toggle for "Faster Operator"
-        return (Nacho.get().getConfig().useFastOperators ? this.fastOperator.contains(gameprofile.getId()) : this.operators.d(gameprofile)) || this.server.T() && this.server.worlds.get(0).getWorldData().v() && this.server.S().equalsIgnoreCase(gameprofile.getName()) || this.t; // CraftBukkit
+        return (NachoConfig.useFastOperators ? this.fastOperator.contains(gameprofile.getId()) : this.operators.d(gameprofile)) || this.server.T() && this.server.worlds.get(0).getWorldData().v() && this.server.S().equalsIgnoreCase(gameprofile.getName()) || this.t; // CraftBukkit
     }
 
     public EntityPlayer getPlayer(String s) {

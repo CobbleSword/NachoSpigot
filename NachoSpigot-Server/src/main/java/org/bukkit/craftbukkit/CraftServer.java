@@ -22,6 +22,7 @@ import javax.imageio.ImageIO;
 import com.eatthepath.uuid.FastUUID;
 import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.knockback.Knockback;
+import me.elier.nachospigot.config.NachoConfig;
 import org.bukkit.craftbukkit.inventory.*;
 import xyz.sculas.nacho.malware.AntiMalware;
 import xyz.sculas.nacho.patches.RuntimePatches;
@@ -243,7 +244,7 @@ public final class CraftServer implements Server {
         // enablePlugins(PluginLoadOrder.STARTUP);
         // Spigot End
 
-        this.serverName = Nacho.get().getConfig().serverBrandName;
+        this.serverName = NachoConfig.serverBrandName;
     }
 
     public boolean getCommandBlockOverride(String command) {
@@ -284,13 +285,13 @@ public final class CraftServer implements Server {
             for (Plugin plugin : plugins) {
                 try {
                     // Nacho start - [Nacho-0047] Little anti-malware
-                    if (Nacho.get().getConfig().checkForMalware) {
+                    if (NachoConfig.checkForMalware) {
                         AntiMalware.find(plugin);
                     }
                     // Nacho end
                     String message = String.format("Loading %s", plugin.getDescription().getFullName());
                     // Nacho start - [Nacho-0043] Fix ProtocolLib
-                    if(plugin.getDescription().getFullName().contains("ProtocolLib") && Nacho.get().getConfig().patchProtocolLib) {
+                    if(plugin.getDescription().getFullName().contains("ProtocolLib") && NachoConfig.patchProtocolLib) {
                         boolean val = RuntimePatches.applyProtocolLibPatch(plugin).join();
                         if(val) {
                             Logger.getLogger(CraftServer.class.getName()).log(Level.INFO, "Callback returned a good state, ProtocolLib patch was successful and ProtocolLib is now loading.");
@@ -735,7 +736,8 @@ public final class CraftServer implements Server {
         org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
         org.github.paperspigot.PaperSpigotConfig.init((File) console.options.valueOf("paper-settings")); // PaperSpigot
         net.techcable.tacospigot.TacoSpigotConfig.init((File) console.options.valueOf("taco-settings")); // TacoSpigot
-        if(Nacho.get() == null) new Nacho();
+        NachoConfig.init((File) console.options.valueOf("nacho-settings")); // NachoSpigot
+        Nacho.get(); // NachoSpigot
         for (WorldServer world : console.worlds) {
             world.worldData.setDifficulty(difficulty);
             world.setSpawnFlags(monsters, animals);
@@ -1579,17 +1581,17 @@ public final class CraftServer implements Server {
 
     @Override
     public boolean versionCommandEnabled() {
-        return Nacho.get().getConfig().enableVersionCommand;
+        return NachoConfig.enableVersionCommand;
     }
 
     @Override
     public boolean reloadCommandEnabled() {
-        return Nacho.get().getConfig().enableReloadCommand;
+        return NachoConfig.enableReloadCommand;
     }
 
     @Override
     public boolean pluginsCommandEnabled() {
-        return Nacho.get().getConfig().enablePluginsCommand;
+        return NachoConfig.enablePluginsCommand;
     }
 
     public EntityMetadataStore getEntityMetadata() {

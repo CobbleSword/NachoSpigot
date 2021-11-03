@@ -2,9 +2,9 @@ package net.minecraft.server;
 
 // CraftBukkit start
 import dev.cobblesword.nachospigot.commons.Constants;
+import me.elier.nachospigot.config.NachoConfig;
 import org.bukkit.Bukkit;
 import org.github.paperspigot.PaperSpigotConfig;
-import net.minecraft.server.BlockPosition;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
@@ -82,7 +82,7 @@ public class EntityEnderPearl extends EntityProjectile {
                     Bukkit.getPluginManager().callEvent(teleEvent);
 
                     if (!teleEvent.isCancelled() && !entityplayer.playerConnection.isDisconnected()) {
-                        if ((this.random.nextFloat() < 0.05F) && (this.world.getGameRules().getBoolean("doMobSpawning")) && (Nacho.get().getConfig().endermiteSpawning)) {
+                        if ((this.random.nextFloat() < 0.05F) && (this.world.getGameRules().getBoolean("doMobSpawning")) && (world.nachoSpigotConfig.endermiteSpawning)) {
                             EntityEndermite entityendermite = new EntityEndermite(this.world);
 
                             entityendermite.a(true);
