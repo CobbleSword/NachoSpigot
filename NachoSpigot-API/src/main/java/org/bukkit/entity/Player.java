@@ -965,6 +965,14 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
     public void hidePlayer(Player player);
 
     /**
+     * Hides a player from this player
+     *
+     * @param player Player to hide
+     * @param onTab true to hide player on tab-list
+     */
+    public void hidePlayer(Player player, boolean onTab);
+
+    /**
      * Allows this player to see a player that was previously hidden
      *
      * @param player Player to show

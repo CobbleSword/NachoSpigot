@@ -963,6 +963,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 
     @Override
     public void hidePlayer(Player player) {
+        hidePlayer(player, true);
+    }
+
+    @Override
+    public void hidePlayer(Player player, boolean onTab) {
         Validate.notNull(player, "hidden player cannot be null");
         if (getHandle().playerConnection == null) return;
         if (equals(player)) return;
@@ -978,7 +983,9 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         }
 
         //remove the hidden player from this player user list
-        getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, other));
+        if (onTab) {
+            getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, other));
+        }
     }
 
     @Override
