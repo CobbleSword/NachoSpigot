@@ -48,7 +48,7 @@ public class NachoConfig {
         File old_config = new File("nacho.json");
         if(old_config.exists()) migrate(old_config);
 
-        int configVersion = -1; // Update this every new configuration update
+        int configVersion = 1; // Update this every new configuration update
         version = getInt("config-version", configVersion);
         set("config-version", configVersion);
         readConfig(NachoConfig.class, null);
