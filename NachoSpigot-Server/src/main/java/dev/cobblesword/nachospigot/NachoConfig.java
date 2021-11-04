@@ -41,5 +41,4 @@ public class NachoConfig {
     public boolean disableSpongeAbsorption = false;
     public boolean fixEatWhileRunning = false;
     public boolean hideProjectilesFromHiddenPlayers = false;
-    public boolean antiEnderPearlPatch = false;
 }

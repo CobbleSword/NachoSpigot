@@ -1,14 +1,13 @@
 package net.minecraft.server;
 
 // CraftBukkit start
-import dev.cobblesword.nachospigot.commons.Constants;
-import org.bukkit.Bukkit;
-import org.github.paperspigot.PaperSpigotConfig;
-import net.minecraft.server.BlockPosition;
-import org.bukkit.craftbukkit.event.CraftEventFactory;
-import org.bukkit.event.player.PlayerTeleportEvent;
 
 import dev.cobblesword.nachospigot.Nacho;
+import dev.cobblesword.nachospigot.commons.Constants;
+import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.event.CraftEventFactory;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.github.paperspigot.PaperSpigotConfig;
 
 // CraftBukkit end
 
@@ -79,17 +78,16 @@ public class EntityEnderPearl extends EntityProjectile {
                     location.setYaw(player.getLocation().getYaw());
 
                     // Nacho start - Anti ender pearl glitch
+                    //TODO Add config to disable
 
-                    if (Nacho.get().getConfig().antiEnderPearlPatch) {
-                        double diffX = location.getBlockX() - player.getLocation().getBlockX();
-                        double diffY = location.getBlockY() - player.getLocation().getBlockY();
-                        double diffZ = location.getBlockZ() - player.getLocation().getBlockZ();
+                    double diffX = location.getBlockX() - player.getLocation().getBlockX();
+                    double diffY = location.getBlockY() - player.getLocation().getBlockY();
+                    double diffZ = location.getBlockZ() - player.getLocation().getBlockZ();
 
-                        if (diffY <= 0) {
-                            location.setY(location.getBlockY() + 0.5D);
-                        } else {
-                            location.setY(location.getBlockY() - 0.5D);
-                        }
+                    if (diffY <= 0) {
+                        location.setY(location.getBlockY() + 0.5D);
+                    } else {
+                        location.setY(location.getBlockY() - 0.5D);
                         if (diffX <= 0) {
                             location.setX(location.getBlockX() + 0.5D);
                         } else {
@@ -100,7 +98,6 @@ public class EntityEnderPearl extends EntityProjectile {
                         } else {
                             location.setZ(location.getBlockZ() - 0.5D);
                         }
-
                     }
 
                     // Nacho end
