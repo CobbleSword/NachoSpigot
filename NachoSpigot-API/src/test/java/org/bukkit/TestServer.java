@@ -13,7 +13,7 @@ import org.bukkit.plugin.SimplePluginManager;
 import com.google.common.collect.ImmutableMap;
 
 public class TestServer implements InvocationHandler {
-    private static interface MethodHandler {
+    private interface MethodHandler {
         Object handle(TestServer server, Object[] args);
     }
 
@@ -24,20 +24,12 @@ public class TestServer implements InvocationHandler {
             ImmutableMap.Builder<Method, MethodHandler> methodMap = ImmutableMap.builder();
             methodMap.put(
                     Server.class.getMethod("isPrimaryThread"),
-                    new MethodHandler() {
-                        public Object handle(TestServer server, Object[] args) {
-                            return Thread.currentThread().equals(server.creatingThread);
-                        }
-                    }
-                );
+                    (server, args) -> Thread.currentThread().equals(server.creatingThread)
+            );
             methodMap.put(
                     Server.class.getMethod("getPluginManager"),
-                    new MethodHandler() {
-                        public Object handle(TestServer server, Object[] args) {
-                            return server.pluginManager;
-                        }
-                    }
-                );
+                    (server, args) -> server.pluginManager
+            );
             methodMap.put(
                     Server.class.getMethod("getLogger"),
                     new MethodHandler() {
@@ -49,28 +41,16 @@ public class TestServer implements InvocationHandler {
                 );
             methodMap.put(
                     Server.class.getMethod("getName"),
-                    new MethodHandler() {
-                        public Object handle(TestServer server, Object[] args) {
-                            return TestServer.class.getSimpleName();
-                        }
-                    }
-                );
+                    (server, args) -> TestServer.class.getSimpleName()
+            );
             methodMap.put(
                     Server.class.getMethod("getVersion"),
-                    new MethodHandler() {
-                        public Object handle(TestServer server, Object[] args) {
-                            return "Version_" + TestServer.class.getPackage().getImplementationVersion();
-                        }
-                    }
-                );
+                    (server, args) -> "Version_" + TestServer.class.getPackage().getImplementationVersion()
+            );
             methodMap.put(
                     Server.class.getMethod("getBukkitVersion"),
-                    new MethodHandler() {
-                        public Object handle(TestServer server, Object[] args) {
-                            return "BukkitVersion_" + TestServer.class.getPackage().getImplementationVersion();
-                        }
-                    }
-                );
+                    (server, args) -> "BukkitVersion_" + TestServer.class.getPackage().getImplementationVersion()
+            );
             methods = methodMap.build();
 
             TestServer server = new TestServer();
