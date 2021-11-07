@@ -12,6 +12,7 @@ import java.util.UUID;
 import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.knockback.Knockback;
 import dev.cobblesword.nachospigot.knockback.KnockbackConfig;
+import me.elier.nachospigot.config.NachoConfig;
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 import org.bukkit.craftbukkit.entity.CraftItem;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
@@ -1346,7 +1347,7 @@ public abstract class EntityHuman extends EntityLiving {
     }
 
     public void b(Statistic statistic) {
-        this.a(statistic, Nacho.get().getConfig().playerTimeStatisticsInterval); // Nacho / Yatopia - or do it like this :shrug:
+        this.a(statistic, NachoConfig.playerTimeStatisticsInterval); // Nacho / Yatopia - or do it like this :shrug:
     }
 
     public void a(Statistic statistic, int i) {}

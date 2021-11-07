@@ -1,15 +1,15 @@
 package org.bukkit.craftbukkit.chunkio;
 
+import me.elier.nachospigot.config.NachoConfig;
 import net.minecraft.server.Chunk;
 import net.minecraft.server.ChunkProviderServer;
 import net.minecraft.server.ChunkRegionLoader;
 import net.minecraft.server.World;
 import org.bukkit.craftbukkit.util.AsynchronousExecutor;
-import dev.cobblesword.nachospigot.Nacho;
 
 public class ChunkIOExecutor {
-    static final int BASE_THREADS = Nacho.get().getConfig().chunkThreads;
-    static final int PLAYERS_PER_THREAD = Nacho.get().getConfig().playersPerThread;
+    static final int BASE_THREADS = NachoConfig.chunkThreads;
+    static final int PLAYERS_PER_THREAD = NachoConfig.playersPerThread;
 
     private static final AsynchronousExecutor<QueuedChunk, Chunk, Runnable, RuntimeException> instance = new AsynchronousExecutor<QueuedChunk, Chunk, Runnable, RuntimeException>(new ChunkIOProvider(), BASE_THREADS);
 

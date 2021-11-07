@@ -112,7 +112,7 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 
 <--> by Sculas
 [Nacho-0034] Remove Java 8 message from TacoSpigot which made it so you couldn't run Java 8 or higher
-[Nacho-0035] Made it so you can switch the brand name in nacho.json
+[Nacho-0035] Made it so you can switch the brand name in nacho.yml
 [Nacho-0036] Add toggles for commands "reload", "version" and "plugins"
 [Nacho-0037] Add toggle for "Faster Operator"
 [Nacho-0039] Fixed a bug in Netty's epoll when using Windows
@@ -139,6 +139,7 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [IonSpigot-0014] Faster Chunk Entity List
 [IonSpigot-0020] Faster EntityTracker Collections
 [IonSpigot-0035] Optimise Entity Collisions
+[IonSpigot-0037] Fast Cannon Entity Tracker
 
 [InsanePaper-269] Cache Chunk Coordinations
 [InsanePaper-390] Heavily optimize Tuinity controlled flush patch
@@ -183,4 +184,6 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [MineTick-0017] Fix Insane Nether Portal Lag
 
 [Migot-0009] Prevent Creature Spawning in Unloaded Chunks
+
+[Sugarcane-0022] Add YAML comments
 ```

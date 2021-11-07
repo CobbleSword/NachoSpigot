@@ -35,6 +35,7 @@ import java.util.concurrent.FutureTask;
 import javax.imageio.ImageIO;
 
 import io.netty.util.ResourceLeakDetector;
+import me.elier.nachospigot.config.NachoConfig;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -1117,7 +1118,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     }
 
     public String getServerModName() {
-        return Nacho.get().getConfig().serverBrandName; // [Nacho-0035] // NachoSpigot - NachoSpigot >  // TacoSpigot - TacoSpigot // PaperSpigot - PaperSpigot > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
+        return NachoConfig.serverBrandName; // [Nacho-0035] // NachoSpigot - NachoSpigot >  // TacoSpigot - TacoSpigot // PaperSpigot - PaperSpigot > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
     }
 
     public CrashReport b(CrashReport crashreport) {

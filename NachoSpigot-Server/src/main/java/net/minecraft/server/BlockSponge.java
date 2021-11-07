@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
-import dev.cobblesword.nachospigot.Nacho;
 
 public class BlockSponge extends Block {
 
@@ -12,7 +11,7 @@ public class BlockSponge extends Block {
 
     protected BlockSponge() {
         super(Material.SPONGE);
-        this.j(this.blockStateList.getBlockData().set(BlockSponge.WET, Boolean.valueOf(false)));
+        this.j(this.blockStateList.getBlockData().set(BlockSponge.WET, false));
         this.a(CreativeModeTab.b);
     }
 
@@ -21,17 +20,17 @@ public class BlockSponge extends Block {
     }
 
     public int getDropData(IBlockData iblockdata) {
-        return ((Boolean) iblockdata.get(BlockSponge.WET)).booleanValue() ? 1 : 0;
+        return iblockdata.get(BlockSponge.WET) ? 1 : 0;
     }
 
     public void onPlace(World world, BlockPosition blockposition, IBlockData iblockdata) {
-        if (!Nacho.get().getConfig().disableSpongeAbsorption) {
+        if (!world.nachoSpigotConfig.disableSpongeAbsorption) {
           this.e(world, blockposition, iblockdata);
         }
     }
 
     public void doPhysics(World world, BlockPosition blockposition, IBlockData iblockdata, Block block) {
-        if (!Nacho.get().getConfig().disableSpongeAbsorption) {
+        if (!world.nachoSpigotConfig.disableSpongeAbsorption) {
           this.e(world, blockposition, iblockdata);
           super.doPhysics(world, blockposition, iblockdata, block);
         }
@@ -39,8 +38,8 @@ public class BlockSponge extends Block {
     }
 
     protected void e(World world, BlockPosition blockposition, IBlockData iblockdata) {
-        if (!Nacho.get().getConfig().disableSpongeAbsorption && !((Boolean) iblockdata.get(BlockSponge.WET)).booleanValue() && this.e(world, blockposition)) {
-            world.setTypeAndData(blockposition, iblockdata.set(BlockSponge.WET, Boolean.valueOf(true)), 2);
+        if (!world.nachoSpigotConfig.disableSpongeAbsorption && !(Boolean) iblockdata.get(BlockSponge.WET) && this.e(world, blockposition)) {
+            world.setTypeAndData(blockposition, iblockdata.set(BlockSponge.WET, true), 2);
             world.triggerEffect(2001, blockposition, Block.getId(Blocks.WATER));
         }
 
@@ -101,6 +100,6 @@ public class BlockSponge extends Block {
     }
 
     protected BlockStateList getStateList() {
-        return new BlockStateList(this, new IBlockState[] { BlockSponge.WET});
+        return new BlockStateList(this, BlockSponge.WET);
     }
 }

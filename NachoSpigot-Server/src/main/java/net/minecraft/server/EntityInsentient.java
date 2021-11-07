@@ -14,7 +14,6 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityUnleashEvent;
 import org.bukkit.event.entity.EntityUnleashEvent.UnleashReason;
 // CraftBukkit end
-import dev.cobblesword.nachospigot.Nacho;
 
 public abstract class EntityInsentient extends EntityLiving {
 
@@ -165,7 +164,7 @@ public abstract class EntityInsentient extends EntityLiving {
     public void x() {
         String s = this.z();
 
-        if ((s != null) && (Nacho.get().getConfig().enableMobSound)) {
+        if ((s != null) && (world.nachoSpigotConfig.enableMobSound)) {
             this.makeSound(s, this.bB(), this.bC());
         }
 
@@ -495,7 +494,7 @@ public abstract class EntityInsentient extends EntityLiving {
             return;
         }
         // Spigot End
-        if (Nacho.get().getConfig().enableMobAI) {
+        if (world.nachoSpigotConfig.enableMobAI) {
             this.world.methodProfiler.a("sensing");
             this.bk.a();
             this.world.methodProfiler.b();

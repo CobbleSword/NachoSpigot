@@ -16,6 +16,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
+
+import me.elier.nachospigot.config.NachoConfig;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -385,7 +387,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                     this.lastPitch = to.getPitch();
 
                     // Skip the first time we do this
-                    if (Nacho.get().getConfig().firePlayerMoveEvent) { // Spigot - don't skip any move events
+                    if (NachoConfig.firePlayerMoveEvent) { // Spigot - don't skip any move events
                         Location oldTo = to.clone();
                         PlayerMoveEvent event = new PlayerMoveEvent(player, from, to);
                         this.server.getPluginManager().callEvent(event);
@@ -888,7 +890,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 
                 // SportPaper end
             } else{
-                if(MinecraftServer.currentTick - lastDropTick > 1 && Nacho.get().getConfig().fixEatWhileRunning) this.player.playerInteractManager.useItem(this.player, this.player.world, itemstack);
+                if(MinecraftServer.currentTick - lastDropTick > 1 && NachoConfig.fixEatWhileRunning) this.player.playerInteractManager.useItem(this.player, this.player.world, itemstack);
             }
             // Spigot end
 
@@ -943,7 +945,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
             // CraftBukkit - TODO CHECK IF NEEDED -- new if structure might not need 'always'. Kept it in for now, but may be able to remove in future
             // KigPaper-0172
             if (
-                    Nacho.get().getConfig().stopDecodingItemStackOnPlace ? (
+                    NachoConfig.stopDecodingItemStackOnPlace ? (
                             !ItemStack.matches(this.player.inventory.getItemInHand(), itemstack) || always // KigPaper - use saved itemstack instead of stack from packet
                             ) :
                             (!ItemStack.matches(this.player.inventory.getItemInHand(), packetplayinblockplace.getItemStack()) || always)
@@ -2040,7 +2042,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                     entityitem.j();
                 }
             }
-        } else if (Nacho.get().getConfig().kickOnIllegalBehavior) {
+        } else if (NachoConfig.kickOnIllegalBehavior) {
             PlayerIllegalBehaviourEvent event = new PlayerIllegalBehaviourEvent(
                     this.server.getPlayer(this.player),
                     PlayerIllegalBehaviourEvent.IllegalType.CREATIVE_ACTION_NOT_IN_CREATIVE

@@ -134,7 +134,7 @@ public class Main {
                 // Spigot End
 
                 // PaperSpigot Start
-                acceptsAll(asList("paper", "paper-settings"), "File for paperspigot settings")
+                acceptsAll(asList("paper", "paper-settings"), "File for paper settings")
                         .withRequiredArg()
                         .ofType(File.class)
                         .defaultsTo(new File("paper.yml"))
@@ -148,6 +148,13 @@ public class Main {
                         .defaultsTo(new File("taco.yml"))
                         .describedAs("Yml file");
                 // TacoSpigot end
+                // NachoSpigot start
+                acceptsAll(asList("nacho", "nacho-settings"), "File for nachospigot settings")
+                        .withRequiredArg()
+                        .ofType(File.class)
+                        .defaultsTo(new File("nacho.yml"))
+                        .describedAs("Yml file");
+                // NachoSpigot end
             }
         };
 

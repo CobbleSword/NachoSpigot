@@ -3,7 +3,6 @@ package org.bukkit.craftbukkit.entity;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.authlib.GameProfile;
-import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.commons.Constants;
 import io.netty.buffer.Unpooled;
 
@@ -15,6 +14,8 @@ import java.net.SocketAddress;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import me.elier.nachospigot.config.NachoConfig;
 import net.md_5.bungee.api.chat.BaseComponent;
 
 import net.minecraft.server.*;
@@ -962,6 +963,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 
     @Override
     public void hidePlayer(Player player) {
+        hidePlayer(player, true);
+    }
+
+    @Override
+    public void hidePlayer(Player player, boolean onTab) {
         Validate.notNull(player, "hidden player cannot be null");
         if (getHandle().playerConnection == null) return;
         if (equals(player)) return;
@@ -977,7 +983,9 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         }
 
         //remove the hidden player from this player user list
-        getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, other));
+        if (onTab) {
+            getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, other));
+        }
     }
 
     @Override
@@ -1016,7 +1024,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         }
 
         // Projectiles from hidden players
-        if(Nacho.get().getConfig().hideProjectilesFromHiddenPlayers) {
+        if(NachoConfig.hideProjectilesFromHiddenPlayers) {
             if (nmsEntity instanceof EntityProjectile) {
                 EntityProjectile entityProjectile = (EntityProjectile) nmsEntity;
 
