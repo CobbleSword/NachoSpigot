@@ -80,9 +80,10 @@ public class EntityEnderPearl extends EntityProjectile {
                     location.setYaw(player.getLocation().getYaw());
 
                     // Nacho start - Anti ender pearl glitch
-                    //TODO Add config to disable
-                    if (NachoConfig.antiEnderPearlGlitch) {
-                        
+                    
+                    if (NachoConfig.antiEnderPearlGlitch) 
+                    {
+
                         double diffX = location.getBlockX() - player.getLocation().getBlockX();
                         double diffY = location.getBlockY() - player.getLocation().getBlockY();
                         double diffZ = location.getBlockZ() - player.getLocation().getBlockZ();
@@ -102,7 +103,6 @@ public class EntityEnderPearl extends EntityProjectile {
                                 location.setZ(location.getBlockZ() - 0.5D);
                             }
                         }
-    
 
                     }
                     // Nacho end
