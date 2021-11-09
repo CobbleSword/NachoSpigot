@@ -309,4 +309,12 @@ public class NachoConfig {
         hideProjectilesFromHiddenPlayers = getBoolean("settings.hide-projectiles-from-hidden-players", false);
         c.addComment("settings.hide-projectiles-from-hidden-players", "Hides projectiles from hidden players");
     }
+
+    public static boolean antiEnderPearlGlitch;
+    
+    public static void antiEnderPearlGlitch() {
+        antiEnderPearlGlitch = getBoolean("settings.anti-enderpearl-glitch", false);
+        c.addComment("settings.anti-enderpearl-glitch", "Enables anti enderpearl glitch");
+    }
+
 }
