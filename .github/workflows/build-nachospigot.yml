@@ -1,32 +1,51 @@
-name: NachoSpigot Build
+name: Build NachoSpigot
 
-on:
-  push:
-    branches: [master]
+on: [push, pull_request]
+
 jobs:
   build:
+    # Only run on PRs if the source branch is on someone else's repo
+    if: ${{ github.event_name != 'pull_request' || github.repository != github.event.pull_request.head.repo.full_name }}
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[skip]')"
+    strategy:
+            matrix:
+                java: [17]
+            fail-fast: true
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 15
-      uses: actions/setup-java@v1
+    - name: JDK ${{ matrix.java }}
+      uses: actions/setup-java@v2
       with:
-        java-version: 15
-        server-id: github
-        settings-path: ${{ github.workspace }}
-
+        java-version: ${{ matrix.java}}
+        distribution: 'temurin'
+        cache: maven
     - name: Build with Maven
-      run: mvn clean package --file $GITHUB_WORKSPACE/pom.xml
-      
-    - name: Upload Server Artifact
-      uses: actions/upload-artifact@v2.2.0
+      run: mvn clean install
+    - uses: actions/upload-artifact@v2
+      if: ${{ matrix.java == 8 }}
       with:
-        name: NachoSpigot-server
-        path: ${{ github.workspace }}/NachoSpigot-Server/target/NachoSpigot.jar
-
-    - name: Upload API Artifact
-      uses: actions/upload-artifact@v2.2.0
+        name: NachoSpigot
+        path: ./NachoSpigot-Server/target/NachoSpigotSpigot.jar
+        
+    - name: Create Release Draft
+      if: ${{ github.event_name != 'pull_request' }}
+      id: createDraft
+      uses: actions/create-release@v1.1.4
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        name: NachoSpigot-API
-        path: ${{ github.workspace }}/NachoSpigot-API/target/NachoSpigot-API.jar
+        tag_name: NachoSpigot-${{ github.sha }}
+        release_name: NachoSpigot ${{ github.sha }}
+        body: NachoSpigot Update
+        draft: false
+    - name: Upload Release Asset
+      if: ${{ github.event_name != 'pull_request' }}
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1.0.2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.createDraft.outputs.upload_url }}
+        asset_path: ./NachoSpigot-Server/target/NachoSpigot.jar
+        asset_name: NachoSpigot.jar
+        asset_content_type: application/java-archive
