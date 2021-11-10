@@ -13,7 +13,7 @@ If you find any bugs, please [create an issue](../../issues/new) or contact us i
 **NachoSpigot supports Java 8 to Java 17!**
 
 ## Download
-You can download the CI build for the [latest commit here](https://nacho.sculas.xyz/).
+You can download the compiled jar for the latest commit [here](../../releases/latest)
 
 ## If you run into a lot of plugin issues
 [Try out the more stable BurritoSpigot](https://github.com/CobbleSword/BurritoSpigot/)
