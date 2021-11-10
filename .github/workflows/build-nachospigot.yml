@@ -25,7 +25,7 @@ jobs:
       if: ${{ matrix.java == 8 }}
       with:
         name: NachoSpigot
-        path: ./NachoSpigot-Server/target/NachoSpigotSpigot.jar
+        path: ./NachoSpigot-Server/target/NachoSpigot.jar
         
     - name: Create Release Draft
       if: ${{ github.event_name != 'pull_request' }}
