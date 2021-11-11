@@ -20,20 +20,36 @@ public class DummyServer implements InvocationHandler {
         try {
             methods.put(
                     Server.class.getMethod("getItemFactory"),
-                    (server, args) -> CraftItemFactory.instance()
-            );
+                    new MethodHandler() {
+                        public Object handle(DummyServer server, Object[] args) {
+                            return CraftItemFactory.instance();
+                        }
+                    }
+                );
             methods.put(
                     Server.class.getMethod("getName"),
-                    (server, args) -> DummyServer.class.getName()
-            );
+                    new MethodHandler() {
+                        public Object handle(DummyServer server, Object[] args) {
+                            return DummyServer.class.getName();
+                        }
+                    }
+                );
             methods.put(
                     Server.class.getMethod("getVersion"),
-                    (server, args) -> DummyServer.class.getPackage().getImplementationVersion()
-            );
+                    new MethodHandler() {
+                        public Object handle(DummyServer server, Object[] args) {
+                            return DummyServer.class.getPackage().getImplementationVersion();
+                        }
+                    }
+                );
             methods.put(
                     Server.class.getMethod("getBukkitVersion"),
-                    (server, args) -> Versioning.getBukkitVersion()
-            );
+                    new MethodHandler() {
+                        public Object handle(DummyServer server, Object[] args) {
+                            return Versioning.getBukkitVersion();
+                        }
+                    }
+                );
             methods.put(
                     Server.class.getMethod("getLogger"),
                     new MethodHandler() {
