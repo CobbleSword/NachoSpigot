@@ -5,8 +5,10 @@ import com.google.common.collect.Maps;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 
 // CraftBukkit start
+import com.google.common.util.concurrent.MoreExecutors;
 import dev.cobblesword.nachospigot.commons.Constants;
 import me.elier.nachospigot.config.NachoConfig;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
@@ -136,41 +138,37 @@ public class Explosion {
                         double finalD = d8;
                         double finalD1 = d9;
                         double finalD11 = d10;
-                        this.getBlockDensity(vec3d, entity).whenComplete((d12, __) -> {
+                        this.getBlockDensity(vec3d, entity).thenAcceptAsync((d12) -> {
                             double d13 = (1.0D - d7) * d12;
-                            boolean continueWA = false;
 
                             if (entity.isCannoningEntity) {
                                 entity.g(finalD * d13, finalD1 * d13, finalD11 * d13);
-                                continueWA = true;
+                                return;
                             }
-
                             // IonSpigot end
 
-                            if (!continueWA) {
-                                // entity.damageEntity(DamageSource.explosion(this), (float) ((int) ((d13 * d13 + d13) / 2.0D * 8.0D * (double) f3 + 1.0D)));+                        // CraftBukkit start
-                                CraftEventFactory.entityDamage = source;
-                                entity.forceExplosionKnockback = false;
-                                boolean wasDamaged = entity.damageEntity(DamageSource.explosion(this), (float) ((int) ((d13 * d13 + d13) / 2.0D * 8.0D * (double) f3 + 1.0D)));
-                                CraftEventFactory.entityDamage = null;
-                                if (!wasDamaged && !(entity instanceof EntityTNTPrimed || entity instanceof EntityFallingBlock) && !entity.forceExplosionKnockback) {
-                                    continueWA = true;
-                                }
-                                if (!continueWA) {
-                                    // CraftBukkit end
-                                    double d14 = entity instanceof EntityHuman && world.paperSpigotConfig.disableExplosionKnockback ? 0 : EnchantmentProtection.a(entity, d13); // PaperSpigot
+                            // entity.damageEntity(DamageSource.explosion(this), (float) ((int) ((d13 * d13 + d13) / 2.0D * 8.0D * (double) f3 + 1.0D)));+                        // CraftBukkit start
+                            CraftEventFactory.entityDamage = source;
+                            entity.forceExplosionKnockback = false;
+                            boolean wasDamaged = entity.damageEntity(DamageSource.explosion(this), (float) ((int) ((d13 * d13 + d13) / 2.0D * 8.0D * (double) f3 + 1.0D)));
+                            CraftEventFactory.entityDamage = null;
 
-                                    // PaperSpigot start - Fix cannons
-                                    // This impulse method sets the dirty flag, so clients will get an immediate velocity update
-                                    entity.g(finalD * d14, finalD1 * d14, finalD11 * d14);
-                                    // PaperSpigot end
-
-                                    if (entity instanceof EntityHuman && !((EntityHuman) entity).abilities.isInvulnerable && !world.paperSpigotConfig.disableExplosionKnockback) { // PaperSpigot
-                                        this.k.put((EntityHuman) entity, new Vec3D(finalD * d13, finalD1 * d13, finalD11 * d13));
-                                    }
-                                }
+                            if (!wasDamaged && !(entity instanceof EntityTNTPrimed || entity instanceof EntityFallingBlock) && !entity.forceExplosionKnockback) {
+                                return;
                             }
-                        });
+
+                            // CraftBukkit end
+                            double d14 = entity instanceof EntityHuman && world.paperSpigotConfig.disableExplosionKnockback ? 0 : EnchantmentProtection.a(entity, d13); // PaperSpigot
+
+                            // PaperSpigot start - Fix cannons
+                            // This impulse method sets the dirty flag, so clients will get an immediate velocity update
+                            entity.g(finalD * d14, finalD1 * d14, finalD11 * d14);
+                            // PaperSpigot end
+
+                            if (entity instanceof EntityHuman && !((EntityHuman) entity).abilities.isInvulnerable && !world.paperSpigotConfig.disableExplosionKnockback) { // PaperSpigot
+                                this.k.put((EntityHuman) entity, new Vec3D(finalD * d13, finalD1 * d13, finalD11 * d13));
+                            }
+                        }, this.currentThreadExecutor);
                     }
                 }
             }
