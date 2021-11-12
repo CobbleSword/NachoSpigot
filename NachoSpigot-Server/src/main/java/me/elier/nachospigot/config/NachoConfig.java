@@ -53,20 +53,14 @@ public class NachoConfig {
         int configVersion = 2; // Update this every new configuration update
         version = getInt("config-version", configVersion);
         set("config-version", configVersion);
-        readConfig(NachoConfig.class, null);
         c.setHeader(HEADER);
         c.addComment("config-version", "Configuration version, do NOT modify this!");
+        readConfig(NachoConfig.class, null);
     }
 
     private static void migrate(File old_config) {
         OldNachoConfig nachoJson = FileUtils.toObject(old_config, OldNachoConfig.class);
-        try {
-            Files.delete(old_config.toPath());
-        } catch (IOException e) {
-            LOGGER.log(Level.ERROR, "Failed to delete nacho.json during migration to nacho.yml");
-            throw Throwables.propagate(e);
-        }
-        if(nachoJson == null) return;
+        if(nachoJson == null) {old_config.delete(); return;}
         set("settings.save-empty-scoreboard-teams", nachoJson.saveEmptyScoreboardTeams);
         set("settings.commands.enable-version-command", nachoJson.enableVersionCommand);
         set("settings.commands.enable-plugins-command", nachoJson.enablePluginsCommand);
@@ -107,6 +101,7 @@ public class NachoConfig {
         set("world-settings.default.disable-sponge-absorption", nachoJson.disableSpongeAbsorption);
         set("settings.fix-eat-while-running", nachoJson.fixEatWhileRunning);
         set("settings.hide-projectiles-from-hidden-players", nachoJson.hideProjectilesFromHiddenPlayers);
+        old_config.delete();
     }
 
     static void readConfig(Class<?> clazz, Object instance) {
@@ -127,6 +122,7 @@ public class NachoConfig {
 
         try {
             config.save(CONFIG_FILE);
+            //c.saveComments(CONFIG_FILE);
         } catch (IOException ex) {
             LOGGER.log(Level.ERROR, "Could not save " + CONFIG_FILE, ex);
         }
