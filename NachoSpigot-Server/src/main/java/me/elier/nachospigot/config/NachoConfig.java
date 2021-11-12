@@ -50,7 +50,7 @@ public class NachoConfig {
         File old_config = new File("nacho.json");
         if(old_config.exists()) migrate(old_config);
 
-        int configVersion = 1; // Update this every new configuration update
+        int configVersion = 2; // Update this every new configuration update
         version = getInt("config-version", configVersion);
         set("config-version", configVersion);
         readConfig(NachoConfig.class, null);
@@ -307,14 +307,14 @@ public class NachoConfig {
 
     public static boolean hideProjectilesFromHiddenPlayers;
 
-    public static void hideProjectilesFromHiddenPlayers() {
+    private static void hideProjectilesFromHiddenPlayers() {
         hideProjectilesFromHiddenPlayers = getBoolean("settings.hide-projectiles-from-hidden-players", false);
         c.addComment("settings.hide-projectiles-from-hidden-players", "Hides projectiles from hidden players");
     }
 
     public static boolean antiEnderPearlGlitch;
     
-    public static void antiEnderPearlGlitch() {
+    private static void antiEnderPearlGlitch() {
         antiEnderPearlGlitch = getBoolean("settings.anti-enderpearl-glitch", false);
         c.addComment("settings.anti-enderpearl-glitch", "Enables anti enderpearl glitch");
     }
