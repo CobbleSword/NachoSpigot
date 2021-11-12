@@ -3,7 +3,9 @@ package me.elier.nachospigot.config;
 import com.google.common.base.Throwables;
 import dev.cobblesword.nachospigot.OldNachoConfig;
 import dev.cobblesword.nachospigot.commons.FileUtils;
-import org.bukkit.Bukkit;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.sugarcanemc.sugarcane.util.yaml.YamlCommenter;
@@ -15,10 +17,10 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.nio.file.Files;
 import java.util.List;
-import java.util.logging.Level;
 
 public class NachoConfig {
 
+    private static final Logger LOGGER = LogManager.getLogger(NachoConfig.class);
     private static File CONFIG_FILE;
     protected static final YamlCommenter c = new YamlCommenter();
     private static final String HEADER = "This is the main configuration file for NachoSpigot.\n"
@@ -37,18 +39,29 @@ public class NachoConfig {
         CONFIG_FILE = configFile;
         config = new YamlConfiguration();
         try {
+            + "join us in our Discord.\n"
+            + "\n"
+            + "Discord: https://discord.gg/SBTEbSx\n"
+            + "Github: https://github.com/CobbleSword/NachoSpigot\n";
+    static YamlConfiguration config;
+    static int version;
+
+    public static void init(File configFile) {
+        CONFIG_FILE = configFile;
+        config = new YamlConfiguration();
+        try {
             System.out.println("Loading NachoSpigot config from " + configFile.getName());
             config.load(CONFIG_FILE);
         } catch (IOException ignored) {
         } catch (InvalidConfigurationException ex) {
-            Bukkit.getLogger().log(Level.SEVERE, "Could not load nacho.yml, please correct your syntax errors", ex);
+            LOGGER.log(Level.ERROR, "Could not load nacho.yml, please correct your syntax errors", ex);
             throw Throwables.propagate(ex);
         }
         config.options().copyDefaults(true);
         File old_config = new File("nacho.json");
         if(old_config.exists()) migrate(old_config);
 
-        int configVersion = 1; // Update this every new configuration update
+        int configVersion = 2; // Update this every new configuration update
         version = getInt("config-version", configVersion);
         set("config-version", configVersion);
         c.setHeader(HEADER);
@@ -112,7 +125,7 @@ public class NachoConfig {
                     } catch (InvocationTargetException ex) {
                         throw Throwables.propagate(ex.getCause());
                     } catch (Exception ex) {
-                        Bukkit.getLogger().log(Level.SEVERE, "Error invoking " + method, ex);
+                        LOGGER.log(Level.ERROR, "Error invoking " + method, ex);
                     }
                 }
             }
@@ -122,7 +135,7 @@ public class NachoConfig {
             config.save(CONFIG_FILE);
             //c.saveComments(CONFIG_FILE);
         } catch (IOException ex) {
-            Bukkit.getLogger().log(Level.SEVERE, "Could not save " + CONFIG_FILE, ex);
+            LOGGER.log(Level.ERROR, "Could not save " + CONFIG_FILE, ex);
         }
     }
 
@@ -301,8 +314,16 @@ public class NachoConfig {
 
     public static boolean hideProjectilesFromHiddenPlayers;
 
-    public static void hideProjectilesFromHiddenPlayers() {
+    private static void hideProjectilesFromHiddenPlayers() {
         hideProjectilesFromHiddenPlayers = getBoolean("settings.hide-projectiles-from-hidden-players", false);
         c.addComment("settings.hide-projectiles-from-hidden-players", "Hides projectiles from hidden players");
     }
+
+    public static boolean antiEnderPearlGlitch;
+    
+    private static void antiEnderPearlGlitch() {
+        antiEnderPearlGlitch = getBoolean("settings.anti-enderpearl-glitch", false);
+        c.addComment("settings.anti-enderpearl-glitch", "Enables anti enderpearl glitch");
+    }
+
 }
