@@ -44,7 +44,7 @@ public class BlockFalling extends Block {
         if (canFall(world, blockposition.down()) && blockposition.getY() >= 0) {
             byte b0 = 32;
 
-            if ( !NachoConfig.disabledFallBlockAnimation && !BlockFalling.instaFall && world.areChunksLoadedBetween(blockposition.a(-b0, -b0, -b0), blockposition.a(b0, b0, b0))) {
+            if (!NachoConfig.disabledFallBlockAnimation && !BlockFalling.instaFall && world.areChunksLoadedBetween(blockposition.a(-b0, -b0, -b0), blockposition.a(b0, b0, b0))) {
                 if (!world.isClientSide) {
                     // PaperSpigot start - Add FallingBlock source location API
                     org.bukkit.Location loc = new org.bukkit.Location(world.getWorld(), (double) ((float) blockposition.getX() + 0.5F), (double) blockposition.getY(), (double) ((float) blockposition.getZ() + 0.5F));
