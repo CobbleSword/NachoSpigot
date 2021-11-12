@@ -2,7 +2,6 @@ package net.minecraft.server;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 
@@ -18,10 +17,6 @@ public class CraftingManager {
     public IRecipe lastRecipe;
     public org.bukkit.inventory.InventoryView lastCraftView;
     // CraftBukkit end
-
-    // Yatopia start
-    private final Map<IRecipe, List<IRecipe>> TYPES_CACHE = new Object2ObjectLinkedOpenHashMap<>();
-    // Yatopia end
 
     public static CraftingManager getInstance() {
         return CraftingManager.a;
@@ -181,7 +176,7 @@ public class CraftingManager {
 
     // CraftBukkit start
     public void sort() {
-        this.recipes.sort((r1, r2) -> r1 instanceof ShapelessRecipes && r2 instanceof ShapedRecipes ? 1 : Integer.compare(r2.a(), r1.a()));
+        this.recipes.sort((r1, r2) -> r1 instanceof ShapelessRecipes && r2 instanceof ShapedRecipes ? 1 : (r2 instanceof ShapelessRecipes && r1 instanceof ShapedRecipes ? -1 : (Integer.compare(r2.a(), r1.a()))));
     }
 
     public ShapedRecipes registerShapedRecipe(ItemStack itemstack, Object... aobject) {
