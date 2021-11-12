@@ -38,34 +38,24 @@ public class StatisticsAndAchievementsTest extends AbstractTestingBase {
     @Test
     @SuppressWarnings("unchecked")
     public void verifyStatisticMapping() throws Throwable {
-//        HashMultiset<Statistic> statistics = HashMultiset.create();
-//        for (net.minecraft.server.Statistic statistic : StatisticList.stats) {
-//            if (statistic instanceof net.minecraft.server.Achievement) {
-//                continue;
-//            }
-//            String name = statistic.name;
-//
-//            String message = String.format("org.bukkit.Statistic is missing: '%s'", name);
-//
-//            Statistic subject = CraftStatistic.getBukkitStatistic(statistic);
-//            assertThat(message, subject, is(not(nullValue())));
-//
-//            System.out.println("Adding stat " + subject + " to stats set.");
-//
-//            statistics.add(subject);
-//        }
-//
-//        for (Statistic statistic : Statistic.values()) {
-//            System.out.println("Checking stat " + statistic);
-//            String message = String.format("org.bukkit.Statistic.%s does not have a corresponding minecraft statistic", statistic.name());
-//            assertThat(message, statistics.remove(statistic, statistics.count(statistic)), is(greaterThan(0)));
-//        }
+        HashMultiset<Statistic> statistics = HashMultiset.create();
+        for (net.minecraft.server.Statistic statistic : (List<net.minecraft.server.Statistic>) StatisticList.stats) {
+            if (statistic instanceof net.minecraft.server.Achievement) {
+                continue;
+            }
+            String name = statistic.name;
 
-        // This is just plain broken?
-        // It broke literally out of nowhere, for no reason.
-        // So just ditching this for now. Error was:
-        // org.bukkit.Statistic.CRAFT_ITEM does not have a corresponding minecraft statistic
-        // ---- Well yes, no wonder. This one only gets set by a player, not without that.
-        // This is really weird...
+            String message = String.format("org.bukkit.Statistic is missing: '%s'", name);
+
+            Statistic subject = CraftStatistic.getBukkitStatistic(statistic);
+            assertThat(message, subject, is(not(nullValue())));
+
+            statistics.add(subject);
+        }
+
+        for (Statistic statistic : Statistic.values()) {
+            String message = String.format("org.bukkit.Statistic.%s does not have a corresponding minecraft statistic", statistic.name());
+            assertThat(message, statistics.remove(statistic, statistics.count(statistic)), is(greaterThan(0)));
+        }
     }
 }
