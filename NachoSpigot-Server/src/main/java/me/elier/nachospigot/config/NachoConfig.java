@@ -315,4 +315,11 @@ public class NachoConfig {
         c.addComment("settings.anti-enderpearl-glitch", "Enables anti enderpearl glitch");
     }
 
+    public static boolean disabledFallBlockAnimation;
+
+    private static void disableFallAnimation() {
+        disabledFallBlockAnimation = getBoolean("settings.disabled-block-fall-animation", false);
+        c.addComment("settings.disabled-block-fall-animation", "Disables the fall animation for blocks");
+    }
+
 }
