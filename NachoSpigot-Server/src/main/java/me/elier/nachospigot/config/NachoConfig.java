@@ -3,7 +3,9 @@ package me.elier.nachospigot.config;
 import com.google.common.base.Throwables;
 import dev.cobblesword.nachospigot.OldNachoConfig;
 import dev.cobblesword.nachospigot.commons.FileUtils;
-import org.bukkit.Bukkit;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.sugarcanemc.sugarcane.util.yaml.YamlCommenter;
@@ -15,10 +17,10 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.nio.file.Files;
 import java.util.List;
-import java.util.logging.Level;
 
 public class NachoConfig {
 
+    private static final Logger LOGGER = LogManager.getLogger(NachoConfig.class);
     private static File CONFIG_FILE;
     protected static final YamlCommenter c = new YamlCommenter();
     private static final String HEADER = "This is the main configuration file for NachoSpigot.\n"
@@ -41,7 +43,7 @@ public class NachoConfig {
             config.load(CONFIG_FILE);
         } catch (IOException ignored) {
         } catch (InvalidConfigurationException ex) {
-            Bukkit.getLogger().log(Level.SEVERE, "Could not load nacho.yml, please correct your syntax errors", ex);
+            LOGGER.log(Level.ERROR, "Could not load nacho.yml, please correct your syntax errors", ex);
             throw Throwables.propagate(ex);
         }
         config.options().copyDefaults(true);
@@ -61,7 +63,7 @@ public class NachoConfig {
         try {
             Files.delete(old_config.toPath());
         } catch (IOException e) {
-            Bukkit.getLogger().log(Level.SEVERE, "Failed to delete nacho.json during migration to nacho.yml");
+            LOGGER.log(Level.ERROR, "Failed to delete nacho.json during migration to nacho.yml");
             throw Throwables.propagate(e);
         }
         if(nachoJson == null) return;
@@ -117,7 +119,7 @@ public class NachoConfig {
                     } catch (InvocationTargetException ex) {
                         throw Throwables.propagate(ex.getCause());
                     } catch (Exception ex) {
-                        Bukkit.getLogger().log(Level.SEVERE, "Error invoking " + method, ex);
+                        LOGGER.log(Level.ERROR, "Error invoking " + method, ex);
                     }
                 }
             }
@@ -126,7 +128,7 @@ public class NachoConfig {
         try {
             config.save(CONFIG_FILE);
         } catch (IOException ex) {
-            Bukkit.getLogger().log(Level.SEVERE, "Could not save " + CONFIG_FILE, ex);
+            LOGGER.log(Level.ERROR, "Could not save " + CONFIG_FILE, ex);
         }
     }
 
