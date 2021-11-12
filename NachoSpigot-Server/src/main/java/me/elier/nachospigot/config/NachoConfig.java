@@ -39,17 +39,6 @@ public class NachoConfig {
         CONFIG_FILE = configFile;
         config = new YamlConfiguration();
         try {
-            + "join us in our Discord.\n"
-            + "\n"
-            + "Discord: https://discord.gg/SBTEbSx\n"
-            + "Github: https://github.com/CobbleSword/NachoSpigot\n";
-    static YamlConfiguration config;
-    static int version;
-
-    public static void init(File configFile) {
-        CONFIG_FILE = configFile;
-        config = new YamlConfiguration();
-        try {
             System.out.println("Loading NachoSpigot config from " + configFile.getName());
             config.load(CONFIG_FILE);
         } catch (IOException ignored) {
