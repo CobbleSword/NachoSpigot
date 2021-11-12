@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutorService;
 // CraftBukkit start
 import com.google.common.util.concurrent.MoreExecutors;
 import dev.cobblesword.nachospigot.commons.Constants;
+import dev.cobblesword.nachospigot.commons.MCUtils;
 import me.elier.nachospigot.config.NachoConfig;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -138,7 +139,7 @@ public class Explosion {
                         double finalD = d8;
                         double finalD1 = d9;
                         double finalD11 = d10;
-                        this.getBlockDensity(vec3d, entity).thenAcceptAsync((d12) -> {
+                        this.getBlockDensity(vec3d, entity.getBoundingBox()).thenAccept((d12) -> MCUtils.ensureMain(() -> {
                             double d13 = (1.0D - d7) * d12;
 
                             if (entity.isCannoningEntity) {
@@ -147,7 +148,7 @@ public class Explosion {
                             }
                             // IonSpigot end
 
-                            // entity.damageEntity(DamageSource.explosion(this), (float) ((int) ((d13 * d13 + d13) / 2.0D * 8.0D * (double) f3 + 1.0D)));+                        // CraftBukkit start
+                            // entity.damageEntity(DamageSource.explosion(this), (float) ((int) ((d13 * d13 + d13) / 2.0D * 8.0D * (double) f3 + 1.0D))); // CraftBukkit start
                             CraftEventFactory.entityDamage = source;
                             entity.forceExplosionKnockback = false;
                             boolean wasDamaged = entity.damageEntity(DamageSource.explosion(this), (float) ((int) ((d13 * d13 + d13) / 2.0D * 8.0D * (double) f3 + 1.0D)));
@@ -168,7 +169,7 @@ public class Explosion {
                             if (entity instanceof EntityHuman && !((EntityHuman) entity).abilities.isInvulnerable && !world.paperSpigotConfig.disableExplosionKnockback) { // PaperSpigot
                                 this.k.put((EntityHuman) entity, new Vec3D(finalD * d13, finalD1 * d13, finalD11 * d13));
                             }
-                        }, this.currentThreadExecutor);
+                        }));
                     }
                 }
             }
@@ -393,10 +394,9 @@ public class Explosion {
     // IonSpigot end
 
     // Paper start - Optimize explosions
-    private CompletableFuture<Float> getBlockDensity(Vec3D vec3d, Entity entity) {
+    private CompletableFuture<Float> getBlockDensity(Vec3D vec3d, AxisAlignedBB aabb) {
         return CompletableFuture.supplyAsync(() -> {
             // IonSpigot start - Optimise Density Cache
-            AxisAlignedBB aabb = entity.getBoundingBox();
             int key = createKey(this, aabb);
             float blockDensity = this.world.explosionDensityCache.get(key);
             if (blockDensity == -1.0f) {
