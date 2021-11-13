@@ -2,7 +2,8 @@ package net.minecraft.server;
 
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import dev.cobblesword.nachospigot.protocol.MinecraftPipeline;
+import com.velocitypowered.natives.util.Natives; // Paper
+import dev.cobblesword.nachospigot.protocol.MinecraftPipeline; // Nacho
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.epoll.Epoll;
@@ -162,6 +163,11 @@ public class ServerConnection {
                     }
                 }
             }
+
+            // Paper start - indicate Velocity natives in use
+            LOGGER.info("Nacho: Using " + Natives.compress.getLoadedVariant() + " compression from Velocity.");
+            LOGGER.info("Nacho: Using " + Natives.cipher.getLoadedVariant() + " cipher from Velocity.");
+            // Paper end
 
             this.getListeningChannels().add(((new ServerBootstrap()
                     .channel(channel))
