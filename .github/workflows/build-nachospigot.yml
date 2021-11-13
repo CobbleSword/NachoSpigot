@@ -2,7 +2,7 @@ name: NachoSpigot Build
 
 on:
   push:
-    branches: [master]
+    branches: [master, dev, quick-fixes]
 jobs:
   build:
     runs-on: ubuntu-latest
