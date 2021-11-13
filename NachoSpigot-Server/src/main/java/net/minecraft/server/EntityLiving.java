@@ -104,6 +104,7 @@ public abstract class EntityLiving extends Entity {
         ++this.ticksFarFromPlayer; // Above all the floats
     }
     // Spigot end
+    private int tick;
 
     public void G() {
         this.damageEntity(DamageSource.OUT_OF_WORLD, Float.MAX_VALUE);
@@ -1495,12 +1496,13 @@ public abstract class EntityLiving extends Entity {
                 }
             }
 
+            this.tick++;
             for (int j = 0; j < 5; ++j)
             {
                 ItemStack itemstack = this.h[j];
                 ItemStack itemstack1 = this.getEquipment(j);
 
-                if (!ItemStack.matches(itemstack1, itemstack))
+                if (!ItemStack.fastMatches(itemstack1, itemstack) || (this.tick % 20 == 0 && !ItemStack.matches(itemstack1, itemstack)))
                 {
                     ((WorldServer) this.world).getTracker().a(this, new PacketPlayOutEntityEquipment(this.getId(), j, itemstack1));
                     if (itemstack != null) {
