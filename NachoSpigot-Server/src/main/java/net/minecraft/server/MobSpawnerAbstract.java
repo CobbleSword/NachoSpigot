@@ -23,8 +23,8 @@ public abstract class MobSpawnerAbstract {
     private MobSpawnerAbstract.a spawnData;
     private double e;
     private double f;
-    private int minSpawnDelay = 200;
-    private int maxSpawnDelay = 800;
+    private int minSpawnDelay = 200 / 20;
+    private int maxSpawnDelay = 800 / 20;
     private int spawnCount = 4;
     private Entity j;
     private int maxNearbyEntities = 6;
@@ -32,7 +32,7 @@ public abstract class MobSpawnerAbstract {
     private int spawnRange = 4;
     private int tickDelay = 0; // PaperSpigot
 
-    static final int FAIL_DELAY_TICKS = 100; // Mobspawner Fail Delay
+    static final int FAIL_DELAY_TICKS = 100 / 20; // Mobspawner Fail Delay
 
     public MobSpawnerAbstract() {}
 
@@ -252,7 +252,7 @@ public abstract class MobSpawnerAbstract {
 
     public void a(NBTTagCompound nbttagcompound) {
         this.mobName = nbttagcompound.getString("EntityId");
-        this.spawnDelay = nbttagcompound.getShort("Delay");
+        this.spawnDelay = nbttagcompound.getShort("Delay") / 20;
         this.mobs.clear();
         if (nbttagcompound.hasKeyOfType("SpawnPotentials", 9)) {
             NBTTagList nbttaglist = nbttagcompound.getList("SpawnPotentials", 10);
@@ -269,8 +269,8 @@ public abstract class MobSpawnerAbstract {
         }
 
         if (nbttagcompound.hasKeyOfType("MinSpawnDelay", 99)) {
-            this.minSpawnDelay = nbttagcompound.getShort("MinSpawnDelay");
-            this.maxSpawnDelay = nbttagcompound.getShort("MaxSpawnDelay");
+            this.minSpawnDelay = nbttagcompound.getShort("MinSpawnDelay") / 20;
+            this.maxSpawnDelay = nbttagcompound.getShort("MaxSpawnDelay") / 20;
             this.spawnCount = nbttagcompound.getShort("SpawnCount");
         }
 
@@ -294,9 +294,9 @@ public abstract class MobSpawnerAbstract {
 
         if (!UtilColor.b(s)) {
             nbttagcompound.setString("EntityId", s);
-            nbttagcompound.setShort("Delay", (short) this.spawnDelay);
-            nbttagcompound.setShort("MinSpawnDelay", (short) this.minSpawnDelay);
-            nbttagcompound.setShort("MaxSpawnDelay", (short) this.maxSpawnDelay);
+            nbttagcompound.setShort("Delay", (short) (this.spawnDelay * 20));
+            nbttagcompound.setShort("MinSpawnDelay", (short) (this.minSpawnDelay * 20));
+            nbttagcompound.setShort("MaxSpawnDelay", (short) (this.maxSpawnDelay * 20));
             nbttagcompound.setShort("SpawnCount", (short) this.spawnCount);
             nbttagcompound.setShort("MaxNearbyEntities", (short) this.maxNearbyEntities);
             nbttagcompound.setShort("RequiredPlayerRange", (short) this.requiredPlayerRange);
