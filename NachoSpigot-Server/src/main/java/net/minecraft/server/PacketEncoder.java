@@ -5,10 +5,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 import java.io.IOException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.Marker;
-import org.apache.logging.log4j.MarkerManager;
 
 public class PacketEncoder extends MessageToByteEncoder<Packet<?>> {
 
@@ -21,17 +17,17 @@ public class PacketEncoder extends MessageToByteEncoder<Packet<?>> {
     }
 
     protected void a(ChannelHandlerContext ctx, Packet<?> packet, ByteBuf bytebuf) throws Exception {
-        Integer integer = ctx.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get().a(this.c, packet);
+        Integer packetId = ctx.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get().getPacketIdForPacket(packet);
 
         /*if (PacketEncoder.a.isDebugEnabled()) {
-            PacketEncoder.a.debug(PacketEncoder.b, "OUT: [{}:{}] {}", ctx.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get(), integer, packet.getClass().getName());
+            PacketEncoder.a.debug(PacketEncoder.b, "OUT: [{}:{}] {}", ctx.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get(), packetId, packet.getClass().getName());
         }*/
 
-        if (integer == null) {
+        if (packetId == null) {
             throw new IOException("Can't serialize unregistered packet");
         } else {
             PacketDataSerializer serializer = new PacketDataSerializer(bytebuf);
-            serializer.b(integer);
+            serializer.b(packetId);
 
             try {
                 packet.b(serializer);
