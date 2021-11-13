@@ -140,7 +140,7 @@ public enum EnumProtocol {
     private static final EnumProtocol[] g = new EnumProtocol[loginId - handshakeId + 1]; // 4
     private static final Map<Class<? extends Packet<?>>, EnumProtocol> protocolMap = Maps.newHashMap();
     private final int protocolId;
-    private final Map<EnumProtocolDirection, BiMap<EnumProtocolDirection, Class<? extends Packet<?>>>> packetMap;
+    private final Map<EnumProtocolDirection, BiMap<Integer, Class<? extends Packet<?>>>> packetMap;
 
     EnumProtocol(int protocolId) {
         this.packetMap = Maps.newEnumMap(EnumProtocolDirection.class);
@@ -148,20 +148,19 @@ public enum EnumProtocol {
     }
 
     protected void registerPacket(EnumProtocolDirection dir, Class<? extends Packet<?>> packet) {
-        BiMap<EnumProtocolDirection, Class<? extends Packet<?>>> object = this.packetMap.computeIfAbsent(dir, k -> HashBiMap.create());
+        BiMap<Integer, Class<? extends Packet<?>>> map = this.packetMap.computeIfAbsent(dir, k -> HashBiMap.create());
 
-        if (object.containsValue(packet)) {
-            String s = dir + " packet " + packet + " is already known to ID " + object.inverse().get(packet);
-
+        if (map.containsValue(packet)) {
+            String s = dir + " packet " + packet + " is already known to ID " + map.inverse().get(packet);
             LogManager.getLogger().fatal(s);
             throw new IllegalArgumentException(s);
         } else {
-            ((BiMap) object).put(object.size(), packet);
+            map.put(map.size(), packet);
         }
     }
 
     public Integer a(EnumProtocolDirection direction, Packet<?> packet) {
-        return (Integer) ((BiMap<?, ?>) this.packetMap.get(direction)).inverse().get(packet.getClass());
+        return this.packetMap.get(direction).inverse().get(packet.getClass());
     }
 
     public Packet<?> a(EnumProtocolDirection direction, int i) throws IllegalAccessException, InstantiationException {
