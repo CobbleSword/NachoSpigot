@@ -346,7 +346,7 @@ public class NachoConfig {
     public static int itemDirtyTicks;
 
     private static void itemDirtyTicks() {
-        titleEntityTickingTime = getInt("settings.item-dirty-ticks", 20);
+        itemDirtyTicks = getInt("settings.item-dirty-ticks", 20);
         c.addComment("settings.item-dirty-ticks", "Change the behavior of dirty itemstacks checking.");
     }
 
