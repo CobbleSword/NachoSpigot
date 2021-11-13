@@ -137,18 +137,18 @@ public enum EnumProtocol {
     private static final int handshakeId = -1;
     private static final int loginId = 2;
 
-    private static final EnumProtocol[] g = new EnumProtocol[EnumProtocol.loginId - EnumProtocol.handshakeId + 1]; // 4
-    private static final Map<Class<? extends Packet<?>>, EnumProtocol> h = Maps.newHashMap();
-    private final int i;
-    private final Map<EnumProtocolDirection, BiMap<EnumProtocolDirection, Class<? extends Packet<?>>>> j;
+    private static final EnumProtocol[] g = new EnumProtocol[loginId - handshakeId + 1]; // 4
+    private static final Map<Class<? extends Packet<?>>, EnumProtocol> protocolMap = Maps.newHashMap();
+    private final int protocolId;
+    private final Map<EnumProtocolDirection, BiMap<EnumProtocolDirection, Class<? extends Packet<?>>>> packetMap;
 
-    EnumProtocol(int i) {
-        this.j = Maps.newEnumMap(EnumProtocolDirection.class);
-        this.i = i;
+    EnumProtocol(int protocolId) {
+        this.packetMap = Maps.newEnumMap(EnumProtocolDirection.class);
+        this.protocolId = protocolId;
     }
 
     protected void registerPacket(EnumProtocolDirection dir, Class<? extends Packet<?>> packet) {
-        BiMap<EnumProtocolDirection, Class<? extends Packet<?>>> object = this.j.computeIfAbsent(dir, k -> HashBiMap.create());
+        BiMap<EnumProtocolDirection, Class<? extends Packet<?>>> object = this.packetMap.computeIfAbsent(dir, k -> HashBiMap.create());
 
         if (object.containsValue(packet)) {
             String s = dir + " packet " + packet + " is already known to ID " + object.inverse().get(packet);
@@ -160,57 +160,48 @@ public enum EnumProtocol {
         }
     }
 
-    public Integer a(EnumProtocolDirection enumprotocoldirection, Packet<?> packet) {
-        return (Integer) ((BiMap) this.j.get(enumprotocoldirection)).inverse().get(packet.getClass());
+    public Integer a(EnumProtocolDirection direction, Packet<?> packet) {
+        return (Integer) ((BiMap<?, ?>) this.packetMap.get(direction)).inverse().get(packet.getClass());
     }
 
-    public Packet<?> a(EnumProtocolDirection enumprotocoldirection, int i) throws IllegalAccessException, InstantiationException {
-        Class oclass = (Class) ((BiMap) this.j.get(enumprotocoldirection)).get(i);
-
-        return oclass == null ? null : (Packet<?>) oclass.newInstance();
+    public Packet<?> a(EnumProtocolDirection direction, int i) throws IllegalAccessException, InstantiationException {
+        Class<?> packetClass = (Class<?>) ((BiMap<?, ?>) this.packetMap.get(direction)).get(i);
+        return packetClass == null ? null : (Packet<?>) packetClass.newInstance();
     }
 
-    public int a() {
-        return this.i;
+    public int getProtocolId() {
+        return this.protocolId;
     }
 
     public static EnumProtocol a(int i) {
-        return i >= EnumProtocol.handshakeId && i <= EnumProtocol.loginId ? EnumProtocol.g[i - EnumProtocol.handshakeId] : null;
+        return i >= handshakeId && i <= loginId ? g[i - handshakeId] : null;
     }
 
-    public static EnumProtocol a(Packet packet) {
-        return EnumProtocol.h.get(packet.getClass());
+    public static EnumProtocol getProtocolForPacket(Packet<?> packet) {
+        return protocolMap.get(packet.getClass());
     }
 
     static {
-        EnumProtocol[] protocols = values();
-
-        for (EnumProtocol protocol : protocols) {
-            int bound = protocol.a();
-
-            if (bound < EnumProtocol.handshakeId || bound > EnumProtocol.loginId) {
+        for (EnumProtocol protocol : values()) {
+            int bound = protocol.getProtocolId();
+            if (bound < handshakeId || bound > loginId) {
                 throw new Error("Invalid protocol ID " + bound);
             }
-
-            EnumProtocol.g[bound - EnumProtocol.handshakeId] = protocol;
-
-            for (EnumProtocolDirection direction : protocol.j.keySet()) {
-                Class oclass;
-
-                for (Iterator iterator1 = ((BiMap) protocol.j.get(direction)).values().iterator(); iterator1.hasNext(); EnumProtocol.h.put(oclass, protocol)) {
-                    oclass = (Class) iterator1.next();
-                    if (EnumProtocol.h.containsKey(oclass) && EnumProtocol.h.get(oclass) != protocol) {
-                        throw new Error("Packet " + oclass + " is already assigned to protocol " + EnumProtocol.h.get(oclass) + " - can't reassign to " + protocol);
+            g[bound - handshakeId] = protocol;
+            for (EnumProtocolDirection direction : protocol.packetMap.keySet()) {
+                Class<? extends Packet<?>> packetClass;
+                for (Iterator<Class<? extends Packet<?>>> packets = protocol.packetMap.get(direction).values().iterator(); packets.hasNext(); protocolMap.put(packetClass, protocol)) {
+                    packetClass = packets.next();
+                    if (protocolMap.containsKey(packetClass) && protocolMap.get(packetClass) != protocol) {
+                        throw new Error("Packet " + packetClass + " is already assigned to protocol " + protocolMap.get(packetClass) + " - can't reassign to " + protocol);
                     }
-
                     try {
-                        oclass.newInstance();
+                        packetClass.newInstance();
                     } catch (Throwable throwable) {
-                        throw new Error("Packet " + oclass + " fails instantiation checks! " + oclass);
+                        throw new Error("Packet " + packetClass + " fails instantiation checks! " + packetClass);
                     }
                 }
             }
         }
-
     }
 }
