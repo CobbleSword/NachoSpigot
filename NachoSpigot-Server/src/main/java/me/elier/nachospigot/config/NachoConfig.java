@@ -343,6 +343,13 @@ public class NachoConfig {
         c.addComment("settings.tile-entity-ticking-time", "Ticking time in seconds for usage on tile entity operations.");
     }
 
+    public static int itemDirtyTicks;
+
+    private static void itemDirtyTicks() {
+        titleEntityTickingTime = getInt("settings.item-dirty-ticks", 20);
+        c.addComment("settings.item-dirty-ticks", "Change the behavior of dirty itemstacks checking.");
+    }
+
     public static boolean enableTCPFASTOPEN;
 
     private static void enableTCPFASTOPEN() {
