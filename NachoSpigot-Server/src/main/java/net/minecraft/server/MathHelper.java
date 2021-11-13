@@ -15,11 +15,11 @@ public class MathHelper {
     private static final boolean fastMathMode = NachoConfig.enableFastMath;
 
     public static float sin(float var0) {
-        return (fastMathMode == true ? ((float) FastMath.sin(var0)) : (b[(int)(var0 * 10430.378F) & '\uffff']));
+        return (fastMathMode == true ? ((float) FastMath.sinQuick(b[(int)(var0 * 10430.378F) & '\uffff'])) : (b[(int)(var0 * 10430.378F) & '\uffff']));
     }
 
     public static float cos(float var0) {
-        return (fastMathMode == true ? ((float) FastMath.cos(var0)) : (b[(int)(var0 * 10430.378F + 16384.0F) & '\uffff']));
+        return (fastMathMode == true ? ((float) FastMath.cosQuick(b[(int)(var0 * 10430.378F + 16384.0F) & '\uffff'])) : (b[(int)(var0 * 10430.378F + 16384.0F) & '\uffff']));
     }
 
     public static float c(float var0) {
@@ -294,7 +294,7 @@ public class MathHelper {
         int var0;
         for(var0 = 0; var0 < 65536; ++var0) {
             if (fastMathMode) {
-                b[var0] = (float) FastMath.sin((double) var0 * FastMath.PI * 2.0D / 65536.0D);
+                b[var0] = (float) FastMath.sinQuick((double) var0 * FastMath.PI * 2.0D / 65536.0D);
             } else {
                 b[var0] = (float) Math.sin((double) var0 * 3.141592653589793D * 2.0D / 65536.0D);
             }
@@ -308,7 +308,7 @@ public class MathHelper {
         for(var0 = 0; var0 < 257; ++var0) {
             double var1 = (double) var0 / 256.0D;
             double var3 = (fastMathMode == true ? (FastMath.asin(var1)) : (Math.asin(var1)));
-            f[var0] = (fastMathMode == true ? (FastMath.cos(var3)) : (Math.cos(var3)));
+            f[var0] = (fastMathMode == true ? (FastMath.cosQuick(var3)) : (Math.cos(var3)));
             e[var0] = var3;
         }
 
