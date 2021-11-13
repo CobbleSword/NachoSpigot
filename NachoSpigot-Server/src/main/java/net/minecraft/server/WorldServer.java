@@ -649,7 +649,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
                 timings.scheduledBlocksCleanup.stopTiming(); // Spigot
 
                 // PaperSpigot start - Allow redstone ticks to bypass the tickNextTickListCap
-                if (paperSpigotConfig.tickNextTickListCapIgnoresRedstone) {
+                /*if (paperSpigotConfig.tickNextTickListCapIgnoresRedstone) {
                     Iterator<NextTickListEntry> iterator = this.M.iterator();
                     while (iterator.hasNext()) {
                         NextTickListEntry next = iterator.next();
@@ -662,7 +662,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
                             this.V.add(next);
                         }
                     }
-                }
+                }*/
                 // PaperSpigot end
 
                 this.methodProfiler.b();
