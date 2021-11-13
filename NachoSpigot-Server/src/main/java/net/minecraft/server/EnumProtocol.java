@@ -172,8 +172,12 @@ public enum EnumProtocol {
         return this.protocolId;
     }
 
-    public static EnumProtocol a(int i) {
-        return i >= handshakeId && i <= loginId ? g[i - handshakeId] : null;
+    /**
+     * @param protocol the intention from the packet
+     * @return the packets for the intention if valid, else null
+     */
+    public static EnumProtocol isValidIntention(int protocol) {
+        return protocol >= handshakeId && protocol <= loginId ? g[protocol - handshakeId] : null;
     }
 
     public static EnumProtocol getProtocolForPacket(Packet<?> packet) {
