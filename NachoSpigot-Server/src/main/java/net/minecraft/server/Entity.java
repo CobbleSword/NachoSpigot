@@ -475,6 +475,8 @@ public abstract class Entity implements ICommandListener {
 
 
     public void move(double d0, double d1, double d2) {
+        // Check if we're moving
+        if (d0 == 0 && d1 == 0 && d2 == 0 && this.vehicle == null && this.passenger == null) { return; }
         if (this.loadChunks) loadChunks(); // PaperSpigot - Load chunks
         if (this.noclip) {
             this.a(this.getBoundingBox().c(d0, d1, d2));
@@ -503,10 +505,6 @@ public abstract class Entity implements ICommandListener {
 
                 this.appendEntityCrashDetails(crashreportsystemdetails);
                 throw new ReportedException(crashreport);
-            }
-            // Check if we're moving
-            if (d0 == 0 && d1 == 0 && d2 == 0 && this.vehicle == null && this.passenger == null) {
-                return;
             }
             // CraftBukkit end
             this.world.methodProfiler.a("move");
