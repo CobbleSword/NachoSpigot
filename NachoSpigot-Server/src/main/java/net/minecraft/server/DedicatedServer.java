@@ -42,22 +42,24 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
     public DedicatedServer(joptsimple.OptionSet options) {
         super(options, Proxy.NO_PROXY, DedicatedServer.a);
         // CraftBukkit end
-        Thread thread = new Thread("Server Infinisleeper") {
-            {
-                this.setDaemon(true);
-                this.start();
-            }
+        if (!NachoConfig.disableInfinitSleeperThreadUsage) {
+            Thread thread = new Thread("Server Infinisleeper") {
+                {
+                    this.setDaemon(true);
+                    this.start();
+                }
 
-            public void run() {
-                while (true) {
-                    try {
-                        Thread.sleep(2147483647L);
-                    } catch (InterruptedException interruptedexception) {
-                        ;
+                public void run() {
+                    while (true) {
+                        try {
+                            Thread.sleep(2147483647L);
+                        } catch (InterruptedException interruptedexception) {
+                            ;
+                        }
                     }
                 }
-            }
-        };
+            };
+        }
     }
 
     protected boolean init() throws IOException {

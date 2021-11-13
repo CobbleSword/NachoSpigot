@@ -322,4 +322,18 @@ public class NachoConfig {
         c.addComment("settings.disabled-block-fall-animation", "Disables the fall animation for blocks");
     }
 
+    public static boolean disableInfinitSleeperThreadUsage;
+
+    private static void disableInfinitSleeperThreadUsage() {
+        disabledFallBlockAnimation = getBoolean("settings.disable-infinisleeper-thread-usage", false);
+        c.addComment("settings.disable-infinisleeper-thread-usage", "Disable infinisleeper thread usage, just enable this if you know what are you doing.");
+    }
+
+    public static boolean enableFastMath;
+
+    private static void enableFastMath() {
+        disabledFallBlockAnimation = getBoolean("settings.enable-fastmath", false);
+        c.addComment("settings.enable-fastmath", "Enable Fast Math usage, this sometimes break anticheats, becareful.");
+    }
+
 }
