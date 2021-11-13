@@ -27,7 +27,7 @@ public class ChunkIOExecutor {
     }
 
     public static void adjustPoolSize(int players) {
-        int size = Math.max(BASE_THREADS, (int) Math.ceil(players / PLAYERS_PER_THREAD));
+        int size = Math.max(BASE_THREADS, (int) Math.ceil((long) (players / PLAYERS_PER_THREAD)));
         instance.setActiveThreads(size);
     }
 

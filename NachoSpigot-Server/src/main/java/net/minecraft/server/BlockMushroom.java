@@ -22,13 +22,9 @@ public class BlockMushroom extends BlockPlant implements IBlockFragilePlantEleme
         final int sourceX = blockposition.getX(), sourceY = blockposition.getY(), sourceZ = blockposition.getZ(); // CraftBukkit
         if (random.nextInt(Math.max(1, (int) world.growthOdds / world.spigotConfig.mushroomModifier * 25)) == 0) { // Spigot            int i = 5;
             int i = 5;
-            boolean flag = true;
-            Iterator iterator = BlockPosition.b(blockposition.a(-4, -1, -4), blockposition.a(4, 1, 4)).iterator();
 
-            while (iterator.hasNext()) {
-                BlockPosition blockposition1 = (BlockPosition) iterator.next();
-
-                if (world.getType(blockposition1).getBlock() == this) {
+            for (BlockPosition.MutableBlockPosition mutableBlockPosition : BlockPosition.b(blockposition.a(-4, -1, -4), blockposition.a(4, 1, 4))) {
+                if (world.getType(mutableBlockPosition).getBlock() == this) {
                     --i;
                     if (i <= 0) {
                         return;
