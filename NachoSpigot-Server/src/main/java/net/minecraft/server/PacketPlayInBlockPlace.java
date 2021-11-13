@@ -32,35 +32,35 @@ public class PacketPlayInBlockPlace implements Packet<PacketListenerPlayIn> {
         this.g = f2;
     }
 
-    public void a(PacketDataSerializer packetdataserializer) throws IOException {
+    public void a(PacketDataSerializer serializer) throws IOException {
         timestamp = System.currentTimeMillis(); // CraftBukkit
-        this.b = packetdataserializer.c();
-        this.c = packetdataserializer.readUnsignedByte();
+        this.b = serializer.c();
+        this.c = serializer.readUnsignedByte();
 
         // KigPaper-0172 start - don't parse itemstack
 
         if (!NachoConfig.stopDecodingItemStackOnPlace) {
-            this.d = packetdataserializer.decodeItemStack();
+            this.d = serializer.decodeItemStack();
         } else {
             // Consume everything and leave 3 bytes at the end
-            if (packetdataserializer.readableBytes() < 3) throw new DecoderException("Expected 3 facing bytes");
-            packetdataserializer.skipBytes(packetdataserializer.readableBytes() - 3);
+            if (serializer.readableBytes() < 3) throw new DecoderException("Expected 3 facing bytes");
+            serializer.skipBytes(serializer.readableBytes() - 3);
         }
 
         // KigPaper-0172 end
 
-        this.e = (float) packetdataserializer.readUnsignedByte() / 16.0F;
-        this.f = (float) packetdataserializer.readUnsignedByte() / 16.0F;
-        this.g = (float) packetdataserializer.readUnsignedByte() / 16.0F;
+        this.e = (float) serializer.readUnsignedByte() / 16.0F;
+        this.f = (float) serializer.readUnsignedByte() / 16.0F;
+        this.g = (float) serializer.readUnsignedByte() / 16.0F;
     }
 
-    public void b(PacketDataSerializer packetdataserializer) throws IOException {
-        packetdataserializer.a(this.b);
-        packetdataserializer.writeByte(this.c);
-        packetdataserializer.a(this.d);
-        packetdataserializer.writeByte((int) (this.e * 16.0F));
-        packetdataserializer.writeByte((int) (this.f * 16.0F));
-        packetdataserializer.writeByte((int) (this.g * 16.0F));
+    public void b(PacketDataSerializer serializer) throws IOException {
+        serializer.a(this.b);
+        serializer.writeByte(this.c);
+        serializer.a(this.d);
+        serializer.writeByte((int) (this.e * 16.0F));
+        serializer.writeByte((int) (this.f * 16.0F));
+        serializer.writeByte((int) (this.g * 16.0F));
     }
 
     public void a(PacketListenerPlayIn packetlistenerplayin) {

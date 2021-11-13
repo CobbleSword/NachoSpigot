@@ -19,7 +19,7 @@ public class PacketPlayOutChat implements Packet<PacketListenerPlayOut> {
         this.b = b0;
     }
 
-    public IChatBaseComponent getChatComponet()
+    public IChatBaseComponent getChatComponent()
     {
         return this.a;
     }
@@ -29,27 +29,27 @@ public class PacketPlayOutChat implements Packet<PacketListenerPlayOut> {
         return b;
     }
 
-    public void a(PacketDataSerializer packetdataserializer) throws IOException {
-        this.a = packetdataserializer.d();
-        this.b = packetdataserializer.readByte();
+    public void a(PacketDataSerializer serializer) throws IOException {
+        this.a = serializer.d();
+        this.b = serializer.readByte();
     }
 
-    public void b(PacketDataSerializer packetdataserializer) throws IOException {
+    public void b(PacketDataSerializer serializer) throws IOException {
         // Spigot start
         if (components != null) {
-            //packetdataserializer.a(net.md_5.bungee.chat.ComponentSerializer.toString(components)); // Paper - comment, replaced with below
+            //serializer.a(net.md_5.bungee.chat.ComponentSerializer.toString(components)); // Paper - comment, replaced with below
             // Paper start - don't nest if we don't need to so that we can preserve formatting
             if (this.components.length == 1) {
-                packetdataserializer.a(net.md_5.bungee.chat.ComponentSerializer.toString(this.components[0]));
+                serializer.a(net.md_5.bungee.chat.ComponentSerializer.toString(this.components[0]));
             } else {
-                packetdataserializer.a(net.md_5.bungee.chat.ComponentSerializer.toString(this.components));
+                serializer.a(net.md_5.bungee.chat.ComponentSerializer.toString(this.components));
             }
             // Paper end
         } else {
-            packetdataserializer.a(this.a);
+            serializer.a(this.a);
         }
         // Spigot end
-        packetdataserializer.writeByte(this.b);
+        serializer.writeByte(this.b);
     }
 
     public void a(PacketListenerPlayOut packetlistenerplayout) {

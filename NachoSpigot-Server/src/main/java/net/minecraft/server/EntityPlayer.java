@@ -745,11 +745,11 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
         MerchantRecipeList merchantrecipelist = imerchant.getOffers(this);
 
         if (merchantrecipelist != null) {
-            PacketDataSerializer packetdataserializer = new PacketDataSerializer(Unpooled.buffer());
+            PacketDataSerializer serializer = new PacketDataSerializer(Unpooled.buffer());
 
-            packetdataserializer.writeInt(this.containerCounter);
-            merchantrecipelist.a(packetdataserializer);
-            this.playerConnection.sendPacket(new PacketPlayOutCustomPayload("MC|TrList", packetdataserializer));
+            serializer.writeInt(this.containerCounter);
+            merchantrecipelist.a(serializer);
+            this.playerConnection.sendPacket(new PacketPlayOutCustomPayload("MC|TrList", serializer));
         }
 
     }
