@@ -22,21 +22,21 @@ public class PacketPlayOutMapChunk implements Packet<PacketListenerPlayOut>
         chunk.world.spigotConfig.antiXrayInstance.obfuscate(chunk.locX, chunk.locZ, c.b, c.a, chunk.world); // [Nacho-0045] Async obfuscation -> obfuscateSync
     }
 
-    public void a(PacketDataSerializer packetdataserializer) throws IOException {
-        this.a = packetdataserializer.readInt();
-        this.b = packetdataserializer.readInt();
-        this.d = packetdataserializer.readBoolean();
+    public void a(PacketDataSerializer serializer) throws IOException {
+        this.a = serializer.readInt();
+        this.b = serializer.readInt();
+        this.d = serializer.readBoolean();
         this.c = new PacketPlayOutMapChunk.ChunkMap();
-        this.c.b = packetdataserializer.readShort();
-        this.c.a = packetdataserializer.a();
+        this.c.b = serializer.readShort();
+        this.c.a = serializer.a();
     }
 
-    public void b(PacketDataSerializer packetdataserializer) throws IOException {
-        packetdataserializer.writeInt(this.a);
-        packetdataserializer.writeInt(this.b);
-        packetdataserializer.writeBoolean(this.d);
-        packetdataserializer.writeShort((short) (this.c.b & '\uffff'));
-        packetdataserializer.a(this.c.a);
+    public void b(PacketDataSerializer serializer) throws IOException {
+        serializer.writeInt(this.a);
+        serializer.writeInt(this.b);
+        serializer.writeBoolean(this.d);
+        serializer.writeShort((short) (this.c.b & '\uffff'));
+        serializer.a(this.c.a);
     }
 
     public void a(PacketListenerPlayOut packetlistenerplayout) {

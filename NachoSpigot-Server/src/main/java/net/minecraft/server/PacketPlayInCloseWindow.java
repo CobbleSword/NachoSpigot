@@ -24,11 +24,11 @@ public class PacketPlayInCloseWindow implements Packet<PacketListenerPlayIn> {
         packetlistenerplayin.a(this);
     }
 
-    public void a(PacketDataSerializer packetdataserializer) throws IOException {
-        this.id = packetdataserializer.readByte();
+    public void a(PacketDataSerializer serializer) throws IOException {
+        this.id = serializer.readByte();
     }
 
-    public void b(PacketDataSerializer packetdataserializer) throws IOException {
-        packetdataserializer.writeByte(this.id);
+    public void b(PacketDataSerializer serializer) throws IOException {
+        serializer.writeByte(this.id);
     }
 }

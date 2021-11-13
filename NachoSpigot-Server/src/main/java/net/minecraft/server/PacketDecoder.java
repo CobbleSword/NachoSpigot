@@ -23,7 +23,7 @@ public class PacketDecoder extends ByteToMessageDecoder {
         if (!in.isReadable()) return;
 
         PacketDataSerializer packetDataHelper = new PacketDataSerializer(in);
-        int packetId = packetDataHelper.e();
+        int packetId = packetDataHelper.readVarInt();
         Packet packet = ctx.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get().a(this.c, packetId);
         if (packet == null)
             throw new IOException("Bad packet id " + packetId);

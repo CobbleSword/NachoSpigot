@@ -57,7 +57,7 @@ public class PacketPlayOutPlayerInfo implements Packet<PacketListenerPlayOut> {
 
     public void a(PacketDataSerializer var1) throws IOException {
         this.a = (PacketPlayOutPlayerInfo.EnumPlayerInfoAction)var1.a(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.class);
-        int var2 = var1.e();
+        int var2 = var1.readVarInt();
 
         for(int var3 = 0; var3 < var2; ++var3) {
             GameProfile var4 = null;
@@ -67,7 +67,7 @@ public class PacketPlayOutPlayerInfo implements Packet<PacketListenerPlayOut> {
             switch(this.a) {
             case ADD_PLAYER:
                 var4 = new GameProfile(var1.g(), var1.c(16));
-                int var8 = var1.e();
+                int var8 = var1.readVarInt();
                 int var9 = 0;
 
                 for(; var9 < var8; ++var9) {
@@ -80,19 +80,19 @@ public class PacketPlayOutPlayerInfo implements Packet<PacketListenerPlayOut> {
                     }
                 }
 
-                var6 = EnumGamemode.getById(var1.e());
-                var5 = var1.e();
+                var6 = EnumGamemode.getById(var1.readVarInt());
+                var5 = var1.readVarInt();
                 if (var1.readBoolean()) {
                     var7 = var1.d();
                 }
                 break;
             case UPDATE_GAME_MODE:
                 var4 = new GameProfile(var1.g(), (String)null);
-                var6 = EnumGamemode.getById(var1.e());
+                var6 = EnumGamemode.getById(var1.readVarInt());
                 break;
             case UPDATE_LATENCY:
                 var4 = new GameProfile(var1.g(), (String)null);
-                var5 = var1.e();
+                var5 = var1.readVarInt();
                 break;
             case UPDATE_DISPLAY_NAME:
                 var4 = new GameProfile(var1.g(), (String)null);
