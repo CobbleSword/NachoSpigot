@@ -50,7 +50,7 @@ public class NachoConfig {
         File old_config = new File("nacho.json");
         if(old_config.exists()) migrate(old_config);
 
-        int configVersion = 2; // Update this every new configuration update
+        int configVersion = 3; // Update this every new configuration update
         version = getInt("config-version", configVersion);
         set("config-version", configVersion);
         c.setHeader(HEADER);
@@ -325,15 +325,29 @@ public class NachoConfig {
     public static boolean disableInfinitSleeperThreadUsage;
 
     private static void disableInfinitSleeperThreadUsage() {
-        disabledFallBlockAnimation = getBoolean("settings.disable-infinisleeper-thread-usage", false);
+        disableInfinitSleeperThreadUsage = getBoolean("settings.disable-infinisleeper-thread-usage", false);
         c.addComment("settings.disable-infinisleeper-thread-usage", "Disable infinisleeper thread usage, just enable this if you know what are you doing.");
     }
 
     public static boolean enableFastMath;
 
     private static void enableFastMath() {
-        disabledFallBlockAnimation = getBoolean("settings.enable-fastmath", false);
-        c.addComment("settings.enable-fastmath", "Enable Fast Math usage, this sometimes break anticheats, becareful.");
+        enableFastMath = getBoolean("settings.enable-fastmath", false);
+        c.addComment("settings.enable-fastmath", "Enable Fast Math usage, this sometimes break anticheats, be careful.");
+    }
+
+    public static int titleEntityTickingTime;
+
+    private static void titleEntityTickingTime() {
+        titleEntityTickingTime = getInt("settings.tile-entity-ticking-time", 20);
+        c.addComment("settings.tile-entity-ticking-time", "Ticking time in seconds for usage on tile entity operations.");
+    }
+
+    public static boolean enableTCPFASTOPEN;
+
+    private static void enableTCPFASTOPEN() {
+        enableTCPFASTOPEN = getBoolean("settings.use-tcp-fastopen", true);
+        c.addComment("settings.use-tcp-fastopen", "Enables the TCP_FASTOPEN socket option");
     }
 
 }

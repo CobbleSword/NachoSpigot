@@ -7,6 +7,7 @@ import java.util.List;
 // CraftBukkit start
 import dev.cobblesword.nachospigot.commons.Constants;
 import net.techcable.tacospigot.event.entity.SpawnerPreSpawnEvent;
+import me.elier.nachospigot.config.NachoConfig;
 
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
@@ -23,8 +24,8 @@ public abstract class MobSpawnerAbstract {
     private MobSpawnerAbstract.a spawnData;
     private double e;
     private double f;
-    private int minSpawnDelay = 200 / 20;
-    private int maxSpawnDelay = 800 / 20;
+    private int minSpawnDelay = 200 / NachoConfig.titleEntityTickingTime;
+    private int maxSpawnDelay = 800 / NachoConfig.titleEntityTickingTime;
     private int spawnCount = 4;
     private Entity j;
     private int maxNearbyEntities = 6;
@@ -32,7 +33,7 @@ public abstract class MobSpawnerAbstract {
     private int spawnRange = 4;
     /*private int tickDelay = 0;*/ // PaperSpigot
 
-    static final int FAIL_DELAY_TICKS = 100 / 20; // Mobspawner Fail Delay
+    static final int FAIL_DELAY_TICKS = 100 / NachoConfig.titleEntityTickingTime; // Mobspawner Fail Delay
 
     public MobSpawnerAbstract() {}
 
@@ -252,7 +253,7 @@ public abstract class MobSpawnerAbstract {
 
     public void a(NBTTagCompound nbttagcompound) {
         this.mobName = nbttagcompound.getString("EntityId");
-        this.spawnDelay = nbttagcompound.getShort("Delay") / 20;
+        this.spawnDelay = nbttagcompound.getShort("Delay") / NachoConfig.titleEntityTickingTime;
         this.mobs.clear();
         if (nbttagcompound.hasKeyOfType("SpawnPotentials", 9)) {
             NBTTagList nbttaglist = nbttagcompound.getList("SpawnPotentials", 10);
@@ -269,8 +270,8 @@ public abstract class MobSpawnerAbstract {
         }
 
         if (nbttagcompound.hasKeyOfType("MinSpawnDelay", 99)) {
-            this.minSpawnDelay = nbttagcompound.getShort("MinSpawnDelay") / 20;
-            this.maxSpawnDelay = nbttagcompound.getShort("MaxSpawnDelay") / 20;
+            this.minSpawnDelay = nbttagcompound.getShort("MinSpawnDelay") / NachoConfig.titleEntityTickingTime;
+            this.maxSpawnDelay = nbttagcompound.getShort("MaxSpawnDelay") / NachoConfig.titleEntityTickingTime;
             this.spawnCount = nbttagcompound.getShort("SpawnCount");
         }
 
@@ -294,9 +295,9 @@ public abstract class MobSpawnerAbstract {
 
         if (!UtilColor.b(s)) {
             nbttagcompound.setString("EntityId", s);
-            nbttagcompound.setShort("Delay", (short) (this.spawnDelay * 20));
-            nbttagcompound.setShort("MinSpawnDelay", (short) (this.minSpawnDelay * 20));
-            nbttagcompound.setShort("MaxSpawnDelay", (short) (this.maxSpawnDelay * 20));
+            nbttagcompound.setShort("Delay", (short) (this.spawnDelay * NachoConfig.titleEntityTickingTime));
+            nbttagcompound.setShort("MinSpawnDelay", (short) (this.minSpawnDelay * NachoConfig.titleEntityTickingTime));
+            nbttagcompound.setShort("MaxSpawnDelay", (short) (this.maxSpawnDelay * NachoConfig.titleEntityTickingTime));
             nbttagcompound.setShort("SpawnCount", (short) this.spawnCount);
             nbttagcompound.setShort("MaxNearbyEntities", (short) this.maxNearbyEntities);
             nbttagcompound.setShort("RequiredPlayerRange", (short) this.requiredPlayerRange);
