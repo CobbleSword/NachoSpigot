@@ -52,7 +52,7 @@ public class EULA {
             fileoutputstream = new FileOutputStream(this.b);
             properties.setProperty("eula", "false");
             properties.store(fileoutputstream, "By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula)." +
-                    "\nand also agreeing that tacos are tasty.");  // TacoSpigot - fix lag
+                    "\nand also agreeing that nachos are tasty.");  // TacoSpigot - fix lag // NachoSpigot - I must say, Nacho's do be better though. Tacos are just messy.
         } catch (Exception exception) {
             EULA.a.warn("Failed to save " + this.b, exception);
         } finally {
