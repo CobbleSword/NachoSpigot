@@ -30,7 +30,7 @@ public abstract class MobSpawnerAbstract {
     private int maxNearbyEntities = 6;
     private int requiredPlayerRange = 16;
     private int spawnRange = 4;
-    private int tickDelay = 0; // PaperSpigot
+    /*private int tickDelay = 0;*/ // PaperSpigot
 
     static final int FAIL_DELAY_TICKS = 100 / 20; // Mobspawner Fail Delay
 
@@ -65,8 +65,8 @@ public abstract class MobSpawnerAbstract {
 
     public void c() {
         // PaperSpigot start - Configurable mob spawner tick rate
-        if (spawnDelay > 0 && --tickDelay > 0) return;
-        tickDelay = this.a().paperSpigotConfig.mobSpawnerTickRate;
+        /*if (spawnDelay > 0 && --tickDelay > 0) return;
+        tickDelay = this.a().paperSpigotConfig.mobSpawnerTickRate;*/
         // PaperSpigot end
         if (this.g()) {
             BlockPosition blockposition = this.b();
@@ -80,18 +80,18 @@ public abstract class MobSpawnerAbstract {
                 this.a().addParticle(EnumParticle.SMOKE_NORMAL, d1, d2, d0, 0.0D, 0.0D, 0.0D, Constants.EMPTY_ARRAY);
                 this.a().addParticle(EnumParticle.FLAME, d1, d2, d0, 0.0D, 0.0D, 0.0D, Constants.EMPTY_ARRAY);
                 if (this.spawnDelay > 0) {
-                    this.spawnDelay -= tickDelay; // PaperSpigot
+                    --this.spawnDelay; // PaperSpigot
                 }
 
                 this.f = this.e;
                 this.e = (this.e + (double) (1000.0F / ((float) this.spawnDelay + 200.0F))) % 360.0D;
             } else {
-                if (this.spawnDelay < -tickDelay) { // PaperSpigot
+                if (this.spawnDelay <= -1) { // PaperSpigot
                     this.h();
                 }
 
                 if (this.spawnDelay > 0) {
-                    this.spawnDelay -= tickDelay; // PaperSpigot
+                    --this.spawnDelay; // PaperSpigot
                     return;
                 }
 
