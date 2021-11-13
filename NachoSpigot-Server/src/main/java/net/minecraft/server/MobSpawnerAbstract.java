@@ -32,6 +32,8 @@ public abstract class MobSpawnerAbstract {
     private int spawnRange = 4;
     private int tickDelay = 0; // PaperSpigot
 
+    static final int FAIL_DELAY_TICKS = 100; // Mobspawner Fail Delay
+
     public MobSpawnerAbstract() {}
 
     public String getMobName() {
@@ -109,14 +111,14 @@ public abstract class MobSpawnerAbstract {
                     Entity entity = EntityTypes.createEntityByName(this.getMobName(), this.a());
 
                     if (entity == null) {
-                        return;
+                        break;
                     }
 
                     int j = this.a().a(entity.getClass(), (new AxisAlignedBB((double) blockposition.getX(), (double) blockposition.getY(), (double) blockposition.getZ(), (double) (blockposition.getX() + 1), (double) (blockposition.getY() + 1), (double) (blockposition.getZ() + 1))).grow((double) this.spawnRange, (double) this.spawnRange, (double) this.spawnRange)).size();
 
                     if (j >= this.maxNearbyEntities) {
                         this.h();
-                        return;
+                        break;
                     }
 
                     d0 = (double) blockposition.getX() + (this.a().random.nextDouble() - this.a().random.nextDouble()) * (double) this.spawnRange + 0.5D;
@@ -138,6 +140,8 @@ public abstract class MobSpawnerAbstract {
 
                 if (flag) {
                     this.h();
+                } else {
+                    this.spawnDelay += MobSpawnerAbstract.FAIL_DELAY_TICKS;
                 }
             }
 
