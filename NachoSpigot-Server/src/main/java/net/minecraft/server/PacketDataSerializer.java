@@ -143,12 +143,17 @@ public class PacketDataSerializer extends ByteBuf {
     }
 
     public void b(int i) {
-        while ((i & -128) != 0) {
-            this.writeByte(i & 127 | 128);
-            i >>>= 7;
+        // Nacho start - OBFHELPER
+        this.writeVarInt(i);
+    }
+
+    public void writeVarInt(int value) {
+        while ((value & -128) != 0) {
+            this.writeByte(value & 127 | 128);
+            value >>>= 7;
         }
 
-        this.writeByte(i);
+        this.writeByte(value);
     }
 
     public void b(long i) {
