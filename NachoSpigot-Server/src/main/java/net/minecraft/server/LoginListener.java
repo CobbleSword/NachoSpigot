@@ -30,7 +30,11 @@ public class LoginListener implements PacketLoginInListener, IUpdatePlayerListBo
     // Paper start - Cache authenticator threads
     private static final AtomicInteger threadId = new AtomicInteger(0);
     private static final java.util.concurrent.ExecutorService authenticatorPool = java.util.concurrent.Executors.newCachedThreadPool(
-            r -> new Thread(r, "User Authenticator #" + threadId.incrementAndGet())
+            r -> { // Yatopia start - make sure produced threads are daemon ones
+                Thread thread = new Thread(r, "User Authenticator #" + threadId.incrementAndGet());
+                thread.setDaemon(true);
+                return thread;
+            } // Yatopia end
     );
     // Paper end
 

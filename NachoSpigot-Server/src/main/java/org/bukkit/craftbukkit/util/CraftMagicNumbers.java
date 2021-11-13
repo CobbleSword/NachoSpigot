@@ -54,8 +54,7 @@ public final class CraftMagicNumbers implements UnsafeValues {
 
     public static Item getItem(Material material) {
         // TODO: Don't use ID
-        Item item = Item.getById(material.getId());
-        return item;
+        return Item.getById(material.getId());
     }
 
     @Deprecated
