@@ -323,6 +323,13 @@ public class NachoConfig {
         c.addComment("settings.disabled-block-fall-animation", "Disables the fall animation for blocks");
     }
 
+    public static boolean enableProtocolLibShim;
+
+    private static void enableProtocolLibShim() {
+        enableProtocolLibShim = getBoolean("settings.enable-protocollib-shim", true);
+        c.addComment("settings.enable-protocollib-shim", "Enable ProtocolLib network shim. Allows ProtocolLib to work, but requires extra memory. Disable this if you don't use ProtocolLib!");
+    }
+
     public static boolean instantPlayInUseEntity = false;
     private static void instantPlayInUseEntity() {
         instantPlayInUseEntity = getBoolean("settings.instant-interaction", false);
