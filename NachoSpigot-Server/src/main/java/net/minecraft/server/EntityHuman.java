@@ -1031,7 +1031,7 @@ public abstract class EntityHuman extends EntityLiving {
                             world.getServer().getPluginManager().callEvent(event);
 
                             if (!event.isCancelled()) {
-                                player.setVelocity(event.getVelocity());
+                                if (!velocity.equals(event.getVelocity())) player.setVelocity(event.getVelocity());
                                 ((EntityPlayer) entity).playerConnection.sendPacket(new PacketPlayOutEntityVelocity(entity));
                                 entity.velocityChanged = false;
                                 entity.motX = d0;
