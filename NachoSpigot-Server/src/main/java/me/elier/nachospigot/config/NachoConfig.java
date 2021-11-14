@@ -101,6 +101,7 @@ public class NachoConfig {
         set("world-settings.default.disable-sponge-absorption", nachoJson.disableSpongeAbsorption);
         set("settings.fix-eat-while-running", nachoJson.fixEatWhileRunning);
         set("settings.hide-projectiles-from-hidden-players", nachoJson.hideProjectilesFromHiddenPlayers);
+        set("settings.instant-use-entity", nachoJson.hideProjectilesFromHiddenPlayers);
         old_config.delete();
     }
 
@@ -154,7 +155,7 @@ public class NachoConfig {
 
     private static <T> List getList(String path, T def) {
         config.addDefault(path, def);
-        return (List<T>) config.getList(path, config.getList(path));
+        return config.getList(path, config.getList(path));
     }
 
     private static String getString(String path, String def) {
@@ -364,4 +365,17 @@ public class NachoConfig {
         c.addComment("settings.use-tcp-fastopen", "Enables the TCP_FASTOPEN socket option");
     }
 
+    public static boolean enableProtocolLibShim;
+
+    private static void enableProtocolLibShim() {
+        enableProtocolLibShim = getBoolean("settings.enable-protocollib-shim", true);
+        c.addComment("settings.enable-protocollib-shim", "Enable ProtocolLib network shim. Allows ProtocolLib to work, but requires extra memory. Disable this if you don't use ProtocolLib!");
+    }
+
+    public static boolean instantPlayInUseEntity;
+
+    private static void instantPlayInUseEntity() {
+        instantPlayInUseEntity = getBoolean("settings.instant-interaction", false);
+        c.addComment("settings.instant-interaction", "Disables delay of all interactions");
+    }
 }
