@@ -40,30 +40,15 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     public static final AttributeKey<EnumProtocol> ATTRIBUTE_PROTOCOL = AttributeKey.valueOf("protocol");
     public static final AttributeKey<EnumProtocol> c = ATTRIBUTE_PROTOCOL;
     // Nacho start - gave LazyInitVars a type
-    public static final LazyInitVar<NioEventLoopGroup> NETWORK_WORKER_GROUP = new LazyInitVar<NioEventLoopGroup>() {
-        protected NioEventLoopGroup a() {
-            return new NioEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Client IO #%d").setDaemon(true).build());
-        }
-        protected NioEventLoopGroup init() {
-            return this.a();
-        }
-    };
-    public static final LazyInitVar<EpollEventLoopGroup> NETWORK_EPOLL_WORKER_GROUP = new LazyInitVar<EpollEventLoopGroup>() {
-        protected EpollEventLoopGroup a() {
-            return new EpollEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Epoll Client IO #%d").setDaemon(true).build());
-        }
-        protected EpollEventLoopGroup init() {
-            return this.a();
-        }
-    };
-    public static final LazyInitVar<DefaultEventLoopGroup> LOCAL_WORKER_GROUP = new LazyInitVar<DefaultEventLoopGroup>() {
-        protected DefaultEventLoopGroup a() {
-            return new DefaultEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Local Client IO #%d").setDaemon(true).build());
-        }
-        protected DefaultEventLoopGroup init() {
-            return this.a();
-        }
-    };
+    public static final LazyInitVar<NioEventLoopGroup> NETWORK_WORKER_GROUP = new LazyInitVar<>(() ->
+            new NioEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Client IO #%d").setDaemon(true).build())
+    );
+    public static final LazyInitVar<EpollEventLoopGroup> NETWORK_EPOLL_WORKER_GROUP = new LazyInitVar<>(() ->
+            new EpollEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Epoll Client IO #%d").setDaemon(true).build())
+    );
+    public static final LazyInitVar<DefaultEventLoopGroup> LOCAL_WORKER_GROUP = new LazyInitVar<>(() ->
+            new DefaultEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Local Client IO #%d").setDaemon(true).build())
+    );
     // Nacho end
 
     private final EnumProtocolDirection h;
@@ -243,7 +228,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     }
     // Paper / Nacho end
 
-    public void dispatchPacket(final Packet packet, final GenericFutureListener<? extends Future<? super Void>>[] listeners, Boolean flushConditional) {
+    public void dispatchPacket(final Packet<?> packet, final GenericFutureListener<? extends Future<? super Void>>[] listeners, Boolean flushConditional) {
         this.packetWrites.getAndIncrement(); // must be before using canFlush
         boolean effectiveFlush = flushConditional == null ? this.canFlush : flushConditional;
         final boolean flush = effectiveFlush || packet instanceof PacketPlayOutKeepAlive || packet instanceof PacketPlayOutKickDisconnect; // no delay for certain packets

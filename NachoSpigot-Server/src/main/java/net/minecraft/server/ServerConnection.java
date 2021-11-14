@@ -41,11 +41,10 @@ public class ServerConnection {
 
     public static LazyInitVar<EventLoopGroup> a, b; // a = boss, b = worker
 
-    public static final LazyInitVar<DefaultEventLoopGroup> c = new LazyInitVar<DefaultEventLoopGroup>() {
-        protected DefaultEventLoopGroup init() {
-            return new DefaultEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Local Server IO #%d").setDaemon(true).build());
-        }
-    };
+
+    public static final LazyInitVar<DefaultEventLoopGroup> c = new LazyInitVar<>(() ->
+            new DefaultEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Local Server IO #%d").setDaemon(true).build())
+    );
 
     public final MinecraftServer server;
     public volatile boolean started;
@@ -99,18 +98,8 @@ public class ServerConnection {
 
                     case EPOLL: {
                         if (Epoll.isAvailable()) {
-                            a = new LazyInitVar<EventLoopGroup>() {
-                                @Override
-                                protected EventLoopGroup init() {
-                                    return new EpollEventLoopGroup(2);
-                                }
-                            };
-                            b = new LazyInitVar<EventLoopGroup>() {
-                                @Override
-                                protected EventLoopGroup init() {
-                                    return new EpollEventLoopGroup(workerThreadCount);
-                                }
-                            };
+                            a = new LazyInitVar<>(() -> new EpollEventLoopGroup(2));
+                            b = new LazyInitVar<>(() -> new EpollEventLoopGroup(workerThreadCount));
 
                             channel = EpollServerSocketChannel.class;
 
@@ -121,18 +110,8 @@ public class ServerConnection {
                     }
                     case KQUEUE: {
                         if (KQueue.isAvailable()) {
-                            a = new LazyInitVar<EventLoopGroup>() {
-                                @Override
-                                protected EventLoopGroup init() {
-                                    return new KQueueEventLoopGroup(2);
-                                }
-                            };
-                            b = new LazyInitVar<EventLoopGroup>() {
-                                @Override
-                                protected EventLoopGroup init() {
-                                    return new KQueueEventLoopGroup(workerThreadCount);
-                                }
-                            };
+                            a = new LazyInitVar<>(() -> new KQueueEventLoopGroup(2));
+                            b = new LazyInitVar<>(() -> new KQueueEventLoopGroup(workerThreadCount));
 
                             channel = KQueueServerSocketChannel.class;
 
@@ -142,18 +121,8 @@ public class ServerConnection {
                         }
                     }
                     case NIO: {
-                        a = new LazyInitVar<EventLoopGroup>() {
-                            @Override
-                            protected EventLoopGroup init() {
-                                return new NioEventLoopGroup(2);
-                            }
-                        };
-                        b = new LazyInitVar<EventLoopGroup>() {
-                            @Override
-                            protected EventLoopGroup init() {
-                                return new NioEventLoopGroup(workerThreadCount);
-                            }
-                        };
+                        a = new LazyInitVar<>(() -> new NioEventLoopGroup(2));
+                        b = new LazyInitVar<>(() -> new NioEventLoopGroup(workerThreadCount));
 
                         channel = NioServerSocketChannel.class;
 
@@ -173,7 +142,7 @@ public class ServerConnection {
                     .channel(channel))
                     .childOption(ChannelOption.WRITE_BUFFER_WATER_MARK, SERVER_WRITE_MARK)
                     .childHandler(new MinecraftPipeline(this))
-                    .group(a.c(), b.c())
+                    .group(a.get(), b.get())
                     .localAddress(ip, port))
                     .bind()
                     .syncUninterruptibly());
@@ -187,9 +156,9 @@ public class ServerConnection {
             try {
                 channelfuture.channel().close().sync();
             } finally {
-                a.c().shutdownGracefully();
-                b.c().shutdownGracefully();
-                c.c().shutdownGracefully();
+                a.get().shutdownGracefully();
+                b.get().shutdownGracefully();
+                c.get().shutdownGracefully();
             }
         }
 
