@@ -1017,9 +1017,9 @@ public abstract class EntityHuman extends EntityLiving {
                             KnockbackProfile profile = (entity.getKnockbackProfile() == null) ?
                                     KnockbackConfig.getCurrentKb() : entity.getKnockbackProfile();
                             entity.g(
-                                    (-MathHelper.sin(this.yaw * Math.PI / 180.0D) * i * profile.getExtraHorizontal()),
+                                    (-MathHelper.sin((float) (this.yaw * Math.PI / 180.0D)) * i * profile.getExtraHorizontal()),
                                    profile.getExtraVertical(),
-                                    (MathHelper.cos(this.yaw * Math.PI / 180.0D) * i * profile.getExtraHorizontal()));
+                                    (MathHelper.cos((float) (this.yaw * Math.PI / 180.0D)) * i * profile.getExtraHorizontal()));
                             this.motX *= 0.6D;
                             this.motZ *= 0.6D;
                             if (profile.isStopSprint()) this.setExtraKnockback(false); //Nacho - Prevent desync player sprinting
@@ -1030,7 +1030,7 @@ public abstract class EntityHuman extends EntityLiving {
                             PlayerVelocityEvent event = new PlayerVelocityEvent(player, new Vector(entity.motX, entity.motY, entity.motZ));
                             world.getServer().getPluginManager().callEvent(event);
 
-                            if (event.isCancelled()) {
+                            if (!event.isCancelled()) {
                                 player.setVelocity(event.getVelocity());
                                 ((EntityPlayer) entity).playerConnection.sendPacket(new PacketPlayOutEntityVelocity(entity));
                                 entity.velocityChanged = false;
