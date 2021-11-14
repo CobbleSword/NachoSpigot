@@ -336,6 +336,13 @@ public class NachoConfig {
         c.addComment("settings.enable-fastmath", "Enable Fast Math usage, this sometimes break anticheats, be careful.");
     }
 
+    public static boolean enableFastMathCosSin;
+
+    private static void enableFastMathCosSin() {
+        enableFastMathCosSin = getBoolean("settings.enable-fastmath-cos-sin", false);
+        c.addComment("settings.enable-fastmath", "Enable Fast Math usage with cos() and sin() methods.");
+    }
+
     public static int titleEntityTickingTime;
 
     private static void titleEntityTickingTime() {

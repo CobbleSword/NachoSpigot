@@ -12,6 +12,8 @@ import com.google.common.util.concurrent.MoreExecutors;
 import dev.cobblesword.nachospigot.commons.Constants;
 import dev.cobblesword.nachospigot.commons.MCUtils;
 import me.elier.nachospigot.config.NachoConfig;
+import net.jafama.FastMath;
+
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.Location;
@@ -327,7 +329,7 @@ public class Explosion {
                         double d0 = (float) k / 15.0F * 2.0F - 1.0F;
                         double d1 = (float) i / 15.0F * 2.0F - 1.0F;
                         double d2 = (float) j / 15.0F * 2.0F - 1.0F;
-                        double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+                        double d3 = (NachoConfig.enableFastMath == true ? FastMath.sqrt(d0 * d0 + d1 * d1 + d2 * d2) : Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2));
 
                         d0 = (d0 / d3) * 0.30000001192092896D;
                         d1 = (d1 / d3) * 0.30000001192092896D;
@@ -356,9 +358,9 @@ public class Explosion {
             double stepZ = this.posZ;
 
             for (; f > 0.0F; f -= 0.22500001F) {
-                int floorX = org.bukkit.util.NumberConversions.floor(stepX);
-                int floorY = org.bukkit.util.NumberConversions.floor(stepY);
-                int floorZ = org.bukkit.util.NumberConversions.floor(stepZ);
+                int floorX = (NachoConfig.enableFastMath == true ? FastMath.floorToInt((Double.doubleToRawLongBits(stepX) >>> 63)) : org.bukkit.util.NumberConversions.floor(stepX));
+                int floorY = (NachoConfig.enableFastMath == true ? FastMath.floorToInt((Double.doubleToRawLongBits(stepY) >>> 63)) : org.bukkit.util.NumberConversions.floor(stepY));
+                int floorZ = (NachoConfig.enableFastMath == true ? FastMath.floorToInt((Double.doubleToRawLongBits(stepZ) >>> 63)) : org.bukkit.util.NumberConversions.floor(stepZ));
 
                 if (position.getX() != floorX || position.getY() != floorY || position.getZ() != floorZ) {
                     position.setValues(floorX, floorY, floorZ);
@@ -440,8 +442,8 @@ public class Explosion {
         double d0 = 1.0D / ((aabb.d - aabb.a) * 2.0D + 1.0D);
         double d1 = 1.0D / ((aabb.e - aabb.b) * 2.0D + 1.0D);
         double d2 = 1.0D / ((aabb.f - aabb.c) * 2.0D + 1.0D);
-        double d3 = (1.0D - Math.floor(1.0D / d0) * d0) / 2.0D;
-        double d4 = (1.0D - Math.floor(1.0D / d2) * d2) / 2.0D;
+        double d3 = (1.0D - ((NachoConfig.enableFastMath == true ? FastMath.floor(1.0D / d0) : Math.floor(1.0D / d0)) * d0)) / 2.0D;
+        double d4 = (1.0D - ((NachoConfig.enableFastMath == true ? FastMath.floor(1.0D / d2) : Math.floor(1.0D / d2)) * d2)) / 2.0D;
 
         if (d0 < 0.0 || d1 < 0.0 || d2 < 0.0) {
             return Collections.emptyList();

@@ -13,13 +13,14 @@ public class MathHelper {
     private static final double[] e;
     private static final double[] f;
     private static final boolean fastMathMode = NachoConfig.enableFastMath;
+    private static final boolean fastMathCosSin = NachoConfig.enableFastMathCosSin;
 
     public static float sin(float var0) {
-        return (fastMathMode == true ? ((float) FastMath.sinQuick(b[(int)(var0 * 10430.378F) & '\uffff'])) : (b[(int)(var0 * 10430.378F) & '\uffff']));
+        return (fastMathCosSin == true ? ((float) FastMath.sinQuick(b[(int)(var0 * 10430.378F) & '\uffff'])) : (b[(int)(var0 * 10430.378F) & '\uffff']));
     }
 
     public static float cos(float var0) {
-        return (fastMathMode == true ? ((float) FastMath.cosQuick(b[(int)(var0 * 10430.378F + 16384.0F) & '\uffff'])) : (b[(int)(var0 * 10430.378F + 16384.0F) & '\uffff']));
+        return (fastMathCosSin == true ? ((float) FastMath.cosQuick(b[(int)(var0 * 10430.378F + 16384.0F) & '\uffff'])) : (b[(int)(var0 * 10430.378F + 16384.0F) & '\uffff']));
     }
 
     public static float c(float var0) {
