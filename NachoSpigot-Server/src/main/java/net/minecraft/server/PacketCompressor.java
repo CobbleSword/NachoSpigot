@@ -38,7 +38,7 @@ public class PacketCompressor extends MessageToByteEncoder<ByteBuf> {
             var5.writeBytes(var2);
         } else {
             // Paper start
-            if (this.deflater == null) {
+            if (this.deflater != null) {
                 byte[] var6 = new byte[var4];
                 var2.readBytes(var6);
                 var5.b(var6.length);
