@@ -50,7 +50,7 @@ public class NachoConfig {
         File old_config = new File("nacho.json");
         if(old_config.exists()) migrate(old_config);
 
-        int configVersion = 2; // Update this every new configuration update
+        int configVersion = 3; // Update this every new configuration update
         version = getInt("config-version", configVersion);
         set("config-version", configVersion);
         c.setHeader(HEADER);
@@ -330,10 +330,10 @@ public class NachoConfig {
         c.addComment("settings.enable-protocollib-shim", "Enable ProtocolLib network shim. Allows ProtocolLib to work, but requires extra memory. Disable this if you don't use ProtocolLib!");
     }
 
-    public static boolean instantPlayInUseEntity = false;
+    public static boolean instantPlayInUseEntity;
+
     private static void instantPlayInUseEntity() {
         instantPlayInUseEntity = getBoolean("settings.instant-interaction", false);
         c.addComment("settings.instant-interaction", "Disables delay of all interactions");
     }
-
 }

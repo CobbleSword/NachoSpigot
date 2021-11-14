@@ -408,7 +408,7 @@ public class ChunkProviderServer implements IChunkProvider {
         // TacoSpigot start - use iterator for unloadQueue
         LongIterator iterator = unloadQueue.iterator();
         for (int i = 0; i < 100 && iterator.hasNext(); ++i) {
-            long chunkcoordinates = iterator.next();
+            long chunkcoordinates = iterator.nextLong();
             iterator.remove();
             // TacoSpigot end
             Chunk chunk = this.chunks.get(chunkcoordinates);

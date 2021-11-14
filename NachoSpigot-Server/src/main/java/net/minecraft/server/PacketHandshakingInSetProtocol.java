@@ -22,7 +22,7 @@ public class PacketHandshakingInSetProtocol implements Packet<PacketHandshakingI
         serializer.b(this.a);
         serializer.a(this.hostname);
         serializer.writeShort(this.port);
-        serializer.b(this.d.getProtocolId());
+        serializer.b(this.d.getStateId());
     }
 
     public void a(PacketHandshakingInListener packethandshakinginlistener) {
