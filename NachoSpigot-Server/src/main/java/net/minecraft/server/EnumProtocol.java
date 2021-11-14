@@ -146,7 +146,7 @@ public enum EnumProtocol {
     private static Map<Class<? extends Packet<?>>, EnumProtocol> packetClass2State = Maps.newHashMap();
 
     private final Object2IntMap<Class<? extends Packet<?>>> packetClassToId = new Object2IntOpenHashMap<>(16, 0.5f);
-    private final Map<EnumProtocolDirection, IntObjectMap<Supplier<Packet<?>>>> packetMap = new HashMap<>();
+    private final Map<EnumProtocolDirection, IntObjectMap<Supplier<Packet<?>>>> packetMap = Maps.newEnumMap(EnumProtocolDirection.class);
 
     private final int stateId;
 
