@@ -101,6 +101,7 @@ public class NachoConfig {
         set("world-settings.default.disable-sponge-absorption", nachoJson.disableSpongeAbsorption);
         set("settings.fix-eat-while-running", nachoJson.fixEatWhileRunning);
         set("settings.hide-projectiles-from-hidden-players", nachoJson.hideProjectilesFromHiddenPlayers);
+        set("settings.instant-use-entity", nachoJson.hideProjectilesFromHiddenPlayers);
         old_config.delete();
     }
 
@@ -329,4 +330,10 @@ public class NachoConfig {
         c.addComment("settings.enable-protocollib-shim", "Enable ProtocolLib network shim. Allows ProtocolLib to work, but requires extra memory. Disable this if you don't use ProtocolLib!");
     }
 
+    public static boolean instantPlayInUseEntity;
+
+    private static void instantPlayInUseEntity() {
+        instantPlayInUseEntity = getBoolean("settings.instant-interaction", false);
+        c.addComment("settings.instant-interaction", "Disables delay of all interactions");
+    }
 }
