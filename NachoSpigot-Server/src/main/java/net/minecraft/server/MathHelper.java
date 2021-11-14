@@ -294,7 +294,7 @@ public class MathHelper {
     static {
         int var0;
         for(var0 = 0; var0 < 65536; ++var0) {
-            if (fastMathMode) {
+            if (fastMathCosSin) {
                 b[var0] = (float) FastMath.sinQuick((double) var0 * FastMath.PI * 2.0D / 65536.0D);
             } else {
                 b[var0] = (float) Math.sin((double) var0 * 3.141592653589793D * 2.0D / 65536.0D);
@@ -308,8 +308,8 @@ public class MathHelper {
 
         for(var0 = 0; var0 < 257; ++var0) {
             double var1 = (double) var0 / 256.0D;
-            double var3 = (fastMathMode == true ? (FastMath.asin(var1)) : (Math.asin(var1)));
-            f[var0] = (fastMathMode == true ? (FastMath.cosQuick(var3)) : (Math.cos(var3)));
+            double var3 = (fastMathCosSin == true ? (FastMath.asin(var1)) : (Math.asin(var1)));
+            f[var0] = (fastMathCosSin == true ? (FastMath.cosQuick(var3)) : (Math.cos(var3)));
             e[var0] = var3;
         }
 
