@@ -50,7 +50,7 @@ public class NachoConfig {
         File old_config = new File("nacho.json");
         if(old_config.exists()) migrate(old_config);
 
-        int configVersion = 3; // Update this every new configuration update
+        int configVersion = 4; // Update this every new configuration update
         version = getInt("config-version", configVersion);
         set("config-version", configVersion);
         c.setHeader(HEADER);
@@ -333,14 +333,14 @@ public class NachoConfig {
 
     private static void enableFastMath() {
         enableFastMath = getBoolean("settings.enable-fastmath", false);
-        c.addComment("settings.enable-fastmath", "Enable Fast Math usage, this sometimes break anticheats, be careful.");
+        c.addComment("settings.enable-fastmath", "Enable Fast Math usage.");
     }
 
     public static boolean enableFastMathCosSin;
 
     private static void enableFastMathCosSin() {
         enableFastMathCosSin = getBoolean("settings.enable-fastmath-cos-sin", false);
-        c.addComment("settings.enable-fastmath-cos-sin", "Enable Fast Math usage with cos() and sin() methods.");
+        c.addComment("settings.enable-fastmath-cos-sin", "Enable Fast Math usage with cos() and sin() methods, this may break anticheats and server-side calculations.");
     }
 
     public static int titleEntityTickingTime;
