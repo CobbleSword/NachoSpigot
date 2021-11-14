@@ -204,28 +204,28 @@ public class CraftKnockbackProfile implements KnockbackProfile {
         return new String[] {
                 "Horizontal§7: " + this.horizontal,
                 "Vertical§7: " + this.vertical,
-                "VerticalMax§7: " + this.verticalMax,
-                "VerticalMin§7: " + this.verticalMin,
-                "ExtraHorizontal§7: " + this.extraHorizontal,
-                "ExtraVertical§7: " + this.extraVertical,
-                "FrictionHorizontal§7: " + this.frictionHorizontal,
-                "FrictionVertical§7: " + this.frictionVertical,
-                "StopSprint§7: " + this.stopSprint,
+                "Vertical-Max§7: " + this.verticalMax,
+                "Vertical-Min§7: " + this.verticalMin,
+                "Extra-Horizontal§7: " + this.extraHorizontal,
+                "Extra-Vertical§7: " + this.extraVertical,
+                "Friction-Horizontal§7: " + this.frictionHorizontal,
+                "Friction-Vertical§7: " + this.frictionVertical,
+                "Stop-Sprint§7: " + this.stopSprint,
         };
     }
 
     public String[] getProjectilesValues() {
         return new String[] {
-                "RodHorizontal§7: " + this.rodHorizontal,
-                "RodVertical§7: " + this.rodVertical,
-                "ArrowHorizontal§7: " + this.arrowHorizontal,
-                "ArrowVertical§7: " + this.arrowVertical,
-                "PearlHorizontal§7: " + this.pearlHorizontal,
-                "PearlVertical§7: " + this.pearlVertical,
-                "SnowballHorizontal§7: " + this.snowballHorizontal,
-                "SnowballVertical§7: " + this.snowballVertical,
-                "EggHorizontal§7: " + this.eggHorizontal,
-                "EggVertical§7: " + this.eggVertical,
+                "Rod-Horizontal§7: " + this.rodHorizontal,
+                "Rod-Vertical§7: " + this.rodVertical,
+                "Arrow-Horizontal§7: " + this.arrowHorizontal,
+                "Arrow-Vertical§7: " + this.arrowVertical,
+                "Pearl-Horizontal§7: " + this.pearlHorizontal,
+                "Pearl-Vertical§7: " + this.pearlVertical,
+                "Snowball-Horizontal§7: " + this.snowballHorizontal,
+                "Snowball-Vertical§7: " + this.snowballVertical,
+                "Egg-Horizontal§7: " + this.eggHorizontal,
+                "Egg-Vertical§7: " + this.eggVertical,
         };
     }
 }

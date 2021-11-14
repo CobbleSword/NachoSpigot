@@ -59,6 +59,10 @@ public class KnockbackCommand extends Command {
                     case "load": {
                         KnockbackProfile profile = config.getKbProfileByName(args[1]);
                         if (profile != null) {
+                            if (config.getCurrentKb().getName().equalsIgnoreCase(args[1])) {
+                                player.sendMessage("§cThis profile is loaded.");
+                                return false;
+                            }
                             config.setCurrentKb(profile);
                             config.set("knockback.current", profile.getName());
                             config.save();
