@@ -4,6 +4,7 @@ import dev.cobblesword.nachospigot.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 import java.util.List;
@@ -114,4 +115,10 @@ public class KnockbackCommand extends Command {
         sender.sendMessage(CC.red + "eh | extra horizontal");
         sender.sendMessage(CC.red + "ev | extra vertical");
     }
+
+    private void sendProfile(Player sender) {
+
+    }
+
+
 }
