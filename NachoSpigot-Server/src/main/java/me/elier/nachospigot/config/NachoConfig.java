@@ -322,10 +322,10 @@ public class NachoConfig {
         c.addComment("settings.disabled-block-fall-animation", "Disables the fall animation for blocks");
     }
 
-    public static boolean disableInfinitSleeperThreadUsage;
+    public static boolean disableInfiniSleeperThreadUsage;
 
-    private static void disableInfinitSleeperThreadUsage() {
-        disableInfinitSleeperThreadUsage = getBoolean("settings.disable-infinisleeper-thread-usage", false);
+    private static void disableInfiniSleeperThreadUsage() {
+        disableInfiniSleeperThreadUsage = getBoolean("settings.disable-infinisleeper-thread-usage", false);
         c.addComment("settings.disable-infinisleeper-thread-usage", "Disable infinisleeper thread usage, just enable this if you know what are you doing.");
     }
 
@@ -347,14 +347,14 @@ public class NachoConfig {
 
     private static void titleEntityTickingTime() {
         titleEntityTickingTime = getInt("settings.tile-entity-ticking-time", 20);
-        c.addComment("settings.tile-entity-ticking-time", "Ticking time in seconds for usage on tile entity operations.");
+        c.addComment("settings.tile-entity-ticking-time", "Ticking time (20 ticks per second) for usage on tile entity operations.");
     }
 
     public static int itemDirtyTicks;
 
     private static void itemDirtyTicks() {
         itemDirtyTicks = getInt("settings.item-dirty-ticks", 20);
-        c.addComment("settings.item-dirty-ticks", "Change the behavior of dirty itemstacks checking.");
+        c.addComment("settings.item-dirty-ticks", "Controls the interval for the item-dirty check. Minecraft checks an item every tick to see if it was changed. This can be expensive because it also needs to check all NBT data. Spigot only checks for basic count/data/type data and does a deep check every 20 ticks by default.");
     }
 
     public static boolean enableTCPFASTOPEN;
