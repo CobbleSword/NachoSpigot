@@ -101,6 +101,7 @@ public class NachoConfig {
         set("world-settings.default.disable-sponge-absorption", nachoJson.disableSpongeAbsorption);
         set("settings.fix-eat-while-running", nachoJson.fixEatWhileRunning);
         set("settings.hide-projectiles-from-hidden-players", nachoJson.hideProjectilesFromHiddenPlayers);
+        set("settings.instant-use-entity", nachoJson.hideProjectilesFromHiddenPlayers);
         old_config.delete();
     }
 
@@ -320,6 +321,12 @@ public class NachoConfig {
     private static void disableFallAnimation() {
         disabledFallBlockAnimation = getBoolean("settings.disabled-block-fall-animation", false);
         c.addComment("settings.disabled-block-fall-animation", "Disables the fall animation for blocks");
+    }
+
+    public static boolean instantPlayInUseEntity = false;
+    private static void instantPlayInUseEntity() {
+        instantPlayInUseEntity = getBoolean("settings.instant-interaction", false);
+        c.addComment("settings.instant-interaction", "Disables delay of all interactions");
     }
 
 }
