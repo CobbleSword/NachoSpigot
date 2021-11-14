@@ -68,7 +68,7 @@ public abstract class World implements IBlockAccess {
     // Spigot end
     protected final Set<Entity> g = Sets.newHashSet(); // Paper
     //public final List<TileEntity> h = Lists.newArrayList(); // PaperSpigot - Remove unused list
-    public final me.rastrian.dev.OptimizedWorldTileEntitySet tileEntityList = new me.rastrian.dev.OptimizedWorldTileEntitySet();
+    public final OptimizedWorldTileEntitySet tileEntityList = new OptimizedWorldTileEntitySet();
     private final List<TileEntity> b = Lists.newArrayList();
     private final Set<TileEntity> c = Sets.newHashSet(); public Set<TileEntity> getTileEntityListUnload() { return c; }// Paper
     public final List<EntityHuman> players = Lists.newArrayList();
