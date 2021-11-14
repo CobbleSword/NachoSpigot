@@ -4,7 +4,6 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Maps;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -193,11 +192,11 @@ public enum EnumProtocol {
     }
 
     /**
-     * @param protocol the intention from the packet
+     * @param state the intention from the packet
      * @return the packets for the intention if valid, else null
      */
-    public static EnumProtocol isValidIntention(int protocol) {
-        return protocol >= handshakeId && protocol <= loginId ? STATES[protocol - handshakeId] : null;
+    public static EnumProtocol isValidIntention(int state) {
+        return state >= handshakeId && state <= loginId ? STATES[state - handshakeId] : null;
     }
 
     static {
