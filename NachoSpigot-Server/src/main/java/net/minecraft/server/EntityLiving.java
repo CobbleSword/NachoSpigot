@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.commons.Constants;
+import dev.cobblesword.nachospigot.knockback.KnockbackConfig;
 import dev.cobblesword.nachospigot.knockback.KnockbackProfile;
 import net.jafama.FastMath;
 import org.bukkit.Bukkit;
@@ -893,8 +894,7 @@ public abstract class EntityLiving extends Entity {
             double horizontal = 0.4D;
             double vertical = 0.4D;
 
-            KnockbackProfile kb = (this.getKnockbackProfile() == null)
-                    ? KnockbackConfig.getCurrentKb() : this.getKnockbackProfile();
+            KnockbackProfile kb = (this.getKnockbackProfile() == null) ? KnockbackConfig.getCurrentKb() : this.getKnockbackProfile();
 
             if (source instanceof EntityDamageSourceIndirect) {
                 if (((EntityDamageSourceIndirect) source).getProximateDamageSource() instanceof EntityFishingHook) {
