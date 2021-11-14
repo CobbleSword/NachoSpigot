@@ -50,7 +50,7 @@ public class NachoConfig {
         File old_config = new File("nacho.json");
         if(old_config.exists()) migrate(old_config);
 
-        int configVersion = 2; // Update this every new configuration update
+        int configVersion = 3; // Update this every new configuration update
         version = getInt("config-version", configVersion);
         set("config-version", configVersion);
         c.setHeader(HEADER);
@@ -154,7 +154,7 @@ public class NachoConfig {
 
     private static <T> List getList(String path, T def) {
         config.addDefault(path, def);
-        return (List<T>) config.getList(path, config.getList(path));
+        return config.getList(path, config.getList(path));
     }
 
     private static String getString(String path, String def) {
@@ -320,6 +320,13 @@ public class NachoConfig {
     private static void disableFallAnimation() {
         disabledFallBlockAnimation = getBoolean("settings.disabled-block-fall-animation", false);
         c.addComment("settings.disabled-block-fall-animation", "Disables the fall animation for blocks");
+    }
+
+    public static boolean enableProtocolLibShim;
+
+    private static void enableProtocolLibShim() {
+        enableProtocolLibShim = getBoolean("settings.enable-protocollib-shim", true);
+        c.addComment("settings.enable-protocollib-shim", "Enable ProtocolLib network shim. Allows ProtocolLib to work, but requires extra memory. Disable this if you don't use ProtocolLib!");
     }
 
 }

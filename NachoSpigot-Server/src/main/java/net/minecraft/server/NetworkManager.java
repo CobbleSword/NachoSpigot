@@ -228,7 +228,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     }
     // Paper / Nacho end
 
-    public void dispatchPacket(final Packet packet, final GenericFutureListener<? extends Future<? super Void>>[] listeners, Boolean flushConditional) {
+    public void dispatchPacket(final Packet<?> packet, final GenericFutureListener<? extends Future<? super Void>>[] listeners, Boolean flushConditional) {
         this.packetWrites.getAndIncrement(); // must be before using canFlush
         boolean effectiveFlush = flushConditional == null ? this.canFlush : flushConditional;
         final boolean flush = effectiveFlush || packet instanceof PacketPlayOutKeepAlive || packet instanceof PacketPlayOutKickDisconnect; // no delay for certain packets

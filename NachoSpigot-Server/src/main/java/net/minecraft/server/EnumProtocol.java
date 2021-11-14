@@ -1,5 +1,7 @@
 package net.minecraft.server;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Maps;
 
 import java.util.HashMap;
@@ -10,6 +12,7 @@ import io.netty.util.collection.IntObjectHashMap;
 import io.netty.util.collection.IntObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import me.elier.nachospigot.config.NachoConfig;
 
 public enum EnumProtocol {
 
@@ -143,7 +146,9 @@ public enum EnumProtocol {
 
     private static final EnumProtocol[] STATES = new EnumProtocol[loginId - handshakeId + 1]; // 4
 
-    private static Map<Class<? extends Packet<?>>, EnumProtocol> packetClass2State = Maps.newHashMap();
+    private final Map<EnumProtocolDirection, BiMap<Integer, Class<? extends Packet<?>>>> _protocolLibPacketShim = Maps.newEnumMap(EnumProtocolDirection.class);;
+
+    private static final Map<Class<? extends Packet<?>>, EnumProtocol> packetClass2State = Maps.newHashMap();
 
     private final Object2IntMap<Class<? extends Packet<?>>> packetClassToId = new Object2IntOpenHashMap<>(16, 0.5f);
     private final Map<EnumProtocolDirection, IntObjectMap<Supplier<Packet<?>>>> packetMap = Maps.newEnumMap(EnumProtocolDirection.class);
@@ -160,17 +165,18 @@ public enum EnumProtocol {
 
     protected void registerPacket(EnumProtocolDirection dir, Class<? extends Packet<?>> clazz, Supplier<Packet<?>> packet) {
         IntObjectMap<Supplier<Packet<?>>> map = this.packetMap.computeIfAbsent(dir, k -> new IntObjectHashMap<>(16, 0.5f));
-        int packetId = map.size(); // think of this as an incrementing integer, well that's what it basically is
-
-        // TODO: Remove this! Something is causing packetClass2State to be null when running tests,
-        //  while I'm pretty sure it sets the variable to Maps.newHashMap on creation. Java is weird.
-        if (packetClass2State == null) {
-            packetClass2State = new HashMap<>();
-        }
-
-        EnumProtocol.packetClass2State.put(clazz, this);
+        int packetId = map.size(); // think of this as an incrementing integer
         this.packetClassToId.put(clazz, packetId);
         map.put(packetId, packet);
+
+        if (NachoConfig.enableProtocolLibShim) {
+            this._protocolLibRegisterShim(dir, clazz);
+        }
+    }
+
+    private void _protocolLibRegisterShim(EnumProtocolDirection dir, Class<? extends Packet<?>> clazz) {
+        BiMap<Integer, Class<? extends Packet<?>>> map = this._protocolLibPacketShim.computeIfAbsent(dir, k -> HashBiMap.create());
+        map.put(map.size(), clazz);
     }
 
     public Packet<?> createPacket(EnumProtocolDirection direction, int packetId) {
@@ -195,12 +201,15 @@ public enum EnumProtocol {
     }
 
     static {
-        for (EnumProtocol protocol : values()) {
-            int bound = protocol.getStateId();
-            if (bound < handshakeId || bound > loginId) {
-                throw new Error("Invalid protocol ID " + bound);
+        for (EnumProtocol state : values()) {
+            int id = state.getStateId();
+            if (id < handshakeId || id > loginId) {
+                throw new Error("Invalid protocol ID " + id);
             }
-            STATES[bound - handshakeId] = protocol;
+            STATES[id - handshakeId] = state;
+            for (Class<? extends Packet<?>> packetClass : state.packetClassToId.keySet()) {
+                packetClass2State.put(packetClass, state);
+            }
         }
     }
 }
