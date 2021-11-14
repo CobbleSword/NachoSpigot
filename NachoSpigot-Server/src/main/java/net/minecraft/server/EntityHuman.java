@@ -1027,11 +1027,14 @@ public abstract class EntityHuman extends EntityLiving {
 
                         if (entity instanceof EntityPlayer && entity.velocityChanged) {
                             Player player = (Player) entity.getBukkitEntity();
-                            PlayerVelocityEvent event = new PlayerVelocityEvent(player, new Vector(entity.motX, entity.motY, entity.motZ));
+                            final Vector velocity = new Vector(entity.motX, entity.motY, entity.motZ);
+                            PlayerVelocityEvent event = new PlayerVelocityEvent(player, velocity);
                             world.getServer().getPluginManager().callEvent(event);
 
                             if (!event.isCancelled()) {
-                                if (!velocity.equals(event.getVelocity())) player.setVelocity(event.getVelocity());
+                                if (!velocity.equals(event.getVelocity())) {
+                                    player.setVelocity(event.getVelocity());
+                                }
                                 ((EntityPlayer) entity).playerConnection.sendPacket(new PacketPlayOutEntityVelocity(entity));
                                 entity.velocityChanged = false;
                                 entity.motX = d0;
