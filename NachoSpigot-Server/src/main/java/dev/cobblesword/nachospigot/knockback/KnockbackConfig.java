@@ -116,6 +116,8 @@ public class KnockbackConfig {
 
     public static void set(String path, Object val) {
         config.set(path, val);
+
+        save();
     }
 
     public static Set<String> getKeys(String path) {
