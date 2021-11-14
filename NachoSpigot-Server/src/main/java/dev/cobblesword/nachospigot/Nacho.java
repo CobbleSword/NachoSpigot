@@ -1,5 +1,7 @@
 package dev.cobblesword.nachospigot;
 
+import dev.cobblesword.nachospigot.knockback.KnockbackCommand;
+import dev.cobblesword.nachospigot.knockback.KnockbackConfig;
 import me.elier.nachospigot.config.NachoConfig;
 import xyz.sculas.nacho.anticrash.AntiCrash;
 import xyz.sculas.nacho.async.AsyncExplosions;
@@ -39,8 +41,10 @@ public class Nacho {
     public void registerCommands() {
         SetMaxSlotCommand setMaxSlotCommand = new SetMaxSlotCommand("sms"); //[Nacho-0021] Add setMaxPlayers within Bukkit.getServer() and SetMaxSlot Command
         SpawnMobCommand spawnMobCommand = new SpawnMobCommand("spawnmob");
+        KnockbackCommand knockbackCommand = new KnockbackCommand("kb");
         MinecraftServer.getServer().server.getCommandMap().register(setMaxSlotCommand.getName(), "ns", setMaxSlotCommand);
         MinecraftServer.getServer().server.getCommandMap().register(spawnMobCommand.getName(), "ns", spawnMobCommand);
+        MinecraftServer.getServer().server.getCommandMap().register(knockbackCommand.getName(), "ns", knockbackCommand);
     }
 
     public void registerPacketListener(PacketListener packetListener) {

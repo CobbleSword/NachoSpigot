@@ -1,22 +1,14 @@
 package net.minecraft.server;
 
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Maps;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
-
-// CraftBukkit start
-import java.util.ArrayList;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.commons.Constants;
-import dev.cobblesword.nachospigot.knockback.Knockback;
 import dev.cobblesword.nachospigot.knockback.KnockbackConfig;
+import dev.cobblesword.nachospigot.knockback.KnockbackProfile;
+import net.jafama.FastMath;
+import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Vehicle;
@@ -24,13 +16,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
-// CraftBukkit end
-
-import co.aikar.timings.SpigotTimings; // Spigot
-
-// PaperSpigot start
-import org.bukkit.Bukkit;
 import org.spigotmc.event.entity.EntityDismountEvent;
+
+import java.util.*;
 // PaperSpigot end
 
 public abstract class EntityLiving extends Entity {
@@ -799,16 +787,16 @@ public abstract class EntityLiving extends Entity {
                     }
 
                     if (entity != null) {
-                        double d0 = entity.locX - this.locX;
+                        double distanceX = entity.locX - this.locX;
 
-                        double d1;
+                        double distanceZ;
 
-                        for (d1 = entity.locZ - this.locZ; d0 * d0 + d1 * d1 < 1.0E-4D; d1 = (Math.random() - Math.random()) * 0.01D) {
-                            d0 = (Math.random() - Math.random()) * 0.01D;
+                        for (distanceZ = entity.locZ - this.locZ; distanceX * distanceX + distanceZ * distanceZ < 1.0E-4D; distanceZ = (Math.random() - Math.random()) * 0.01D) {
+                            distanceX = (Math.random() - Math.random()) * 0.01D;
                         }
 
-                        this.aw = (float) (MathHelper.b(d1, d0) * 180.0D / 3.1415927410125732D - (double) this.yaw);
-                        this.a(entity, f, d0, d1);
+                        this.aw = (float) (MathHelper.b(distanceZ, distanceX) * 180.0D / 3.1415927410125732D - (double) this.yaw);
+                        this.a(distanceX, distanceZ, damagesource);
                     } else {
                         this.aw = (float) ((int) (Math.random() * 2.0D) * 180);
                     }
@@ -899,32 +887,52 @@ public abstract class EntityLiving extends Entity {
 
     protected void dropEquipment(boolean flag, int i) {}
 
-    public void a(Entity entity, float f, double d0, double d1) {
+    public void a(double x, double z, DamageSource source) {
         if (this.random.nextDouble() >= this.getAttributeInstance(GenericAttributes.c).getValue()) {
             this.ai = true;
-            float magnitude  = MathHelper.sqrt(d0 * d0 + d1 * d1);
 
-            final KnockbackConfig config = Knockback.get().getConfig();
-            if(config.customKnockback) {
-                this.motX /= config.knockbackFriction;
-                this.motY /= config.knockbackFriction;
-                this.motZ /= config.knockbackFriction;
-                this.motX -= d0 / (double) magnitude * config.knockbackHorizontal;
-                this.motY += config.knockbackVertical;
-                this.motZ -= d1 / (double) magnitude * config.knockbackHorizontal;
-                if (this.motY > config.knockbackVerticalLimit) {
-                    this.motY = config.knockbackVerticalLimit;
+            double magnitude = FastMath.sqrt(FastMath.pow(x, 2) + FastMath.pow(z, 2));
+            double horizontal = 0.4D;
+            double vertical = 0.4D;
+
+            KnockbackProfile kb = (this.getKnockbackProfile() == null) ? KnockbackConfig.getCurrentKb() : this.getKnockbackProfile();
+
+            if (source instanceof EntityDamageSourceIndirect) {
+                if (((EntityDamageSourceIndirect) source).getProximateDamageSource() instanceof EntityFishingHook) {
+                    horizontal = kb.getRodHorizontal();
+                    vertical = kb.getRodVertical();
+                }
+                if (((EntityDamageSourceIndirect) source).getProximateDamageSource() instanceof EntityArrow) {
+                    horizontal = kb.getArrowHorizontal();
+                    vertical = kb.getArrowVertical();
+                }
+                if (((EntityDamageSourceIndirect) source).getProximateDamageSource() instanceof EntitySnowball) {
+                    horizontal = kb.getSnowballHorizontal();
+                    vertical = kb.getSnowballVertical();
+                }
+                if (((EntityDamageSourceIndirect) source).getProximateDamageSource() instanceof EntityEgg) {
+                    horizontal = kb.getEggHorizontal();
+                    vertical = kb.getEggVertical();
+                }
+                if (((EntityDamageSourceIndirect) source).getProximateDamageSource() instanceof EntityEnderPearl) {
+                    horizontal = kb.getPearlHorizontal();
+                    vertical = kb.getPearlVertical();
                 }
             } else {
-                float f2 = 0.4F;
-                this.motX /= 2.0D;
-                this.motY /= 2.0D;
-                this.motZ /= 2.0D;
-                this.motX -= d0 / (double) magnitude * (double) f2;
-                this.motY += f2;
-                this.motZ -= d1 / (double) magnitude * (double) f2;
-                if (this.motY > 0.4000000059604645D) this.motY = 0.4000000059604645D;
+                horizontal = kb.getHorizontal();
+                vertical = kb.getVertical();
             }
+
+            //
+            this.motX *= kb.getFrictionHorizontal();
+            this.motY *= kb.getFrictionVertical();
+            this.motZ *= kb.getFrictionHorizontal();
+
+            this.motX -= x / magnitude * horizontal;
+            this.motY += vertical;
+            this.motZ -= z / magnitude * horizontal;
+            if (this.motY > kb.getVerticalMax()) this.motY = kb.getVerticalMax();
+            if (this.motY < kb.getVerticalMin()) this.motY = kb.getVerticalMin();
         }
     }
 
