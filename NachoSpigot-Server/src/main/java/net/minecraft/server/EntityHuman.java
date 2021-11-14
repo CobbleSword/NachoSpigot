@@ -10,9 +10,10 @@ import java.util.UUID;
 
 // CraftBukkit start
 import dev.cobblesword.nachospigot.Nacho;
-import dev.cobblesword.nachospigot.knockback.Knockback;
 import dev.cobblesword.nachospigot.knockback.KnockbackConfig;
+import dev.cobblesword.nachospigot.knockback.KnockbackProfile;
 import me.elier.nachospigot.config.NachoConfig;
+import net.jafama.FastMath;
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 import org.bukkit.craftbukkit.entity.CraftItem;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
@@ -965,22 +966,21 @@ public abstract class EntityHuman extends EntityLiving {
         return -0.35D;
     }
 
+
+
     public void attack(Entity entity) {
         if (entity.aD()) {
             if (!entity.l(this)) {
                 float f = (float) this.getAttributeInstance(GenericAttributes.ATTACK_DAMAGE).getValue();
-                byte b0 = 0;
-                float f1 = 0.0F;
+                float f1 = EnchantmentManager.a(this.bA(), EnumMonsterType.UNDEFINED);
 
                 if (entity instanceof EntityLiving) {
                     f1 = EnchantmentManager.a(this.bA(), ((EntityLiving) entity).getMonsterType());
-                } else {
-                    f1 = EnchantmentManager.a(this.bA(), EnumMonsterType.UNDEFINED);
                 }
 
-                int i = b0 + EnchantmentManager.a((EntityLiving) this);
+                int i = EnchantmentManager.a((EntityLiving) this);
 
-                if (this.isSprinting()) {
+                if (this.isExtraKnockback()) {
                     ++i;
                 }
 
@@ -1014,34 +1014,25 @@ public abstract class EntityHuman extends EntityLiving {
 
                     if (flag2) {
                         if (i > 0) {
-                            KnockbackConfig config = Knockback.get().getConfig();
-                            if(!config.customKnockback) entity.g(-MathHelper.sin(this.yaw * 3.1415927F / 180.0F) * (float) i * 0.5F, 0.1D, (double) (MathHelper.cos(this.yaw * 3.1415927F / 180.0F) * (float) i * 0.5F)); else
+                            KnockbackProfile profile = (entity.getKnockbackProfile() == null) ?
+                                    Nacho.get().getKnockbackConfig().getCurrentKb() : entity.getKnockbackProfile();
                             entity.g(
-                                    (-MathHelper.sin(this.yaw * 3.1415927F / 180.0F) * (float) i * config.knockbackExtraHorizontal),
-                                    config.knockbackExtraVertical,
-                                    (MathHelper.cos(this.yaw * 3.1415927F / 180.0F) * (float) i * config.knockbackExtraHorizontal));
+                                    (-FastMath.sin(this.yaw * Math.PI / 180.0D) * i * profile.getExtraHorizontal()),
+                                   profile.getExtraVertical(),
+                                    (FastMath.cos(this.yaw * Math.PI / 180.0D) * i * profile.getExtraHorizontal()));
                             this.motX *= 0.6D;
                             this.motZ *= 0.6D;
-                            this.setSprinting(false);
+                            if (profile.isStopSprint()) this.setExtraKnockback(false); //Nacho - Prevent desync player sprinting
                         }
 
                         if (entity instanceof EntityPlayer && entity.velocityChanged) {
-                            // CraftBukkit start - Add Velocity Event
-                            boolean cancelled = false;
                             Player player = (Player) entity.getBukkitEntity();
-                            org.bukkit.util.Vector velocity = new Vector( d0, d1, d2 );
-
-                            PlayerVelocityEvent event = new PlayerVelocityEvent(player, velocity.clone());
+                            PlayerVelocityEvent event = new PlayerVelocityEvent(player, new Vector(entity.motX, entity.motY, entity.motZ));
                             world.getServer().getPluginManager().callEvent(event);
 
                             if (event.isCancelled()) {
-                                cancelled = true;
-                            } else if (!velocity.equals(event.getVelocity())) {
                                 player.setVelocity(event.getVelocity());
-                            }
-
-                            if (!cancelled) {
-                                ( (EntityPlayer) entity ).playerConnection.sendPacket( new PacketPlayOutEntityVelocity( entity ) );
+                                ((EntityPlayer) entity).playerConnection.sendPacket(new PacketPlayOutEntityVelocity(entity));
                                 entity.velocityChanged = false;
                                 entity.motX = d0;
                                 entity.motY = d1;

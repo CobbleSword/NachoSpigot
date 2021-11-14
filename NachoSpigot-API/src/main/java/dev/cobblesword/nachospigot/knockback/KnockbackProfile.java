@@ -41,10 +41,6 @@ public interface KnockbackProfile {
 
     void setFrictionVertical(double frictionVertical);
 
-    double getStrafeImprove();
-
-    void setStrafeImprove(double strafeImprove);
-
     boolean isStopSprint();
 
     void setStopSprint(boolean stopSprint);

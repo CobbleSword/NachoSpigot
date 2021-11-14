@@ -6,13 +6,12 @@ public class CraftKnockbackProfile implements KnockbackProfile {
 
     private double horizontal = 0.4D;
     private double vertical = 0.4D;
-    private double verticalMin = 0.0D;
-    private double verticalMax = 0.0D;
+    private double verticalMin = -1.0D;
+    private double verticalMax = 0.4D;
     private double extraHorizontal = 0.5D;
     private double extraVertical = 0.1D;
     private double frictionHorizontal = 0.5D;
     private double frictionVertical = 0.5D;
-    private double strafeImprove = 0.0D;
 
     private boolean stopSprint = true;
 
@@ -26,6 +25,10 @@ public class CraftKnockbackProfile implements KnockbackProfile {
     private double snowballVertical = 0.4D;
     private double eggHorizontal = 0.4D;
     private double eggVertical = 0.4D;
+
+    public CraftKnockbackProfile(String name) {
+        this.name = name;
+    }
 
     public void save() {
         save(true);
@@ -107,14 +110,6 @@ public class CraftKnockbackProfile implements KnockbackProfile {
 
     public void setFrictionVertical(double frictionVertical) {
         this.frictionVertical = frictionVertical;
-    }
-
-    public double getStrafeImprove() {
-        return strafeImprove;
-    }
-
-    public void setStrafeImprove(double strafeImprove) {
-        this.strafeImprove = strafeImprove;
     }
 
     public boolean isStopSprint() {
@@ -215,7 +210,6 @@ public class CraftKnockbackProfile implements KnockbackProfile {
                 "ExtraVertical§7: " + this.extraVertical,
                 "FrictionHorizontal§7: " + this.frictionHorizontal,
                 "FrictionVertical§7: " + this.frictionVertical,
-                "StrafeImprove§7: " + this.strafeImprove,
                 "StopSprint§7: " + this.stopSprint,
         };
     }
