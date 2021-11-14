@@ -9,6 +9,7 @@ import java.util.concurrent.Callable;
 // CraftBukkit start
 import com.eatthepath.uuid.FastUUID;
 import dev.cobblesword.nachospigot.commons.Constants;
+import dev.cobblesword.nachospigot.knockback.KnockbackProfile;
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -1812,6 +1813,15 @@ public abstract class Entity implements ICommandListener {
         return this.g(3);
     }
 
+    public boolean extraKnockback;
+
+    public void setExtraKnockback(boolean flag) {
+        this.extraKnockback = flag;
+    }
+    public boolean isExtraKnockback() {
+        return this.extraKnockback;
+    }
+
     public void setSprinting(boolean flag) {
         this.b(3, flag);
     }
@@ -2356,5 +2366,15 @@ public abstract class Entity implements ICommandListener {
         }
 
         EnchantmentManager.b(entityliving, entity);
+    }
+
+    private KnockbackProfile knockbackProfile;
+
+    public KnockbackProfile getKnockbackProfile() {
+        return knockbackProfile;
+    }
+
+    public void setKnockbackProfile(KnockbackProfile profile) {
+        this.knockbackProfile = profile;
     }
 }

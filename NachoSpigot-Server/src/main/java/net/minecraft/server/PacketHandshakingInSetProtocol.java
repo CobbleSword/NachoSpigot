@@ -15,14 +15,14 @@ public class PacketHandshakingInSetProtocol implements Packet<PacketHandshakingI
         this.a = serializer.readVarInt();
         this.hostname = serializer.c(Short.MAX_VALUE); // Spigot
         this.port = serializer.readUnsignedShort();
-        this.d = EnumProtocol.a(serializer.readVarInt());
+        this.d = EnumProtocol.isValidIntention(serializer.readVarInt());
     }
 
     public void b(PacketDataSerializer serializer) throws IOException {
         serializer.b(this.a);
         serializer.a(this.hostname);
         serializer.writeShort(this.port);
-        serializer.b(this.d.getProtocolId());
+        serializer.b(this.d.getStateId());
     }
 
     public void a(PacketHandshakingInListener packethandshakinginlistener) {

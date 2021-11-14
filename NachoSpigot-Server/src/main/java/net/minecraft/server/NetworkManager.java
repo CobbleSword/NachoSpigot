@@ -1,7 +1,9 @@
 package net.minecraft.server;
 
-import dev.cobblesword.nachospigot.Nacho;
-import dev.cobblesword.nachospigot.exception.ExploitException;
+import com.velocitypowered.natives.compression.VelocityCompressor; // Paper
+import com.velocitypowered.natives.util.Natives; // Paper
+import dev.cobblesword.nachospigot.Nacho; // Nacho
+import dev.cobblesword.nachospigot.exception.ExploitException; // Nacho
 import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.netty.channel.*;
@@ -19,7 +21,8 @@ import java.net.SocketAddress;
 import java.util.Iterator;
 import java.util.Queue;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import javax.crypto.SecretKey;
+
+import me.elier.minecraft.util.CryptException;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
@@ -37,30 +40,15 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     public static final AttributeKey<EnumProtocol> ATTRIBUTE_PROTOCOL = AttributeKey.valueOf("protocol");
     public static final AttributeKey<EnumProtocol> c = ATTRIBUTE_PROTOCOL;
     // Nacho start - gave LazyInitVars a type
-    public static final LazyInitVar<NioEventLoopGroup> NETWORK_WORKER_GROUP = new LazyInitVar<NioEventLoopGroup>() {
-        protected NioEventLoopGroup a() {
-            return new NioEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Client IO #%d").setDaemon(true).build());
-        }
-        protected NioEventLoopGroup init() {
-            return this.a();
-        }
-    };
-    public static final LazyInitVar<EpollEventLoopGroup> NETWORK_EPOLL_WORKER_GROUP = new LazyInitVar<EpollEventLoopGroup>() {
-        protected EpollEventLoopGroup a() {
-            return new EpollEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Epoll Client IO #%d").setDaemon(true).build());
-        }
-        protected EpollEventLoopGroup init() {
-            return this.a();
-        }
-    };
-    public static final LazyInitVar<DefaultEventLoopGroup> LOCAL_WORKER_GROUP = new LazyInitVar<DefaultEventLoopGroup>() {
-        protected DefaultEventLoopGroup a() {
-            return new DefaultEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Local Client IO #%d").setDaemon(true).build());
-        }
-        protected DefaultEventLoopGroup init() {
-            return this.a();
-        }
-    };
+    public static final LazyInitVar<NioEventLoopGroup> NETWORK_WORKER_GROUP = new LazyInitVar<>(() ->
+            new NioEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Client IO #%d").setDaemon(true).build())
+    );
+    public static final LazyInitVar<EpollEventLoopGroup> NETWORK_EPOLL_WORKER_GROUP = new LazyInitVar<>(() ->
+            new EpollEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Epoll Client IO #%d").setDaemon(true).build())
+    );
+    public static final LazyInitVar<DefaultEventLoopGroup> LOCAL_WORKER_GROUP = new LazyInitVar<>(() ->
+            new DefaultEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Local Client IO #%d").setDaemon(true).build())
+    );
     // Nacho end
 
     private final EnumProtocolDirection h;
@@ -240,7 +228,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     }
     // Paper / Nacho end
 
-    public void dispatchPacket(final Packet packet, final GenericFutureListener<? extends Future<? super Void>>[] listeners, Boolean flushConditional) {
+    public void dispatchPacket(final Packet<?> packet, final GenericFutureListener<? extends Future<? super Void>>[] listeners, Boolean flushConditional) {
         this.packetWrites.getAndIncrement(); // must be before using canFlush
         boolean effectiveFlush = flushConditional == null ? this.canFlush : flushConditional;
         final boolean flush = effectiveFlush || packet instanceof PacketPlayOutKeepAlive || packet instanceof PacketPlayOutKickDisconnect; // no delay for certain packets
@@ -369,11 +357,32 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         return this.channel instanceof LocalChannel || this.channel instanceof LocalServerChannel;
     }
 
-    public void a(SecretKey secretkey) {
+    // Paper start
+    /*public void a(SecretKey secretkey) {
+        // Nacho - OBFHELPER
+        this.setEncryptionKey(secretkey);
+    }
+    public void setEncryptionKey(SecretKey secretkey) {
         this.o = true;
         this.channel.pipeline().addBefore("splitter", "decrypt", new PacketDecrypter(MinecraftEncryption.a(2, secretkey)));
         this.channel.pipeline().addBefore("prepender", "encrypt", new PacketEncrypter(MinecraftEncryption.a(1, secretkey)));
+    }*/
+
+    public void setupEncryption(javax.crypto.SecretKey key) throws CryptException {
+        if (!this.o) {
+            try {
+                com.velocitypowered.natives.encryption.VelocityCipher decryption = com.velocitypowered.natives.util.Natives.cipher.get().forDecryption(key);
+                com.velocitypowered.natives.encryption.VelocityCipher encryption = com.velocitypowered.natives.util.Natives.cipher.get().forEncryption(key);
+
+                this.o = true;
+                this.channel.pipeline().addBefore("splitter", "decrypt", new PacketDecrypter(decryption));
+                this.channel.pipeline().addBefore("prepender", "encrypt", new PacketEncrypter(encryption));
+            } catch (java.security.GeneralSecurityException e) {
+                throw new CryptException(e);
+            }
+        }
     }
+    // Paper end
 
     public boolean isConnected()
     {
@@ -402,18 +411,25 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
 
     public void a(int i)
     {
-        if (i >= 0)
+        // Nacho start - OBFHELPER
+        this.setupCompression(i);
+    }
+
+    public void setupCompression(int compressionThreshold) {
+        // Nacho end
+        if (compressionThreshold >= 0)
         {
+            VelocityCompressor compressor = Natives.compress.get().create(-1); // Paper
             if (this.channel.pipeline().get("decompress") instanceof PacketDecompressor) {
-                ((PacketDecompressor) this.channel.pipeline().get("decompress")).a(i);
+                ((PacketDecompressor) this.channel.pipeline().get("decompress")).a(compressionThreshold);
             } else {
-                this.channel.pipeline().addBefore("decoder", "decompress", new PacketDecompressor(i));
+                this.channel.pipeline().addBefore("decoder", "decompress", new PacketDecompressor(compressor, compressionThreshold)); // Paper
             }
 
             if (this.channel.pipeline().get("compress") instanceof PacketCompressor) {
-                ((PacketCompressor) this.channel.pipeline().get("decompress")).a(i);
+                ((PacketCompressor) this.channel.pipeline().get("decompress")).a(compressionThreshold);
             } else {
-                this.channel.pipeline().addBefore("encoder", "compress", new PacketCompressor(i));
+                this.channel.pipeline().addBefore("encoder", "compress", new PacketCompressor(compressor, compressionThreshold)); // Paper
             }
         } else {
             if (this.channel.pipeline().get("decompress") instanceof PacketDecompressor) {
@@ -424,7 +440,6 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
                 this.channel.pipeline().remove("compress");
             }
         }
-
     }
 
     public void handleDisconnection()
