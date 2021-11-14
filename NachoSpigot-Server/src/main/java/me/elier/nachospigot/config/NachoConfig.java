@@ -340,7 +340,7 @@ public class NachoConfig {
 
     private static void enableFastMathCosSin() {
         enableFastMathCosSin = getBoolean("settings.enable-fastmath-cos-sin", false);
-        c.addComment("settings.enable-fastmath", "Enable Fast Math usage with cos() and sin() methods.");
+        c.addComment("settings.enable-fastmath-cos-sin", "Enable Fast Math usage with cos() and sin() methods.");
     }
 
     public static int titleEntityTickingTime;
