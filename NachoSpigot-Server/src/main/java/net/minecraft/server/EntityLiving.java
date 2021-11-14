@@ -17,6 +17,7 @@ import com.google.common.collect.Lists;
 import dev.cobblesword.nachospigot.commons.Constants;
 import dev.cobblesword.nachospigot.knockback.Knockback;
 import dev.cobblesword.nachospigot.knockback.KnockbackConfig;
+import dev.cobblesword.nachospigot.knockback.KnockbackProfile;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Vehicle;
@@ -710,6 +711,16 @@ public abstract class EntityLiving extends Entity {
         }
         // CraftBukkit end
         this.datawatcher.watch(6, Float.valueOf(MathHelper.a(f, 0.0F, this.getMaxHealth())));
+    }
+
+    private KnockbackProfile knockbackProfile;
+
+    public KnockbackProfile getKnockbackProfile() {
+        return knockbackProfile;
+    }
+
+    public void setKnockbackProfile(KnockbackProfile profile) {
+        this.knockbackProfile = profile;
     }
 
     public boolean damageEntity(DamageSource damagesource, float f) {
