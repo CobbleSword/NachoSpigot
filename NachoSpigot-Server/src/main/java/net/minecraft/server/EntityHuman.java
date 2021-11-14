@@ -1017,9 +1017,9 @@ public abstract class EntityHuman extends EntityLiving {
                             KnockbackProfile profile = (entity.getKnockbackProfile() == null) ?
                                     Nacho.get().getKnockbackConfig().getCurrentKb() : entity.getKnockbackProfile();
                             entity.g(
-                                    (-FastMath.sin(this.yaw * Math.PI / 180.0D) * i * profile.getExtraHorizontal()),
+                                    (-MathHelper.sin(this.yaw * Math.PI / 180.0D) * i * profile.getExtraHorizontal()),
                                    profile.getExtraVertical(),
-                                    (FastMath.cos(this.yaw * Math.PI / 180.0D) * i * profile.getExtraHorizontal()));
+                                    (MathHelper.cos(this.yaw * Math.PI / 180.0D) * i * profile.getExtraHorizontal()));
                             this.motX *= 0.6D;
                             this.motZ *= 0.6D;
                             if (profile.isStopSprint()) this.setExtraKnockback(false); //Nacho - Prevent desync player sprinting
