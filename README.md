@@ -43,7 +43,8 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [Paper-0072] Fix Furnace cook time bug when lagging by Aikar
 [Paper-0076] Optimized Light Level Comparisons by Aikar
 [Paper-0083] Waving banner workaround by Gabscap
-[Paper-0085] Use a Shared Random for Entities by Aikar
+[Paper-0068] Use a Shared Random for Entities by Aikar
+[Paper-0085] Add handshake event to allow plugins to handle client handshaking logic themselves
 [Paper-0097] Don't save empty scoreboard teams to scoreboard.dat by Aikar
 [Paper-0100] Avoid blocking on Network Manager creation by Aikar
 [Paper-0102] Faster redstone torch rapid clock removal by Martin Panzer.
@@ -62,7 +63,7 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [Paper-0266] [MC-99321] Dont check for blocked double chest for hoppers
 [Paper-0302] Don't load chunks for villager door checks by Aikar
 [Paper-0313] Optimize World Time Updates by Aikar
-[Paper-0321] Cleanup allocated favicon ByteBuf by Shane Freeder
+[Paper-0321] Server Tick Events
 [Paper-0342] Always process chunk removal in removeEntity by Aikar 2018
 [Paper-0344] [MC-111480] Start Entity ID's at 1
 [Paper-0346] [MC-135506] Experience should save as Integers
@@ -73,6 +74,8 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [Paper-0389] performance improvement for Chunk.getEntities by wea_ondara
 [Paper-0539] Optimize NetworkManager Exception Handling by Andrew Steinborn
 [Paper-0451] Reduce memory footprint of NBTTagCompound by spottedleaf
+[Paper-0797] Use Velocity compression and cipher natives
+[Paper-????] Cleanup allocated favicon ByteBuf by Shane Freeder
 
 <--> by Heath
 [Nacho-0001] Remove stream usage when counting entities

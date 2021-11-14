@@ -40,36 +40,36 @@ public class PacketPlayOutTitle implements Packet<PacketListenerPlayOut> {
         this.e = k;
     }
 
-    public void a(PacketDataSerializer packetdataserializer) throws IOException {
-        this.a = (EnumTitleAction) packetdataserializer.a(EnumTitleAction.class);
+    public void a(PacketDataSerializer serializer) throws IOException {
+        this.a = (EnumTitleAction) serializer.a(EnumTitleAction.class);
         if (this.a == EnumTitleAction.TITLE || this.a == EnumTitleAction.SUBTITLE) {
-            this.b = packetdataserializer.d();
+            this.b = serializer.d();
         }
 
         if (this.a == EnumTitleAction.TIMES) {
-            this.c = packetdataserializer.readInt();
-            this.d = packetdataserializer.readInt();
-            this.e = packetdataserializer.readInt();
+            this.c = serializer.readInt();
+            this.d = serializer.readInt();
+            this.e = serializer.readInt();
         }
 
     }
 
-    public void b(PacketDataSerializer packetdataserializer) throws IOException {
-        packetdataserializer.a((Enum) this.a);
+    public void b(PacketDataSerializer serializer) throws IOException {
+        serializer.a((Enum) this.a);
         if (this.a == EnumTitleAction.TITLE || this.a == EnumTitleAction.SUBTITLE) {
             // Paper start
             if (this.components != null) {
-                packetdataserializer.a(net.md_5.bungee.chat.ComponentSerializer.toString(components));
+                serializer.a(net.md_5.bungee.chat.ComponentSerializer.toString(components));
             } else {
-                packetdataserializer.a(this.b);
+                serializer.a(this.b);
             }
             // Paper end
         }
 
         if (this.a == EnumTitleAction.TIMES) {
-            packetdataserializer.writeInt(this.c);
-            packetdataserializer.writeInt(this.d);
-            packetdataserializer.writeInt(this.e);
+            serializer.writeInt(this.c);
+            serializer.writeInt(this.d);
+            serializer.writeInt(this.e);
         }
 
     }

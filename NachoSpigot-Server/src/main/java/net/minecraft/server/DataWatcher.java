@@ -140,18 +140,18 @@ public class DataWatcher {
         return this.e;
     }
 
-    public static void a(List<DataWatcher.WatchableObject> list, PacketDataSerializer packetdataserializer) throws IOException {
+    public static void a(List<DataWatcher.WatchableObject> list, PacketDataSerializer serializer) throws IOException {
         if (list != null) {
             Iterator iterator = list.iterator();
 
             while (iterator.hasNext()) {
                 DataWatcher.WatchableObject datawatcher_watchableobject = (DataWatcher.WatchableObject) iterator.next();
 
-                a(packetdataserializer, datawatcher_watchableobject);
+                a(serializer, datawatcher_watchableobject);
             }
         }
 
-        packetdataserializer.writeByte(127);
+        serializer.writeByte(127);
     }
 
     public List<DataWatcher.WatchableObject> b() {
@@ -192,18 +192,18 @@ public class DataWatcher {
         return arraylist;
     }
 
-    public void a(PacketDataSerializer packetdataserializer) throws IOException {
+    public void a(PacketDataSerializer serializer) throws IOException {
 //        this.f.readLock().lock(); // Spigot - not required
         Iterator iterator = this.dataValues.values().iterator(); // Spigot // TacoSpigot
 
         while (iterator.hasNext()) {
             DataWatcher.WatchableObject datawatcher_watchableobject = (DataWatcher.WatchableObject) iterator.next();
 
-            a(packetdataserializer, datawatcher_watchableobject);
+            a(serializer, datawatcher_watchableobject);
         }
 
 //        this.f.readLock().unlock(); // Spigot - not required
-        packetdataserializer.writeByte(127);
+        serializer.writeByte(127);
     }
 
     public List<DataWatcher.WatchableObject> c() {
@@ -232,59 +232,59 @@ public class DataWatcher {
         return arraylist;
     }
 
-    private static void a(PacketDataSerializer packetdataserializer, DataWatcher.WatchableObject datawatcher_watchableobject) throws IOException {
+    private static void a(PacketDataSerializer serializer, DataWatcher.WatchableObject datawatcher_watchableobject) throws IOException {
         int i = (datawatcher_watchableobject.c() << 5 | datawatcher_watchableobject.a() & 31) & 255;
 
-        packetdataserializer.writeByte(i);
+        serializer.writeByte(i);
         switch (datawatcher_watchableobject.c()) {
         case 0:
-            packetdataserializer.writeByte(((Byte) datawatcher_watchableobject.b()).byteValue());
+            serializer.writeByte(((Byte) datawatcher_watchableobject.b()).byteValue());
             break;
 
         case 1:
-            packetdataserializer.writeShort(((Short) datawatcher_watchableobject.b()).shortValue());
+            serializer.writeShort(((Short) datawatcher_watchableobject.b()).shortValue());
             break;
 
         case 2:
-            packetdataserializer.writeInt(((Integer) datawatcher_watchableobject.b()).intValue());
+            serializer.writeInt(((Integer) datawatcher_watchableobject.b()).intValue());
             break;
 
         case 3:
-            packetdataserializer.writeFloat(((Float) datawatcher_watchableobject.b()).floatValue());
+            serializer.writeFloat(((Float) datawatcher_watchableobject.b()).floatValue());
             break;
 
         case 4:
-            packetdataserializer.a((String) datawatcher_watchableobject.b());
+            serializer.a((String) datawatcher_watchableobject.b());
             break;
 
         case 5:
             ItemStack itemstack = (ItemStack) datawatcher_watchableobject.b();
 
-            packetdataserializer.a(itemstack);
+            serializer.a(itemstack);
             break;
 
         case 6:
             BlockPosition blockposition = (BlockPosition) datawatcher_watchableobject.b();
 
-            packetdataserializer.writeInt(blockposition.getX());
-            packetdataserializer.writeInt(blockposition.getY());
-            packetdataserializer.writeInt(blockposition.getZ());
+            serializer.writeInt(blockposition.getX());
+            serializer.writeInt(blockposition.getY());
+            serializer.writeInt(blockposition.getZ());
             break;
 
         case 7:
             Vector3f vector3f = (Vector3f) datawatcher_watchableobject.b();
 
-            packetdataserializer.writeFloat(vector3f.getX());
-            packetdataserializer.writeFloat(vector3f.getY());
-            packetdataserializer.writeFloat(vector3f.getZ());
+            serializer.writeFloat(vector3f.getX());
+            serializer.writeFloat(vector3f.getY());
+            serializer.writeFloat(vector3f.getZ());
         }
 
     }
 
-    public static List<DataWatcher.WatchableObject> b(PacketDataSerializer packetdataserializer) throws IOException {
+    public static List<DataWatcher.WatchableObject> b(PacketDataSerializer serializer) throws IOException {
         ArrayList arraylist = null;
 
-        for (byte b0 = packetdataserializer.readByte(); b0 != 127; b0 = packetdataserializer.readByte()) {
+        for (byte b0 = serializer.readByte(); b0 != 127; b0 = serializer.readByte()) {
             if (arraylist == null) {
                 arraylist = Lists.newArrayList();
             }
@@ -295,41 +295,41 @@ public class DataWatcher {
 
             switch (i) {
             case 0:
-                datawatcher_watchableobject = new DataWatcher.WatchableObject(i, j, Byte.valueOf(packetdataserializer.readByte()));
+                datawatcher_watchableobject = new DataWatcher.WatchableObject(i, j, Byte.valueOf(serializer.readByte()));
                 break;
 
             case 1:
-                datawatcher_watchableobject = new DataWatcher.WatchableObject(i, j, Short.valueOf(packetdataserializer.readShort()));
+                datawatcher_watchableobject = new DataWatcher.WatchableObject(i, j, Short.valueOf(serializer.readShort()));
                 break;
 
             case 2:
-                datawatcher_watchableobject = new DataWatcher.WatchableObject(i, j, Integer.valueOf(packetdataserializer.readInt()));
+                datawatcher_watchableobject = new DataWatcher.WatchableObject(i, j, Integer.valueOf(serializer.readInt()));
                 break;
 
             case 3:
-                datawatcher_watchableobject = new DataWatcher.WatchableObject(i, j, Float.valueOf(packetdataserializer.readFloat()));
+                datawatcher_watchableobject = new DataWatcher.WatchableObject(i, j, Float.valueOf(serializer.readFloat()));
                 break;
 
             case 4:
-                datawatcher_watchableobject = new DataWatcher.WatchableObject(i, j, packetdataserializer.c(32767));
+                datawatcher_watchableobject = new DataWatcher.WatchableObject(i, j, serializer.c(32767));
                 break;
 
             case 5:
-                datawatcher_watchableobject = new DataWatcher.WatchableObject(i, j, packetdataserializer.decodeItemStack());
+                datawatcher_watchableobject = new DataWatcher.WatchableObject(i, j, serializer.decodeItemStack());
                 break;
 
             case 6:
-                int k = packetdataserializer.readInt();
-                int l = packetdataserializer.readInt();
-                int i1 = packetdataserializer.readInt();
+                int k = serializer.readInt();
+                int l = serializer.readInt();
+                int i1 = serializer.readInt();
 
                 datawatcher_watchableobject = new DataWatcher.WatchableObject(i, j, new BlockPosition(k, l, i1));
                 break;
 
             case 7:
-                float f = packetdataserializer.readFloat();
-                float f1 = packetdataserializer.readFloat();
-                float f2 = packetdataserializer.readFloat();
+                float f = serializer.readFloat();
+                float f1 = serializer.readFloat();
+                float f2 = serializer.readFloat();
 
                 datawatcher_watchableobject = new DataWatcher.WatchableObject(i, j, new Vector3f(f, f1, f2));
             }

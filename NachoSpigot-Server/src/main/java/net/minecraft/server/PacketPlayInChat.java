@@ -26,12 +26,12 @@ public class PacketPlayInChat implements Packet<PacketListenerPlayIn> {
         this.a = s;
     }
 
-    public void a(PacketDataSerializer packetdataserializer) throws IOException {
-        this.a = packetdataserializer.c(100);
+    public void a(PacketDataSerializer serializer) throws IOException {
+        this.a = serializer.c(100);
     }
 
-    public void b(PacketDataSerializer packetdataserializer) throws IOException {
-        packetdataserializer.a(this.a);
+    public void b(PacketDataSerializer serializer) throws IOException {
+        serializer.a(this.a);
     }
 
     // Spigot Start

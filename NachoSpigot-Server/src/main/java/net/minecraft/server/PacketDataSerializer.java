@@ -9,7 +9,7 @@ import io.netty.buffer.ByteBufProcessor;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.EncoderException;
 import io.netty.util.ByteProcessor;
-import io.netty.util.ReferenceCounted;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -24,7 +24,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.inventory.CraftItemStack; // CraftBukkit
 // TacoSpigot start
 import net.techcable.tacospigot.CompatHacks;
@@ -75,7 +74,7 @@ public class PacketDataSerializer extends ByteBuf {
     }
 
     public byte[] readByteArray(int limit) {
-        int len = this.e();
+        int len = this.readVarInt();
         if (len > limit) throw new DecoderException("The received a byte array longer than allowed " + len + " > " + limit);
         byte[] abyte = new byte[len];
         // TacoSpigot end
@@ -100,14 +99,15 @@ public class PacketDataSerializer extends ByteBuf {
     }
 
     public <T extends Enum<T>> T a(Class<T> oclass) {
-        return ((T[]) oclass.getEnumConstants())[this.e()]; // CraftBukkit - fix decompile error
+        return ((T[]) oclass.getEnumConstants())[this.readVarInt()]; // CraftBukkit - fix decompile error
     }
 
     public void a(Enum<?> oenum) {
         this.b(oenum.ordinal());
     }
 
-    public int e() {
+    public int e() { return readVarInt(); } // Nacho - OBFHELPER
+    public int readVarInt() {
         byte b0;
         int i = 0;
         int j = 0;
@@ -143,12 +143,17 @@ public class PacketDataSerializer extends ByteBuf {
     }
 
     public void b(int i) {
-        while ((i & -128) != 0) {
-            this.writeByte(i & 127 | 128);
-            i >>>= 7;
+        // Nacho start - OBFHELPER
+        this.writeVarInt(i);
+    }
+
+    public void writeVarInt(int value) {
+        while ((value & -128) != 0) {
+            this.writeByte(value & 127 | 128);
+            value >>>= 7;
         }
 
-        this.writeByte(i);
+        this.writeByte(value);
     }
 
     public void b(long i) {
@@ -241,7 +246,7 @@ public class PacketDataSerializer extends ByteBuf {
     }
 
     public String c(int i) {
-        int j = this.e();
+        int j = this.readVarInt();
         if (j > i * 4)
             throw new DecoderException("The received encoded string buffer length is longer than maximum allowed (" + j + " > " + (i * 4) + ")");
         if (j < 0)

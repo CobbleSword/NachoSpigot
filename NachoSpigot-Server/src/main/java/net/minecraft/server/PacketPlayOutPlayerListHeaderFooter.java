@@ -15,23 +15,23 @@ public class PacketPlayOutPlayerListHeaderFooter implements Packet<PacketListene
         this.a = ichatbasecomponent;
     }
 
-    public void a(PacketDataSerializer packetdataserializer) throws IOException {
-        this.a = packetdataserializer.d();
-        this.b = packetdataserializer.d();
+    public void a(PacketDataSerializer serializer) throws IOException {
+        this.a = serializer.d();
+        this.b = serializer.d();
     }
 
-    public void b(PacketDataSerializer packetdataserializer) throws IOException {
+    public void b(PacketDataSerializer serializer) throws IOException {
         // Paper start
         if (this.header != null) {
-            packetdataserializer.a(net.md_5.bungee.chat.ComponentSerializer.toString(this.header));
+            serializer.a(net.md_5.bungee.chat.ComponentSerializer.toString(this.header));
         } else {
-            packetdataserializer.a(this.a);
+            serializer.a(this.a);
         }
 
         if (this.footer != null) {
-            packetdataserializer.a(net.md_5.bungee.chat.ComponentSerializer.toString(this.footer));
+            serializer.a(net.md_5.bungee.chat.ComponentSerializer.toString(this.footer));
         } else {
-            packetdataserializer.a(this.b);
+            serializer.a(this.b);
         }
         // Paper end
     }

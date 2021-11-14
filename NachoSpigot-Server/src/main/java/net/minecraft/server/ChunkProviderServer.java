@@ -403,43 +403,43 @@ public class ChunkProviderServer implements IChunkProvider {
     }
 
     public boolean unloadChunks() {
-        if (!this.world.savingDisabled) {
-            // CraftBukkit start
-            Server server = this.world.getServer();
-            // TacoSpigot start - use iterator for unloadQueue
-            LongIterator iterator = unloadQueue.iterator();
-            for (int i = 0; i < 100 && iterator.hasNext(); ++i) {
-                long chunkcoordinates = iterator.next();
-                iterator.remove();
-                // TacoSpigot end
-                Chunk chunk = this.chunks.get(chunkcoordinates);
-                if (chunk == null) continue;
+        // CraftBukkit start
+        Server server = this.world.getServer();
+        // TacoSpigot start - use iterator for unloadQueue
+        LongIterator iterator = unloadQueue.iterator();
+        for (int i = 0; i < 100 && iterator.hasNext(); ++i) {
+            long chunkcoordinates = iterator.next();
+            iterator.remove();
+            // TacoSpigot end
+            Chunk chunk = this.chunks.get(chunkcoordinates);
+            if (chunk == null) continue;
 
-                ChunkUnloadEvent event = new ChunkUnloadEvent(chunk.bukkitChunk);
-                server.getPluginManager().callEvent(event);
-                if (!event.isCancelled()) {
+            ChunkUnloadEvent event = new ChunkUnloadEvent(chunk.bukkitChunk);
+            server.getPluginManager().callEvent(event);
+            if (!event.isCancelled()) {
 
-                    if (chunk != null) {
-                        chunk.removeEntities();
+                if (chunk != null) {
+                    chunk.removeEntities();
+                    if (!this.world.savingDisabled) {
                         this.saveChunk(chunk);
                         this.saveChunkNOP(chunk);
-                        this.chunks.remove(chunkcoordinates); // CraftBukkit
                     }
+                    this.chunks.remove(chunkcoordinates); // CraftBukkit
+                }
 
-                    // this.unloadQueue.remove(olong);
+                // this.unloadQueue.remove(olong);
 
-                    // Update neighbor counts
-                    for (int x = -2; x < 3; x++) {
-                        for (int z = -2; z < 3; z++) {
-                            if (x == 0 && z == 0) {
-                                continue;
-                            }
+                // Update neighbor counts
+                for (int x = -2; x < 3; x++) {
+                    for (int z = -2; z < 3; z++) {
+                        if (x == 0 && z == 0) {
+                            continue;
+                        }
 
-                            Chunk neighbor = this.getChunkIfLoaded(chunk.locX + x, chunk.locZ + z);
-                            if (neighbor != null) {
-                                neighbor.setNeighborUnloaded(-x, -z);
-                                chunk.setNeighborUnloaded(x, z);
-                            }
+                        Chunk neighbor = this.getChunkIfLoaded(chunk.locX + x, chunk.locZ + z);
+                        if (neighbor != null) {
+                            neighbor.setNeighborUnloaded(-x, -z);
+                            chunk.setNeighborUnloaded(x, z);
                         }
                     }
                 }
