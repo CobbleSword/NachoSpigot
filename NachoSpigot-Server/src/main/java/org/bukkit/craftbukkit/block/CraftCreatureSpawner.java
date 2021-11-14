@@ -71,11 +71,11 @@ public class CraftCreatureSpawner extends CraftBlockState implements CreatureSpa
     }
 
     public int getDelay() {
-        return spawner.getSpawner().spawnDelay * NachoConfig.titleEntityTickingTime;
+        return spawner.getSpawner().spawnDelay * NachoConfig.tileEntityTickingTime;
     }
 
     public void setDelay(int delay) {
-        spawner.getSpawner().spawnDelay = delay / NachoConfig.titleEntityTickingTime;
+        spawner.getSpawner().spawnDelay = delay / NachoConfig.tileEntityTickingTime;
     }
 
     @Override

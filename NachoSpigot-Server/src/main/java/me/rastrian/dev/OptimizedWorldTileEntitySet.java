@@ -3,8 +3,9 @@ package me.rastrian.dev;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Multimap;
-import gnu.trove.map.TObjectLongMap;
-import gnu.trove.map.hash.TObjectLongHashMap;
+import it.unimi.dsi.fastutil.objects.Object2LongMap;
+import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
+
 import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Iterator;
@@ -27,7 +28,6 @@ import net.minecraft.server.TileEntityMobSpawner;
 import net.minecraft.server.TileEntityNote;
 import net.minecraft.server.TileEntitySign;
 import net.minecraft.server.TileEntitySkull;
-import org.apache.commons.lang.Validate;
 
 
 /**
@@ -38,8 +38,8 @@ import org.apache.commons.lang.Validate;
 public final class OptimizedWorldTileEntitySet extends AbstractSet<TileEntity> {
 
     /** Map of tile classes with modified tick intervals. */
-    private static final TObjectLongMap<Class<? extends TileEntity>> CUSTOM_TICK_INTERVALS =
-            new TObjectLongHashMap<Class<? extends TileEntity>>() {{
+    private static final Object2LongMap<Class<? extends TileEntity>> CUSTOM_TICK_INTERVALS =
+            new Object2LongOpenHashMap<Class<? extends TileEntity>>() {{
                 // Entities with empty tick# methods.
                 this.put(TileEntityCommand.class, -1L);
                 this.put(TileEntityComparator.class, -1L);

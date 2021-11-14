@@ -344,10 +344,10 @@ public class NachoConfig {
         c.addComment("settings.enable-fastmath-cos-sin", "Enable Fast Math usage with cos() and sin() methods, this may break anticheats and server-side calculations.");
     }
 
-    public static int titleEntityTickingTime;
+    public static int tileEntityTickingTime;
 
-    private static void titleEntityTickingTime() {
-        titleEntityTickingTime = getInt("settings.tile-entity-ticking-time", 20);
+    private static void tileEntityTickingTime() {
+        tileEntityTickingTime = getInt("settings.tile-entity-ticking-time", 20);
         c.addComment("settings.tile-entity-ticking-time", "Ticking time (20 ticks per second) for usage on tile entity operations.");
     }
 
@@ -358,17 +358,17 @@ public class NachoConfig {
         c.addComment("settings.item-dirty-ticks", "Controls the interval for the item-dirty check. Minecraft checks an item every tick to see if it was changed. This can be expensive because it also needs to check all NBT data. Spigot only checks for basic count/data/type data and does a deep check every 20 ticks by default.");
     }
 
-    public static boolean enableTCPFASTOPEN;
+    public static boolean enableTcpFastOpen;
 
-    private static void enableTCPFASTOPEN() {
-        enableTCPFASTOPEN = getBoolean("settings.use-tcp-fastopen", true);
+    private static void enableTcpFastOpen() {
+        enableTcpFastOpen = getBoolean("settings.use-tcp-fastopen", true);
         c.addComment("settings.use-tcp-fastopen", "Enables the TCP_FASTOPEN socket option");
     }
 
-    public static int modeTCPFASTOPEN;
+    public static int modeTcpFastOpen;
 
-    private static void modeTCPFASTOPEN() {
-        modeTCPFASTOPEN = getInt("settings.tcp-fastopen-mode", 1);
+    private static void modeTcpFastOpen() {
+        modeTcpFastOpen = getInt("settings.tcp-fastopen-mode", 1);
         c.addComment("settings.use-tcp-fastopen", "Options: 0 - Disabled.; 1 - TFO is enabled for outgoing connections (clients).; 2 - TFO is enabled for incoming connections (servers).; 3 - TFO is enabled for both clients and servers.");
     }
 
