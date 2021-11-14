@@ -23,7 +23,7 @@ public class PacketDecoder extends ByteToMessageDecoder {
         if (!in.isReadable()) return;
 
         PacketDataSerializer packetDataHelper = new PacketDataSerializer(in);
-        int packetId = packetDataHelper.e();
+        int packetId = packetDataHelper.readVarInt();
         Packet packet = ctx.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get().a(this.c, packetId);
         if (packet == null)
             throw new IOException("Bad packet id " + packetId);
@@ -31,7 +31,7 @@ public class PacketDecoder extends ByteToMessageDecoder {
         packet.a(packetDataHelper);
 
         if (packetDataHelper.isReadable())
-            throw new IOException("Packet " + ctx.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get().a() + "/" + packetId + " (" + packet.getClass().getSimpleName() + ") was larger than I expected, found " + packetDataHelper.readableBytes() + " bytes extra whilst reading packet " + packetId);
+            throw new IOException("Packet " + ctx.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get().getProtocolId() + "/" + packetId + " (" + packet.getClass().getSimpleName() + ") was larger than I expected, found " + packetDataHelper.readableBytes() + " bytes extra whilst reading packet " + packetId);
         out.add(packet);
     }
 

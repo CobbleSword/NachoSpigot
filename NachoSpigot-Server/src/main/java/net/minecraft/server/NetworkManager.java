@@ -17,7 +17,6 @@ import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import java.net.SocketAddress;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.crypto.SecretKey;
@@ -245,12 +244,11 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         this.packetWrites.getAndIncrement(); // must be before using canFlush
         boolean effectiveFlush = flushConditional == null ? this.canFlush : flushConditional;
         final boolean flush = effectiveFlush || packet instanceof PacketPlayOutKeepAlive || packet instanceof PacketPlayOutKickDisconnect; // no delay for certain packets
-        final EnumProtocol enumprotocol = EnumProtocol.a(packet);
+        final EnumProtocol enumprotocol = EnumProtocol.getProtocolForPacket(packet);
         final EnumProtocol enumprotocol1 = this.channel.attr(NetworkManager.ATTRIBUTE_PROTOCOL).get();
         if (enumprotocol1 != enumprotocol) {
             this.channel.config().setAutoRead(false);
         }
-        EntityPlayer player = getPlayer();
         if (this.channel.eventLoop().inEventLoop()) {
             if (enumprotocol != enumprotocol1) {
                 this.setProtocol(enumprotocol);
@@ -279,7 +277,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
                         }
                         channelfuture1.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
                     } catch (Exception e) {
-                        LOGGER.error("NetworkException: " + player, e);
+                        LOGGER.error("NetworkException: " + getPlayer(), e);
                         close(new ChatMessage("disconnect.genericReason", "Internal Exception: " + e.getMessage()));;
                     }
                 };
@@ -298,7 +296,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
                         }
                         channelfuture1.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
                     } catch (Exception e) {
-                        LOGGER.error("NetworkException: " + player, e);
+                        LOGGER.error("NetworkException: " + getPlayer(), e);
                         close(new ChatMessage("disconnect.genericReason", "Internal Exception: " + e.getMessage()));;
                     }
                 };

@@ -65,23 +65,7 @@ public class Explosion {
         Block b = chunk.getBlockData(pos).getBlock(); // TacoSpigot - get block of the explosion
 
         if (!this.world.tacoSpigotConfig.optimizeLiquidExplosions || !b.getMaterial().isLiquid()) { // TacoSpigot - skip calculating what blocks to blow up in water/lava
-            boolean protection = false;
-            if ((NachoConfig.fireEntityExplodeEvent || world.nachoSpigotConfig.explosionProtectedRegions) && source != null) {
-                Location location = new Location(world.getWorld(), posX, posY, posZ);
-
-                List<org.bukkit.block.Block> list = new java.util.ArrayList<>(1);
-                int x = org.bukkit.util.NumberConversions.floor(posX);
-                int y = org.bukkit.util.NumberConversions.floor(posY);
-                int z = org.bukkit.util.NumberConversions.floor(posZ);
-                list.add(chunk.bukkitChunk.getBlock(x, y, z));
-
-                EntityExplodeEvent event = new EntityExplodeEvent(source.getBukkitEntity(), location, list, 0.3F);
-                world.getServer().getPluginManager().callEvent(event);
-                if (event.isCancelled() || event.blockList().isEmpty()) {
-                    protection = true;
-                }
-            }
-            if (!protection) {
+            if (!world.nachoSpigotConfig.explosionProtectedRegions) {
                 it.unimi.dsi.fastutil.longs.LongSet set = new it.unimi.dsi.fastutil.longs.LongOpenHashSet();
                 searchForBlocks(set, chunk);
                 for (it.unimi.dsi.fastutil.longs.LongIterator iterator = set.iterator(); iterator.hasNext(); ) {
@@ -213,7 +197,9 @@ public class Explosion {
 
             if (explode != null) {
                 EntityExplodeEvent event = new EntityExplodeEvent(explode, location, blockList, 0.3F);
-                this.world.getServer().getPluginManager().callEvent(event);
+                if(NachoConfig.fireEntityExplodeEvent) {
+                    this.world.getServer().getPluginManager().callEvent(event);
+                }
                 cancelled = event.isCancelled();
                 bukkitBlocks = event.blockList();
                 yield = event.getYield();

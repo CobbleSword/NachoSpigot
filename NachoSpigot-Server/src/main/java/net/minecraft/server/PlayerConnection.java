@@ -2165,7 +2165,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
     public void a(PacketPlayInCustomPayload packetplayincustompayload) {
         PlayerConnectionUtils.ensureMainThread(packetplayincustompayload, this, this.player.u());
         if(isExploiter) return; // NachoSpigot - ignore if they have exploited
-        PacketDataSerializer packetdataserializer;
+        PacketDataSerializer serializer;
         ItemStack itemstack;
         ItemStack itemstack1;
 
@@ -2193,10 +2193,10 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                 return;
             }
 
-            packetdataserializer = new PacketDataSerializer(Unpooled.wrappedBuffer(packetplayincustompayload.b()));
+            serializer = new PacketDataSerializer(Unpooled.wrappedBuffer(packetplayincustompayload.b()));
 
             try {
-                itemstack = packetdataserializer.decodeItemStack();
+                itemstack = serializer.decodeItemStack();
                 if (itemstack == null) {
                     return;
                 }
@@ -2220,7 +2220,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                 this.disconnect("Invalid book data!"); // CraftBukkit
                 return;
             } finally {
-                packetdataserializer.release();
+                serializer.release();
             }
 
             return;
@@ -2229,10 +2229,10 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                 disconnect("Book edited too quickly!");
                 return;
             }
-            packetdataserializer = new PacketDataSerializer(Unpooled.wrappedBuffer(packetplayincustompayload.b()));
+            serializer = new PacketDataSerializer(Unpooled.wrappedBuffer(packetplayincustompayload.b()));
 
             try {
-                itemstack = packetdataserializer.decodeItemStack();
+                itemstack = serializer.decodeItemStack();
                 if (itemstack == null) {
                     return;
                 }
@@ -2261,7 +2261,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                 this.disconnect("Invalid book data!"); // CraftBukkit
                 return;
             } finally {
-                packetdataserializer.release();
+                serializer.release();
             }
 
             return;
@@ -2281,28 +2281,28 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
             if (!this.minecraftServer.getEnableCommandBlock()) {
                 this.player.sendMessage(new ChatMessage("advMode.notEnabled"));
             } else if (this.player.getBukkitEntity().isOp() && this.player.abilities.canInstantlyBuild) { // CraftBukkit - Change to Bukkit OP versus Vanilla OP
-                packetdataserializer = packetplayincustompayload.b();
+                serializer = packetplayincustompayload.b();
 
                 try {
-                    byte b0 = packetdataserializer.readByte();
+                    byte b0 = serializer.readByte();
                     CommandBlockListenerAbstract commandblocklistenerabstract = null;
 
                     if (b0 == 0) {
-                        TileEntity tileentity = this.player.world.getTileEntity(new BlockPosition(packetdataserializer.readInt(), packetdataserializer.readInt(), packetdataserializer.readInt()));
+                        TileEntity tileentity = this.player.world.getTileEntity(new BlockPosition(serializer.readInt(), serializer.readInt(), serializer.readInt()));
 
                         if (tileentity instanceof TileEntityCommand) {
                             commandblocklistenerabstract = ((TileEntityCommand) tileentity).getCommandBlock();
                         }
                     } else if (b0 == 1) {
-                        Entity entity = this.player.world.a(packetdataserializer.readInt());
+                        Entity entity = this.player.world.a(serializer.readInt());
 
                         if (entity instanceof EntityMinecartCommandBlock) {
                             commandblocklistenerabstract = ((EntityMinecartCommandBlock) entity).getCommandBlock();
                         }
                     }
 
-                    String s = packetdataserializer.c(packetdataserializer.readableBytes());
-                    boolean flag = packetdataserializer.readBoolean();
+                    String s = serializer.c(serializer.readableBytes());
+                    boolean flag = serializer.readBoolean();
 
                     if (commandblocklistenerabstract != null) {
                         commandblocklistenerabstract.setCommand(s);
@@ -2318,7 +2318,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                     PlayerConnection.c.error("Couldn\'t set command block", exception3);
                     this.disconnect("Invalid CommandBlock data!"); // CraftBukkit
                 } finally {
-                    packetdataserializer.release();
+                    serializer.release();
                 }
             } else {
                 this.player.sendMessage(new ChatMessage("advMode.notAllowed", new Object[0]));
@@ -2326,9 +2326,9 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
         } else if ("MC|Beacon".equals(packetplayincustompayload.a())) {
             if (this.player.activeContainer instanceof ContainerBeacon) {
                 try {
-                    packetdataserializer = packetplayincustompayload.b();
-                    int j = packetdataserializer.readInt();
-                    int k = packetdataserializer.readInt();
+                    serializer = packetplayincustompayload.b();
+                    int j = serializer.readInt();
+                    int k = serializer.readInt();
                     ContainerBeacon containerbeacon = (ContainerBeacon) this.player.activeContainer;
                     Slot slot = containerbeacon.getSlot(0);
 

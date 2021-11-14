@@ -35,9 +35,9 @@ public class PacketPlayOutMapChunkBulk implements Packet<PacketListenerPlayOut> 
         world = list.get(0).getWorld(); // Spigot
     }
 
-    public void a(PacketDataSerializer packetdataserializer) throws IOException {
-        this.d = packetdataserializer.readBoolean();
-        int i = packetdataserializer.e();
+    public void a(PacketDataSerializer serializer) throws IOException {
+        this.d = serializer.readBoolean();
+        int i = serializer.readVarInt();
 
         this.a = new int[i];
         this.b = new int[i];
@@ -46,29 +46,29 @@ public class PacketPlayOutMapChunkBulk implements Packet<PacketListenerPlayOut> 
         int j;
 
         for (j = 0; j < i; ++j) {
-            this.a[j] = packetdataserializer.readInt();
-            this.b[j] = packetdataserializer.readInt();
+            this.a[j] = serializer.readInt();
+            this.b[j] = serializer.readInt();
             this.c[j] = new PacketPlayOutMapChunk.ChunkMap();
-            this.c[j].b = packetdataserializer.readShort() & '\uffff';
+            this.c[j].b = serializer.readShort() & '\uffff';
             this.c[j].a = new byte[PacketPlayOutMapChunk.a(Integer.bitCount(this.c[j].b), this.d, true)];
         }
 
         for (j = 0; j < i; ++j) {
-            packetdataserializer.readBytes(this.c[j].a);
+            serializer.readBytes(this.c[j].a);
         }
 
     }
 
-    public void b(PacketDataSerializer packetdataserializer) throws IOException {
-        packetdataserializer.writeBoolean(this.d);
-        packetdataserializer.b(this.c.length);
+    public void b(PacketDataSerializer serializer) throws IOException {
+        serializer.writeBoolean(this.d);
+        serializer.b(this.c.length);
 
         int i;
 
         for (i = 0; i < this.a.length; ++i) {
-            packetdataserializer.writeInt(this.a[i]);
-            packetdataserializer.writeInt(this.b[i]);
-            packetdataserializer.writeShort((short) (this.c[i].b & '\uffff'));
+            serializer.writeInt(this.a[i]);
+            serializer.writeInt(this.b[i]);
+            serializer.writeShort((short) (this.c[i].b & '\uffff'));
         }
 
         for (i = 0; i < this.a.length; ++i) {
@@ -76,7 +76,7 @@ public class PacketPlayOutMapChunkBulk implements Packet<PacketListenerPlayOut> 
             if (Bukkit.isPrimaryThread()) {
                 world.spigotConfig.antiXrayInstance.obfuscateSync(this.a[i], this.b[i], this.c[i].b, this.c[i].a, world); // Spigot
             }
-            packetdataserializer.writeBytes(this.c[i].a);
+            serializer.writeBytes(this.c[i].a);
         }
 
     }

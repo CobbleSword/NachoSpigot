@@ -9,14 +9,14 @@ public class PacketPlayInResourcePackStatus implements Packet<PacketListenerPlay
 
     public PacketPlayInResourcePackStatus() {}
 
-    public void a(PacketDataSerializer packetdataserializer) throws IOException {
-        this.a = packetdataserializer.c(40);
-        this.b = (PacketPlayInResourcePackStatus.EnumResourcePackStatus) packetdataserializer.a(PacketPlayInResourcePackStatus.EnumResourcePackStatus.class);
+    public void a(PacketDataSerializer serializer) throws IOException {
+        this.a = serializer.c(40);
+        this.b = (PacketPlayInResourcePackStatus.EnumResourcePackStatus) serializer.a(PacketPlayInResourcePackStatus.EnumResourcePackStatus.class);
     }
 
-    public void b(PacketDataSerializer packetdataserializer) throws IOException {
-        packetdataserializer.a(this.a);
-        packetdataserializer.a((Enum) this.b);
+    public void b(PacketDataSerializer serializer) throws IOException {
+        serializer.a(this.a);
+        serializer.a((Enum) this.b);
     }
 
     public void a(PacketListenerPlayIn packetlistenerplayin) {
