@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 
 public class KnockbackCommand extends Command {
 
-    private final KnockbackConfig config = Nacho.get().getKnockbackConfig();
     private final String separator = "§8§m-=-------------------------=-";
 
     public KnockbackCommand(String name) {
@@ -30,7 +29,7 @@ public class KnockbackCommand extends Command {
                     case "create": {
                         if (!isProfileName(args[1])) {
                             CraftKnockbackProfile profile = new CraftKnockbackProfile(args[1]);
-                            config.getKbProfiles().add(profile);
+                            KnockbackConfig.getKbProfiles().add(profile);
                             profile.save();
                             knockbackCommandMain(player);
                             player.sendMessage("§aThe profile §e" + args[1] + " §ahas been created.");
@@ -41,13 +40,13 @@ public class KnockbackCommand extends Command {
                         break;
                     }
                     case "delete": {
-                        if (config.getCurrentKb().getName().equalsIgnoreCase(args[1])) {
+                        if (KnockbackConfig.getCurrentKb().getName().equalsIgnoreCase(args[1])) {
                             knockbackCommandMain(player);
                             player.sendMessage("§cYou cannot delete the profile that is being used.");
                             return false;
                         }
-                        if (config.getKbProfiles().removeIf(profile -> profile.getName().equalsIgnoreCase(args[1]))) {
-                            config.set("knockback.profiles." + args[1], null);
+                        if (KnockbackConfig.getKbProfiles().removeIf(profile -> profile.getName().equalsIgnoreCase(args[1]))) {
+                            KnockbackConfig.set("knockback.profiles." + args[1], null);
                             knockbackCommandMain(player);
                             player.sendMessage("§aThe profile §e" + args[1] + " §ahas been removed.");
                             return true;
@@ -57,15 +56,15 @@ public class KnockbackCommand extends Command {
                         break;
                     }
                     case "load": {
-                        KnockbackProfile profile = config.getKbProfileByName(args[1]);
+                        KnockbackProfile profile = KnockbackConfig.getKbProfileByName(args[1]);
                         if (profile != null) {
-                            if (config.getCurrentKb().getName().equalsIgnoreCase(args[1])) {
+                            if (KnockbackConfig.getCurrentKb().getName().equalsIgnoreCase(args[1])) {
                                 player.sendMessage("§cThis profile is loaded.");
                                 return false;
                             }
-                            config.setCurrentKb(profile);
-                            config.set("knockback.current", profile.getName());
-                            config.save();
+                            KnockbackConfig.setCurrentKb(profile);
+                            KnockbackConfig.set("knockback.current", profile.getName());
+                            KnockbackConfig.save();
                             knockbackCommandMain(player);
                             player.sendMessage("§aThe profile §e" + args[1] + " §ahas been loaded.");
                             return true;
@@ -75,7 +74,7 @@ public class KnockbackCommand extends Command {
                         break;
                     }
                     case "view": {
-                        KnockbackProfile profile = config.getKbProfileByName(args[1]);
+                        KnockbackProfile profile = KnockbackConfig.getKbProfileByName(args[1]);
                         if (profile != null) {
                             knockbackCommandView(player, profile);
                             return true;
@@ -84,7 +83,7 @@ public class KnockbackCommand extends Command {
                         break;
                     }
                     case "projectile": {
-                        KnockbackProfile profile = config.getKbProfileByName(args[1]);
+                        KnockbackProfile profile = KnockbackConfig.getKbProfileByName(args[1]);
                         if (profile != null) {
                             knockbackCommandViewProjectiles(player, profile);
                             return true;
@@ -101,7 +100,7 @@ public class KnockbackCommand extends Command {
             case 3: {
                 switch (args[0].toLowerCase()) {
                     case "set": {
-                        KnockbackProfile profile = config.getKbProfileByName(args[1]);
+                        KnockbackProfile profile = KnockbackConfig.getKbProfileByName(args[1]);
                         if (profile == null) {
                             sender.sendMessage("§cA profile with that name could not be found.");
                             return false;
@@ -119,7 +118,7 @@ public class KnockbackCommand extends Command {
             }
             case 4: {
                 if (args[0].equalsIgnoreCase("edit")) {
-                    KnockbackProfile profile = config.getKbProfileByName(args[1].toLowerCase());
+                    KnockbackProfile profile = KnockbackConfig.getKbProfileByName(args[1].toLowerCase());
                     if (profile == null) {
                         player.sendMessage("§cThis profile doesn't exist.");
                         return false;
@@ -367,8 +366,8 @@ public class KnockbackCommand extends Command {
     private void knockbackCommandMain(Player player) {
         player.sendMessage(separator + "\n" + "§a§lKnockback profile list:\n");
 
-        for (KnockbackProfile profile : config.getKbProfiles()) {
-            boolean current = config.getCurrentKb().getName().equals(profile.getName());
+        for (KnockbackProfile profile : KnockbackConfig.getKbProfiles()) {
+            boolean current = KnockbackConfig.getCurrentKb().getName().equals(profile.getName());
 
             TextComponent line = new ClickableBuilder("§8§l(§e§l➜§8§l) ")
                     .setHover("§c[Click here to apply this profile to a player] ")
@@ -442,7 +441,7 @@ public class KnockbackCommand extends Command {
     }
 
     private boolean isProfileName(String name) {
-        for (KnockbackProfile profile : config.getKbProfiles()) {
+        for (KnockbackProfile profile : KnockbackConfig.getKbProfiles()) {
             if (profile.getName().equalsIgnoreCase(name)) {
                 return true;
             }

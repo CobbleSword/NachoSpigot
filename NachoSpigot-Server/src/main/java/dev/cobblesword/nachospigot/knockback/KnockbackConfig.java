@@ -1,92 +1,100 @@
 package dev.cobblesword.nachospigot.knockback;
 
+import com.google.common.base.Throwables;
+import me.elier.nachospigot.config.NachoConfig;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.sugarcanemc.sugarcane.util.yaml.YamlCommenter;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
 
 public class KnockbackConfig {
-    private File configFile = new File("knockback.yml");
-    private YamlConfiguration config;
+    private static final Logger LOGGER = LogManager.getLogger(KnockbackConfig.class);
+    private static File CONFIG_FILE;
+    protected static final YamlCommenter c = new YamlCommenter();
+    private static final String HEADER = "This is the knockback configuration file for NachoSpigot.\n";
+    static YamlConfiguration config;
 
-    private KnockbackProfile currentKb;
-    private Set<KnockbackProfile> kbProfiles = new HashSet<>();
+    private static KnockbackProfile currentKb;
+    private static Set<KnockbackProfile> kbProfiles = new HashSet<>();
 
-    public KnockbackConfig() {
-        init();
+    public static void init(File configFile) {
+        CONFIG_FILE = configFile;
+        config = new YamlConfiguration();
         try {
-            this.config.save(this.configFile);
-        } catch (IOException ex) {
-            Bukkit.getLogger().log(Level.SEVERE, "Could not save " + this.configFile, ex);
+            System.out.println("Loading NachoSpigot knockback config from " + configFile.getName());
+            config.load(CONFIG_FILE);
+        } catch (IOException ignored) {
+        } catch (InvalidConfigurationException ex) {
+            LOGGER.log(Level.ERROR, "Could not load knockback.yml, please correct your syntax errors", ex);
+            throw Throwables.propagate(ex);
         }
-    }
+        config.options().copyDefaults(true);
+        c.setHeader(HEADER);
 
-    private void init() {
-        if (!this.configFile.exists()) {
-            try {
-                this.configFile.createNewFile();
-            } catch (IOException var2) {
-                var2.printStackTrace();
-            }
-        }
-        this.config = YamlConfiguration.loadConfiguration(this.configFile);
-        this.config.options().copyDefaults(true);
+        save();
 
         final KnockbackProfile defaultProfile = new CraftKnockbackProfile("Default");
 
-        this.kbProfiles = new HashSet<>();
-        this.kbProfiles.add(defaultProfile);
+        kbProfiles = new HashSet<>();
+        kbProfiles.add(defaultProfile);
 
-        for (String key : this.getKeys("knockback.profiles")) {
+        for (String key : getKeys("knockback.profiles")) {
             final String path = "knockback.profiles." + key;
             CraftKnockbackProfile profile = (CraftKnockbackProfile) getKbProfileByName(key);
             if (profile == null) {
                 profile = new CraftKnockbackProfile(key);
-                this.kbProfiles.add(profile);
+                kbProfiles.add(profile);
             }
-            profile.setStopSprint(this.getBoolean(path + ".stop-sprint", true));
-            profile.setFrictionHorizontal(this.getDouble(path + ".friction-horizontal", 0.5D));
-            profile.setFrictionVertical(this.getDouble(path + ".friction-vertical", 0.5D));
-            profile.setHorizontal(this.getDouble(path + ".horizontal", 0.4D));
-            profile.setVertical(this.getDouble(path + ".vertical", 0.4D));
-            profile.setVerticalMax(this.getDouble(path + ".vertical-max", 0.4D));
-            profile.setVerticalMin(this.getDouble(path + ".vertical-min", -1.0D));
-            profile.setExtraHorizontal(this.getDouble(path + ".extra-horizontal", 0.5D));
-            profile.setExtraVertical(this.getDouble(path + ".extra-vertical", 0.05D));
+            profile.setStopSprint(getBoolean(path + ".stop-sprint", true));
+            profile.setFrictionHorizontal(getDouble(path + ".friction-horizontal", 0.5D));
+            profile.setFrictionVertical(getDouble(path + ".friction-vertical", 0.5D));
+            profile.setHorizontal(getDouble(path + ".horizontal", 0.4D));
+            profile.setVertical(getDouble(path + ".vertical", 0.4D));
+            profile.setVerticalMax(getDouble(path + ".vertical-max", 0.4D));
+            profile.setVerticalMin(getDouble(path + ".vertical-min", -1.0D));
+            profile.setExtraHorizontal(getDouble(path + ".extra-horizontal", 0.5D));
+            profile.setExtraVertical(getDouble(path + ".extra-vertical", 0.05D));
 
 
-            profile.setRodHorizontal(this.getDouble(path + ".projectiles.rod.horizontal", 0.4D));
-            profile.setRodVertical(this.getDouble(path + ".projectiles.rod.vertical", 0.4D));
-            profile.setArrowHorizontal(this.getDouble(path + ".projectiles.arrow.horizontal", 0.4D));
-            profile.setArrowVertical(this.getDouble(path + ".projectiles.arrow.vertical", 0.4D));
-            profile.setPearlHorizontal(this.getDouble(path + ".projectiles.pearl.horizontal", 0.4D));
-            profile.setPearlVertical(this.getDouble(path + ".projectiles.pearl.vertical", 0.4D));
-            profile.setSnowballHorizontal(this.getDouble(path + ".projectiles.snowball.horizontal", 0.4D));
-            profile.setSnowballVertical(this.getDouble(path + ".projectiles.snowball.vertical", 0.4D));
-            profile.setEggHorizontal(this.getDouble(path + ".projectiles.egg.horizontal", 0.4D));
-            profile.setEggHorizontal(this.getDouble(path + ".projectiles.egg.vertical", 0.4D));
+            profile.setRodHorizontal(getDouble(path + ".projectiles.rod.horizontal", 0.4D));
+            profile.setRodVertical(getDouble(path + ".projectiles.rod.vertical", 0.4D));
+            profile.setArrowHorizontal(getDouble(path + ".projectiles.arrow.horizontal", 0.4D));
+            profile.setArrowVertical(getDouble(path + ".projectiles.arrow.vertical", 0.4D));
+            profile.setPearlHorizontal(getDouble(path + ".projectiles.pearl.horizontal", 0.4D));
+            profile.setPearlVertical(getDouble(path + ".projectiles.pearl.vertical", 0.4D));
+            profile.setSnowballHorizontal(getDouble(path + ".projectiles.snowball.horizontal", 0.4D));
+            profile.setSnowballVertical(getDouble(path + ".projectiles.snowball.vertical", 0.4D));
+            profile.setEggHorizontal(getDouble(path + ".projectiles.egg.horizontal", 0.4D));
+            profile.setEggHorizontal(getDouble(path + ".projectiles.egg.vertical", 0.4D));
         }
-        this.currentKb = this.getKbProfileByName(this.getString("knockback.current", "default"));
-        if (this.currentKb == null) {
-            this.currentKb = defaultProfile;
+        currentKb = getKbProfileByName(getString("knockback.current", "default"));
+        if (currentKb == null) {
+            currentKb = defaultProfile;
         }
     }
 
-    public KnockbackProfile getCurrentKb() {
-        return this.currentKb;
+    public static KnockbackProfile getCurrentKb() {
+        return currentKb;
     }
 
-    public void setCurrentKb(KnockbackProfile kb) {
-        this.currentKb = kb;
+    public static void setCurrentKb(KnockbackProfile kb) {
+        currentKb = kb;
     }
 
-    public KnockbackProfile getKbProfileByName(String name) {
-        for (KnockbackProfile profile : this.kbProfiles) {
+    public static KnockbackProfile getKbProfileByName(String name) {
+        for (KnockbackProfile profile : kbProfiles) {
             if (profile.getName().equalsIgnoreCase(name)) {
                 return profile;
             }
@@ -94,63 +102,58 @@ public class KnockbackConfig {
         return null;
     }
 
-    public Set<KnockbackProfile> getKbProfiles() {
-        return this.kbProfiles;
+    public static Set<KnockbackProfile> getKbProfiles() {
+        return kbProfiles;
     }
 
-    public void save() {
+    public static void save() {
         try {
-            this.config.save(this.configFile);
-        } catch (Exception e) {
-            e.printStackTrace();
+            config.save(CONFIG_FILE);
+        } catch (IOException ex) {
+            LOGGER.log(Level.ERROR, "Could not save " + CONFIG_FILE, ex);
         }
     }
 
-    public void set(String path, Object val) {
-        this.config.set(path, val);
-
-        try {
-            this.config.save(this.configFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void set(String path, Object val) {
+        config.set(path, val);
     }
 
-    public Set<String> getKeys(String path) {
-        if (!this.config.isConfigurationSection(path)) {
-            this.config.createSection(path);
+    public static Set<String> getKeys(String path) {
+        if (!config.isConfigurationSection(path)) {
+            config.createSection(path);
             return new HashSet<>();
         }
 
-        return this.config.getConfigurationSection(path).getKeys(false);
+        return config.getConfigurationSection(path).getKeys(false);
     }
 
-    public boolean getBoolean(String path, boolean def) {
-        this.config.addDefault(path, def);
-        return this.config.getBoolean(path, this.config.getBoolean(path));
+    private static boolean getBoolean(String path, boolean def) {
+        config.addDefault(path, def);
+        return config.getBoolean(path, config.getBoolean(path));
     }
 
-    public double getDouble(String path, double def) {
-        this.config.addDefault(path, def);
-        return this.config.getDouble(path, this.config.getDouble(path));
+    private static double getDouble(String path, double def) {
+        config.addDefault(path, def);
+        return config.getDouble(path, config.getDouble(path));
     }
 
-    public float getFloat(String path, float def) {
-        return (float) this.getDouble(path, def);
+    private static float getFloat(String path, float def) {
+        config.addDefault(path, def);
+        return config.getFloat(path, config.getFloat(path));
     }
 
-    public int getInt(String path, int def) {
-        this.config.addDefault(path, def);
-        return config.getInt(path, this.config.getInt(path));
+    private static int getInt(String path, int def) {
+        config.addDefault(path, def);
+        return config.getInt(path, config.getInt(path));
     }
 
-    public <T> List getList(String path, T def) {
-        this.config.addDefault(path, def);
-        return this.config.getList(path, this.config.getList(path));
+    private static <T> List getList(String path, T def) {
+        config.addDefault(path, def);
+        return config.getList(path, config.getList(path));
     }
 
-    public String getString(String path, String def) {
-        this.config.addDefault(path, def);
-        return this.config.getString(path, this.config.getString(path));
+    private static String getString(String path, String def) {
+        config.addDefault(path, def);
+        return config.getString(path, config.getString(path));
     }
 }

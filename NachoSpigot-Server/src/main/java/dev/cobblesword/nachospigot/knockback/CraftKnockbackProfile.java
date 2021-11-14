@@ -38,29 +38,30 @@ public class CraftKnockbackProfile implements KnockbackProfile {
     public void save(boolean projectiles) {
         final String path = "knockback.profiles." + this.name;
 
-        Nacho.get().getKnockbackConfig().set(path + ".stop-sprint", this.stopSprint);
-        Nacho.get().getKnockbackConfig().set(path + ".friction-horizontal", this.frictionHorizontal);
-        Nacho.get().getKnockbackConfig().set(path + ".friction-vertical", this.frictionVertical);
-        Nacho.get().getKnockbackConfig().set(path + ".horizontal", this.horizontal);
-        Nacho.get().getKnockbackConfig().set(path + ".vertical", this.vertical);
-        Nacho.get().getKnockbackConfig().set(path + ".vertical-max", this.verticalMax);
-        Nacho.get().getKnockbackConfig().set(path + ".vertical-min", this.verticalMin);
-        Nacho.get().getKnockbackConfig().set(path + ".extra-horizontal", this.extraHorizontal);
-        Nacho.get().getKnockbackConfig().set(path + ".extra-vertical", this.extraVertical);
+        KnockbackConfig.set(path + ".stop-sprint", this.stopSprint);
+        KnockbackConfig.set(path + ".friction-horizontal", this.frictionHorizontal);
+        KnockbackConfig.set(path + ".friction-vertical", this.frictionVertical);
+        KnockbackConfig.set(path + ".horizontal", this.horizontal);
+        KnockbackConfig.set(path + ".vertical", this.vertical);
+        KnockbackConfig.set(path + ".vertical-max", this.verticalMax);
+        KnockbackConfig.set(path + ".vertical-min", this.verticalMin);
+        KnockbackConfig.set(path + ".extra-horizontal", this.extraHorizontal);
+        KnockbackConfig.set(path + ".extra-vertical", this.extraVertical);
 
         if (projectiles) {
-            Nacho.get().getKnockbackConfig().set(path + ".projectiles.rod.horizontal", this.rodHorizontal);
-            Nacho.get().getKnockbackConfig().set(path + ".projectiles.rod.vertical", this.rodVertical);
-            Nacho.get().getKnockbackConfig().set(path + ".projectiles.arrow.horizontal", this.arrowHorizontal);
-            Nacho.get().getKnockbackConfig().set(path + ".projectiles.arrow.vertical", this.arrowVertical);
-            Nacho.get().getKnockbackConfig().set(path + ".projectiles.pearl.horizontal", this.pearlHorizontal);
-            Nacho.get().getKnockbackConfig().set(path + ".projectiles.pearl.vertical", this.pearlVertical);
-            Nacho.get().getKnockbackConfig().set(path + ".projectiles.snowball.horizontal", this.snowballHorizontal);
-            Nacho.get().getKnockbackConfig().set(path + ".projectiles.snowball.vertical", this.snowballVertical);
-            Nacho.get().getKnockbackConfig().set(path + ".projectiles.egg.horizontal", this.eggHorizontal);
-            Nacho.get().getKnockbackConfig().set(path + ".projectiles.egg.vertical", this.eggVertical);
+            KnockbackConfig.set(path + ".projectiles.rod.horizontal", this.rodHorizontal);
+            KnockbackConfig.set(path + ".projectiles.rod.vertical", this.rodVertical);
+            KnockbackConfig.set(path + ".projectiles.arrow.horizontal", this.arrowHorizontal);
+            KnockbackConfig.set(path + ".projectiles.arrow.vertical", this.arrowVertical);
+            KnockbackConfig.set(path + ".projectiles.pearl.horizontal", this.pearlHorizontal);
+            KnockbackConfig.set(path + ".projectiles.pearl.vertical", this.pearlVertical);
+            KnockbackConfig.set(path + ".projectiles.snowball.horizontal", this.snowballHorizontal);
+            KnockbackConfig.set(path + ".projectiles.snowball.vertical", this.snowballVertical);
+            KnockbackConfig.set(path + ".projectiles.egg.horizontal", this.eggHorizontal);
+            KnockbackConfig.set(path + ".projectiles.egg.vertical", this.eggVertical);
         }
-        Nacho.get().getKnockbackConfig().save();
+
+        KnockbackConfig.save();
     }
 
     public String getName() {

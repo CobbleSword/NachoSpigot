@@ -155,7 +155,7 @@ public class NachoConfig {
 
     private static <T> List getList(String path, T def) {
         config.addDefault(path, def);
-        return (List<T>) config.getList(path, config.getList(path));
+        return config.getList(path, config.getList(path));
     }
 
     private static String getString(String path, String def) {

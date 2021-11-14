@@ -894,7 +894,7 @@ public abstract class EntityLiving extends Entity {
             double vertical = 0.4D;
 
             KnockbackProfile kb = (this.getKnockbackProfile() == null)
-                    ? Nacho.get().getKnockbackConfig().getCurrentKb() : this.getKnockbackProfile();
+                    ? KnockbackConfig.getCurrentKb() : this.getKnockbackProfile();
 
             if (source instanceof EntityDamageSourceIndirect) {
                 if (((EntityDamageSourceIndirect) source).getProximateDamageSource() instanceof EntityFishingHook) {

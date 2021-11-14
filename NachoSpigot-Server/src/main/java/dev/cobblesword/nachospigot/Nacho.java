@@ -21,7 +21,6 @@ public class Nacho {
 
     private final Set<PacketListener> packetListeners = Sets.newConcurrentHashSet();
     private final Set<MovementListener> movementListeners = Sets.newConcurrentHashSet();
-    private final KnockbackConfig knockbackConfig;
 
     public Nacho() {
         INSTANCE = this;
@@ -33,7 +32,6 @@ public class Nacho {
             Nacho.get().registerPacketListener(new AntiCrash());
             System.out.println("[NS-AntiCrash] Activated Anti Crash.");
         }
-        this.knockbackConfig = new KnockbackConfig();
     }
 
     public static Nacho get() {
@@ -73,9 +71,5 @@ public class Nacho {
         // Nacho start - [Nacho-0041] Fix block placement
         RuntimePatches.applyViaVersionBlockPatch();
         // Nacho end
-    }
-
-    public KnockbackConfig getKnockbackConfig() {
-        return knockbackConfig;
     }
 }

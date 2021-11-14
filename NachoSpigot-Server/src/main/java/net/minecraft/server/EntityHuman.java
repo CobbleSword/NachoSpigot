@@ -1015,7 +1015,7 @@ public abstract class EntityHuman extends EntityLiving {
                     if (flag2) {
                         if (i > 0) {
                             KnockbackProfile profile = (entity.getKnockbackProfile() == null) ?
-                                    Nacho.get().getKnockbackConfig().getCurrentKb() : entity.getKnockbackProfile();
+                                    KnockbackConfig.getCurrentKb() : entity.getKnockbackProfile();
                             entity.g(
                                     (-MathHelper.sin(this.yaw * Math.PI / 180.0D) * i * profile.getExtraHorizontal()),
                                    profile.getExtraVertical(),
