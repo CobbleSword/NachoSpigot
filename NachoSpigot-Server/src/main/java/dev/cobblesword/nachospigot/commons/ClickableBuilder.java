@@ -1,4 +1,4 @@
-package me.elier.util;
+package dev.cobblesword.nachospigot.commons;
 
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
