@@ -151,7 +151,6 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         if (throwable instanceof TimeoutException) {
             chatmessage = new ChatMessage("disconnect.timeout");
         } else {
-            LOGGER.error("NetworkException: " + getPlayer(), throwable);
             chatmessage = new ChatMessage("disconnect.genericReason", "Internal Exception: " + throwable);
         }
 
