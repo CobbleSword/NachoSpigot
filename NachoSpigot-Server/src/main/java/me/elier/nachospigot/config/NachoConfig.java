@@ -365,6 +365,13 @@ public class NachoConfig {
         c.addComment("settings.use-tcp-fastopen", "Enables the TCP_FASTOPEN socket option");
     }
 
+    public static int modeTCPFASTOPEN;
+
+    private static void modeTCPFASTOPEN() {
+        modeTCPFASTOPEN = getInt("settings.tcp-fastopen-mode", 1);
+        c.addComment("settings.use-tcp-fastopen", "Options: 0 - Disabled.; 1 - TFO is enabled for outgoing connections (clients).; 2 - TFO is enabled for incoming connections (servers).; 3 - TFO is enabled for both clients and servers.");
+    }
+
     public static boolean enableProtocolLibShim;
 
     private static void enableProtocolLibShim() {
