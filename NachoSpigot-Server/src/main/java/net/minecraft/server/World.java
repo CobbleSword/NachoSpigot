@@ -20,6 +20,8 @@ import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.generator.ChunkGenerator;
 
+import me.rastrian.dev.OptimizedWorldTileEntitySet;
+
 import java.util.*;
 import java.util.concurrent.Callable;
 
@@ -28,6 +30,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 // PaperSpigot end
+
+import net.jafama.FastMath;
 
 // CraftBukkit start
 // CraftBukkit end
@@ -64,7 +68,7 @@ public abstract class World implements IBlockAccess {
     // Spigot end
     protected final Set<Entity> g = Sets.newHashSet(); // Paper
     //public final List<TileEntity> h = Lists.newArrayList(); // PaperSpigot - Remove unused list
-    public final List<TileEntity> tileEntityList = Lists.newArrayList();
+    public final OptimizedWorldTileEntitySet tileEntityList = new OptimizedWorldTileEntitySet();
     private final List<TileEntity> b = Lists.newArrayList();
     private final Set<TileEntity> c = Sets.newHashSet(); public Set<TileEntity> getTileEntityListUnload() { return c; }// Paper
     public final List<EntityHuman> players = Lists.newArrayList();
@@ -1722,14 +1726,15 @@ public abstract class World implements IBlockAccess {
 
         // Spigot start
         int tilesThisCycle = 0;
-        for (tileTickPosition = 0; tileTickPosition < tileEntityList.size(); tileTickPosition++) { // PaperSpigot - Disable tick limiters
+        Iterator<TileEntity> tileIterator = this.tileEntityList.tickIterator(this.getTime());
+        while (tileIterator.hasNext()) { // PaperSpigot - Disable tick limiters
             tileTickPosition = (tileTickPosition < tileEntityList.size()) ? tileTickPosition : 0;
-            TileEntity tileentity = (TileEntity) this.tileEntityList.get(tileTickPosition);
+            TileEntity tileentity = (TileEntity) tileIterator.next();
             // Spigot start
             if (tileentity == null) {
                 getServer().getLogger().severe("Spigot has detected a null entity and has removed it, preventing a crash");
                 tilesThisCycle--;
-                this.tileEntityList.remove(tileTickPosition--);
+                tileIterator.remove();
                 continue;
             }
             // Spigot end
@@ -1751,7 +1756,7 @@ public abstract class World implements IBlockAccess {
                         System.err.println("TileEntity threw exception at " + tileentity.world.getWorld().getName() + ":" + tileentity.position.getX() + "," + tileentity.position.getY() + "," + tileentity.position.getZ());
                         throwable2.printStackTrace();
                         tilesThisCycle--;
-                        this.tileEntityList.remove(tileTickPosition--);
+                        tileIterator.remove();
                         continue;
                         // PaperSpigot end
                     }
@@ -1765,7 +1770,7 @@ public abstract class World implements IBlockAccess {
 
             if (tileentity.x()) {
                 tilesThisCycle--;
-                this.tileEntityList.remove(tileTickPosition--);
+                tileIterator.remove();
                 //this.h.remove(tileentity); // PaperSpigot - Remove unused list
                 if (this.isLoaded(tileentity.getPosition())) {
                     this.getChunkAtWorldCoords(tileentity.getPosition()).e(tileentity.getPosition());
@@ -2152,8 +2157,8 @@ public abstract class World implements IBlockAccess {
         double d0 = 1.0D / ((axisalignedbb.d - axisalignedbb.a) * 2.0D + 1.0D);
         double d1 = 1.0D / ((axisalignedbb.e - axisalignedbb.b) * 2.0D + 1.0D);
         double d2 = 1.0D / ((axisalignedbb.f - axisalignedbb.c) * 2.0D + 1.0D);
-        double d3 = (1.0D - Math.floor(1.0D / d0) * d0) / 2.0D;
-        double d4 = (1.0D - Math.floor(1.0D / d2) * d2) / 2.0D;
+        double d3 = (1.0D - ((NachoConfig.enableFastMath ? FastMath.floor(1.0D / d0) : Math.floor(1.0D / d0)) * d0)) / 2.0D;
+        double d4 = (1.0D - ((NachoConfig.enableFastMath ? FastMath.floor(1.0D / d2) : Math.floor(1.0D / d2)) * d2)) / 2.0D;
 
         if (d0 >= 0.0D && d1 >= 0.0D && d2 >= 0.0D) {
             int i = 0;

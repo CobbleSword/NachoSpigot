@@ -7,6 +7,7 @@ import java.util.List;
 // CraftBukkit start
 import dev.cobblesword.nachospigot.commons.Constants;
 import net.techcable.tacospigot.event.entity.SpawnerPreSpawnEvent;
+import me.elier.nachospigot.config.NachoConfig;
 
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
@@ -23,14 +24,16 @@ public abstract class MobSpawnerAbstract {
     private MobSpawnerAbstract.a spawnData;
     private double e;
     private double f;
-    private int minSpawnDelay = 200;
-    private int maxSpawnDelay = 800;
+    private int minSpawnDelay = 200 / NachoConfig.tileEntityTickingTime;
+    private int maxSpawnDelay = 800 / NachoConfig.tileEntityTickingTime;
     private int spawnCount = 4;
     private Entity j;
     private int maxNearbyEntities = 6;
     private int requiredPlayerRange = 16;
     private int spawnRange = 4;
-    private int tickDelay = 0; // PaperSpigot
+    /*private int tickDelay = 0;*/ // PaperSpigot
+
+    static final int FAIL_DELAY_TICKS = 100 / NachoConfig.tileEntityTickingTime; // Mobspawner Fail Delay
 
     public MobSpawnerAbstract() {}
 
@@ -63,8 +66,8 @@ public abstract class MobSpawnerAbstract {
 
     public void c() {
         // PaperSpigot start - Configurable mob spawner tick rate
-        if (spawnDelay > 0 && --tickDelay > 0) return;
-        tickDelay = this.a().paperSpigotConfig.mobSpawnerTickRate;
+        /*if (spawnDelay > 0 && --tickDelay > 0) return;
+        tickDelay = this.a().paperSpigotConfig.mobSpawnerTickRate;*/
         // PaperSpigot end
         if (this.g()) {
             BlockPosition blockposition = this.b();
@@ -78,18 +81,18 @@ public abstract class MobSpawnerAbstract {
                 this.a().addParticle(EnumParticle.SMOKE_NORMAL, d1, d2, d0, 0.0D, 0.0D, 0.0D, Constants.EMPTY_ARRAY);
                 this.a().addParticle(EnumParticle.FLAME, d1, d2, d0, 0.0D, 0.0D, 0.0D, Constants.EMPTY_ARRAY);
                 if (this.spawnDelay > 0) {
-                    this.spawnDelay -= tickDelay; // PaperSpigot
+                    --this.spawnDelay; // PaperSpigot
                 }
 
                 this.f = this.e;
                 this.e = (this.e + (double) (1000.0F / ((float) this.spawnDelay + 200.0F))) % 360.0D;
             } else {
-                if (this.spawnDelay < -tickDelay) { // PaperSpigot
+                if (this.spawnDelay <= -1) { // PaperSpigot
                     this.h();
                 }
 
                 if (this.spawnDelay > 0) {
-                    this.spawnDelay -= tickDelay; // PaperSpigot
+                    --this.spawnDelay; // PaperSpigot
                     return;
                 }
 
@@ -109,14 +112,14 @@ public abstract class MobSpawnerAbstract {
                     Entity entity = EntityTypes.createEntityByName(this.getMobName(), this.a());
 
                     if (entity == null) {
-                        return;
+                        break;
                     }
 
                     int j = this.a().a(entity.getClass(), (new AxisAlignedBB((double) blockposition.getX(), (double) blockposition.getY(), (double) blockposition.getZ(), (double) (blockposition.getX() + 1), (double) (blockposition.getY() + 1), (double) (blockposition.getZ() + 1))).grow((double) this.spawnRange, (double) this.spawnRange, (double) this.spawnRange)).size();
 
                     if (j >= this.maxNearbyEntities) {
                         this.h();
-                        return;
+                        break;
                     }
 
                     d0 = (double) blockposition.getX() + (this.a().random.nextDouble() - this.a().random.nextDouble()) * (double) this.spawnRange + 0.5D;
@@ -138,6 +141,8 @@ public abstract class MobSpawnerAbstract {
 
                 if (flag) {
                     this.h();
+                } else {
+                    this.spawnDelay += MobSpawnerAbstract.FAIL_DELAY_TICKS;
                 }
             }
 
@@ -248,7 +253,7 @@ public abstract class MobSpawnerAbstract {
 
     public void a(NBTTagCompound nbttagcompound) {
         this.mobName = nbttagcompound.getString("EntityId");
-        this.spawnDelay = nbttagcompound.getShort("Delay");
+        this.spawnDelay = nbttagcompound.getShort("Delay") / NachoConfig.tileEntityTickingTime;
         this.mobs.clear();
         if (nbttagcompound.hasKeyOfType("SpawnPotentials", 9)) {
             NBTTagList nbttaglist = nbttagcompound.getList("SpawnPotentials", 10);
@@ -265,8 +270,8 @@ public abstract class MobSpawnerAbstract {
         }
 
         if (nbttagcompound.hasKeyOfType("MinSpawnDelay", 99)) {
-            this.minSpawnDelay = nbttagcompound.getShort("MinSpawnDelay");
-            this.maxSpawnDelay = nbttagcompound.getShort("MaxSpawnDelay");
+            this.minSpawnDelay = nbttagcompound.getShort("MinSpawnDelay") / NachoConfig.tileEntityTickingTime;
+            this.maxSpawnDelay = nbttagcompound.getShort("MaxSpawnDelay") / NachoConfig.tileEntityTickingTime;
             this.spawnCount = nbttagcompound.getShort("SpawnCount");
         }
 
@@ -290,9 +295,9 @@ public abstract class MobSpawnerAbstract {
 
         if (!UtilColor.b(s)) {
             nbttagcompound.setString("EntityId", s);
-            nbttagcompound.setShort("Delay", (short) this.spawnDelay);
-            nbttagcompound.setShort("MinSpawnDelay", (short) this.minSpawnDelay);
-            nbttagcompound.setShort("MaxSpawnDelay", (short) this.maxSpawnDelay);
+            nbttagcompound.setShort("Delay", (short) (this.spawnDelay * NachoConfig.tileEntityTickingTime));
+            nbttagcompound.setShort("MinSpawnDelay", (short) (this.minSpawnDelay * NachoConfig.tileEntityTickingTime));
+            nbttagcompound.setShort("MaxSpawnDelay", (short) (this.maxSpawnDelay * NachoConfig.tileEntityTickingTime));
             nbttagcompound.setShort("SpawnCount", (short) this.spawnCount);
             nbttagcompound.setShort("MaxNearbyEntities", (short) this.maxNearbyEntities);
             nbttagcompound.setShort("RequiredPlayerRange", (short) this.requiredPlayerRange);
