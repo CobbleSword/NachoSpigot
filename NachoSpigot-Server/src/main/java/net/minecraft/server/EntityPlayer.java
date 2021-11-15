@@ -68,6 +68,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
     public boolean collidesWithEntities = true;
     public int viewDistance; // PaperSpigot - Player view distance API
     /*private int containerUpdateDelay;*/ // PaperSpigot
+    public List<EntityPotion> potions = new ArrayList<>(); // IonSpigot - Lag Compensated Potions
 
     @Override
     public boolean ad()
@@ -318,6 +319,21 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
     public void l() {
         try {
             super.t_();
+            // IonSpigot start - Lag Compensated Potions
+            for (int i = 0; i < this.potions.size(); ++i) {
+                EntityPotion entityPotion = this.potions.get(i);
+                entityPotion.tick();
+            
+                // Check if size is > 9, this should cover some abuse
+                if (entityPotion.dead || this.potions.size() > 9) {
+                    if (!entityPotion.dead) {
+                        entityPotion.compensated = false;
+                    }
+            
+                    this.potions.remove(i--);
+                }
+            }
+            // IonSpigot end
 
             for (int i = 0; i < this.inventory.getSize(); ++i) {
                 ItemStack itemstack = this.inventory.getItem(i);
