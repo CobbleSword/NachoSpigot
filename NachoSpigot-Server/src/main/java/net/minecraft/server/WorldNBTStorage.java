@@ -40,6 +40,13 @@ public class WorldNBTStorage implements IDataManager, IPlayerFileData {
         }
 
         this.h();
+
+        // manually check lock on startup
+        try {
+            checkSession0();
+        } catch (Throwable t) {
+            org.spigotmc.SneakyThrow.sneaky(t);
+        }
     }
 
     private void h() {
@@ -63,7 +70,9 @@ public class WorldNBTStorage implements IDataManager, IPlayerFileData {
         return this.baseDir;
     }
 
-    public void checkSession() throws ExceptionWorldConflict {
+    public void checkSession() throws ExceptionWorldConflict {} // CraftBukkit - throws ExceptionWorldConflict
+
+    private void checkSession0() throws ExceptionWorldConflict { // we can safely do so as the server will stop upon detecting a session conflict on startup
         try {
             File file = new File(this.baseDir, "session.lock");
 
