@@ -130,7 +130,7 @@ public final class OptimizedWorldTileEntitySet extends AbstractSet<TileEntity> {
     private List<Class<? extends TileEntity>> getTileClassesToTick(long worldTime) {
         List<Class<? extends TileEntity>> tilesToTick = new LinkedList<>();
         for (Class<? extends TileEntity> registeredTileClass : this.registeredTiles.keySet()) {
-            long customTickInterval = OptimizedWorldTileEntitySet.CUSTOM_TICK_INTERVALS.get(registeredTileClass);
+            long customTickInterval = OptimizedWorldTileEntitySet.CUSTOM_TICK_INTERVALS.getLong(registeredTileClass);
             if (customTickInterval != 0) { // Troves non-existent value is 0.
                 if (customTickInterval > 0 && (worldTime == 0 || worldTime % customTickInterval == 0)) {
                     tilesToTick.add(registeredTileClass);
