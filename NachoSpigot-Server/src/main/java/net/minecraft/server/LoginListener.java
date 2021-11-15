@@ -25,6 +25,7 @@ import org.apache.logging.log4j.Logger;
 import org.bukkit.craftbukkit.util.Waitable;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerPreLoginEvent;
+import org.bukkit.plugin.AuthorNagException;
 // CraftBukkit end
 
 public class LoginListener implements PacketLoginInListener, IUpdatePlayerListBox {
@@ -82,6 +83,11 @@ public class LoginListener implements PacketLoginInListener, IUpdatePlayerListBo
     }
 
     public void disconnect(String s) {
+        if (s == null) {
+            new AuthorNagException("Kick message was set to null, causing an exception!").printStackTrace();
+            s = "Kicked by plugin";
+        }
+
         try {
             LoginListener.c.info("Disconnecting " + this.d() + ": " + s);
             ChatComponentText chatcomponenttext = new ChatComponentText(s);
