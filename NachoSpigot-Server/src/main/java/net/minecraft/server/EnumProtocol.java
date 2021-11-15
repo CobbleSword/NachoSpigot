@@ -211,4 +211,17 @@ public enum EnumProtocol {
             }
         }
     }
+
+    // --- OBFHELPER Methods
+
+    // createPacket
+    public Packet<?> a(EnumProtocolDirection direction, int packetId) {
+        return createPacket(direction, packetId);
+    }
+
+    // getPacketIdForPacket
+    public Integer a(Packet<?> packet) {
+        return getPacketIdForPacket(packet);
+    }
+
 }

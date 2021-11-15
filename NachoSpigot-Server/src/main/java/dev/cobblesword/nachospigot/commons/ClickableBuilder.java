@@ -6,9 +6,7 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
 public class ClickableBuilder {
-    private TextComponent textComponent;
-
-    public ClickableBuilder() { }
+    private final TextComponent textComponent;
 
     public ClickableBuilder(String message) {
         this.textComponent = new TextComponent(message);
