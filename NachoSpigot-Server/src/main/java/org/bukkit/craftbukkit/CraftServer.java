@@ -738,7 +738,6 @@ public final class CraftServer implements Server {
         net.techcable.tacospigot.TacoSpigotConfig.init((File) console.options.valueOf("taco-settings")); // TacoSpigot
         NachoConfig.init((File) console.options.valueOf("nacho-settings")); // NachoSpigot
         KnockbackConfig.init((File) console.options.valueOf("knockback-settings"));
-        Nacho.get(); // NachoSpigot
         for (WorldServer world : console.worlds) {
             world.worldData.setDifficulty(difficulty);
             world.setSpawnFlags(monsters, animals);
@@ -756,6 +755,7 @@ public final class CraftServer implements Server {
             world.spigotConfig.init(); // Spigot
             world.paperSpigotConfig.init(); // PaperSpigot
             world.tacoSpigotConfig.init(); // TacoSpigot
+            world.nachoSpigotConfig.init(); // NachoSpigot
         }
 
         pluginManager.clearPlugins();

@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.Queue;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import me.elier.minecraft.util.CryptException;
+import me.elier.util.minecraft.CryptException;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
