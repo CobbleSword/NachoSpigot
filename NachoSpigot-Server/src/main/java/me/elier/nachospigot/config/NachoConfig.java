@@ -50,7 +50,7 @@ public class NachoConfig {
         File old_config = new File("nacho.json");
         if(old_config.exists()) migrate(old_config);
 
-        int configVersion = 4; // Update this every new configuration update
+        int configVersion = 5; // Update this every new configuration update
         version = getInt("config-version", configVersion);
         set("config-version", configVersion);
         c.setHeader(HEADER);
