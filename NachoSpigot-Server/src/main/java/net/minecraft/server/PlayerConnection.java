@@ -900,7 +900,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
             always = (itemstack.count != itemstackAmount) || itemstack.getItem() == Item.getItemOf(Blocks.WATERLILY);
             // CraftBukkit end
         } else if (blockposition.getY() >= this.minecraftServer.getMaxBuildHeight() - 1 && (enumdirection == EnumDirection.UP || blockposition.getY() >= this.minecraftServer.getMaxBuildHeight())) {
-            ChatMessage chatmessage = new ChatMessage("build.tooHigh", new Object[] { Integer.valueOf(this.minecraftServer.getMaxBuildHeight())});
+            ChatMessage chatmessage = new ChatMessage("build.tooHigh", this.minecraftServer.getMaxBuildHeight());
 
             chatmessage.getChatModifier().setColor(EnumChatFormat.RED);
             this.player.playerConnection.sendPacket(new PacketPlayOutChat(chatmessage));
