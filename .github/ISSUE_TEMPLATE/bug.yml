@@ -1,0 +1,71 @@
+name: Behavior Bug
+description: Report issues with behaviour bugs.
+labels: [ "type: bug" ]
+body:
+  - type: textarea
+    attributes:
+      label: Observed behavior
+      description: What you actually saw.
+    validations:
+      required: true
+      
+  - type: textarea
+    attributes:
+      label: Expected behavior
+      description: What you expected to see.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: You may submit a video or an ordered list of the steps you took to find the issue.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Plugin list (Optional)
+      description: |
+        All plugins running on your server.
+        Use the command `/plugins`.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: NachoSpigot version
+      description: |
+        Run the command `/version` on your server and provide the output without any modifications.
+        <details>
+        <summary>	</summary>
+
+        ```
+        > version
+        [10:16:30 INFO]: This server is running NachoSpigot version git-NachoSpigot-"393f913" (MC: 1.8.8) (Implementing API version 1.8.8-R0.2-SNAPSHOT)
+        [10:16:30 INFO]: You are running the latest version
+        ```
+
+        </details>
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Other
+      description: |
+        If you have any additional information include it it here.
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        Please ensure the following:
+
+        1. You were able to find this issue on the latest version of NachoSpigot.
+        2. You have confirmed there is no open issue regarding this bug.
+
+
+        If you have any other questions regarding your finding contact us on our discord `#nacho-bug-report`
+        [Discord](https://discord.gg/ewcYeERKJw).
