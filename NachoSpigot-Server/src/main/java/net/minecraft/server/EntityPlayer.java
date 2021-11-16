@@ -1062,7 +1062,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
     }
 
     public void d(Entity entity) {
-        this.playerConnection.sendPacket(new PacketPlayOutEntityDestroy(new int[] { entity.getId()}));
+        this.playerConnection.sendPacket(new PacketPlayOutEntityDestroy(entity.getId()));
     }
 
     protected void B() {
