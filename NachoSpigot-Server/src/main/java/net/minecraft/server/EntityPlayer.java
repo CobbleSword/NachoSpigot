@@ -36,7 +36,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
     public double d;
     public double e;
     public final List<ChunkCoordIntPair> chunkCoordIntPairQueue = Lists.newLinkedList();
-    public final List<Integer> removeQueue = Lists.newLinkedList();
+    // public final List<Integer> removeQueue = Lists.newLinkedList();
     private final ServerStatisticManager bK;
     private float bL = Float.MIN_VALUE;
     private float bM = -1.0E8F;
@@ -220,7 +220,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
             this.activeContainer = this.defaultContainer;
         }
 
-        while (!this.removeQueue.isEmpty())
+        /* while (!this.removeQueue.isEmpty())
         {
             int i = Math.min(this.removeQueue.size(), Integer.MAX_VALUE);
             int[] aint = new int[i];
@@ -234,7 +234,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
             }
 
             this.playerConnection.sendPacket(new PacketPlayOutEntityDestroy(aint));
-        }
+        } */
 
         if (!this.chunkCoordIntPairQueue.isEmpty()) {
             ArrayList<Chunk> chunkList = Lists.newArrayList();
@@ -932,7 +932,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
         this.lastSentExp = -1;
         this.bM = -1.0F;
         this.bN = -1;
-        this.removeQueue.addAll(((EntityPlayer) entityhuman).removeQueue);
+        // this.removeQueue.addAll(((EntityPlayer) entityhuman).removeQueue);
     }
 
     protected void a(MobEffect mobeffect) {
@@ -1062,12 +1062,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
     }
 
     public void d(Entity entity) {
-        if (entity instanceof EntityHuman) {
-            this.playerConnection.sendPacket(new PacketPlayOutEntityDestroy(new int[] { entity.getId()}));
-        } else {
-            this.removeQueue.add(Integer.valueOf(entity.getId()));
-        }
-
+        this.playerConnection.sendPacket(new PacketPlayOutEntityDestroy(new int[] { entity.getId()}));
     }
 
     protected void B() {

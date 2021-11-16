@@ -295,6 +295,20 @@ public class NachoConfig {
         c.addComment("settings.faster-cannon-tracker", "Enables a faster cannon entity tracker");
     }
 
+    public static boolean disableTracking;
+
+    private static void disableTracking() {
+        disableTracking = getBoolean("settings.disable-tracking", false);
+        c.addComment("settings.disable-tracking", "Disable entity tracking");
+    }
+
+    public static int trackingThreads;
+
+    private static void trackingThreads() {
+        trackingThreads = getInt("settings.tracking-threads", 4);
+        c.addComment("settings.tracking-threads", "Entity Tracking Threads");
+    }
+
     public static boolean fixEatWhileRunning;
 
     private static void fixEatWhileRunning() {

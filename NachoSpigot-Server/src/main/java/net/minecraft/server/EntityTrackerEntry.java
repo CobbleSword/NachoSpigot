@@ -1,6 +1,7 @@
 package net.minecraft.server;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,6 +10,8 @@ import org.apache.logging.log4j.Logger;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerVelocityEvent;
 // CraftBukkit end
+
+import me.elier.nachospigot.config.NachoConfig;
 
 public class EntityTrackerEntry {
 
@@ -43,7 +46,14 @@ public class EntityTrackerEntry {
     public Set<EntityPlayer> trackedPlayers = trackedPlayerMap.keySet();
     // PaperSpigot end
 
-    public EntityTrackerEntry(Entity entity, int b, int c, boolean flag) {
+    private List<EntityPlayer> toRemove = new ArrayList<>();
+    private EntityTracker entityTracker;
+    private int addRemoveRate;
+    private int addRemoveCooldown;
+    private boolean withinNoTrack = false;
+
+    public EntityTrackerEntry(EntityTracker entityTracker, Entity entity, int b, int c, boolean flag) {
+        this.entityTracker = entityTracker;
         this.tracker = entity;
         this.b = b;
         this.c = c;
@@ -55,6 +65,17 @@ public class EntityTrackerEntry {
         this.xRot = MathHelper.d(entity.pitch * 256.0F / 360.0F);
         this.lastHeadYaw = MathHelper.d(entity.getHeadRotation() * 256.0F / 360.0F);
         this.lastOnGround = entity.onGround;
+
+        if (NachoConfig.disableTracking) {
+            this.addRemoveRate = 100;
+        } else if (this.tracker instanceof EntityArrow || this.tracker instanceof EntityProjectile) {
+            this.addRemoveRate = 5; // projectile things
+        } else if (this.tracker instanceof EntityPlayer) {
+            this.addRemoveRate = 5; // players
+        } else {
+            this.addRemoveRate = 10; // default
+        }
+        this.addRemoveCooldown = this.tracker.getId() % addRemoveRate;
     }
 
     public boolean equals(Object object) {
@@ -67,6 +88,78 @@ public class EntityTrackerEntry {
     {
         return this.tracker.getId();
     }
+
+    public void update() {
+        this.withinNoTrack = this.withinNoTrack();
+        if (--this.addRemoveCooldown <= 0) {
+            this.removeFarPlayers();
+            this.addNearPlayers();
+            this.addRemoveCooldown = this.addRemoveRate;
+        }
+
+        this.track(null);
+    }
+
+    private void removeFarPlayers() {
+        if (this.withinNoTrack) {
+            toRemove.addAll(this.trackedPlayers);
+            processToRemove();
+            return;
+        }
+
+        for (EntityPlayer entityplayer : (Collection<EntityPlayer>) trackedPlayers) {
+            double d0 = entityplayer.locX - this.tracker.locX;
+            double d1 = entityplayer.locZ - this.tracker.locZ;
+            int range = this.getRange();
+
+            if (!(d0 >= (double) (-range) && d0 <= (double) range && d1 >= (double) (-range) && d1 <= (double) range) || withinNoTrack()) {
+                toRemove.add(entityplayer);
+            }
+        }
+
+        this.processToRemove();
+    }
+
+    public void processToRemove() {
+        for (EntityPlayer entityPlayer : toRemove) {
+            entityPlayer.d(this.tracker);
+            this.trackedPlayers.remove(entityPlayer);
+        }
+
+        toRemove.clear();
+    }
+
+    public void addNearPlayers() {
+        addNearPlayers(false);
+    }
+
+    private void addNearPlayers(boolean updateCooldown) {
+        if (this.withinNoTrack) return;
+        if (updateCooldown) this.addRemoveCooldown = addRemoveRate;
+        this.tracker.world.playerMap.forEachNearby(this.tracker.locX, this.tracker.locY, this.tracker.locZ, this.getRange(), false, addNearPlayersConsumer);
+    }
+
+    private boolean withinNoTrack() {
+        return this.withinNoTrack(this.tracker);
+    }
+
+    private boolean withinNoTrack(Entity entity) {
+        if (!(entity instanceof EntityPlayer)) return false; // ensure all non-players are always tracked
+        double xDistSqrd = entity.locX * entity.locX;
+        double zDistSqrd = entity.locZ * entity.locZ;
+
+        int noTrackDistanceSqrd = entityTracker.getNoTrackDistance() * entityTracker.getNoTrackDistance();
+        return noTrackDistanceSqrd != 0 && xDistSqrd <= noTrackDistanceSqrd && zDistSqrd <= noTrackDistanceSqrd;
+    }
+
+    private final Consumer<EntityPlayer> addNearPlayersConsumer = new Consumer<EntityPlayer>() {
+
+        @Override
+        public void accept(EntityPlayer entityPlayer) {
+            if (!NachoConfig.disableTracking || tracker.passenger == entityPlayer) updatePlayer(entityPlayer);
+        }
+    };
+
 
     /**
      * sends velocity, Location, rotation, and riding info.
@@ -81,7 +174,7 @@ public class EntityTrackerEntry {
             this.posZ = this.tracker.locZ;
             this.isMoving = true;
             this.n = true;
-            this.scanPlayers(list);
+            // this.scanPlayers(list);
         }
 
         if (this.lastRecoredRider != this.tracker.vehicle || this.tracker.vehicle != null && this.tickCount % 60 == 0) {
@@ -159,10 +252,10 @@ public class EntityTrackerEntry {
                         this.lastOnGround = this.tracker.onGround;
                         this.ticksSinceLastForcedTeleport = 0;
                         // CraftBukkit start - Refresh list of who can see a player before sending teleport packet
-                        if (this.tracker instanceof EntityPlayer) {
+                        /*if (this.tracker instanceof EntityPlayer) {
                             // SportPaper - Fix invisibility on teleport
                             this.scanPlayers(new ArrayList<>(this.tracker.world.players));
-                        }
+                        }*/
                         // CraftBukkit end
                         object = new PacketPlayOutEntityTeleport(this.tracker.getId(), i, j, k, (byte) l, (byte) i1, this.tracker.onGround);
                     }
@@ -341,17 +434,18 @@ public class EntityTrackerEntry {
     }
 
     public void updatePlayer(EntityPlayer entityplayer) {
-        org.spigotmc.AsyncCatcher.catchOp( "player tracker update"); // Spigot
+        // org.spigotmc.AsyncCatcher.catchOp( "player tracker update"); // Spigot
         if (entityplayer != this.tracker) {
             boolean isPlayerEntityTracked = this.trackedPlayers.contains(entityplayer);
             if (this.c(entityplayer)) {
                 if (!isPlayerEntityTracked && (this.e(entityplayer) || this.tracker.attachedToPlayer)) {
+                    if (this.tracker instanceof EntityPlayer && withinNoTrack()) return;
                     // CraftBukkit start - respect vanish API
                     if (!entityplayer.getBukkitEntity().canSee(this.tracker.getBukkitEntity())) {
                         return;
                     }
 
-                    entityplayer.removeQueue.remove(Integer.valueOf(this.tracker.getId()));
+                    // entityplayer.removeQueue.remove(Integer.valueOf(this.tracker.getId()));
                     // CraftBukkit end
                     this.trackedPlayerMap.put(entityplayer, true); // PaperBukkit
                     Packet packet = this.c();
@@ -385,6 +479,7 @@ public class EntityTrackerEntry {
                     this.motionX = this.tracker.motX;
                     this.motionY = this.tracker.motY;
                     this.motionZ = this.tracker.motZ;
+
                     if (this.u && !(packet instanceof PacketPlayOutSpawnEntityLiving)) {
                         entityplayer.playerConnection.sendPacket(new PacketPlayOutEntityVelocity(this.tracker.getId(), this.tracker.motX, this.tracker.motY, this.tracker.motZ));
                     }
@@ -456,7 +551,7 @@ public class EntityTrackerEntry {
         return entityplayer.u().getPlayerChunkMap().a(entityplayer, this.tracker.ae, this.tracker.ag);
     }
 
-    public void scanPlayers(List<EntityHuman> list) {
+    /*public void scanPlayers(List<EntityHuman> list) {
         for (EntityHuman entityHuman : list) {
             // Don't update if player cannot see entity
             if (!((EntityPlayer) entityHuman).getBukkitEntity().canSee((this.tracker).getBukkitEntity())) {
@@ -465,7 +560,7 @@ public class EntityTrackerEntry {
             this.updatePlayer((EntityPlayer) entityHuman);
         }
 
-    }
+    }*/
 
     protected Packet c() {
         if (this.tracker.dead) {
@@ -577,10 +672,16 @@ public class EntityTrackerEntry {
         }
     }
 
+    public int getRange() {
+        if (this.tracker.passenger == null) {
+            return this.b;
+        }
+        return Math.max(this.b, org.spigotmc.TrackingRange.getEntityTrackingRange(this.tracker.passenger, 0));
+    }
+
     public void clear(EntityPlayer entityplayer) {
         org.spigotmc.AsyncCatcher.catchOp( "player tracker clear"); // Spigot
-        if (this.trackedPlayers.contains(entityplayer)) {
-            this.trackedPlayers.remove(entityplayer);
+        if (this.trackedPlayers.remove(entityplayer)) {
             entityplayer.d(this.tracker);
         }
 

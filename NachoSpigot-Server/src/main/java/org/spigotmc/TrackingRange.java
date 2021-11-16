@@ -1,7 +1,10 @@
 package org.spigotmc;
 
 import net.minecraft.server.Entity;
+import net.minecraft.server.EntityArrow;
+import net.minecraft.server.EntityEnderPearl;
 import net.minecraft.server.EntityExperienceOrb;
+import net.minecraft.server.EntityFishingHook;
 import net.minecraft.server.EntityGhast;
 import net.minecraft.server.EntityItem;
 import net.minecraft.server.EntityItemFrame;
@@ -25,7 +28,14 @@ public class TrackingRange
         if ( entity instanceof EntityPlayer )
         {
             return config.playerTrackingRange;
-        }  else if ( entity.activationType == 1 )
+        } else if ( entity instanceof EntityArrow ) { 
+            return config.playerTrackingRange;
+        } else if (entity instanceof EntityEnderPearl) {
+            return config.playerTrackingRange;
+        } else if (entity instanceof EntityFishingHook) {
+            return config.playerTrackingRange;
+        }
+        else if ( entity.activationType == 1 )
         {
             return config.monsterTrackingRange;
         }
