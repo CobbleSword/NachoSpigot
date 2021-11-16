@@ -141,6 +141,8 @@ public class NachoConfig {
         c.addComment("settings.tile-entity-ticking-time", "Ticking time (20 ticks per second) for usage on tile entity operations.");
         c.addComment("settings.item-dirty-ticks", "Controls the interval for the item-dirty check. Minecraft checks an item every tick to see if it was changed. This can be expensive because it also needs to check all NBT data. Spigot only checks for basic count/data/type data and does a deep check every 20 ticks by default.");
         c.addComment("settings.use-tcp-fastopen", "Enables the TCP_FASTOPEN socket option");
+        c.addComment("settings.lag-compensated-potions", "Enables lag compesation throwing potions");
+        c.addComment("settings.smooth-potting", "Make potion throwing smoother");
         NachoWorldConfig.loadComments();
     }
 
@@ -327,14 +329,12 @@ public class NachoConfig {
     
     private static void lagCompensatedPotions() {
         lagCompensatedPotions = getBoolean("settings.lag-compensated-potions", false);
-        c.addComment("settings.lag-compensated-potions", "Enables lag compesation throwing potions");
     }
 
     public static boolean smoothPotting;
     
     private static void smoothPotting() {
         smoothPotting = getBoolean("settings.smooth-potting", false);
-        c.addComment("settings.smooth-potting", "Make potion throwing smoother");
     }
 
     public static boolean antiEnderPearlGlitch;
