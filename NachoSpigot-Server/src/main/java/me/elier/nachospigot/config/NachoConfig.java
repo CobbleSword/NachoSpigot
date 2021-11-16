@@ -323,6 +323,20 @@ public class NachoConfig {
         c.addComment("settings.hide-projectiles-from-hidden-players", "Hides projectiles from hidden players");
     }
 
+    public static boolean lagCompensatedPotions;
+    
+    private static void lagCompensatedPotions() {
+        lagCompensatedPotions = getBoolean("settings.lag-compensated-potions", false);
+        c.addComment("settings.lag-compensated-potions", "Enables lag compesation throwing potions");
+    }
+
+    public static boolean smoothPotting;
+    
+    private static void smoothPotting() {
+        smoothPotting = getBoolean("settings.smooth-potting", false);
+        c.addComment("settings.smooth-potting", "Make potion throwing smoother");
+    }
+
     public static boolean antiEnderPearlGlitch;
     
     private static void antiEnderPearlGlitch() {

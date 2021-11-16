@@ -10,8 +10,11 @@ import org.bukkit.craftbukkit.entity.CraftLivingEntity;
 import org.bukkit.entity.LivingEntity;
 // CraftBukkit end
 
+import me.elier.nachospigot.config.NachoConfig;
+
 public class EntityPotion extends EntityProjectile {
 
+    public boolean compensated = false; // IonSpigot - Lag Compensated Potions
     public ItemStack item;
 
     public EntityPotion(World world) {
@@ -25,6 +28,12 @@ public class EntityPotion extends EntityProjectile {
     public EntityPotion(World world, EntityLiving entityliving, ItemStack itemstack) {
         super(world, entityliving);
         this.item = itemstack;
+        // IonSpigot start - Lag Compensated Potions
+        if (entityliving instanceof EntityPlayer && NachoConfig.lagCompensatedPotions) {
+            ((EntityPlayer) entityliving).potions.add(this);
+            compensated = true;
+        }
+        // IonSpigot end
     }
 
     public EntityPotion(World world, double d0, double d1, double d2, ItemStack itemstack) {
@@ -59,6 +68,18 @@ public class EntityPotion extends EntityProjectile {
 
         return this.item.getData();
     }
+
+    // IonSpigot start - Lag Compensated Potions
+    @Override
+    public void t_() {
+        if (!compensated) {
+            tick();
+        }
+    }
+    public void tick() {
+        super.t_();
+    }
+    // IonSpigot end
 
     protected void a(MovingObjectPosition movingobjectposition) {
         if (!this.world.isClientSide) {
