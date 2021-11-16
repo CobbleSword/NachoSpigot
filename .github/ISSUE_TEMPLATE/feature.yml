@@ -1,0 +1,27 @@
+name: Feature Request
+description: Suggest an idea
+labels: [ "type: enhancement" ]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please be as detailed as possible and make sure that the feature you are requesting is not already in the latest version of NachoSpigot.
+
+  - type: textarea
+    attributes:
+      label: Describe the feature
+      description: Please provide an explanation of the feature you want added.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Other
+      description: Please provide any information regarding your feature request, such as pictures, videos or examples.
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        Before submitting this feature request make sure that this feature was not already implemented/suggested.
