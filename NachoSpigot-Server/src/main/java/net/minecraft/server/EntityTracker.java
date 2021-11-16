@@ -1,23 +1,16 @@
 package net.minecraft.server;
 
-import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
-import java.util.*;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import me.elier.nachospigot.config.NachoConfig;
 import me.rastrian.dev.utils.IndexedLinkedHashSet;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 public class EntityTracker {
 
-    public IndexedLinkedHashSet<EntityTrackerEntry> c = new IndexedLinkedHashSet<EntityTrackerEntry>(); // IonSpigot - HashSet -> ObjectMapList
+    public IndexedLinkedHashSet<EntityTrackerEntry> c = new IndexedLinkedHashSet<EntityTrackerEntry>();
     public IndexedLinkedHashSet<EntityTrackerEntry> getTrackedEntities() { return c; }
 
     public IntHashMap<EntityTrackerEntry> trackedEntities = new IntHashMap<>();

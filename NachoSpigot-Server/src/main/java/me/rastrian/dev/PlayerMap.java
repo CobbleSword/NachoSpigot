@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import com.google.common.base.Function;
+import java.util.function.Function;
 import com.google.common.base.Predicate;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
@@ -16,7 +16,7 @@ import net.minecraft.server.Packet;
 public class PlayerMap {
 
     private static final int CHUNK_BITS = 5;
-    private final Long2ObjectOpenHashMap < List < EntityPlayer >> map = new Long2ObjectOpenHashMap < List < EntityPlayer >> ();
+    private final Long2ObjectOpenHashMap<List<EntityPlayer>> map = new Long2ObjectOpenHashMap<List<EntityPlayer>>();
 
     private static long xzToKey(long x, long z) {
         return ((long) x << 32) + z - Integer.MIN_VALUE;
@@ -26,9 +26,9 @@ public class PlayerMap {
         int x = MathHelper.floor(player.locX) >> CHUNK_BITS;
         int z = MathHelper.floor(player.locZ) >> CHUNK_BITS;
         long key = xzToKey(x, z);
-        List < EntityPlayer > list = map.get(key);
+        List<EntityPlayer> list = map.get(key);
         if (list == null) {
-            list = new ArrayList < EntityPlayer > ();
+            list = new ArrayList<EntityPlayer> ();
             map.put(key, list);
         }
         list.add(player);
@@ -47,7 +47,7 @@ public class PlayerMap {
 
         // do remove
         long key = xzToKey(player.playerMapX, player.playerMapZ);
-        List < EntityPlayer > list = map.get(key);
+        List<EntityPlayer> list = map.get(key);
         list.remove(player);
         if (list.isEmpty()) {
             map.remove(key);
@@ -57,7 +57,7 @@ public class PlayerMap {
         key = xzToKey(x, z);
         list = map.get(key);
         if (list == null) {
-            list = new ArrayList < EntityPlayer > ();
+            list = new ArrayList<EntityPlayer> ();
             map.put(key, list);
         }
         list.add(player);
@@ -67,7 +67,7 @@ public class PlayerMap {
 
     public void remove(EntityPlayer player) {
         long key = xzToKey(player.playerMapX, player.playerMapZ);
-        List < EntityPlayer > list = map.get(key);
+        List<EntityPlayer> list = map.get(key);
         if (list == null) {
             // player has not yet been added to this playermap, this happens when teleporting to another world during PlayerJoinEvent
             return;
@@ -78,12 +78,12 @@ public class PlayerMap {
         }
     }
 
-    public void forEachNearby(double x, double y, double z, double distance, boolean useRadius, Consumer < EntityPlayer > function) {
+    public void forEachNearby(double x, double y, double z, double distance, boolean useRadius, Consumer<EntityPlayer> function) {
         for (int chunkX = MathHelper.floor(x - distance) >> CHUNK_BITS; chunkX <= MathHelper.floor(x + distance) >> CHUNK_BITS; chunkX++) {
             for (int chunkZ = MathHelper.floor(z - distance) >> CHUNK_BITS; chunkZ <= MathHelper.floor(z + distance) >> CHUNK_BITS; chunkZ++) {
-                List < EntityPlayer > players = map.get(xzToKey(chunkX, chunkZ));
+                List<EntityPlayer> players = map.get(xzToKey(chunkX, chunkZ));
                 if (players != null) {
-                    for (EntityPlayer player: players) {
+                    for (EntityPlayer player : players) {
                         if (!useRadius || player.e(x, y, z) < distance * distance) {
                             function.accept(player);
                         }
@@ -99,9 +99,9 @@ public class PlayerMap {
 
         for (int chunkX = MathHelper.floor(x - distance) >> CHUNK_BITS; chunkX <= MathHelper.floor(x + distance) >> CHUNK_BITS; chunkX++) {
             for (int chunkZ = MathHelper.floor(z - distance) >> CHUNK_BITS; chunkZ <= MathHelper.floor(z + distance) >> CHUNK_BITS; chunkZ++) {
-                List < EntityPlayer > players = map.get(xzToKey(chunkX, chunkZ));
+                List<EntityPlayer> players = map.get(xzToKey(chunkX, chunkZ));
                 if (players != null) {
-                    for (EntityPlayer player: players) {
+                    for (EntityPlayer player : players) {
                         double playerDistSqrd = player.e(x, y, z);
                         if (playerDistSqrd < distance * distance && (bestDistanceSqrd == -1.0 || playerDistSqrd < bestDistanceSqrd)) {
                             bestDistanceSqrd = playerDistSqrd;
@@ -117,9 +117,9 @@ public class PlayerMap {
     public boolean isPlayerNearby(double x, double y, double z, double distance, boolean respectSpawningApi) {
         for (int chunkX = MathHelper.floor(x - distance) >> CHUNK_BITS; chunkX <= MathHelper.floor(x + distance) >> CHUNK_BITS; chunkX++) {
             for (int chunkZ = MathHelper.floor(z - distance) >> CHUNK_BITS; chunkZ <= MathHelper.floor(z + distance) >> CHUNK_BITS; chunkZ++) {
-                List < EntityPlayer > players = map.get(xzToKey(chunkX, chunkZ));
+                List<EntityPlayer> players = map.get(xzToKey(chunkX, chunkZ));
                 if (players != null) {
-                    for (EntityPlayer player: players) {
+                    for (EntityPlayer player : players) {
                         if (player != null && !player.dead && (!respectSpawningApi || player.affectsSpawning)) {
                             double playerDistSqrd = player.e(x, y, z);
                             if (playerDistSqrd < distance * distance) {
@@ -139,9 +139,9 @@ public class PlayerMap {
 
         for (int chunkX = MathHelper.floor(x - distance) >> CHUNK_BITS; chunkX <= MathHelper.floor(x + distance) >> CHUNK_BITS; chunkX++) {
             for (int chunkZ = MathHelper.floor(z - distance) >> CHUNK_BITS; chunkZ <= MathHelper.floor(z + distance) >> CHUNK_BITS; chunkZ++) {
-                List < EntityPlayer > players = map.get(xzToKey(chunkX, chunkZ));
+                List<EntityPlayer> players = map.get(xzToKey(chunkX, chunkZ));
                 if (players != null) {
-                    for (EntityPlayer player: players) {
+                    for (EntityPlayer player : players) {
                         if (player != null && !player.dead && (!respectSpawningApi || player.affectsSpawning)) {
                             double playerDistSqrd = player.e(x, y, z);
                             if (playerDistSqrd < distance * distance && (bestDistanceSqrd == -1.0 || playerDistSqrd < bestDistanceSqrd)) {
@@ -157,19 +157,19 @@ public class PlayerMap {
         return bestPlayer;
     }
 
-    public EntityPlayer getNearestAttackablePlayer(double x, double y, double z, double maxXZ, double maxY, Function < EntityHuman, Double > visibility) {
+    public EntityPlayer getNearestAttackablePlayer(double x, double y, double z, double maxXZ, double maxY, Function<EntityHuman,Double> visibility) {
         return getNearestAttackablePlayer(x, y, z, maxXZ, maxY, visibility, null);
     }
 
-    public EntityPlayer getNearestAttackablePlayer(double x, double y, double z, double maxXZ, double maxY, Function < EntityHuman, Double > visibility, Predicate < EntityHuman > condition) {
+    public EntityPlayer getNearestAttackablePlayer(double x, double y, double z, double maxXZ, double maxY, Function<EntityHuman,Double> visibility, Predicate<EntityHuman> condition) {
         double bestDistanceSqrd = -1.0;
         EntityPlayer bestPlayer = null;
 
         for (int chunkX = MathHelper.floor(x - maxXZ) >> CHUNK_BITS; chunkX <= MathHelper.floor(x + maxXZ) >> CHUNK_BITS; chunkX++) {
             for (int chunkZ = MathHelper.floor(z - maxXZ) >> CHUNK_BITS; chunkZ <= MathHelper.floor(z + maxXZ) >> CHUNK_BITS; chunkZ++) {
-                List < EntityPlayer > players = map.get(xzToKey(chunkX, chunkZ));
+                List<EntityPlayer> players = map.get(xzToKey(chunkX, chunkZ));
                 if (players != null) {
-                    for (EntityPlayer player: players) {
+                    for (EntityPlayer player : players) {
                         if (!player.abilities.isInvulnerable && player.isAlive() && (condition == null || condition.apply(player))) {
                             double dx = player.locX - x;
                             double dz = player.locZ - z;
@@ -205,9 +205,9 @@ public class PlayerMap {
     public void sendPacketNearby(EntityPlayer source, double x, double y, double z, double distance, Packet packet, boolean self) {
         for (int chunkX = MathHelper.floor(x - distance) >> CHUNK_BITS; chunkX <= MathHelper.floor(x + distance) >> CHUNK_BITS; chunkX++) {
             for (int chunkZ = MathHelper.floor(z - distance) >> CHUNK_BITS; chunkZ <= MathHelper.floor(z + distance) >> CHUNK_BITS; chunkZ++) {
-                List < EntityPlayer > players = map.get(xzToKey(chunkX, chunkZ));
+                List<EntityPlayer> players = map.get(xzToKey(chunkX, chunkZ));
                 if (players != null) {
-                    for (EntityPlayer player: players) {
+                    for (EntityPlayer player : players) {
                         // don't send self
                         if (!self) {
                             if (player == source) {
