@@ -16,12 +16,27 @@ body:
 
   - type: textarea
     attributes:
+      label: Technical implementation
+      description: |
+        If possible, describe how we should implement this feature.
+        For example, reference a patch that contains the implementation of the feature that you want.
+        Or describe it yourself, if it does not exist yet.
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
       label: Other
       description: Please provide any information regarding your feature request, such as pictures, videos or examples.
     validations:
       required: false
 
-  - type: markdown
+  - type: checkboxes
     attributes:
-      value: |
-        Before submitting this feature request make sure that this feature was not already implemented/suggested.
+      label: Agreements
+      description: "Please agree to the following:"
+      options:
+        - label: You have confirmed that this feature does not yet exist in the latest version of NachoSpigot.
+          required: true
+        - label: You have confirmed that there aren’t any issues open regarding this feature.
+          required: true
