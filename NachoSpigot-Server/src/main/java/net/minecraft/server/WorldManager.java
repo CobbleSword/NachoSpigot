@@ -25,14 +25,17 @@ public class WorldManager implements IWorldAccess {
 
     public void a(String s, double d0, double d1, double d2, float f, float f1) {
         // CraftBukkit - this.world.dimension
-        this.a.getPlayerList().sendPacketNearby(d0, d1, d2, f > 1.0F ? (double) (16.0F * f) : 16.0D, this.world.dimension, new PacketPlayOutNamedSoundEffect(s, d0, d1, d2, f, f1));
+        // this.a.getPlayerList().sendPacketNearby(d0, d1, d2, f > 1.0F ? (double) (16.0F * f) : 16.0D, this.world.dimension, new PacketPlayOutNamedSoundEffect(s, d0, d1, d2, f, f1));
+        this.world.playerMap.sendPacketNearby(null, d0, d1, d2, f > 1.0F ? (double) (16.0F * f) : 16.0D, new PacketPlayOutNamedSoundEffect(s, d0, d1, d2, f, f1), false);
     }
 
     public void a(EntityHuman entityhuman, String s, double d0, double d1, double d2, float f, float f1) {
         if (s.equals("random.drink") || s.contains("step") || s.contains("player") || s.equals("random.eat")) {
-            this.a.getPlayerList().sendPacketNearby(entityhuman, d0, d1, d2, f > 1.0F ? (double) (16.0F * f) : 16.0D, this.world.dimension, new PacketPlayOutNamedSoundEffect(s, d0, d1, d2, f, f1));
+            // this.a.getPlayerList().sendPacketNearby(entityhuman, d0, d1, d2, f > 1.0F ? (double) (16.0F * f) : 16.0D, this.world.dimension, new PacketPlayOutNamedSoundEffect(s, d0, d1, d2, f, f1));
+            this.world.playerMap.sendPacketNearby((EntityPlayer) entityhuman, d0, d1, d2, f > 1.0F ? (double) (16.0F * f) : 16.0D, new PacketPlayOutNamedSoundEffect(s, d0, d1, d2, f, f1), false);
         } else {
-            this.a.getPlayerList().sendPacketNearbyIncludingSelf(entityhuman, d0, d1, d2, f > 1.0F ? (double) (16.0F * f) : 16.0D, this.world.dimension, new PacketPlayOutNamedSoundEffect(s, d0, d1, d2, f, f1));
+            // this.a.getPlayerList().sendPacketNearbyIncludingSelf(entityhuman, d0, d1, d2, f > 1.0F ? (double) (16.0F * f) : 16.0D, this.world.dimension, new PacketPlayOutNamedSoundEffect(s, d0, d1, d2, f, f1));
+            this.world.playerMap.sendPacketNearby((EntityPlayer) entityhuman, d0, d1, d2, f > 1.0F ? (double) (16.0F * f) : 16.0D, new PacketPlayOutNamedSoundEffect(s, d0, d1, d2, f, f1), true);
         }
     }
 
@@ -48,18 +51,19 @@ public class WorldManager implements IWorldAccess {
 
     public void a(EntityHuman entityhuman, int i, BlockPosition blockposition, int j) {
         if (i == 2001) {
-            this.a.getPlayerList().sendPacketNearby(entityhuman, blockposition.getX(), blockposition.getY(), blockposition.getZ(), 64.0D, this.world.dimension, new PacketPlayOutWorldEvent(i, blockposition, j, false));
+            this.world.playerMap.sendPacketNearby((EntityPlayer) entityhuman, blockposition.getX(), blockposition.getY(), blockposition.getZ(), 64.0D, new PacketPlayOutWorldEvent(i, blockposition, j, false), false);
         } else {
-            this.a.getPlayerList().sendPacketNearbyIncludingSelf(entityhuman, blockposition.getX(),
-                    blockposition.getY(), blockposition.getZ(), 64.0D, this.world.dimension, new
-                    PacketPlayOutWorldEvent(i, blockposition, j, false));
+            this.world.playerMap.sendPacketNearby((EntityPlayer) entityhuman, blockposition.getX(),
+                    blockposition.getY(), blockposition.getZ(), 64.0D, new
+                    PacketPlayOutWorldEvent(i, blockposition, j, false), true);
         }
     }
 
     @Override
     public void sendPlayWorldPacket(EntityHuman entityhuman, int i, int blockPosition_x, int blockPosition_y, int blockPosition_z, int j)
     {
-        this.a.getPlayerList().sendPacketNearby(entityhuman, (double) blockPosition_x, (double) blockPosition_y, (double) blockPosition_z, 64.0D, this.world, new Int3PacketPlayOutWorldEvent(i, blockPosition_x, blockPosition_y, blockPosition_z, j, false));
+        // this.a.getPlayerList().sendPacketNearby(entityhuman, (double) blockPosition_x, (double) blockPosition_y, (double) blockPosition_z, 64.0D, this.world, new Int3PacketPlayOutWorldEvent(i, blockPosition_x, blockPosition_y, blockPosition_z, j, false));
+        this.world.playerMap.sendPacketNearby((EntityPlayer) entityhuman, (double) blockPosition_x, (double) blockPosition_y, (double) blockPosition_z, 64.0D, new Int3PacketPlayOutWorldEvent(i, blockPosition_x, blockPosition_y, blockPosition_z, j, false), false);
     }
 
     public void a(int i, BlockPosition blockposition, int j) {
@@ -81,22 +85,16 @@ public class WorldManager implements IWorldAccess {
             EntityPlayer entityplayer = (EntityPlayer) human;
 
             if (entityplayer.world == this.world && entityplayer.getId() != i) {
-                double d0 = (double) blockposition.getX() - entityplayer.locX;
-                double d1 = (double) blockposition.getY() - entityplayer.locY;
-                double d2 = (double) blockposition.getZ() - entityplayer.locZ;
-
                 // CraftBukkit start
                 if (entityhuman instanceof EntityPlayer && !entityplayer.getBukkitEntity().canSee(((EntityPlayer) entityhuman).getBukkitEntity())) {
                     continue;
                 }
                 // CraftBukkit end
 
-                if (d0 * d0 + d1 * d1 + d2 * d2 < 1024.0D) {
-                    // SportPaper start
-                    if (packet == null) packet = new PacketPlayOutBlockBreakAnimation(i, blockposition, j);
-                    entityplayer.playerConnection.sendPacket(packet);
-                    // SportPaper end
-                }
+                if (packet == null) packet = new PacketPlayOutBlockBreakAnimation(i, blockposition, j);
+                // entityplayer.playerConnection.sendPacket(packet);
+                this.world.playerMap.sendPacketNearby(entityplayer, blockposition.getX(), blockposition.getY(), blockposition.getZ(), 32.0D,
+                    new PacketPlayOutBlockBreakAnimation(i, blockposition, j), false);
             }
         }
 

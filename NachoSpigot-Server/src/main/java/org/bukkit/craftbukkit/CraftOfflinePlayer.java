@@ -145,7 +145,10 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
     }
 
     public Player getPlayer() {
-        return server.getPlayer(getUniqueId());
+        // PaperSpigot - Improved player lookup, replace entire method
+        final EntityPlayer playerEntity = server.getHandle().uuidMap.get(getUniqueId());
+        return playerEntity != null ? playerEntity.getBukkitEntity() : null;
+        // PaperSpigot end
     }
 
     @Override

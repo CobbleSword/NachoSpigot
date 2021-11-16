@@ -106,7 +106,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
     }
 
     public boolean isOnline() {
-        return server.getPlayer(getUniqueId()) != null;
+        return server.getHandle().uuidMap.get(getUniqueId()) != null; // PaperSpigot  - replace whole method
     }
 
     public InetSocketAddress getAddress() {

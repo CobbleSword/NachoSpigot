@@ -21,6 +21,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.generator.ChunkGenerator;
 
 import me.rastrian.dev.OptimizedWorldTileEntitySet;
+import me.rastrian.dev.PlayerMap;
 
 import java.util.*;
 import java.util.concurrent.Callable;
@@ -143,6 +144,7 @@ public abstract class World implements IBlockAccess {
     private org.spigotmc.TickLimiter entityLimiter;
     private org.spigotmc.TickLimiter tileLimiter;
     private int tileTickPosition;
+    public final PlayerMap playerMap = new PlayerMap();
 
     // IonSpigot start - Optimise Density Cache
     public final it.unimi.dsi.fastutil.ints.Int2FloatMap explosionDensityCache = new it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap(); // IonSpigot - Use faster collection here // PaperSpigot - Optimize explosions
@@ -1281,6 +1283,7 @@ public abstract class World implements IBlockAccess {
                 EntityHuman entityhuman = (EntityHuman) entity;
 
                 this.players.add(entityhuman);
+                this.playerMap.add((EntityPlayer) entityhuman);
                 this.everyoneSleeping();
             }
 
@@ -1320,6 +1323,7 @@ public abstract class World implements IBlockAccess {
         if (entity instanceof EntityHuman) {
             this.players.remove(entity);
             this.worldMaps.removeTrackedPlayer((EntityHuman) entity); // FlamePaper - Minetick fix memory leaks
+            this.playerMap.remove((EntityPlayer) entity); 
             // Spigot start
             for ( Object o : worldMaps.c ) {
                 if ( o instanceof WorldMap ) {
@@ -1345,6 +1349,7 @@ public abstract class World implements IBlockAccess {
         entity.die();
         if (entity instanceof EntityHuman) {
             this.players.remove(entity);
+            this.playerMap.remove((EntityPlayer) entity);
             this.worldMaps.removeTrackedPlayer((EntityHuman) entity); // FlamePaper - Minetick fix memory leaks
             this.everyoneSleeping();
         }
@@ -3153,11 +3158,12 @@ public abstract class World implements IBlockAccess {
     }
 
     public EntityHuman findNearbyPlayer(double d0, double d1, double d2, double d3) {
+        if (0 <= d3 && d3 <= 64) { return this.playerMap.getNearestPlayer(d0, d1, d2, d3); }
         double d4 = -1.0D;
         EntityHuman entityhuman = null;
 
-        for (int i = 0; i < this.players.size(); ++i) {
-            EntityHuman entityhuman1 = (EntityHuman) this.players.get(i);
+        for (Object o : a(EntityHuman.class, AxisAlignedBB.a(d0 - d3, d1 - d3, d2 - d3, d0 + d3, d1 + d3, d2 + d3))) {
+            EntityHuman entityhuman1 = (EntityHuman) o;
             // CraftBukkit start - Fixed an NPE
             if (entityhuman1 == null || entityhuman1.dead) {
                 continue;
@@ -3199,6 +3205,7 @@ public abstract class World implements IBlockAccess {
     }
 
     public EntityHuman findNearbyPlayerWhoAffectsSpawning(double d0, double d1, double d2, double d3) {
+        if (0 <= d3 && d3 <= 64.0) { return this.playerMap.getNearbyPlayer(d0, d1, d2, d3, true); }
         double d4 = -1.0D;
         EntityHuman entityhuman = null;
 

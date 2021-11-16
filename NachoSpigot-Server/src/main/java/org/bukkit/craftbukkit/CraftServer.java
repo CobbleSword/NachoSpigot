@@ -446,7 +446,7 @@ public final class CraftServer implements Server {
     public Player getPlayerExact(String name) {
         Validate.notNull(name, "Name cannot be null");
 
-        EntityPlayer player = playerList.getPlayer(name);
+        EntityPlayer player = playerList.playerMap.get(name);
         return (player != null) ? player.getBukkitEntity() : null;
     }
 

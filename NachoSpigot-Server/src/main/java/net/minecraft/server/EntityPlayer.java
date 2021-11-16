@@ -52,6 +52,8 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
     public boolean g;
     public int ping;
     public boolean viewingCredits;
+    public int playerMapX;
+    public int playerMapZ;
 
     // CraftBukkit start
     public String displayName;

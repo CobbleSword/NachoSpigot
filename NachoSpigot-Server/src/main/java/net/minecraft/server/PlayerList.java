@@ -48,7 +48,40 @@ public abstract class PlayerList {
     private static final SimpleDateFormat g = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
     private final MinecraftServer server;
     public final List<EntityPlayer> players = new java.util.concurrent.CopyOnWriteArrayList<>(); // CraftBukkit - ArrayList -> CopyOnWriteArrayList: Iterator safety
-    private final Map<UUID, EntityPlayer> j = Maps.newHashMap();
+    //private final Map<UUID, EntityPlayer> j = Maps.newHashMap();
+    // PaperSpigot start - Player lookup improvements
+    public final Map<String, EntityPlayer> playerMap = new java.util.HashMap<String, EntityPlayer>() {
+        @Override
+        public EntityPlayer put(String key, EntityPlayer value) {
+            return super.put(key.toLowerCase(), value);
+        }
+
+        @Override
+        public EntityPlayer get(Object key) {
+            // put the .playerConnection check done in other places here
+            EntityPlayer player = super.get(key instanceof String ? ((String)key).toLowerCase() : key);
+            return (player != null && player.playerConnection != null) ? player : null;
+        }
+
+        @Override
+        public boolean containsKey(Object key) {
+            return get(key) != null;
+        }
+
+        @Override
+        public EntityPlayer remove(Object key) {
+            return super.remove(key instanceof String ? ((String)key).toLowerCase() : key);
+        }
+    };
+    public final Map<UUID, EntityPlayer> uuidMap = new java.util.HashMap<UUID, EntityPlayer>() {
+        @Override
+        public EntityPlayer get(Object key) {
+            // put the .playerConnection check done in other places here
+            EntityPlayer player = super.get(key instanceof String ? ((String)key).toLowerCase() : key);
+            return (player != null && player.playerConnection != null) ? player : null;
+        }
+    };
+    // PaperSpigot end
     private final GameProfileBanList k;
     private final IpBanList l;
     private final OpList operators;
@@ -296,7 +329,8 @@ public abstract class PlayerList {
     public void onPlayerJoin(EntityPlayer entityplayer, String joinMessage) { // CraftBukkit added param
         this.players.add(entityplayer);
         this.playersByName.put(entityplayer.getName(), entityplayer); // Spigot
-        this.j.put(entityplayer.getUniqueID(), entityplayer);
+        this.playerMap.put(entityplayer.getName(), entityplayer); // PaperSpigot
+        this.uuidMap.put(entityplayer.getUniqueID(), entityplayer); // PaperSpigot
         // this.sendAll(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, new EntityPlayer[] { entityplayer})); // CraftBukkit - replaced with loop below
         WorldServer worldserver = this.server.getWorldServer(entityplayer.dimension);
 
@@ -343,6 +377,7 @@ public abstract class PlayerList {
 
     public void d(EntityPlayer entityplayer) {
         entityplayer.u().getPlayerChunkMap().movePlayer(entityplayer);
+        entityplayer.world.playerMap.move(entityplayer);
     }
 
     public String disconnect(EntityPlayer entityplayer) { // CraftBukkit - return string
@@ -367,12 +402,15 @@ public abstract class PlayerList {
         worldserver.kill(entityplayer);
         worldserver.getPlayerChunkMap().removePlayer(entityplayer);
         this.players.remove(entityplayer);
+        this.uuidMap.remove(entityplayer.getUniqueID()); // PaperSpigot
+        this.playerMap.remove(entityplayer.getName()); // PaperSpigot
         this.playersByName.remove(entityplayer.getName()); // Spigot
         UUID uuid = entityplayer.getUniqueID();
-        EntityPlayer entityplayer1 = (EntityPlayer) this.j.get(uuid);
+        EntityPlayer entityplayer1 = (EntityPlayer) this.uuidMap.get(uuid);
 
         if (entityplayer1 == entityplayer) {
-            this.j.remove(uuid);
+            this.uuidMap.remove(uuid);
+            this.playerMap.remove(entityplayer.getName()); // PaperSpigot
             this.o.remove(uuid);
         }
 
@@ -619,7 +657,8 @@ public abstract class PlayerList {
             worldserver.addEntity(entityplayer1);
             this.players.add(entityplayer1);
             this.playersByName.put(entityplayer1.getName(), entityplayer1); // Spigot
-            this.j.put(entityplayer1.getUniqueID(), entityplayer1);
+            this.playerMap.put(entityplayer1.getName(), entityplayer1); // PaperSpigot
+            this.uuidMap.put(entityplayer1.getUniqueID(), entityplayer1);
         }
         // Added from changeDimension
         updateClient(entityplayer); // Update health, etc...
@@ -1048,7 +1087,7 @@ public abstract class PlayerList {
     }
 
     public EntityPlayer getPlayer(String s) {
-        return this.playersByName.get(s); // Spigot
+        return this.playerMap.get(s); // Spigot
     }
 
     public void sendPacketNearby(double d0, double d1, double d2, double d3, int i, Packet packet) {
@@ -1307,7 +1346,7 @@ public abstract class PlayerList {
     }
 
     public EntityPlayer a(UUID uuid) {
-        return (EntityPlayer) this.j.get(uuid);
+        return (EntityPlayer) this.uuidMap.get(uuid);
     }
 
     public boolean f(GameProfile gameprofile) {
