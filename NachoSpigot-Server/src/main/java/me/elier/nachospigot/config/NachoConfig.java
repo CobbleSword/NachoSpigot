@@ -50,7 +50,7 @@ public class NachoConfig {
         File old_config = new File("nacho.json");
         if(old_config.exists()) migrate(old_config);
 
-        int configVersion = 4; // Update this every new configuration update
+        int configVersion = 5; // Update this every new configuration update
         version = getInt("config-version", configVersion);
         set("config-version", configVersion);
         c.setHeader(HEADER);
@@ -307,6 +307,20 @@ public class NachoConfig {
     private static void hideProjectilesFromHiddenPlayers() {
         hideProjectilesFromHiddenPlayers = getBoolean("settings.hide-projectiles-from-hidden-players", false);
         c.addComment("settings.hide-projectiles-from-hidden-players", "Hides projectiles from hidden players");
+    }
+
+    public static boolean lagCompensatedPotions;
+    
+    private static void lagCompensatedPotions() {
+        lagCompensatedPotions = getBoolean("settings.lag-compensated-potions", false);
+        c.addComment("settings.lag-compensated-potions", "Enables lag compesation throwing potions");
+    }
+
+    public static boolean smoothPotting;
+    
+    private static void smoothPotting() {
+        smoothPotting = getBoolean("settings.smooth-potting", false);
+        c.addComment("settings.smooth-potting", "Make potion throwing smoother");
     }
 
     public static boolean antiEnderPearlGlitch;
