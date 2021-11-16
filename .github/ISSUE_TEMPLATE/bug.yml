@@ -1,6 +1,6 @@
 name: Behavior Bug
 description: Report issues with behaviour bugs.
-labels: [ "type: bug" ]
+labels: [ "bug" ]
 body:
   - type: textarea
     attributes:
