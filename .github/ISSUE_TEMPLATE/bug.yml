@@ -30,7 +30,7 @@ body:
         All plugins running on your server.
         Use the command `/plugins`.
     validations:
-      required: true
+      required: false
 
   - type: textarea
     attributes:
@@ -58,13 +58,14 @@ body:
     validations:
       required: false
 
-  - type: markdown
+  - type: checkboxes
     attributes:
-      value: |
-        Please ensure the following:
-
-        1. You were able to find this issue on the latest version of NachoSpigot.
-        2. You have confirmed there is no open issue regarding this bug.
+      description: Please confirm the following:
+      options: |
+        - label: You were able to find this issue on the latest version of NachoSpigot.
+          required: true
+        - label: You have confirmed that there aren’t any issues open regarding this bug.
+          required: true
 
 
         If you have any other questions regarding your finding contact us on our discord `#nacho-bug-report`
