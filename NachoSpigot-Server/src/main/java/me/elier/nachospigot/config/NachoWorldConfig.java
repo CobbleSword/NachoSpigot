@@ -65,7 +65,7 @@ public class NachoWorldConfig {
     }
 
     private static void addComment(String path, String comment) {
-        NachoConfig.c.addComment(path, comment);
+        NachoConfig.c.addComment("world-settings.default." + path, comment);
     }
 
     static void loadComments() {
