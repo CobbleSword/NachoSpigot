@@ -32,13 +32,15 @@ public class MathHelper {
     }
 
     public static int d(float var0) {
-        if (fastMathMode) { return (int) (FastMath.floorToInt(var0)); }
+        if (fastMathMode) return FastMath.floorToInt(var0);
+
         int var1 = (int)var0;
         return var0 < (float)var1 ? var1 - 1 : var1;
     }
 
     public static int floor(double var0) {
-        if (fastMathMode) { return (int) (FastMath.floorToInt(var0)); }
+        if (fastMathMode) return FastMath.floorToInt(var0);
+
         int var2 = (int)var0;
         return var0 < (double)var2 ? var2 - 1 : var2;
     }
@@ -57,13 +59,15 @@ public class MathHelper {
     }
 
     public static int f(float var0) {
-        if (fastMathMode) { return (int) (FastMath.ceilToInt(var0)); }
+        if (fastMathMode) return FastMath.ceilToInt(var0);
+
         int var1 = (int)var0;
         return var0 > (float)var1 ? var1 + 1 : var1;
     }
 
     public static int f(double var0) {
-        if (fastMathMode) { return (int) (FastMath.ceilToInt(var0)); }
+        if (fastMathMode) return FastMath.ceilToInt(var0);
+
         int var2 = (int)var0;
         return var0 > (double)var2 ? var2 + 1 : var2;
     }
@@ -235,7 +239,7 @@ public class MathHelper {
     public static double b(double var0, double var2) {
         double var4 = var2 * var2 + var0 * var0;
         if (Double.isNaN(var4)) {
-            return 0.0D / 0.0;
+            return Double.NaN;
         } else {
             boolean var6 = var0 < 0.0D;
             if (var6) {
