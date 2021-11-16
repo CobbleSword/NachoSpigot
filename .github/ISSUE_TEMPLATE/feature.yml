@@ -1,0 +1,42 @@
+name: Feature Request
+description: Suggest an idea.
+labels: [ "enhancement" ]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please be as detailed as possible and make sure that the feature you are requesting is not already in the latest version of NachoSpigot.
+
+  - type: textarea
+    attributes:
+      label: Describe the feature
+      description: Please provide an explanation of the feature you want added.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Technical implementation
+      description: |
+        If possible, describe how we should implement this feature.
+        For example, reference a patch that contains the implementation of the feature that you want.
+        Or describe it yourself, if it does not exist yet.
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Other
+      description: Please provide any information regarding your feature request, such as pictures, videos or examples.
+    validations:
+      required: false
+
+  - type: checkboxes
+    attributes:
+      label: Agreements
+      description: "Please agree to the following:"
+      options:
+        - label: You have confirmed that this feature does not yet exist in the latest version of NachoSpigot.
+          required: true
+        - label: You have confirmed that there aren’t any issues open regarding this feature.
+          required: true
