@@ -135,6 +135,13 @@ public class NachoConfig {
         c.addComment("settings.disabled-block-fall-animation", "Disables the fall animation for blocks");
         c.addComment("settings.enable-protocollib-shim", "Enable ProtocolLib network shim. Allows ProtocolLib to work, but requires extra memory. Disable this if you don't use ProtocolLib!");
         c.addComment("settings.instant-interaction", "Disables delay of all interactions");
+        c.addComment("settings.disable-infinisleeper-thread-usage", "Disable infinisleeper thread usage, just enable this if you know what are you doing.");
+        c.addComment("settings.enable-fastmath", "Enable Fast Math usage.");
+        c.addComment("settings.use-tcp-fastopen", "Options: 0 - Disabled.; 1 - TFO is enabled for outgoing connections (clients).; 2 - TFO is enabled for incoming connections (servers).; 3 - TFO is enabled for both clients and servers.");
+        c.addComment("settings.enable-fastmath-cos-sin", "Enable Fast Math usage with cos() and sin() methods, this may break anticheats and server-side calculations.");
+        c.addComment("settings.tile-entity-ticking-time", "Ticking time (20 ticks per second) for usage on tile entity operations.");
+        c.addComment("settings.item-dirty-ticks", "Controls the interval for the item-dirty check. Minecraft checks an item every tick to see if it was changed. This can be expensive because it also needs to check all NBT data. Spigot only checks for basic count/data/type data and does a deep check every 20 ticks by default.");
+        c.addComment("settings.use-tcp-fastopen", "Enables the TCP_FASTOPEN socket option");
         //NachoWorldConfig.loadComments(); causes IndexOfOutBoundsException due to not currently being in the config
     }
 
@@ -333,49 +340,42 @@ public class NachoConfig {
 
     private static void disableInfiniSleeperThreadUsage() {
         disableInfiniSleeperThreadUsage = getBoolean("settings.disable-infinisleeper-thread-usage", false);
-        c.addComment("settings.disable-infinisleeper-thread-usage", "Disable infinisleeper thread usage, just enable this if you know what are you doing.");
     }
 
     public static boolean enableFastMath;
 
     private static void enableFastMath() {
         enableFastMath = getBoolean("settings.enable-fastmath", false);
-        c.addComment("settings.enable-fastmath", "Enable Fast Math usage.");
     }
 
     public static boolean enableFastMathCosSin;
 
     private static void enableFastMathCosSin() {
         enableFastMathCosSin = getBoolean("settings.enable-fastmath-cos-sin", false);
-        c.addComment("settings.enable-fastmath-cos-sin", "Enable Fast Math usage with cos() and sin() methods, this may break anticheats and server-side calculations.");
     }
 
     public static int tileEntityTickingTime;
 
     private static void tileEntityTickingTime() {
         tileEntityTickingTime = getInt("settings.tile-entity-ticking-time", 20);
-        c.addComment("settings.tile-entity-ticking-time", "Ticking time (20 ticks per second) for usage on tile entity operations.");
     }
 
     public static int itemDirtyTicks;
 
     private static void itemDirtyTicks() {
         itemDirtyTicks = getInt("settings.item-dirty-ticks", 20);
-        c.addComment("settings.item-dirty-ticks", "Controls the interval for the item-dirty check. Minecraft checks an item every tick to see if it was changed. This can be expensive because it also needs to check all NBT data. Spigot only checks for basic count/data/type data and does a deep check every 20 ticks by default.");
     }
 
     public static boolean enableTcpFastOpen;
 
     private static void enableTcpFastOpen() {
         enableTcpFastOpen = getBoolean("settings.use-tcp-fastopen", true);
-        c.addComment("settings.use-tcp-fastopen", "Enables the TCP_FASTOPEN socket option");
     }
 
     public static int modeTcpFastOpen;
 
     private static void modeTcpFastOpen() {
         modeTcpFastOpen = getInt("settings.tcp-fastopen-mode", 1);
-        c.addComment("settings.use-tcp-fastopen", "Options: 0 - Disabled.; 1 - TFO is enabled for outgoing connections (clients).; 2 - TFO is enabled for incoming connections (servers).; 3 - TFO is enabled for both clients and servers.");
     }
 
     public static boolean enableProtocolLibShim;
