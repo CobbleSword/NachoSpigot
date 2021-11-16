@@ -1,4 +1,4 @@
-package me.elier.minecraft.util;
+package me.elier.util.minecraft;
 
 public class CryptException extends Exception {
     public CryptException(Throwable throwable) {
