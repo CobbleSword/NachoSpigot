@@ -109,7 +109,7 @@ public class NachoWorldConfig {
 
     private void physics() {
         disablePhysicsPlace = getBoolean("physics.disable-place", false);
-        disablePhysicsUpdate = getBoolean("settings.physics.disable-update", false);
+        disablePhysicsUpdate = getBoolean("physics.disable-update", false);
     }
 
     public boolean enableLavaToCobblestone;

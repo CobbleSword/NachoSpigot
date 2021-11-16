@@ -141,7 +141,7 @@ public class NachoConfig {
         c.addComment("settings.tile-entity-ticking-time", "Ticking time (20 ticks per second) for usage on tile entity operations.");
         c.addComment("settings.item-dirty-ticks", "Controls the interval for the item-dirty check. Minecraft checks an item every tick to see if it was changed. This can be expensive because it also needs to check all NBT data. Spigot only checks for basic count/data/type data and does a deep check every 20 ticks by default.");
         c.addComment("settings.use-tcp-fastopen", "Enables the TCP_FASTOPEN socket option");
-        //NachoWorldConfig.loadComments(); causes IndexOfOutBoundsException due to not currently being in the config
+        NachoWorldConfig.loadComments();
     }
 
     static void readConfig(Class<?> clazz, Object instance) {
