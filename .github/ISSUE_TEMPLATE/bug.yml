@@ -38,7 +38,7 @@ body:
       description: |
         Run the command `/version` on your server and provide the output without any modifications.
         <details>
-        <summary>	</summary>
+        <summary>	Example </summary>
 
         ```
         > version
