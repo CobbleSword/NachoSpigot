@@ -68,6 +68,8 @@ body:
         - label: You have confirmed that there aren’t any issues open regarding this bug.
           required: true
 
-
+  - type: markdown
+    attributes:
+      value: |
         If you have any other questions regarding your finding contact us on our discord `#nacho-bug-report`
         [Discord](https://discord.gg/ewcYeERKJw).
