@@ -1,40 +1,42 @@
 name: Behavior Bug
-description: Report issues with behaviour bugs.
+description: Report issues with behavior bugs.
 labels: [ "bug" ]
 body:
   - type: textarea
     attributes:
-      label: Observed behavior
+      label: Observed Behavior
       description: What you actually saw.
     validations:
       required: true
       
   - type: textarea
     attributes:
-      label: Expected behavior
+      label: Expected Behavior
       description: What you expected to see.
     validations:
       required: true
 
   - type: textarea
     attributes:
-      label: Steps to reproduce
+      label: Steps To Reproduce
       description: You may submit a video or an ordered list of the steps you took to find the issue.
     validations:
       required: true
 
   - type: textarea
     attributes:
-      label: Plugin list (Optional)
+      label: Plugin List
       description: |
         All plugins running on your server.
         Use the command `/plugins`.
+
+        This is optional, we recommend you to provide it, but if you don't want to, then that's fine.
     validations:
       required: false
 
   - type: textarea
     attributes:
-      label: NachoSpigot version
+      label: Server Version
       description: |
         Run the command `/version` on your server and provide the output without any modifications.
         <details>
