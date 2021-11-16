@@ -354,7 +354,7 @@ public class NachoConfig {
         enableFastMathCosSin = getBoolean("settings.enable-fastmath-cos-sin", false);
     }
 
-    public static int tileEntityTickingTime;
+    public static int tileEntityTickingTime = 20; // required to be initialized so tests don't fail
 
     private static void tileEntityTickingTime() {
         tileEntityTickingTime = getInt("settings.tile-entity-ticking-time", 20);
