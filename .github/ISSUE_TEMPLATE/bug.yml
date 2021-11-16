@@ -60,7 +60,8 @@ body:
 
   - type: checkboxes
     attributes:
-      label: Please confirm the following:
+      label: Agreements
+      description: "Please agree to the following:"
       options:
         - label: You were able to find this issue on the latest version of NachoSpigot.
           required: true
