@@ -294,7 +294,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
                 for (Chunk newChunk : chunkList)
                     chunkPosSet.add(this.chunkToLong(newChunk.locX, newChunk.locZ));
 
-                for (EntityTrackerEntry entitytrackerentry : this.u().getTracker().c) {
+                for (EntityTrackerEntry entitytrackerentry : this.u().getTracker().entitytTrackerHashset) {
                     if (entitytrackerentry.tracker != this && chunkPosSet.contains(this.chunkToLong(entitytrackerentry.tracker.ae, entitytrackerentry.tracker.ag))) {
                         entitytrackerentry.updatePlayer(this);
                     }
