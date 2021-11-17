@@ -72,6 +72,6 @@ public class TicksPerSecondCommand extends Command
                 + ( ( tps > 20.0 ) ? "*" : "" ) + Math.min( Math.round( tps * 100.0 ) / 100.0, 20.0 );
         }
         return (( tps > ((90.0 * tps) / 100.0) ) ? ChatColor.GREEN : ( tps > ((80.0 * tps) / 100.0) ) ? ChatColor.YELLOW : ChatColor.RED ).toString()
-                + Math.min( Math.round( tps * 100.0 ) / 100.0, NachoConfig.combatThreadTPS );
+                + ( ( tps > NachoConfig.combatThreadTPS ) ? "*" : "" ) + Math.min( Math.round( tps * 100.0 ) / 100.0, NachoConfig.combatThreadTPS );
     }
 }
