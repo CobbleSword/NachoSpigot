@@ -8,8 +8,8 @@ import java.util.Set;
 
 public final class IndexedLinkedHashSet<E> implements Set<E> {
 
-    private final ArrayList<E> list = new ArrayList<E>();
-    private final HashSet<E> set = new HashSet<E>();
+    private final ArrayList<E> list = new ArrayList<>();
+    private final HashSet<E> set = new HashSet<>();
 
     public boolean add(E e) {
         if (set.add(e)) {
@@ -55,9 +55,11 @@ public final class IndexedLinkedHashSet<E> implements Set<E> {
 
     public boolean addAll(Collection<? extends E> c) {
         boolean modified = false;
-        for (E e : c)
-            if (add(e))
+        for (E e : c) {
+            if (add(e)) {
                 modified = true;
+            }
+        }
         return modified;
     }
 

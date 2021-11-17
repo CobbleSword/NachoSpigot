@@ -296,17 +296,13 @@ public class NachoConfig {
     }
 
     public static boolean disableTracking;
-
-    private static void disableTracking() {
-        disableTracking = getBoolean("settings.disable-tracking", false);
-        c.addComment("settings.disable-tracking", "Disable entity tracking");
-    }
-
     public static int trackingThreads;
 
-    private static void trackingThreads() {
-        trackingThreads = getInt("settings.tracking-threads", 4);
-        c.addComment("settings.tracking-threads", "Entity Tracking Threads");
+    private static void disableTracking() {
+        disableTracking = getBoolean("settings.async.entity-tracking.disable", false);
+        c.addComment("settings.async.entity-tracking.disable", "Disable entity tracking");
+        trackingThreads = getInt("settings.async.entity-tracking.threads", 4);
+        c.addComment("settings.async.entity-tracking.threads", "Entity Tracking Threads");
     }
 
     public static boolean fixEatWhileRunning;

@@ -72,7 +72,7 @@ public class CannonTrackerEntry extends EntityTrackerEntry {
             return;
         }
 
-        for (EntityPlayer entityplayer : (Collection<EntityPlayer>) this.trackedPlayers) {
+        for (EntityPlayer entityplayer : this.trackedPlayers) {
             double d0 = entityplayer.locX - this.tracker.locX;
             double d1 = entityplayer.locZ - this.tracker.locZ;
             int range = this.getRange();

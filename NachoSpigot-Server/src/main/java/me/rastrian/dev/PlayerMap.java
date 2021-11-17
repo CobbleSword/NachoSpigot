@@ -1,25 +1,25 @@
 package me.rastrian.dev;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Consumer;
-
-import java.util.function.Function;
-import com.google.common.base.Predicate;
-
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.MathHelper;
 import net.minecraft.server.Packet;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 public class PlayerMap {
 
     private static final int CHUNK_BITS = 5;
-    private final Long2ObjectOpenHashMap<List<EntityPlayer>> map = new Long2ObjectOpenHashMap<List<EntityPlayer>>();
+    private final Long2ObjectMap<List<EntityPlayer>> map = new Long2ObjectOpenHashMap<>();
 
     private static long xzToKey(long x, long z) {
-        return ((long) x << 32) + z - Integer.MIN_VALUE;
+        return (x << 32) + z - Integer.MIN_VALUE;
     }
 
     public void add(EntityPlayer player) {
@@ -28,7 +28,7 @@ public class PlayerMap {
         long key = xzToKey(x, z);
         List<EntityPlayer> list = map.get(key);
         if (list == null) {
-            list = new ArrayList<EntityPlayer> ();
+            list = new ArrayList<>();
             map.put(key, list);
         }
         list.add(player);
@@ -57,7 +57,7 @@ public class PlayerMap {
         key = xzToKey(x, z);
         list = map.get(key);
         if (list == null) {
-            list = new ArrayList<EntityPlayer> ();
+            list = new ArrayList<>();
             map.put(key, list);
         }
         list.add(player);
@@ -157,11 +157,11 @@ public class PlayerMap {
         return bestPlayer;
     }
 
-    public EntityPlayer getNearestAttackablePlayer(double x, double y, double z, double maxXZ, double maxY, Function<EntityHuman,Double> visibility) {
+    public EntityPlayer getNearestAttackablePlayer(double x, double y, double z, double maxXZ, double maxY, Function<EntityHuman, Double> visibility) {
         return getNearestAttackablePlayer(x, y, z, maxXZ, maxY, visibility, null);
     }
 
-    public EntityPlayer getNearestAttackablePlayer(double x, double y, double z, double maxXZ, double maxY, Function<EntityHuman,Double> visibility, Predicate<EntityHuman> condition) {
+    public EntityPlayer getNearestAttackablePlayer(double x, double y, double z, double maxXZ, double maxY, Function<EntityHuman, Double> visibility, Predicate<EntityHuman> condition) {
         double bestDistanceSqrd = -1.0;
         EntityPlayer bestPlayer = null;
 
@@ -170,7 +170,7 @@ public class PlayerMap {
                 List<EntityPlayer> players = map.get(xzToKey(chunkX, chunkZ));
                 if (players != null) {
                     for (EntityPlayer player : players) {
-                        if (!player.abilities.isInvulnerable && player.isAlive() && (condition == null || condition.apply(player))) {
+                        if (!player.abilities.isInvulnerable && player.isAlive() && (condition == null || condition.test(player))) {
                             double dx = player.locX - x;
                             double dz = player.locZ - z;
                             double playerDistSqrd = dx * dx + dz * dz;
@@ -202,7 +202,7 @@ public class PlayerMap {
         return bestPlayer;
     }
 
-    public void sendPacketNearby(EntityPlayer source, double x, double y, double z, double distance, Packet packet, boolean self) {
+    public void sendPacketNearby(EntityPlayer source, double x, double y, double z, double distance, Packet<?> packet, boolean self) {
         for (int chunkX = MathHelper.floor(x - distance) >> CHUNK_BITS; chunkX <= MathHelper.floor(x + distance) >> CHUNK_BITS; chunkX++) {
             for (int chunkZ = MathHelper.floor(z - distance) >> CHUNK_BITS; chunkZ <= MathHelper.floor(z + distance) >> CHUNK_BITS; chunkZ++) {
                 List<EntityPlayer> players = map.get(xzToKey(chunkX, chunkZ));

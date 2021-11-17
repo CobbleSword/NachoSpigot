@@ -10,8 +10,8 @@ import me.elier.nachospigot.config.NachoConfig;
 import me.rastrian.dev.utils.IndexedLinkedHashSet;
 public class EntityTracker {
 
-    public IndexedLinkedHashSet<EntityTrackerEntry> c = new IndexedLinkedHashSet<EntityTrackerEntry>();
-    public IndexedLinkedHashSet<EntityTrackerEntry> getTrackedEntities() { return c; }
+    public IndexedLinkedHashSet<EntityTrackerEntry> entitytTrackerHashset = new IndexedLinkedHashSet<>();
+    public IndexedLinkedHashSet<EntityTrackerEntry> getTrackedEntities() { return entitytTrackerHashset; }
 
     public IntHashMap<EntityTrackerEntry> trackedEntities = new IntHashMap<>();
     public IntHashMap<EntityTrackerEntry> getTrackedEntityHashTable() { return trackedEntities; }
@@ -24,7 +24,7 @@ public class EntityTracker {
 
     // parallel tracking
     private static int trackerThreads = NachoConfig.trackingThreads; // <-- 3 non-this threads, one this
-    private static ExecutorService pool = Executors.newFixedThreadPool(trackerThreads - 1, new ThreadFactoryBuilder().setNameFormat("entity-tracker-%d").build());
+    private static ExecutorService pool = Executors.newFixedThreadPool(trackerThreads - 1, new ThreadFactoryBuilder().setNameFormat("Entity Tracker Thread %d").build());
 
     public EntityTracker(WorldServer worldserver) {
         this.e = 128;
@@ -106,12 +106,12 @@ public class EntityTracker {
 
         try {
             if (this.trackedEntities.b(entity.getId())) {
-                throw new IllegalStateException("Entity is already tracked!");
+                untrackEntity(entity);
             }
 
-            EntityTrackerEntry entitytrackerentry = createTracker(this, entity, i, j, flag); // IonSpigot
+            EntityTrackerEntry entitytrackerentry = createTracker(entity, i, j, flag); // IonSpigot
 
-            this.c.add(entitytrackerentry);
+            this.entitytTrackerHashset.add(entitytrackerentry);
             this.trackedEntities.a(entity.getId(), entitytrackerentry);
             // entitytrackerentry.scanPlayers(this.world.players);
             entitytrackerentry.addNearPlayers();
@@ -121,11 +121,11 @@ public class EntityTracker {
     }
 
     // IonSpigot start
-    private EntityTrackerEntry createTracker(EntityTracker tracker, Entity entity, int i, int j, boolean flag) {
+    private EntityTrackerEntry createTracker(Entity entity, int i, int j, boolean flag) {
         if (entity.isCannoningEntity && NachoConfig.useFasterCannonTracker) {
-            return new me.suicidalkids.ion.visuals.CannonTrackerEntry(tracker, entity, i, j, flag);
+            return new me.suicidalkids.ion.visuals.CannonTrackerEntry(this, entity, i, j, flag);
         } else {
-            return new EntityTrackerEntry(tracker, entity, i, j, flag);
+            return new EntityTrackerEntry(this, entity, i, j, flag);
         }
     }
     // IonSpigot end
@@ -134,13 +134,13 @@ public class EntityTracker {
         org.spigotmc.AsyncCatcher.catchOp( "entity untrack"); // Spigot
         if (entity instanceof EntityPlayer) {
             EntityPlayer entityplayer = (EntityPlayer) entity;
-            for (EntityTrackerEntry entitytrackerentry : this.c) {
+            for (EntityTrackerEntry entitytrackerentry : this.entitytTrackerHashset) {
                 entitytrackerentry.a(entityplayer);
             }
         }
         EntityTrackerEntry entry = this.trackedEntities.d(entity.getId());
         if (entry != null) {
-            this.c.remove(entry);
+            this.entitytTrackerHashset.remove(entry);
             entry.a();
         }
     }
@@ -150,19 +150,18 @@ public class EntityTracker {
         final CountDownLatch latch = new CountDownLatch(trackerThreads);
         for (int i = 1; i <= trackerThreads; i++) {
             final int localOffset = offset++;
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    for (int i = localOffset; i < c.size(); i += trackerThreads) {
-                        c.get(i).update();
-                    }
-                    latch.countDown();
-
-            /*entry.track(this.world.players);
-            if (entry.playerEntitiesUpdated() && entry.getTracker() instanceof EntityPlayer) {
-                entities.add((EntityPlayer) entry.getTracker()); */
-            }
-        };
+            Runnable runnable = () -> {
+                /*
+                Loops the entire index hashset of registered entities.
+                In this loop it distributes the entities among the defined threads.
+                */
+                for (int n = localOffset; n < entitytTrackerHashset.size(); n += trackerThreads) {
+                    entitytTrackerHashset.get(n).update();
+                }
+                
+                latch.countDown();
+            };
+            
             if (i < trackerThreads) pool.execute(runnable); else runnable.run();
         } try {
             latch.await();
@@ -178,7 +177,7 @@ public class EntityTracker {
     }
 
     public void a(EntityPlayer entityplayer) {
-        for (EntityTrackerEntry entitytrackerentry : this.c) {
+        for (EntityTrackerEntry entitytrackerentry : this.entitytTrackerHashset) {
             if (entitytrackerentry.getTracker() == entityplayer) {
                 // entitytrackerentry.scanPlayers(this.world.players);
                 entitytrackerentry.addNearPlayers();
@@ -188,14 +187,14 @@ public class EntityTracker {
         }
     }
 
-    public void a(Entity entity, Packet packet) {
+    public void a(Entity entity, Packet<?> packet) {
         EntityTrackerEntry entitytrackerentry = this.trackedEntities.get(entity.getId());
         if (entitytrackerentry != null) {
             entitytrackerentry.broadcast(packet);
         }
     }
 
-    public void sendPacketToEntity(Entity entity, Packet packet) {
+    public void sendPacketToEntity(Entity entity, Packet<?> packet) {
         EntityTrackerEntry entitytrackerentry = this.trackedEntities.get(entity.getId());
         if (entitytrackerentry != null) {
             entitytrackerentry.broadcastIncludingSelf(packet);
@@ -203,7 +202,7 @@ public class EntityTracker {
     }
 
     public void untrackPlayer(EntityPlayer entityplayer) {
-        for (EntityTrackerEntry entitytrackerentry : this.c) {
+        for (EntityTrackerEntry entitytrackerentry : this.entitytTrackerHashset) {
             entitytrackerentry.clear(entityplayer);
         }
     }
