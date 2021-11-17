@@ -13,11 +13,6 @@ import java.util.Objects;
 
 public class ConfigurationTests {
     private static class TestUtils {
-        public static void test() throws IOException {
-            ClassReader cr = new ClassReader(NachoConfig.class.getName());
-            cr.accept(new ConfigClassVisitor(Opcodes.ASM9), ClassReader.SKIP_FRAMES);
-        }
-
         private static class ConfigClassVisitor extends ClassVisitor {
             public ConfigClassVisitor(int api) {
                 super(api);
@@ -79,6 +74,7 @@ public class ConfigurationTests {
     // Makes sure that c.addComment is not called in any config init functions.
     @Test
     public void noAddCommentInConfigInit() throws IOException {
-        TestUtils.test();
+        ClassReader cr = new ClassReader(NachoConfig.class.getName());
+        cr.accept(new TestUtils.ConfigClassVisitor(Opcodes.ASM9), ClassReader.SKIP_FRAMES);
     }
 }
