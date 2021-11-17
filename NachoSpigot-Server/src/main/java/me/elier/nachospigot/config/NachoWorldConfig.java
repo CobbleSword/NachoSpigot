@@ -56,7 +56,7 @@ public class NachoWorldConfig {
 
     private <T> List getList(String path, T def) {
         config.addDefault("world-settings.default." + path, def);
-        return (List<T>) config.getList("world-settings." + worldName + "." + path, config.getList("world-settings.default." + path));
+        return config.getList("world-settings." + worldName + "." + path, config.getList("world-settings.default." + path));
     }
 
     private String getString(String path, String def) {
@@ -64,29 +64,44 @@ public class NachoWorldConfig {
         return config.getString("world-settings." + worldName + "." + path, config.getString("world-settings.default." + path));
     }
 
-    private void addComment(String path, String comment) {
+    private static void addComment(String path, String comment) {
         NachoConfig.c.addComment("world-settings.default." + path, comment);
+    }
+
+    static void loadComments() {
+        addComment("disable-sponge-absorption", "Disables sponge absorption");
+        addComment("unload-chunks", "Enable unloading chunks");
+        addComment("block-operations", "Enable block operations");
+        addComment("physics.disable-place", "Disables physics place");
+        addComment("physics.disable-update", "Disables physics update");
+        addComment("enable-lava-to-cobblestone", "Enables lava converting to cobblestone.");
+        addComment("entity.mob-ai", "Enables mob AI");
+        addComment("entity.mob-sound", "Enables mob sound");
+        addComment("entity.entity-activation", "Enables active ticks for entities");
+        addComment("entity.endermite-spawning", "Enables endermite spawning.");
+        addComment("infinite-water-sources", "Enables infinite water sources");
+        addComment("explosions.constant-explosions", "Changes the radius of explosions to be constant.");
+        addComment("explosions.explode-protected-regions", "Toggles whether explosions should explode protected regions");
+        addComment("explosions.reduced-density-rays", "Toggles whether the server should use reduced rays when calculating density");
+        addComment("tick-enchantment-tables", "Toggles whether enchantment tables should be ticked");
     }
 
     public boolean disableSpongeAbsorption;
 
     private void disableSpongeAbsorption() {
         disableSpongeAbsorption = getBoolean("disable-sponge-absorption", false);
-        addComment("disable-sponge-absorption", "Disables sponge absorption");
     }
 
     public boolean doChunkUnload;
 
     private void doChunkUnload() {
         doChunkUnload = getBoolean("unload-chunks", true);
-        addComment("unload-chunks", "Enable unloading chunks");
     }
 
     public boolean doBlocksOperations;
 
     private void doBlocksOperations() {
         doBlocksOperations = getBoolean("block-operations", true);
-        addComment("block-operations", "Enable block operations");
     }
 
     public boolean disablePhysicsPlace;
@@ -94,16 +109,13 @@ public class NachoWorldConfig {
 
     private void physics() {
         disablePhysicsPlace = getBoolean("physics.disable-place", false);
-        addComment("physics.disable-place", "Disables physics place");
-        disablePhysicsUpdate = getBoolean("settings.physics.disable-update", false);
-        addComment("physics.disable-update", "Disables physics update");
+        disablePhysicsUpdate = getBoolean("physics.disable-update", false);
     }
 
     public boolean enableLavaToCobblestone;
 
     private void setEnableLavaToCobblestone() {
         enableLavaToCobblestone = getBoolean("enable-lava-to-cobblestone", true);
-        addComment("enable-lava-to-cobblestone", "Enables lava converting to cobblestone.");
     }
 
     public boolean enableMobAI;
@@ -113,20 +125,15 @@ public class NachoWorldConfig {
 
     private void entity() {
         enableMobAI = getBoolean("entity.mob-ai", true);
-        addComment("entity.mob-ai", "Enables mob AI");
         enableMobSound = getBoolean("entity.mob-sound", true);
-        addComment("entity.mob-sound", "Enables mob sound");
         enableEntityActivation = getBoolean("entity.entity-activation", true);
-        addComment("entity.entity-activation", "Enables active ticks for entities");
         endermiteSpawning = getBoolean("entity.endermite-spawning", true);
-        addComment("entity.endermite-spawning", "Enables endermite spawning.");
     }
 
     public boolean infiniteWaterSources;
 
     private void infiniteWaterSources() {
         infiniteWaterSources = getBoolean("infinite-water-sources", true);
-        addComment("infinite-water-sources", "Enables infinite water sources");
     }
 
     public boolean constantExplosions;
@@ -135,17 +142,13 @@ public class NachoWorldConfig {
 
     private void explosions() {
         constantExplosions = getBoolean("explosions.constant-radius", false);
-        addComment("explosions.constant-explosions", "Changes the radius of explosions to be constant.");
         explosionProtectedRegions = getBoolean("explosions.explode-protected-regions", true);
-        addComment("explosions.explode-protected-regions", "Toggles whether explosions should explode protected regions");
         reducedDensityRays = getBoolean("explosions.reduced-density-rays", true);
-        addComment("explosions.reduced-density-rays", "Toggles whether the server should use reduced rays when calculating density");
     }
 
     public boolean shouldTickEnchantmentTables;
 
     private void shouldTickEnchantmentTables() {
         shouldTickEnchantmentTables = getBoolean("tick-enchantment-tables", true);
-        addComment("tick-enchantment-tables", "Toggles whether enchantment tables should be ticked");
     }
 }
