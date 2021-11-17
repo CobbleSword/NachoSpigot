@@ -1,6 +1,10 @@
 package net.minecraft.server;
 
+import com.github.sadcenter.core.AsyncHttpAuthenticator;
+import com.github.sadcenter.core.NachoAuthenticator;
 import com.mojang.authlib.GameProfile;
+import dev.cobblesword.nachospigot.Nacho;
+
 import java.util.UUID;
 
 public class ItemSkull extends Item {
@@ -121,13 +125,8 @@ public class ItemSkull extends Item {
             GameProfile gameprofile = new GameProfile((UUID) null, nbttagcompound.getString("SkullOwner"));
 
             // Spigot start
-            TileEntitySkull.b(gameprofile, new com.google.common.base.Predicate<GameProfile>() {
-
-                @Override
-                public boolean apply(GameProfile gameprofile) {
-                    nbttagcompound.set("SkullOwner", GameProfileSerializer.serialize(new NBTTagCompound(), gameprofile));                    
-                    return false;
-                }
+            ((NachoAuthenticator) MinecraftServer.getServer().getAuthenticator()).getProfile(gameprofile.getName()).thenAccept(profile -> {
+                nbttagcompound.set("SkullOwner", GameProfileSerializer.serialize(new NBTTagCompound(), profile));
             });
             // Spigot end
             return true;

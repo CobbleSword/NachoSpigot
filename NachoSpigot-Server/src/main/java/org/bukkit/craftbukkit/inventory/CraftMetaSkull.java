@@ -2,6 +2,10 @@ package org.bukkit.craftbukkit.inventory;
 
 import java.util.Map;
 
+import com.github.sadcenter.core.AsyncHttpAuthenticator;
+import com.github.sadcenter.core.NachoAuthenticator;
+import com.github.sadcenter.impl.NachoAuthenticatorService;
+import com.github.sadcenter.impl.profile.UserProfile;
 import net.minecraft.server.*;
 
 // PaperSpigot start
@@ -68,15 +72,30 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
         }
     }
 
+    //TODO fix that.
     @Override
     void applyToItem(final NBTTagCompound tag) { // Spigot - make final
         super.applyToItem(tag);
 
         if (profile != null) {
-            NBTTagCompound owner = new NBTTagCompound();
+
+            NachoAuthenticatorService authenticator = (NachoAuthenticatorService) MinecraftServer.getServer().getAuthenticator();
+
+            authenticator.getProfile(profile.getName()).thenAccept(gameProfile -> {
+                NBTTagCompound ownerTag = new NBTTagCompound();
+                GameProfileSerializer.serialize(ownerTag, gameProfile);
+                tag.set( SKULL_OWNER.NBT, ownerTag);
+            });
+
+        }
+
+
+
+
+            /*NBTTagCompound owner = new NBTTagCompound();
             GameProfileSerializer.serialize(owner, profile);
             tag.set( SKULL_OWNER.NBT, owner );
-            // Spigot start - do an async lookup of the profile. 
+            // Spigot start - do an async lookup of the profile.
             // Unfortunately there is not way to refresh the holding
             // inventory, so that responsibility is left to the user.
             net.minecraft.server.TileEntitySkull.b(profile, input -> {
@@ -85,8 +104,9 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
                 tag.set( SKULL_OWNER.NBT, owner1);
                 return false;
             });
+
+             */
             // Spigot end
-        }
     }
 
     @Override
@@ -134,7 +154,7 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
 		   
         if (profile == null) {
         	// name.toLowerCase(java.util.Locale.ROOT) causes the NPE
-        	profile = TileEntitySkull.skinCache.getIfPresent(name.toLowerCase(java.util.Locale.ROOT)); // Paper // tries to get from skincache
+        	profile = ((NachoAuthenticator) MinecraftServer.getServer().getAuthenticator()).getPresentProfile(name);
         }
         if (profile == null) profile = new GameProfile(null, name);
         
