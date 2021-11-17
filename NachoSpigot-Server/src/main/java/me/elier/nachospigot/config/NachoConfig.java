@@ -183,23 +183,21 @@ public class NachoConfig {
     }
 
     public static int nettyThreads;
-    public static int threadTPS;
-
-    private static void nettyThreads() {
-        nettyThreads = getInt("settings.thread.netty-threads", 4);
-        c.addComment("settings.thread.netty-threads", "Number of netty-threads");
-        threadTPS = getInt("settings.thread.thread-tps", 60);
-        c.addComment("settings.thread.thread-tps", "Thread TPS");
-    }
+    public static int combatThreadTPS;
 
     public static boolean asyncHitDetection;
     public static boolean asyncKnockback;
 
-    private static void asyncHitDetection() {
-        asyncHitDetection = getBoolean("settings.async.hit-detection", false);
-        c.addComment("settings.async.hit-detection", "Enables Async Hit Detection.");
-        asyncKnockback = getBoolean("settings.async.knockback", false);
-        c.addComment("settings.async.knockback", "Enables Async Knockback.");
+    private static void nettyThreads() {
+        nettyThreads = getInt("settings.thread.netty.threads", 4);
+        c.addComment("settings.thread.netty.threads", "Manage number of netty-threads");
+        
+        combatThreadTPS = getInt("settings.thread.combat.tps", 40);
+        c.addComment("settings.thread.combat.tps", "Combat Thread TPS");
+        asyncHitDetection = getBoolean("settings.thread.combat.async-hit-detection", false);
+        c.addComment("settings.thread.combat.async-hit-detection", "Enables Async Hit Detection.");
+        asyncKnockback = getBoolean("settings.thread.combat.async-knockback", false);
+        c.addComment("settings.thread.combat.async-knockback", "Enables Async Knockback.");
     }
 
     public static boolean useFastOperators;
@@ -208,6 +206,7 @@ public class NachoConfig {
         useFastOperators = getBoolean("settings.fast-operators", false);
         c.addComment("settings.fast-operators", "Enables Fast Operators, which uses a faster method for managing operators");
     }
+
     public static boolean patchProtocolLib;
 
     private static void patchProtocolLib() {

@@ -378,26 +378,8 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 
     public CrashReport b(CrashReport crashreport) {
         crashreport = super.b(crashreport);
-        crashreport.g().a("Is Modded", new Callable() {
-            public String a() throws Exception {
-                String s = DedicatedServer.this.getServerModName();
-
-                return !s.equals("vanilla") ? "Definitely; Server brand changed to \'" + s + "\'" : "Unknown (can\'t tell)";
-            }
-
-            public Object call() throws Exception {
-                return this.a();
-            }
-        });
-        crashreport.g().a("Type", new Callable() {
-            public String a() throws Exception {
-                return "Dedicated Server (map_server.txt)";
-            }
-
-            public Object call() throws Exception {
-                return this.a();
-            }
-        });
+        crashreport.g().a("Is Modded", () -> !DedicatedServer.this.getServerModName().equals("vanilla") ? "Definitely; Server brand changed to \'" + DedicatedServer.this.getServerModName() + "\'" : "Unknown (can\'t tell)");
+        crashreport.g().a("Type", () -> "Dedicated Server (map_server.txt)");
         return crashreport;
     }
 
@@ -522,11 +504,9 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
     }
 
     public boolean a(World world, BlockPosition blockposition, EntityHuman entityhuman) {
-        if (world.worldProvider.getDimension() != 0) {
+        if (world.worldProvider.getDimension() != 0 || this.aP().getOPs().isEmpty() || this.aP().isOp(entityhuman.getProfile()) || this.getSpawnProtection() <= 0) {
             return false;
-        } else if (this.aP().getOPs().isEmpty()) {
-            return false;
-        } else if (this.aP().isOp(entityhuman.getProfile())) {
+        /*} else if (this.aP().isOp(entityhuman.getProfile())) {
             return false;
         } else if (this.getSpawnProtection() <= 0) {
             return false;
@@ -536,8 +516,14 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
             int j = MathHelper.a(blockposition.getZ() - blockposition1.getZ());
             int k = Math.max(i, j);
 
-            return k <= this.getSpawnProtection();
+            return k <= this.getSpawnProtection();*/
         }
+        BlockPosition blockposition1 = world.getSpawn();
+        int i = MathHelper.a(blockposition.getX() - blockposition1.getX());
+        int j = MathHelper.a(blockposition.getZ() - blockposition1.getZ());
+        int k = Math.max(i, j);
+        
+        return k <= this.getSpawnProtection();
     }
 
     public int p() {
@@ -546,7 +532,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 
     public void setIdleTimeout(int i) {
         super.setIdleTimeout(i);
-        this.propertyManager.setProperty("player-idle-timeout", Integer.valueOf(i));
+        this.propertyManager.setProperty("player-idle-timeout", i);
         this.a();
     }
 
@@ -579,7 +565,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
     }
 
     protected boolean aR() {
-        server.getLogger().info( "**** Beginning UUID conversion, this may take A LONG time ****"); // Spigot, let the user know whats up!
+        server.getLogger().info("**** Beginning UUID conversion, this may take A LONG time ****"); // Spigot, let the user know whats up!
         boolean flag = false;
 
         int i;
@@ -590,7 +576,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                 this.aU();
             }
 
-            flag = NameReferencingFileConverter.a((MinecraftServer) this);
+            flag = NameReferencingFileConverter.a(this);
         }
 
         boolean flag1 = false;
@@ -601,7 +587,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                 this.aU();
             }
 
-            flag1 = NameReferencingFileConverter.b((MinecraftServer) this);
+            flag1 = NameReferencingFileConverter.b(this);
         }
 
         boolean flag2 = false;
@@ -612,7 +598,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                 this.aU();
             }
 
-            flag2 = NameReferencingFileConverter.c((MinecraftServer) this);
+            flag2 = NameReferencingFileConverter.c(this);
         }
 
         boolean flag3 = false;
@@ -623,7 +609,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                 this.aU();
             }
 
-            flag3 = NameReferencingFileConverter.d((MinecraftServer) this);
+            flag3 = NameReferencingFileConverter.d(this);
         }
 
         boolean flag4 = false;
@@ -643,9 +629,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
     private void aU() {
         try {
             Thread.sleep(5000L);
-        } catch (InterruptedException interruptedexception) {
-            ;
-        }
+        } catch (InterruptedException interruptedexception) {}
     }
 
     public long aS() {

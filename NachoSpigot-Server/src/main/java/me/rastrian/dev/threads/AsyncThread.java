@@ -15,7 +15,7 @@ import net.openhft.affinity.AffinityStrategies;
 
 public abstract class AsyncThread {
     private boolean running = true;
-    private int TICK_TIME = 1000000000 / NachoConfig.threadTPS;
+    private int TICK_TIME = 1000000000 / NachoConfig.combatThreadTPS;
     private Thread t;
     protected Queue<Runnable> packets = new ConcurrentLinkedQueue<Runnable>();
 

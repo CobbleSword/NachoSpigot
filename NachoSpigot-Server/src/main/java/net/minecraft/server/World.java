@@ -1653,7 +1653,6 @@ public abstract class World implements IBlockAccess {
         guardEntityList = true; // Spigot
         // CraftBukkit start - Use field for loop variable
         co.aikar.timings.TimingHistory.entityTicks += this.entityList.size(); // Spigot
-        int entitiesThisCycle = 0;
         // PaperSpigot start - Disable tick limiters
         //if (tickPosition < 0) tickPosition = 0;
         for (tickPosition = 0; tickPosition < entityList.size(); tickPosition++) {
@@ -1725,7 +1724,6 @@ public abstract class World implements IBlockAccess {
         // CraftBukkit end
 
         // Spigot start
-        int tilesThisCycle = 0;
         Iterator<TileEntity> tileIterator = this.tileEntityList.tickIterator(this.getTime());
         while (tileIterator.hasNext()) { // PaperSpigot - Disable tick limiters
             tileTickPosition = (tileTickPosition < tileEntityList.size()) ? tileTickPosition : 0;
@@ -1733,7 +1731,6 @@ public abstract class World implements IBlockAccess {
             // Spigot start
             if (tileentity == null) {
                 getServer().getLogger().severe("Spigot has detected a null entity and has removed it, preventing a crash");
-                tilesThisCycle--;
                 tileIterator.remove();
                 continue;
             }
@@ -1755,7 +1752,6 @@ public abstract class World implements IBlockAccess {
                         tileentity.tickTimer.stopTiming();
                         System.err.println("TileEntity threw exception at " + tileentity.world.getWorld().getName() + ":" + tileentity.position.getX() + "," + tileentity.position.getY() + "," + tileentity.position.getZ());
                         throwable2.printStackTrace();
-                        tilesThisCycle--;
                         tileIterator.remove();
                         continue;
                         // PaperSpigot end
@@ -1769,7 +1765,6 @@ public abstract class World implements IBlockAccess {
             }
 
             if (tileentity.x()) {
-                tilesThisCycle--;
                 tileIterator.remove();
                 //this.h.remove(tileentity); // PaperSpigot - Remove unused list
                 if (this.isLoaded(tileentity.getPosition())) {
@@ -1791,8 +1786,7 @@ public abstract class World implements IBlockAccess {
 
         this.methodProfiler.c("pendingBlockEntities");
         if (!this.b.isEmpty()) {
-            for (int l = 0; l < this.b.size(); ++l) {
-                TileEntity tileentity1 = (TileEntity) this.b.get(l);
+            for (TileEntity tileentity1 : this.b) {
 
                 if (!tileentity1.x()) {
                     /* CraftBukkit start - Order matters, moved down
@@ -1820,23 +1814,18 @@ public abstract class World implements IBlockAccess {
     }
 
     public boolean a(TileEntity tileentity) {
-        boolean flag = true; // PaperSpigot - Remove unused list
-
-        if (flag && tileentity instanceof IUpdatePlayerListBox) {
+        if (tileentity instanceof IUpdatePlayerListBox) {
             this.tileEntityList.add(tileentity);
         }
 
-        return flag;
+        return true;
     }
 
     public void a(Collection<TileEntity> collection) {
         if (this.M) {
             this.b.addAll(collection);
         } else {
-            Iterator iterator = collection.iterator();
-
-            while (iterator.hasNext()) {
-                TileEntity tileentity = (TileEntity) iterator.next();
+            for (TileEntity tileentity : collection) {
 
                 //this.h.add(tileentity); // PaperSpigot - Remove unused list
                 if (tileentity instanceof IUpdatePlayerListBox) {
@@ -1854,7 +1843,6 @@ public abstract class World implements IBlockAccess {
     public void entityJoinedWorld(Entity entity, boolean flag) {
         int i = MathHelper.floor(entity.locX);
         int j = MathHelper.floor(entity.locZ);
-        byte b0 = 32;
 
         // Spigot start
         if ((!org.spigotmc.ActivationRange.checkIfActive(entity)) && (nachoSpigotConfig.enableEntityActivation)) {
@@ -2440,39 +2428,39 @@ public abstract class World implements IBlockAccess {
         int optimalChunks = spigotConfig.chunksPerTick;
         // Quick conditions to allow us to exist early
         if ( optimalChunks > 0  ) {
-        // Keep chunks with growth inside of the optimal chunk range
-        int chunksPerPlayer = Math.min( 200, Math.max( 1, (int) ( ( ( optimalChunks - players.size() ) / (double) players.size() ) + 0.5 ) ) );
-        int randRange = 3 + chunksPerPlayer / 30;
-        // Limit to normal tick radius - including view distance
-        randRange = ( randRange > chunkTickRadius ) ? chunkTickRadius : randRange;
-        // odds of growth happening vs growth happening in vanilla
-        this.growthOdds = this.modifiedOdds = Math.max( 35, Math.min( 100, ( ( chunksPerPlayer + 1 ) * 100F ) / 15F ) );
-        // Spigot end
-        for (i = 0; i < this.players.size(); ++i) {
-            entityhuman = (EntityHuman) this.players.get(i);
-            j = MathHelper.floor(entityhuman.locX / 16.0D);
-            k = MathHelper.floor(entityhuman.locZ / 16.0D);
-            l = this.q();
+            // Keep chunks with growth inside of the optimal chunk range
+            int chunksPerPlayer = Math.min( 200, Math.max( 1, (int) ( ( ( optimalChunks - players.size() ) / (double) players.size() ) + 0.5 ) ) );
+            int randRange = 3 + chunksPerPlayer / 30;
+            // Limit to normal tick radius - including view distance
+            randRange = ( randRange > chunkTickRadius ) ? chunkTickRadius : randRange;
+            // odds of growth happening vs growth happening in vanilla
+            this.growthOdds = this.modifiedOdds = Math.max( 35, Math.min( 100, ( ( chunksPerPlayer + 1 ) * 100F ) / 15F ) );
+            // Spigot end
+            for (i = 0; i < this.players.size(); ++i) {
+                entityhuman = (EntityHuman) this.players.get(i);
+                j = MathHelper.floor(entityhuman.locX / 16.0D);
+                k = MathHelper.floor(entityhuman.locZ / 16.0D);
+                l = this.q();
 
-            // Spigot start - Always update the chunk the player is on
-            long key = chunkToKey( j, k );
-            int existingPlayers = Math.max( 0, chunkTickList.get( key ) ); // filter out -1
-            chunkTickList.put( key, (short) ( existingPlayers + 1 ) );
+                // Spigot start - Always update the chunk the player is on
+                long key = chunkToKey( j, k );
+                int existingPlayers = Math.max( 0, chunkTickList.get( key ) ); // filter out -1
+                chunkTickList.put( key, (short) ( existingPlayers + 1 ) );
 
-            // Check and see if we update the chunks surrounding the player this tick
-            for ( int chunk = 0; chunk < chunksPerPlayer; chunk++ )
-            {
-                int dx = ( random.nextBoolean() ? 1 : -1 ) * random.nextInt( randRange );
-                int dz = ( random.nextBoolean() ? 1 : -1 ) * random.nextInt( randRange );
-                long hash = chunkToKey( dx + j, dz + k );
-                if ( !chunkTickList.contains( hash ) && this.chunkProvider.isChunkLoaded(dx + j, dz + k ) )
+                // Check and see if we update the chunks surrounding the player this tick
+                for ( int chunk = 0; chunk < chunksPerPlayer; chunk++ )
                 {
-                    chunkTickList.put( hash, (short) -1 ); // no players
+                    int dx = ( random.nextBoolean() ? 1 : -1 ) * random.nextInt( randRange );
+                    int dz = ( random.nextBoolean() ? 1 : -1 ) * random.nextInt( randRange );
+                    long hash = chunkToKey( dx + j, dz + k );
+                    if ( !chunkTickList.contains( hash ) && this.chunkProvider.isChunkLoaded(dx + j, dz + k ) )
+                    {
+                        chunkTickList.put( hash, (short) -1 ); // no players
+                    }
                 }
             }
         }
-            // Spigot End
-        }
+        // Spigot End
 
         this.methodProfiler.b();
         if (this.L > 0) {
@@ -2604,9 +2592,7 @@ public abstract class World implements IBlockAccess {
             if (blockposition.getY() >= 0 && blockposition.getY() < 256 && this.b(EnumSkyBlock.BLOCK, blockposition) < 10) {
                 Block block = this.getType(blockposition).getBlock();
 
-                if (block.getMaterial() == Material.AIR && Blocks.SNOW_LAYER.canPlace(this, blockposition)) {
-                    return true;
-                }
+                return block.getMaterial() == Material.AIR && Blocks.SNOW_LAYER.canPlace(this, blockposition);
             }
 
             return false;

@@ -188,12 +188,8 @@ public class ServerStatisticManager extends StatisticManager {
 
         if (this.g || i - this.f > 300) {
             this.f = i;
-            Iterator iterator = this.c().iterator();
-
-            while (iterator.hasNext()) {
-                Statistic statistic = (Statistic) iterator.next();
-
-                hashmap.put(statistic, Integer.valueOf(this.getStatisticValue(statistic)));
+            for (Statistic statistic : this.c()) {
+                hashmap.put(statistic, this.getStatisticValue(statistic));
             }
         }
 

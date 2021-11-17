@@ -42,6 +42,8 @@ public class Nacho {
             Nacho.get().registerPacketListener(new AntiCrash());
             System.out.println("[NS-AntiCrash] Activated Anti Crash.");
         }
+
+        System.setProperty( "io.netty.eventLoopThreads", Integer.toString(NachoConfig.nettyThreads));
     }
 
     public static Nacho get() {
