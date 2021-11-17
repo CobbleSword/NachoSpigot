@@ -50,7 +50,7 @@ public class NachoConfig {
         File old_config = new File("nacho.json");
         if(old_config.exists()) migrate(old_config);
 
-        int configVersion = 5; // Update this every new configuration update
+        int configVersion = 6; // Update this every new configuration update
         version = getInt("config-version", configVersion);
         set("config-version", configVersion);
         c.setHeader(HEADER);
@@ -189,8 +189,8 @@ public class NachoConfig {
     public static boolean asyncKnockback;
 
     private static void nettyThreads() {
-        nettyThreads = getInt("settings.thread.netty.threads", 4);
-        c.addComment("settings.thread.netty.threads", "Manage number of netty-threads");
+        nettyThreads = getInt("settings.thread.netty-threads", 4);
+        c.addComment("settings.thread.netty-threads", "Manage number of netty threads");
         
         combatThreadTPS = getInt("settings.thread.combat.tps", 40);
         c.addComment("settings.thread.combat.tps", "Combat Thread TPS");
