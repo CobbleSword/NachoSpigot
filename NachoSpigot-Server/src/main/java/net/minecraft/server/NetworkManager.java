@@ -188,7 +188,6 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
 
     //sendPacket
     public void handle(Packet<?> packet) {
-        PacketPlayInUseEntity packetInUse;
         if (NachoConfig.asyncHitDetection && this.g() && packet instanceof PacketPlayInUseEntity && ((PacketPlayInUseEntity)packet).a() == PacketPlayInUseEntity.EnumEntityUseAction.ATTACK) {
             Nacho.hitDetectionThread.addPacket(packet, this, null);
             return;
