@@ -9,6 +9,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class ConfigurationTests {
+    private class TestUtils {
+        public void containsMethodInvocation() {
+
+        }
+    }
 
     @Test
     public void migrateFullConfig() {
@@ -36,5 +41,11 @@ public class ConfigurationTests {
     @Test
     public void loadConfig() {
         NachoConfig.init(new File("nacho.yml"));
+    }
+
+    // Makes sure that c.addComment is not called in any config init functions.
+    @Test
+    public void noAddCommentInConfigInit() {
+
     }
 }
