@@ -182,6 +182,26 @@ public class NachoConfig {
         c.addComment("settings.commands.enable-reload-command", "Toggles the /reload command");
     }
 
+    public static int nettyThreads;
+    public static int threadTPS;
+
+    private static void nettyThreads() {
+        nettyThreads = getInt("settings.thread.netty-threads", 4);
+        c.addComment("settings.thread.netty-threads", "Number of netty-threads");
+        threadTPS = getInt("settings.thread.thread-tps", 60);
+        c.addComment("settings.thread.thread-tps", "Thread TPS");
+    }
+
+    public static boolean asyncHitDetection;
+    public static boolean asyncKnockback;
+
+    private static void asyncHitDetection() {
+        asyncHitDetection = getBoolean("settings.async.hit-detection", false);
+        c.addComment("settings.async.hit-detection", "Enables Async Hit Detection.");
+        asyncKnockback = getBoolean("settings.async.knockback", false);
+        c.addComment("settings.async.knockback", "Enables Async Knockback.");
+    }
+
     public static boolean useFastOperators;
 
     private static void useFastOperators() {

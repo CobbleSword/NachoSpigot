@@ -23,6 +23,8 @@ import java.util.Queue;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import me.elier.minecraft.util.CryptException;
+import me.elier.nachospigot.config.NachoConfig;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
@@ -185,7 +187,17 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     }
 
     //sendPacket
-    public void handle(Packet packet) {
+    public void handle(Packet<?> packet) {
+        PacketPlayInUseEntity packetInUse;
+        if (NachoConfig.asyncHitDetection && this.g() && packet instanceof PacketPlayInUseEntity && (packetInUse = (PacketPlayInUseEntity)packet).a() == PacketPlayInUseEntity.EnumEntityUseAction.ATTACK) {
+            Nacho.hitDetectionThread.addPacket(packet, this, null);
+            return;
+        }
+        if (NachoConfig.asyncKnockback && this.g() && (packet instanceof PacketPlayOutEntityVelocity || packet instanceof PacketPlayOutPosition || packet instanceof PacketPlayInFlying.PacketPlayInPosition || packet instanceof PacketPlayInFlying)) {
+            Nacho.knockbackThread.addPacket(packet, this, null);
+            return;
+        }
+
         if (this.isConnected()) {
             this.sendPacketQueue();
             this.dispatchPacket(packet, null, Boolean.TRUE);
@@ -202,7 +214,17 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     }
 
     //sendPacket
-    public void a(Packet packet, GenericFutureListener<? extends Future<? super Void>> listener, GenericFutureListener<? extends Future<? super Void>>... listeners) {
+    public void a(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> listener, GenericFutureListener<? extends Future<? super Void>>... listeners) {
+        PacketPlayInUseEntity packetInUse;
+        if (NachoConfig.asyncHitDetection && this.g() && packet instanceof PacketPlayInUseEntity && (packetInUse = (PacketPlayInUseEntity)packet).a() == PacketPlayInUseEntity.EnumEntityUseAction.ATTACK) {
+            Nacho.hitDetectionThread.addPacket(packet, this, null);
+            return;
+        }
+        if (NachoConfig.asyncKnockback && this.g() && (packet instanceof PacketPlayOutEntityVelocity || packet instanceof PacketPlayOutPosition || packet instanceof PacketPlayInFlying.PacketPlayInPosition || packet instanceof PacketPlayInFlying)) {
+            Nacho.knockbackThread.addPacket(packet, this, null);
+            return;
+        }
+        
         if (this.isConnected()) {
             this.sendPacketQueue();
             this.dispatchPacket(packet, ArrayUtils.insert(0, listeners, listener), Boolean.TRUE);

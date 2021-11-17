@@ -1,8 +1,9 @@
 package dev.cobblesword.nachospigot;
 
 import dev.cobblesword.nachospigot.knockback.KnockbackCommand;
-import dev.cobblesword.nachospigot.knockback.KnockbackConfig;
 import me.elier.nachospigot.config.NachoConfig;
+import me.rastrian.dev.threads.HitDetection;
+import me.rastrian.dev.threads.Knockback;
 import xyz.sculas.nacho.anticrash.AntiCrash;
 import xyz.sculas.nacho.async.AsyncExplosions;
 import xyz.sculas.nacho.patches.RuntimePatches;
@@ -21,11 +22,20 @@ public class Nacho {
 
     private final Set<PacketListener> packetListeners = Sets.newConcurrentHashSet();
     private final Set<MovementListener> movementListeners = Sets.newConcurrentHashSet();
+    public static HitDetection hitDetectionThread;
+    public static Knockback knockbackThread;
 
     public Nacho() {
         INSTANCE = this;
 
         AsyncExplosions.initExecutor(NachoConfig.useFixedPoolForTNT, NachoConfig.fixedPoolSize);
+
+        if (NachoConfig.asyncHitDetection) {
+            this.hitDetectionThread = new HitDetection("Hit Detection Thread");
+        }
+        if (NachoConfig.asyncKnockback) {
+            this.knockbackThread = new Knockback("Knockback Thread");
+        }
 
         if(NachoConfig.enableAntiCrash) {
             System.out.println("[NS-AntiCrash] Activating Anti Crash.");
