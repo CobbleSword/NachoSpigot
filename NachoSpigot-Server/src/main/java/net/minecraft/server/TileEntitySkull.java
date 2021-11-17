@@ -1,9 +1,5 @@
 package net.minecraft.server;
 
-import com.github.benmanes.caffeine.cache.AsyncCacheLoader;
-import com.github.benmanes.caffeine.cache.AsyncLoadingCache;
-import com.github.benmanes.caffeine.cache.CacheLoader;
-import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.sadcenter.core.NachoAuthenticator;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
