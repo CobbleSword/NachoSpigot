@@ -56,9 +56,4 @@ public class PacketPlayInUseEntity implements Packet<PacketListenerPlayIn> {
         EnumEntityUseAction() {
         }
     }
-
-    @Override
-    public boolean instant() {
-        return NachoConfig.instantPlayInUseEntity;
-    }
 }
