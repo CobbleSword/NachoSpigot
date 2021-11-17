@@ -17,6 +17,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class NachoConfig {
 
     private static final Logger LOGGER = LogManager.getLogger(NachoConfig.class);
@@ -57,7 +58,7 @@ public class NachoConfig {
         loadComments();
     }
 
-    private static void migrate(File old_config) {
+    static void migrate(File old_config) {
         OldNachoConfig nachoJson = FileUtils.toObject(old_config, OldNachoConfig.class);
         if(nachoJson == null) {old_config.delete(); return;}
         set("settings.save-empty-scoreboard-teams", nachoJson.saveEmptyScoreboardTeams);
@@ -170,36 +171,36 @@ public class NachoConfig {
         }
     }
 
-    private static void set(String path, Object val) {
+    static void set(String path, Object val) {
         config.set(path, val);
     }
 
-    private static boolean getBoolean(String path, boolean def) {
+    static boolean getBoolean(String path, boolean def) {
         config.addDefault(path, def);
         return config.getBoolean(path, config.getBoolean(path));
     }
 
-    private static double getDouble(String path, double def) {
+    static double getDouble(String path, double def) {
         config.addDefault(path, def);
         return config.getDouble(path, config.getDouble(path));
     }
 
-    private static float getFloat(String path, float def) {
+    static float getFloat(String path, float def) {
         config.addDefault(path, def);
         return config.getFloat(path, config.getFloat(path));
     }
 
-    private static int getInt(String path, int def) {
+    static int getInt(String path, int def) {
         config.addDefault(path, def);
         return config.getInt(path, config.getInt(path));
     }
 
-    private static <T> List getList(String path, T def) {
+    static <T> List getList(String path, T def) {
         config.addDefault(path, def);
         return config.getList(path, config.getList(path));
     }
 
-    private static String getString(String path, String def) {
+    static String getString(String path, String def) {
         config.addDefault(path, def);
         return config.getString(path, config.getString(path));
     }

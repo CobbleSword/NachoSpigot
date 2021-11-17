@@ -38,7 +38,7 @@ public class YamlCommenter {
      * Saves comments to config file
      *
      * @param file File to save to
-     * @throws IOException
+     * @throws IOException io
      */
     public void saveComments(File file) throws IOException {
         ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(file.toPath());
@@ -46,7 +46,7 @@ public class YamlCommenter {
         lines.add(0, "# " + Header.replace("\n", "\n# ") + "\n");
         for (Map.Entry<String, String> _comment : comments.entrySet()) {
             int line = YamlUtils.findKey(lines, _comment.getKey());
-            if(line == -1 && _comment.getKey().startsWith("world-settings.")) continue; // If anyone knows a better fix please PR!
+            if(line == -1) continue; // If anyone knows a better fix please PR!
             String prefix = Utils.repeat(" ", getIndentation(lines.get(line))) + "# ";
             boolean noNewline = getIndentation(lines.get(line)) > getIndentation(lines.get(line - 1));
             if (line >= 0)
