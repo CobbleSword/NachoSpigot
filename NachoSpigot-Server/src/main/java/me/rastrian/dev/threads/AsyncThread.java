@@ -14,10 +14,11 @@ import net.openhft.affinity.AffinityLock;
 import net.openhft.affinity.AffinityStrategies;
 
 public abstract class AsyncThread {
-    private boolean running = true;
-    private int TICK_TIME = 1000000000 / NachoConfig.combatThreadTPS;
-    private Thread t;
+    private static final long TICK_TIME = 1000000000 / NachoConfig.combatThreadTPS;
     protected Queue<Runnable> packets = new ConcurrentLinkedQueue<Runnable>();
+    
+    private boolean running = true;
+    private Thread t;
 
     public AsyncThread(String s) {
         try (final AffinityLock al = AffinityLock.acquireLock();){
@@ -41,7 +42,7 @@ public abstract class AsyncThread {
         long catchupTime = 0L;
         while (this.running) {
             long curTime = System.nanoTime();
-            long wait = (long)this.TICK_TIME - (curTime - lastTick) - catchupTime;
+            long wait = TICK_TIME - (curTime - lastTick) - catchupTime;
             if (wait > 0L) {
                 try {
                     Thread.sleep(wait / 1000000L);

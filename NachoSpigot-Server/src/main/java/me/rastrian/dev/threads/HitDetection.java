@@ -1,8 +1,8 @@
 package me.rastrian.dev.threads;
 
 public class HitDetection extends AsyncThread {
-    public HitDetection(String s) {
-        super(s);
+    public HitDetection() {
+        super("Async Hit Detection");
     }
 
     @Override

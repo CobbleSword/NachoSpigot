@@ -31,10 +31,10 @@ public class Nacho {
         AsyncExplosions.initExecutor(NachoConfig.useFixedPoolForTNT, NachoConfig.fixedPoolSize);
 
         if (NachoConfig.asyncHitDetection) {
-            this.hitDetectionThread = new HitDetection("Hit Detection Thread");
+            hitDetectionThread = new HitDetection();
         }
         if (NachoConfig.asyncKnockback) {
-            this.knockbackThread = new Knockback("Knockback Thread");
+            knockbackThread = new Knockback();
         }
 
         if(NachoConfig.enableAntiCrash) {

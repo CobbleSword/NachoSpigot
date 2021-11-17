@@ -1,8 +1,8 @@
 package me.rastrian.dev.threads;
 
 public class Knockback extends AsyncThread {
-    public Knockback(String s) {
-        super(s);
+    public Knockback() {
+        super("Async Knockback Thread");
     }
 
     @Override
