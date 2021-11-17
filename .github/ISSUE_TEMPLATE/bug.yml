@@ -69,9 +69,11 @@ body:
           required: true
         - label: You have confirmed that there aren’t any issues open regarding this bug.
           required: true
+        - label: You have confirmed that you are NOT using a fork of NachoSpigot in any way. **YOUR changes are not OUR faults.**
+          required: true
 
   - type: markdown
     attributes:
       value: |
-        If you have any other questions regarding your finding contact us on our discord `#nacho-bug-report`
+        If you have any other questions regarding your finding contact us on our discord `#nacho-support`
         [Discord](https://discord.gg/ewcYeERKJw).
