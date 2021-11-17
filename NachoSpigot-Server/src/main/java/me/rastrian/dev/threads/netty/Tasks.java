@@ -24,7 +24,7 @@ public class Tasks {
         return old == State.WAITING.ordinal();
     }
 
-    private static enum State {
+    private enum State {
         WAITING,
         RUNNING_NO_TASKS,
         RUNNING_GOT_TASKS;
