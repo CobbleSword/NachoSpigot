@@ -19,6 +19,7 @@ public abstract class AsyncThread {
     private static final long SEC_IN_NANO = 1000000000;
     private static final int TPS = NachoConfig.combatThreadTPS;
     private static final long TICK_TIME = SEC_IN_NANO / TPS;
+    private static final long MAX_CATCHUP_BUFFER = TICK_TIME * TPS * 60L;
     
     private int currentTick = 0;
     private final RollingAverage tps1 = new RollingAverage(60);
@@ -51,18 +52,34 @@ public abstract class AsyncThread {
         long catchupTime = 0L;
         while (this.running) {
             long curTime = System.nanoTime();
-            long wait = TICK_TIME - (curTime - lastTick) - catchupTime;
-            if (wait > 0L) {
-                try {
-                    Thread.sleep(wait / 1000000L);
+            long wait = TICK_TIME - (curTime - lastTick);
+            
+            if (wait > 0) {
+                // TacoSpigot start - fix the tick loop improvements
+                if (catchupTime < 2E6) {
+                    wait += Math.abs(catchupTime);
+                } else if (wait < catchupTime) {
+                    catchupTime -= wait;
+                    wait = 0;
+                } else {
+                    wait -= catchupTime;
+                    catchupTime = 0;
                 }
-                catch (InterruptedException e) {
+            }
+
+            if (wait > 0) {
+                try {
+                    Thread.sleep(wait / 1000000);
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                curTime = System.nanoTime();
                 catchupTime = 0L;
                 continue;
             }
-            catchupTime = Math.min(1000000000L, Math.abs(wait));
+
+            catchupTime = Math.min(MAX_CATCHUP_BUFFER, catchupTime - wait);
+            
             if ( ++this.currentTick % TPS == 0 )
             {
                 final long diff = curTime - lastTick;
