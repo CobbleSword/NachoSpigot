@@ -188,16 +188,16 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
 
     //sendPacket
     public void handle(Packet<?> packet) {
-        if (NachoConfig.asyncHitDetection && this.g() && packet instanceof PacketPlayInUseEntity && ((PacketPlayInUseEntity)packet).a() == PacketPlayInUseEntity.EnumEntityUseAction.ATTACK) {
-            Nacho.hitDetectionThread.addPacket(packet, this, null);
-            return;
-        }
-        if (NachoConfig.asyncKnockback && this.g() && (packet instanceof PacketPlayOutEntityVelocity || packet instanceof PacketPlayOutPosition || packet instanceof PacketPlayInFlying.PacketPlayInPosition || packet instanceof PacketPlayInFlying)) {
-            Nacho.knockbackThread.addPacket(packet, this, null);
-            return;
-        }
-
         if (this.isConnected()) {
+            if (NachoConfig.asyncHitDetection && packet instanceof PacketPlayInUseEntity && ((PacketPlayInUseEntity)packet).a() == PacketPlayInUseEntity.EnumEntityUseAction.ATTACK) {
+                Nacho.hitDetectionThread.addPacket(packet, this, null);
+                return;
+            }
+            if (NachoConfig.asyncKnockback && (packet instanceof PacketPlayOutEntityVelocity || packet instanceof PacketPlayOutPosition || packet instanceof PacketPlayInFlying.PacketPlayInPosition || packet instanceof PacketPlayInFlying)) {
+                Nacho.knockbackThread.addPacket(packet, this, null);
+                return;
+            }
+
             this.sendPacketQueue();
             this.dispatchPacket(packet, null, Boolean.TRUE);
         } else {
@@ -213,18 +213,17 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     }
 
     //sendPacket
-    public void a(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> listener, GenericFutureListener<? extends Future<? super Void>>... listeners) {
-        PacketPlayInUseEntity packetInUse;
-        if (NachoConfig.asyncHitDetection && this.g() && packet instanceof PacketPlayInUseEntity && (packetInUse = (PacketPlayInUseEntity)packet).a() == PacketPlayInUseEntity.EnumEntityUseAction.ATTACK) {
-            Nacho.hitDetectionThread.addPacket(packet, this, null);
-            return;
-        }
-        if (NachoConfig.asyncKnockback && this.g() && (packet instanceof PacketPlayOutEntityVelocity || packet instanceof PacketPlayOutPosition || packet instanceof PacketPlayInFlying.PacketPlayInPosition || packet instanceof PacketPlayInFlying)) {
-            Nacho.knockbackThread.addPacket(packet, this, null);
-            return;
-        }
-        
+    public void a(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> listener, GenericFutureListener<? extends Future<? super Void>>... listeners) {        
         if (this.isConnected()) {
+            if (NachoConfig.asyncHitDetection && packet instanceof PacketPlayInUseEntity && ((PacketPlayInUseEntity)packet).a() == PacketPlayInUseEntity.EnumEntityUseAction.ATTACK) {
+                Nacho.hitDetectionThread.addPacket(packet, this, null);
+                return;
+            }
+            if (NachoConfig.asyncKnockback && (packet instanceof PacketPlayOutEntityVelocity || packet instanceof PacketPlayOutPosition || packet instanceof PacketPlayInFlying.PacketPlayInPosition || packet instanceof PacketPlayInFlying)) {
+                Nacho.knockbackThread.addPacket(packet, this, null);
+                return;
+            }
+
             this.sendPacketQueue();
             this.dispatchPacket(packet, ArrayUtils.insert(0, listeners, listener), Boolean.TRUE);
         } else {
