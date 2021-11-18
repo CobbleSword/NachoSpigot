@@ -1,6 +1,6 @@
-package com.github.sadcenter.impl.storage;
+package com.github.sadcenter.auth.storage;
 
-import com.github.sadcenter.impl.NachoAuthenticatorService;
+import com.github.sadcenter.auth.NachoAuthenticatorService;
 import com.google.common.reflect.TypeToken;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import net.minecraft.server.MinecraftServer;
@@ -42,7 +42,8 @@ public class ProfileCache {
             }
         } else try (FileReader fileReader = new FileReader(CACHE_FILE)) {
             Map<String, CachedProfile> loadedCache = NachoAuthenticatorService.GSON
-                    .fromJson(fileReader, new TypeToken<CaseInsensitiveMap<CachedProfile>>() {}.getType());
+                    .fromJson(fileReader, new TypeToken<CaseInsensitiveMap<CachedProfile>>() {
+                    }.getType());
 
             return this.filter(loadedCache);
         } catch (IOException e) {

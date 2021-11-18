@@ -1,10 +1,8 @@
 package net.minecraft.server;
 
-import com.github.sadcenter.core.AsyncHttpAuthenticator;
-import com.github.sadcenter.core.NachoAuthenticator;
+import com.github.sadcenter.auth.NachoAuthenticatorService;
 import com.google.common.base.Predicate;
 import com.mojang.authlib.GameProfile;
-import dev.cobblesword.nachospigot.Nacho;
 import me.elier.nachospigot.config.NachoConfig;
 
 import javax.annotation.Nullable;
@@ -129,7 +127,7 @@ public class ItemSkull extends Item {
 
             // Spigot start
             if(NachoConfig.useNachoAuthenticator) {
-                ((NachoAuthenticator) MinecraftServer.getServer().getAuthenticator()).getProfile(gameprofile.getName()).thenAccept(profile -> {
+                ((NachoAuthenticatorService) MinecraftServer.getServer().getAuthenticator()).getProfile(gameprofile.getName()).thenAccept(profile -> {
                     nbttagcompound.set("SkullOwner", GameProfileSerializer.serialize(new NBTTagCompound(), profile));
                 });
             } else {

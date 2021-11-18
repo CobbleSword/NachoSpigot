@@ -9,7 +9,7 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-import com.github.sadcenter.impl.NachoAuthenticatorService;
+import com.github.sadcenter.auth.NachoAuthenticatorService;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.destroystokyo.paper.PaperConfig;
 import dev.cobblesword.nachospigot.Nacho;
