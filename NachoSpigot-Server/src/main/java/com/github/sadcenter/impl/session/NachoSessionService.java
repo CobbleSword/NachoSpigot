@@ -1,26 +1,22 @@
 package com.github.sadcenter.impl.session;
 
-import com.github.sadcenter.core.NachoAuthenticator;
 import com.github.sadcenter.impl.NachoAuthenticatorService;
 import com.github.sadcenter.impl.response.HasJoinedServerResponse;
 import com.github.sadcenter.impl.utils.HashMapBuilder;
 import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.HttpAuthenticationService;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.properties.PropertyMap;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class NachoSessionService implements MinecraftSessionService {
 
-    private static final URL JOIN_URL = NachoAuthenticator.url("https://sessionserver.mojang.com/session/minecraft/join");
-    private static final URL JOINED_URL = NachoAuthenticator.url("https://sessionserver.mojang.com/session/minecraft/hasJoined");
+    private static final URL JOIN_URL = NachoAuthenticatorService.url("https://sessionserver.mojang.com/session/minecraft/join");
+    private static final URL JOINED_URL = NachoAuthenticatorService.url("https://sessionserver.mojang.com/session/minecraft/hasJoined");
     private static final String TEXTURE = "textures";
 
     private final NachoAuthenticatorService authenticator;
@@ -37,21 +33,22 @@ public class NachoSessionService implements MinecraftSessionService {
                 .withParam("serverId", serverId).getMap();
 
         try {
-            authenticator.fetchPost(JOIN_URL, NachoAuthenticator.json(request));
+            this.authenticator.fetchPost(JOIN_URL, NachoAuthenticatorService.json(request));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    //TODO need improvement.
     @Override
     public GameProfile hasJoinedServer(GameProfile gameProfile, String serverId) {
         Map<String, Object> request = new HashMapBuilder()
                 .withParam("username", gameProfile.getName())
                 .withParam("serverId", serverId).getMap();
 
-        String url = JOINED_URL + NachoAuthenticator.query(request);
+        String url = JOINED_URL + NachoAuthenticatorService.query(request);
 
-        return authenticator.get(url, HasJoinedServerResponse.class).thenApply(response -> {
+        return this.authenticator.get(url, HasJoinedServerResponse.class).thenApply(response -> {
 
             if (response == null || response.getUuid() == null) {
                 return null;
@@ -77,14 +74,6 @@ public class NachoSessionService implements MinecraftSessionService {
 
     @Override
     public GameProfile fillProfileProperties(GameProfile gameProfile, boolean secure) {
-        return authenticator.getProfile(gameProfile.getName()).thenApply(profile -> {
-            if(profile.getProperties().get(TEXTURE) == null) {
-                authenticator.fetchTextures(gameProfile.getName()).thenAccept(texture -> {
-                    profile.getProperties().put(TEXTURE, texture);
-                });
-            }
-
-            return profile;
-        }).join();
+        return this.authenticator.getProfile(gameProfile.getName()).join();
     }
 }
