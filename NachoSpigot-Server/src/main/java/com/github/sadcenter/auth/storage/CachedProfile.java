@@ -1,4 +1,4 @@
-package com.github.sadcenter.impl.storage;
+package com.github.sadcenter.auth.storage;
 
 import com.google.common.collect.Iterables;
 import com.mojang.authlib.GameProfile;

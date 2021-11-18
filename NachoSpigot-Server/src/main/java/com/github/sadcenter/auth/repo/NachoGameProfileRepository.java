@@ -1,6 +1,6 @@
-package com.github.sadcenter.impl.repo;
+package com.github.sadcenter.auth.repo;
 
-import com.github.sadcenter.impl.NachoAuthenticatorService;
+import com.github.sadcenter.auth.NachoAuthenticatorService;
 import com.mojang.authlib.Agent;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.GameProfileRepository;

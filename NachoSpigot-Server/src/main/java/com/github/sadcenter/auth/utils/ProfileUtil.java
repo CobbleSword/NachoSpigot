@@ -1,4 +1,4 @@
-package com.github.sadcenter.impl.utils;
+package com.github.sadcenter.auth.utils;
 
 import com.mojang.authlib.GameProfile;
 

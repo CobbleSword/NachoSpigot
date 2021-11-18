@@ -1,6 +1,6 @@
 package net.minecraft.server;
 
-import com.github.sadcenter.core.NachoAuthenticator;
+import com.github.sadcenter.auth.NachoAuthenticatorService;
 import com.google.common.base.Predicate;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -139,8 +139,8 @@ public class TileEntitySkull extends TileEntity {
         GameProfile profile = this.g;
         setSkullType( 0 ); // Work around client bug
 
-        if(NachoConfig.useNachoAuthenticator) {
-            NachoAuthenticator authenticator = (NachoAuthenticator) MinecraftServer.getServer().getAuthenticator();
+        if (NachoConfig.useNachoAuthenticator) {
+            NachoAuthenticatorService authenticator = (NachoAuthenticatorService) MinecraftServer.getServer().getAuthenticator();
             authenticator.getProfile(profile.getName()).thenAccept(gameProfile -> {
                 setSkullType(3); // Work around client bug
                 g = gameProfile;
@@ -149,21 +149,15 @@ public class TileEntitySkull extends TileEntity {
                     world.notify(position);
                 }
             });
-        } else {
-            b(profile, new Predicate<GameProfile>() {
-
-                @Override
-                public boolean apply(GameProfile input) {
-                    setSkullType(3); // Work around client bug
-                    g = input;
-                    update();
-                    if (world != null) {
-                        world.notify(position);
-                    }
-                    return false;
-                }
-            });
-        }
+        } else b(profile, input -> {
+            setSkullType(3); // Work around client bug
+            g = input;
+            update();
+            if (world != null) {
+                world.notify(position);
+            }
+            return false;
+        });
         // Nacho end
     }
 

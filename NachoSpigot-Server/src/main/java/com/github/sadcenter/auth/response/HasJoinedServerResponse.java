@@ -1,4 +1,4 @@
-package com.github.sadcenter.impl.response;
+package com.github.sadcenter.auth.response;
 
 import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.util.UUIDTypeAdapter;

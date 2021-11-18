@@ -1,8 +1,8 @@
-package com.github.sadcenter.impl.session;
+package com.github.sadcenter.auth.session;
 
-import com.github.sadcenter.impl.NachoAuthenticatorService;
-import com.github.sadcenter.impl.response.HasJoinedServerResponse;
-import com.github.sadcenter.impl.utils.HashMapBuilder;
+import com.github.sadcenter.auth.NachoAuthenticatorService;
+import com.github.sadcenter.auth.response.HasJoinedServerResponse;
+import com.github.sadcenter.auth.utils.HashMapBuilder;
 import com.google.common.collect.Iterables;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;

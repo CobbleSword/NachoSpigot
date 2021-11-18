@@ -1,8 +1,6 @@
 package net.minecraft.server;
 
-import com.github.sadcenter.core.Authenticator;
-import com.github.sadcenter.core.NachoAuthenticator;
-import com.github.sadcenter.impl.NachoAuthenticatorService;
+import com.github.sadcenter.auth.NachoAuthenticatorService;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.Futures;
@@ -12,7 +10,6 @@ import com.mojang.authlib.AuthenticationService;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.GameProfileRepository;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
-import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
@@ -801,7 +798,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
         }
         SpigotTimings.processQueueTimer.stopTiming(); // Spigot
         if(NachoConfig.useNachoAuthenticator) {
-            ((NachoAuthenticator) this.V).getProfileCache().setTicked(false);
+            ((NachoAuthenticatorService) this.V).getProfileCache().setTicked(false);
         }
 
         SpigotTimings.chunkIOTickTimer.startTiming(); // Spigot
