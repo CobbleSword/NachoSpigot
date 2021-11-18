@@ -1,4 +1,4 @@
-package com.github.sadcenter.auth.repo;
+package com.github.sadcenter.auth.profile;
 
 import com.github.sadcenter.auth.NachoAuthenticatorService;
 import com.mojang.authlib.Agent;

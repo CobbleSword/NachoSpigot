@@ -1,6 +1,6 @@
 package com.github.sadcenter.auth;
 
-import com.github.sadcenter.auth.repo.NachoGameProfileRepository;
+import com.github.sadcenter.auth.profile.NachoGameProfileRepository;
 import com.github.sadcenter.auth.serializer.GameProfileSerializer;
 import com.github.sadcenter.auth.session.NachoSessionService;
 import com.github.sadcenter.auth.storage.CachedProfile;
