@@ -38,20 +38,19 @@ public class YamlCommenter {
      * Saves comments to config file
      *
      * @param file File to save to
+     * @param loadWorldConfig Whether to load world configuration comments
      * @throws IOException io
      */
-    public void saveComments(File file) throws IOException {
+    public void saveComments(File file, boolean loadWorldConfig) throws IOException {
         ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(file.toPath());
         lines.removeIf(s -> s.trim().startsWith("#") || s.trim().length() <= 4);
         lines.add(0, "# " + Header.replace("\n", "\n# ") + "\n");
         for (Map.Entry<String, String> _comment : comments.entrySet()) {
+            if (!loadWorldConfig && _comment.getKey().startsWith("world-settings.")) continue; // World settings are initialized after NachoConfig, while NachoConfig loads their comments.
+            //       This causes an issue on new configs, with comments not working for world settings, and causing an exception due to being unable to find the configuration option.
             int line = YamlUtils.findKey(lines, _comment.getKey());
 
             if(line == -1) {
-                // TODO: This should be fixed soon. World settings are initialized after NachoConfig, while NachoConfig loads their comments.
-                //       This causes an issue, with comments not working for world settings, and potentially causing a OOB exception.
-                if (_comment.getKey().startsWith("world-settings.")) continue;
-
                 throw new IllegalStateException(String.format(
                         "You are trying to add a comment to key \"%s\" which does not exist!",
                         _comment.getKey()

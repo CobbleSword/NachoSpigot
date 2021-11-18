@@ -80,7 +80,7 @@ public class NachoWorldConfig {
         addComment("entity.entity-activation", "Enables active ticks for entities");
         addComment("entity.endermite-spawning", "Enables endermite spawning.");
         addComment("infinite-water-sources", "Enables infinite water sources");
-        addComment("explosions.constant-explosions", "Changes the radius of explosions to be constant.");
+        addComment("explosions.constant-radius", "Changes the radius of explosions to be constant.");
         addComment("explosions.explode-protected-regions", "Toggles whether explosions should explode protected regions");
         addComment("explosions.reduced-density-rays", "Toggles whether the server should use reduced rays when calculating density");
         addComment("tick-enchantment-tables", "Toggles whether enchantment tables should be ticked");
