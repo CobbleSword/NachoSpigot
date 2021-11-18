@@ -164,7 +164,7 @@ public class NachoConfig {
 
         try {
             config.save(CONFIG_FILE);
-            c.saveComments(CONFIG_FILE);
+            c.saveComments(CONFIG_FILE, instance != null);
         } catch (IOException ex) {
             LOGGER.log(Level.ERROR, "Could not save " + CONFIG_FILE, ex);
         }
