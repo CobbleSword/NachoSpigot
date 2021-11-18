@@ -42,8 +42,7 @@ public class ProfileCache {
             }
         } else try (FileReader fileReader = new FileReader(CACHE_FILE)) {
             Map<String, CachedProfile> loadedCache = NachoAuthenticatorService.GSON
-                    .fromJson(fileReader, new TypeToken<CaseInsensitiveMap<CachedProfile>>() {
-                    }.getType());
+                    .fromJson(fileReader, new TypeToken<CaseInsensitiveMap<CachedProfile>>() {}.getType());
 
             return this.filter(loadedCache);
         } catch (IOException e) {

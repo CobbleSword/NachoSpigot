@@ -44,7 +44,6 @@ public class NachoSessionService implements MinecraftSessionService {
         Map<String, Object> request = new HashMapBuilder()
                 .withParam("username", gameProfile.getName())
                 .withParam("serverId", serverId).getMap();
-        ;
 
         return this.authenticator.get(JOINED_URL + NachoAuthenticatorService.query(request), HasJoinedServerResponse.class).thenApply(response -> {
 
@@ -61,7 +60,7 @@ public class NachoSessionService implements MinecraftSessionService {
 
             return profile;
 
-        }).join(); //ow
+        }).join();
     }
 
 
