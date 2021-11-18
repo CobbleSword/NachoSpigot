@@ -141,6 +141,7 @@ public class NachoConfig {
         c.addComment("settings.commands.permissions.version", "Enables a required permission to use /version");
         c.addComment("settings.commands.permissions.plugins", "Enables a required permission to use /plugins");
         c.addComment("settings.commands.enable-help-command", "Toggles the /help command");
+        c.addComment("settings.use-nacho-authenticator", "Enables nacho authentication");
         NachoWorldConfig.loadComments();
     }
 
@@ -389,5 +390,11 @@ public class NachoConfig {
 
     private static void instantPlayInUseEntity() {
         instantPlayInUseEntity = getBoolean("settings.instant-interaction", false);
+    }
+
+    public static boolean useNachoAuthenticator;
+
+    private static void useNachoAuthenticator() {
+        useNachoAuthenticator = getBoolean("settings.use-nacho-authenticator", false);
     }
 }

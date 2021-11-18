@@ -1,20 +1,18 @@
 package net.minecraft.server;
 
-import com.github.sadcenter.core.AsyncHttpAuthenticator;
 import com.github.sadcenter.core.Authenticator;
 import com.github.sadcenter.core.NachoAuthenticator;
 import com.github.sadcenter.impl.NachoAuthenticatorService;
-import com.github.sadcenter.impl.repo.NachoGameProfileRepository;
-import com.github.sadcenter.impl.session.NachoSessionService;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListenableFutureTask;
-import com.mojang.authlib.BaseAuthenticationService;
+import com.mojang.authlib.AuthenticationService;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.GameProfileRepository;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
+import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
@@ -102,10 +100,10 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     private String S;
     private boolean T;
     private boolean U;
-    private final NachoAuthenticator V;
-    private final MinecraftSessionService W;
+    protected AuthenticationService V;
+    protected MinecraftSessionService W;
     private long X = 0L;
-    private final GameProfileRepository Y;
+    protected GameProfileRepository Y;
     private final UserCache Z;
     protected final Queue<FutureTask<?>> j = new java.util.concurrent.ConcurrentLinkedQueue<FutureTask<?>>(); // Spigot, PAIL: Rename
     private Thread serverThread;
@@ -133,10 +131,6 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
         this.Z = new UserCache(this, file1);
         this.b = this.h();
         // this.convertable = new WorldLoaderServer(file); // CraftBukkit - moved to DedicatedServer.init
-        NachoAuthenticatorService authenticatorService = new NachoAuthenticatorService();
-        this.V = authenticatorService;
-        this.W = new NachoSessionService(authenticatorService);
-        this.Y = new NachoGameProfileRepository(authenticatorService);
         // CraftBukkit start
         this.options = options;
         // Try to see if we're actually running in a terminal, disable jline if not
@@ -806,7 +800,9 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
             processQueue.remove().run();
         }
         SpigotTimings.processQueueTimer.stopTiming(); // Spigot
-        ((NachoAuthenticator) getAuthenticator()).getProfileCache().setTicked(false);
+        if(NachoConfig.useNachoAuthenticator) {
+            ((NachoAuthenticator) this.V).getProfileCache().setTicked(false);
+        }
 
         SpigotTimings.chunkIOTickTimer.startTiming(); // Spigot
         org.bukkit.craftbukkit.chunkio.ChunkIOExecutor.tick();
@@ -1432,7 +1428,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
         return this.F;
     }
 
-    public Authenticator getAuthenticator() {
+    public AuthenticationService getAuthenticator() {
         return this.V;
     }
 

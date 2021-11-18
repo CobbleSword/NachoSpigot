@@ -4,6 +4,7 @@ import com.github.sadcenter.impl.NachoAuthenticatorService;
 import com.google.common.reflect.TypeToken;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import net.minecraft.server.MinecraftServer;
+import org.apache.commons.io.FileUtils;
 import org.spigotmc.CaseInsensitiveMap;
 
 import java.io.File;
@@ -35,17 +36,16 @@ public class ProfileCache {
         if (!CACHE_FILE.exists()) {
             try {
                 CACHE_FILE.createNewFile();
+                FileUtils.writeStringToFile(CACHE_FILE, "{}");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else try (FileReader fileReader = new FileReader(CACHE_FILE)) {
-            if (fileReader.read() != -1) {
-                Map<String, CachedProfile> loadedCache = NachoAuthenticatorService.GSON
-                        .fromJson(fileReader, new TypeToken<CaseInsensitiveMap<CachedProfile>>() {
-                        }.getType());
+            Map<String, CachedProfile> loadedCache = NachoAuthenticatorService.GSON
+                    .fromJson(fileReader, new TypeToken<CaseInsensitiveMap<CachedProfile>>() {
+                    }.getType());
 
-                return this.filter(loadedCache);
-            }
+            return this.filter(loadedCache);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -65,11 +65,7 @@ public class ProfileCache {
     }
 
     public void save(boolean runAsync) {
-        if(this.isTicked()) {
-            return;
-        }
-
-        if (this.cachedProfiles.isEmpty()) {
+        if (this.isTicked() || this.cachedProfiles.isEmpty()) {
             return;
         }
 
