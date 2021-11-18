@@ -65,34 +65,22 @@ public abstract class NachoAuthenticator implements AsyncHttpAuthenticator {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
     public GameProfile getPresentProfile(String name) {
         CompletableFuture<GameProfile> profile = this.gameProfileCache.getIfPresent(name);
-
         return profile == null ? null : profile.join();
     }
 
     public CompletableFuture<UUID> getUuid(String name) {
-        CompletableFuture<UUID> uuidCompletableFuture = get(UUID_API + name, UUID.class);
-        uuidCompletableFuture.thenAccept(System.out::println);
-        return uuidCompletableFuture;
+        return get(UUID_API + name, UUID.class);
     }
 
-    /*public CompletableFuture<Property> fetchTextures(String name) {
-        return get(API + name, JsonElement.class).thenApply(json ->
-                GSON.fromJson(json.getAsJsonObject().getAsJsonObject("textures").getAsJsonObject("raw"), Property.class));
-    }
-     */
-
-    @Override
     public String fetchGet(URL url) throws IOException {
         return IOUtils.toString(url, StandardCharsets.UTF_8);
     }
 
-    @Override
     public String fetchPost(URL url, String content) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
