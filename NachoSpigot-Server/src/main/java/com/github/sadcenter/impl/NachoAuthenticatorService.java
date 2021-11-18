@@ -67,8 +67,7 @@ public class NachoAuthenticatorService extends NachoAuthenticator {
             if (jsonObject.has("textures")) {
                 JsonObject propertyJson = jsonObject.get("textures").getAsJsonObject().get("raw").getAsJsonObject();
 
-                Property property = new Property("textures", propertyJson.getAsJsonPrimitive("value").getAsString(),
-                        propertyJson.getAsJsonPrimitive("signature").getAsString());
+                Property property = new Property("textures", propertyJson.getAsJsonPrimitive("value").getAsString());
 
                 gameProfile.getProperties().put("textures", property);
             }

@@ -5,7 +5,6 @@ import java.util.Map;
 import com.github.sadcenter.core.AsyncHttpAuthenticator;
 import com.github.sadcenter.core.NachoAuthenticator;
 import com.github.sadcenter.impl.NachoAuthenticatorService;
-import com.github.sadcenter.impl.profile.UserProfile;
 import net.minecraft.server.*;
 
 // PaperSpigot start

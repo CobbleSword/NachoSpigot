@@ -19,8 +19,8 @@ import java.util.Map;
 
 public class NachoSessionService implements MinecraftSessionService {
 
-    private static final URL JOIN_URL = HttpAuthenticationService.constantURL("https://sessionserver.mojang.com/session/minecraft/join");
-    private static final URL JOINED_URL = HttpAuthenticationService.constantURL("https://sessionserver.mojang.com/session/minecraft/hasJoined");
+    private static final URL JOIN_URL = NachoAuthenticator.url("https://sessionserver.mojang.com/session/minecraft/join");
+    private static final URL JOINED_URL = NachoAuthenticator.url("https://sessionserver.mojang.com/session/minecraft/hasJoined");
     private static final String TEXTURE = "textures";
 
     private final NachoAuthenticatorService authenticator;
