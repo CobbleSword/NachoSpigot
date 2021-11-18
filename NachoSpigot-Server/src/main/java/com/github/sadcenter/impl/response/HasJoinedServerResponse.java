@@ -16,10 +16,10 @@ public class HasJoinedServerResponse {
     }
 
     public UUID getUuid() {
-        return UUIDTypeAdapter.fromString(id);
+        return UUIDTypeAdapter.fromString(this.id);
     }
 
     public PropertyMap getPropertyMap() {
-        return properties;
+        return this.properties;
     }
 }

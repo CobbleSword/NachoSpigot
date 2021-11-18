@@ -24,12 +24,8 @@ public class CachedProfile {
         return this.uuid;
     }
 
-    public String getTexture() {
-        return texture;
-    }
-
     public void refreshExpire() {
-        this.expiresOn += CACHE_TIME;
+        this.expiresOn = System.currentTimeMillis() + CACHE_TIME;
     }
 
     public boolean isExpired() {
@@ -38,7 +34,7 @@ public class CachedProfile {
 
     public GameProfile toGameProfile(String name) {
         GameProfile gameProfile = new GameProfile(this.uuid, name);
-        gameProfile.getProperties().put("textures", new Property("textures", texture));
+        gameProfile.getProperties().put("textures", new Property("textures", this.texture));
         return gameProfile;
     }
 

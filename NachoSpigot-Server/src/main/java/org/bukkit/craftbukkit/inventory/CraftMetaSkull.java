@@ -71,7 +71,6 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
         }
     }
 
-    //TODO fix that.
     @Override
     void applyToItem(final NBTTagCompound tag) { // Spigot - make final
         super.applyToItem(tag);
@@ -87,9 +86,6 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
             });
 
         }
-
-
-
 
             /*NBTTagCompound owner = new NBTTagCompound();
             GameProfileSerializer.serialize(owner, profile);
@@ -145,18 +141,18 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
         if (name == null || name.length() > MAX_OWNER_LENGTH) {
             return false;
         }
-        
+
         // PaperSpigot start - Check usercache if the player is online
-	EntityPlayer player = MinecraftServer.getServer().getPlayerList().getPlayer(name);
-	if (profile == null && player != null) profile = player.getProfile(); 
-	// PaperSpigot end
-		   
+        EntityPlayer player = MinecraftServer.getServer().getPlayerList().getPlayer(name);
+        if (profile == null && player != null) profile = player.getProfile();
+        // PaperSpigot end
+
         if (profile == null) {
         	// name.toLowerCase(java.util.Locale.ROOT) causes the NPE
         	profile = ((NachoAuthenticator) MinecraftServer.getServer().getAuthenticator()).getPresentProfile(name);
         }
         if (profile == null) profile = new GameProfile(null, name);
-        
+
         return true;
     }
 
