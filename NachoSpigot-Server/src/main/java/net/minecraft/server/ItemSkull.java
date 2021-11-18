@@ -2,9 +2,12 @@ package net.minecraft.server;
 
 import com.github.sadcenter.core.AsyncHttpAuthenticator;
 import com.github.sadcenter.core.NachoAuthenticator;
+import com.google.common.base.Predicate;
 import com.mojang.authlib.GameProfile;
 import dev.cobblesword.nachospigot.Nacho;
+import me.elier.nachospigot.config.NachoConfig;
 
+import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class ItemSkull extends Item {
@@ -125,9 +128,19 @@ public class ItemSkull extends Item {
             GameProfile gameprofile = new GameProfile((UUID) null, nbttagcompound.getString("SkullOwner"));
 
             // Spigot start
-            ((NachoAuthenticator) MinecraftServer.getServer().getAuthenticator()).getProfile(gameprofile.getName()).thenAccept(profile -> {
-                nbttagcompound.set("SkullOwner", GameProfileSerializer.serialize(new NBTTagCompound(), profile));
-            });
+            if(NachoConfig.useNachoAuthenticator) {
+                ((NachoAuthenticator) MinecraftServer.getServer().getAuthenticator()).getProfile(gameprofile.getName()).thenAccept(profile -> {
+                    nbttagcompound.set("SkullOwner", GameProfileSerializer.serialize(new NBTTagCompound(), profile));
+                });
+            } else {
+                TileEntitySkull.b(gameprofile, new Predicate<GameProfile>() {
+                    @Override
+                    public boolean apply(@Nullable GameProfile gameProfile) {
+                        nbttagcompound.set("SkullOwner", GameProfileSerializer.serialize(new NBTTagCompound(), gameProfile));
+                        return false;
+                    }
+                });
+            }
             // Spigot end
             return true;
         } else {

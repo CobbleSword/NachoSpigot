@@ -4,24 +4,19 @@ import com.google.common.collect.Iterables;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class CachedProfile {
 
     public static final long CACHE_TIME = TimeUnit.DAYS.toMillis(1);
 
-    private final UUID uuid;
     private final String texture;
-    private long expiresOn = System.currentTimeMillis() + CACHE_TIME;
+    private long expiresOn;
 
-    public CachedProfile(UUID uuid, String property) {
-        this.uuid = uuid;
+    public CachedProfile(String property) {
         this.texture = property;
-    }
 
-    public UUID getUuid() {
-        return this.uuid;
+        this.refreshExpire();
     }
 
     public void refreshExpire() {
@@ -33,13 +28,13 @@ public class CachedProfile {
     }
 
     public GameProfile toGameProfile(String name) {
-        GameProfile gameProfile = new GameProfile(this.uuid, name);
+        GameProfile gameProfile = new GameProfile(null, name);
         gameProfile.getProperties().put("textures", new Property("textures", this.texture));
         return gameProfile;
     }
 
     public static CachedProfile fromGameProfile(GameProfile gameProfile) {
-        return new CachedProfile(gameProfile.getId(), Iterables.getFirst(gameProfile.getProperties().get("textures"), null).getValue());
+        return new CachedProfile(Iterables.getFirst(gameProfile.getProperties().get("textures"), null).getValue());
     }
 
 }

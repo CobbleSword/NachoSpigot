@@ -28,8 +28,8 @@ public abstract class NachoAuthenticator implements AsyncHttpAuthenticator {
     private static final String API = "https://api.ashcon.app/mojang/v2/user/";
     private static final String UUID_API = "https://api.ashcon.app/mojang/v2/uuid/";
 
-    private final LoadingCache<String, CompletableFuture<GameProfile>> gameProfileCache = CacheBuilder.newBuilder()
-            .expireAfterWrite(3, TimeUnit.SECONDS)
+    protected final LoadingCache<String, CompletableFuture<GameProfile>> gameProfileCache = CacheBuilder.newBuilder()
+            .expireAfterWrite(3, TimeUnit.HOURS)
             .build(new CacheLoader<String, CompletableFuture<GameProfile>>() {
                 @Override
                 public CompletableFuture<GameProfile> load(String key) {
@@ -39,17 +39,14 @@ public abstract class NachoAuthenticator implements AsyncHttpAuthenticator {
 
                     if (cachedProfile == null) {
                         gameProfile
-                                .thenApply(CachedProfile::fromGameProfile)
-                                .thenAccept(profile -> {
-                                    profileCache.putAndSave(key, profile);
-                                });
+                                .thenAccept(profile -> profileCache.putAndSave(profile.getName(), CachedProfile.fromGameProfile(profile)));
                     } else {
                         GameProfile profile = cachedProfile.toGameProfile(key);
                         CompletableFuture.runAsync(() -> {
                             GameProfile join = gameProfile.join();
 
                             if (!ProfileUtil.equals(profile, join)) {
-                                profileCache.putAndSave(key, CachedProfile.fromGameProfile(join));
+                                profileCache.putAndSave(join.getName(), CachedProfile.fromGameProfile(join));
                             }
                         }, ProfileCache.EXECUTOR);
 
@@ -64,7 +61,7 @@ public abstract class NachoAuthenticator implements AsyncHttpAuthenticator {
 
     public CompletableFuture<GameProfile> getProfile(String name) {
         try {
-            return gameProfileCache.get(name);
+            return this.gameProfileCache.get(name);
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
@@ -73,13 +70,15 @@ public abstract class NachoAuthenticator implements AsyncHttpAuthenticator {
     }
 
     public GameProfile getPresentProfile(String name) {
-        CompletableFuture<GameProfile> ifPresent = gameProfileCache.getIfPresent(name);
+        CompletableFuture<GameProfile> profile = this.gameProfileCache.getIfPresent(name);
 
-        return ifPresent == null ? null : ifPresent.join();
+        return profile == null ? null : profile.join();
     }
 
     public CompletableFuture<UUID> getUuid(String name) {
-        return get(UUID_API + name, UUID.class);
+        CompletableFuture<UUID> uuidCompletableFuture = get(UUID_API + name, UUID.class);
+        uuidCompletableFuture.thenAccept(System.out::println);
+        return uuidCompletableFuture;
     }
 
     /*public CompletableFuture<Property> fetchTextures(String name) {
@@ -110,6 +109,6 @@ public abstract class NachoAuthenticator implements AsyncHttpAuthenticator {
     }
 
     public ProfileCache getProfileCache() {
-        return profileCache;
+        return this.profileCache;
     }
 }

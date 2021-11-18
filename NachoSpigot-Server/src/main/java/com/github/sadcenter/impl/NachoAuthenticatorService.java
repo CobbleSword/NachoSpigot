@@ -1,10 +1,19 @@
 package com.github.sadcenter.impl;
 
 import com.github.sadcenter.core.NachoAuthenticator;
+import com.github.sadcenter.impl.repo.NachoGameProfileRepository;
+import com.github.sadcenter.impl.session.NachoSessionService;
 import com.google.gson.*;
+import com.mojang.authlib.Agent;
 import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.GameProfileRepository;
+import com.mojang.authlib.UserAuthentication;
+import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.properties.Property;
+import com.mojang.authlib.properties.PropertyMap;
+import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
@@ -18,7 +27,29 @@ public class NachoAuthenticatorService extends NachoAuthenticator {
 
     public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(GameProfile.class, new NachoAuthenticatorService.GameProfileSerializer())
+            .registerTypeAdapter(PropertyMap.class, new PropertyMap.Serializer())
             .create();
+
+    private final YggdrasilAuthenticationService yggdrasilAuthenticationService;
+
+    public NachoAuthenticatorService(YggdrasilAuthenticationService yggdrasilAuthenticationService) {
+        this.yggdrasilAuthenticationService = yggdrasilAuthenticationService;
+    }
+
+    @Override
+    public GameProfileRepository createProfileRepository() {
+        return new NachoGameProfileRepository(this);
+    }
+
+    @Override
+    public UserAuthentication createUserAuthentication(Agent agent) {
+        return this.yggdrasilAuthenticationService.createUserAuthentication(agent);
+    }
+
+    @Override
+    public MinecraftSessionService createMinecraftSessionService() {
+        return new NachoSessionService(this);
+    }
 
     @Override
     public <T> CompletableFuture<T> get(String url, Class<T> type) {
@@ -26,8 +57,10 @@ public class NachoAuthenticatorService extends NachoAuthenticator {
             String result = null;
             try {
                 result = super.fetchGet(url(url));
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException exception) {
+                if (!(exception instanceof FileNotFoundException)) {
+                    exception.printStackTrace();
+                }
             }
             return GSON.fromJson(result, type);
         });
@@ -38,8 +71,10 @@ public class NachoAuthenticatorService extends NachoAuthenticator {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 return GSON.fromJson(super.fetchPost(url(url), GSON.toJson(content)), type);
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException exception) {
+                if (!(exception instanceof FileNotFoundException)) {
+                    exception.printStackTrace();
+                }
             }
 
             return null;
