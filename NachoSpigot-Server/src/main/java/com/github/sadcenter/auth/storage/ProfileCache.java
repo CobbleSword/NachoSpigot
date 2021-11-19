@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -42,9 +43,7 @@ public class ProfileCache {
             }
         } else try (FileReader fileReader = new FileReader(CACHE_FILE)) {
             Map<String, CachedProfile> loadedCache = NachoAuthenticatorService.GSON
-                    .fromJson(fileReader, new TypeToken<CaseInsensitiveMap<CachedProfile>>() {
-                    }.getType());
-
+                    .fromJson(fileReader, new TypeToken<HashMap<String, CachedProfile>>() {}.getType());
             return this.filter(loadedCache);
         } catch (IOException e) {
             e.printStackTrace();
@@ -54,10 +53,10 @@ public class ProfileCache {
     }
 
     private Map<String, CachedProfile> filter(Map<String, CachedProfile> map) {
-        return map.entrySet().stream().filter(cachedProfile -> !cachedProfile.getValue().isExpired()).collect(Collectors.toMap(
+        return new CaseInsensitiveMap<>(map.entrySet().stream().filter(cachedProfile -> !cachedProfile.getValue().isExpired()).collect(Collectors.toMap(
                 Map.Entry::getKey,
                 Map.Entry::getValue
-        ));
+        )));
     }
 
     public void save() {
@@ -88,6 +87,10 @@ public class ProfileCache {
     public void putAndSave(String name, CachedProfile cachedProfile) {
         this.put(name, cachedProfile);
         this.save();
+    }
+
+    public boolean remove(String name) {
+        return this.cachedProfiles.remove(name) != null;
     }
 
     public CachedProfile getCachedProfile(String name) {

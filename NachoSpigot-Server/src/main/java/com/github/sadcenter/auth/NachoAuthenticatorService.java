@@ -50,8 +50,8 @@ public class NachoAuthenticatorService implements AuthenticationService {
                 @Override
                 public CompletableFuture<GameProfile> load(String key) {
                     EntityPlayer player = MinecraftServer.getServer().getPlayerList().getPlayer(key);
-                    CompletableFuture<GameProfile> gameProfile = player == null ? get(API + key, GameProfile.class) : CompletableFuture.completedFuture(player.getProfile());
                     CachedProfile cachedProfile = profileCache.getCachedProfile(key);
+                    CompletableFuture<GameProfile> gameProfile = player == null ? get(API + key, GameProfile.class) : CompletableFuture.completedFuture(player.getProfile());
 
                     if (cachedProfile == null) {
                         gameProfile
@@ -63,6 +63,7 @@ public class NachoAuthenticatorService implements AuthenticationService {
 
                             if (!ProfileUtil.equals(profile, join)) {
                                 profileCache.putAndSave(join.getName(), CachedProfile.fromGameProfile(join));
+                                gameProfileCache.put(join.getName(), gameProfile);
                             }
                         }, ProfileCache.EXECUTOR);
 
