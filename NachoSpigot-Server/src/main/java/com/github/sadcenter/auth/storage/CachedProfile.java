@@ -1,6 +1,7 @@
 package com.github.sadcenter.auth.storage;
 
 import com.google.common.collect.Iterables;
+import com.google.gson.annotations.Expose;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
@@ -15,7 +16,6 @@ public class CachedProfile {
 
     public CachedProfile(String property) {
         this.texture = property;
-
         this.refreshExpire();
     }
 
@@ -36,5 +36,4 @@ public class CachedProfile {
     public static CachedProfile fromGameProfile(GameProfile gameProfile) {
         return new CachedProfile(Iterables.getFirst(gameProfile.getProperties().get("textures"), null).getValue());
     }
-
 }
