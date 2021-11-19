@@ -459,7 +459,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 
     public boolean ai() {
         // [Nacho-0039] Add a check to see if we are using Linux or not, if not ignore this.
-        return this.getTransport() == ServerConnection.EventGroupType.EPOLL && org.apache.commons.lang.SystemUtils.IS_OS_LINUX;
+        return org.apache.commons.lang.SystemUtils.IS_OS_LINUX && this.getTransport() == ServerConnection.EventGroupType.EPOLL;
     }
 
     public ServerConnection.EventGroupType getTransport() {
