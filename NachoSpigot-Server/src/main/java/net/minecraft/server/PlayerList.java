@@ -5,9 +5,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
-import dev.cobblesword.nachospigot.Nacho;
 import io.netty.buffer.Unpooled;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.SocketAddress;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -77,6 +77,11 @@ public abstract class PlayerList {
         this.l = new IpBanList(PlayerList.b);
         this.operators = new OpList(PlayerList.c);
         // [Nacho-0037] Add toggle for "Faster Operator"
+        try {
+            operators.load();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         if(NachoConfig.useFastOperators) {
             for (OpListEntry value : this.operators.getValues()) {
                 this.fastOperator.add(value.getKey().getId());
