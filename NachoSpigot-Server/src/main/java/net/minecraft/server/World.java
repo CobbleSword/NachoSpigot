@@ -1716,7 +1716,7 @@ public abstract class World implements IBlockAccess {
             // Paper start - Use alternate implementation with faster contains
             java.util.Set<TileEntity> toRemove = java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<>());
             toRemove.addAll(this.getTileEntityListUnload());
-            this.getTileEntityListUnload().removeAll(toRemove);
+            this.tileEntityList.removeAll(toRemove);
             // Paper end
 //            this.tileEntityList.removeAll(this.c);//c  == tileEntityListUnload
             //this.h.removeAll(this.c); // PaperSpigot - Remove unused list
