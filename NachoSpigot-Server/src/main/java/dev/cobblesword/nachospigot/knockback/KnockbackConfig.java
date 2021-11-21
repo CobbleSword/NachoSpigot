@@ -5,16 +5,12 @@ import me.elier.nachospigot.config.NachoConfig;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.sugarcanemc.sugarcane.util.yaml.YamlCommenter;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,8 +18,16 @@ import java.util.Set;
 public class KnockbackConfig {
     private static final Logger LOGGER = LogManager.getLogger(KnockbackConfig.class);
     private static File CONFIG_FILE;
-    protected static final YamlCommenter c = new YamlCommenter();
-    private static final String HEADER = "This is the knockback configuration file for NachoSpigot.\n";
+    //private static final YamlCommenter c = new YamlCommenter();
+    private static final String HEADER = "This is the knockback configuration file for NachoSpigot.\n"
+            + "As you can see, there isn't much to configure. To add/remove/edit a knockback profile\n"
+            + "you must use the /kb command. Note that this will impact gameplay so use caution and \n"
+            + "make sure you know what each option does before configuring.\n"
+            + "\n"
+            + "If you need help with the configuration or have any questions related to NachoSpigot,\n"
+            + "feel free to join us in our Discord.\n"
+            + "\n"
+            + "Discord: https://discord.gg/SBTEbSx\n";
     static YamlConfiguration config;
 
     private static KnockbackProfile currentKb;
@@ -41,9 +45,7 @@ public class KnockbackConfig {
             throw Throwables.propagate(ex);
         }
         config.options().copyDefaults(true);
-        c.setHeader(HEADER);
-
-        save();
+        config.options().header(HEADER);
 
         final KnockbackProfile defaultProfile = new CraftKnockbackProfile("Default");
 
@@ -83,6 +85,7 @@ public class KnockbackConfig {
         if (currentKb == null) {
             currentKb = defaultProfile;
         }
+        save();
     }
 
     public static KnockbackProfile getCurrentKb() {

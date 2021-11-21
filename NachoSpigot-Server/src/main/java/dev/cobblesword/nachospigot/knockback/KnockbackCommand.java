@@ -1,6 +1,5 @@
 package dev.cobblesword.nachospigot.knockback;
 
-import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.commons.ClickableBuilder;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -10,17 +9,27 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
+
 public class KnockbackCommand extends Command {
 
     private final String separator = "§8§m-=-------------------------=-";
 
     public KnockbackCommand(String name) {
         super(name);
+        this.description = "Change knockback settings";
+        this.usageMessage = "/kb [action] [arguments]";
+        this.setAliases(Arrays.asList("kb", "knockback"));
+        this.setPermission("ns.command.kb");
     }
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-        if (!sender.isOp() || !(sender instanceof Player)) { return false; }
+        if (!testPermission(sender)) return true;
+        if(!(sender instanceof Player)) {
+            sender.sendMessage("You must be a player to use this command."); // TODO
+            return false;
+        }
         Player player = (Player)sender;
 
         switch (args.length) {
