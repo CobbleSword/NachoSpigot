@@ -4,7 +4,7 @@
 NachoSpigot offers a number of enhancements to performance as well as bug fixes such as a built-in anti-crash system and being able to perform well with a large number of players.
 
 ## Current State
-Java 15 is now natively supported, and [ProtocolLib](https://github.com/dmulloy2/ProtocolLib), [ViaVersion](https://github.com/ViaVersion/ViaVersion), and [Citizens2](https://github.com/CitizensDev/Citizens2) are patched at runtime to work with Nacho's modifications.
+Java 15 is now natively supported, and [ViaVersion](https://github.com/ViaVersion/ViaVersion) is patched at runtime to work with Nacho's modifications.
 
 Nacho can now be used in production environments with some degree of stability.
 
@@ -110,8 +110,8 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [Nacho-0030] add a ChunkPreLoadEvent
 [Nacho-0031] remove unused vars
 [Nacho-0033] Faster Operator search method
-[Nacho-0049] Don't allocate empty int arrays for particles
-[Nacho-0050] Option to disable Enchantment table ticking
+[Nacho-0048] Don't allocate empty int arrays for particles
+[Nacho-0049] Option to disable Enchantment table ticking
 
 <--> by Sculas
 [Nacho-0034] Remove Java 8 message from TacoSpigot which made it so you couldn't run Java 8 or higher
@@ -122,14 +122,13 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [Nacho-0040] Change deprecated Netty parameter in ResourceLeakDetector
 [Nacho-0041] Fix block placement
 [Nacho-0042] Remove Spigot Watchdog
-[Nacho-0043] Fix ProtocolLib
-[Nacho-0044] Fix Citizens
-[Nacho-0045] Async obfuscation
-[Nacho-0046] Add Player#jump and Player#sendActionBar
-[Nacho-0047] Little anti-malware
-[Nacho-0048] Little anti-crash
-[Nacho-0051] Custom knockback
-[Nacho-0052] Rework ServerConnection and MinecraftPipeline (credits to Minestom)
+[Nacho-0043] Fix Citizens
+[Nacho-0044] Async obfuscation
+[Nacho-0045] Add Player#jump and Player#sendActionBar
+[Nacho-0046] Little anti-malware
+[Nacho-0047] Little anti-crash
+[Nacho-0050] Custom knockback
+[Nacho-0051] Rework ServerConnection and MinecraftPipeline (credits to Minestom)
 
 [Yatopia-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 [Yatopia-0047] Smarter statistics ticking
