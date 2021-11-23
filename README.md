@@ -4,7 +4,7 @@
 NachoSpigot offers a number of enhancements to performance as well as bug fixes such as a built-in anti-crash system and being able to perform well with a large number of players.
 
 ## Current State
-Java 15 is now natively supported, and [ViaVersion](https://github.com/ViaVersion/ViaVersion) is patched at runtime to work with Nacho's modifications.
+Java 15 is natively supported and also the recommended version to use.
 
 Nacho can now be used in production environments with some degree of stability.
 

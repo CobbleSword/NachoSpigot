@@ -328,7 +328,7 @@ public final class CraftServer implements Server {
                             } else {
                                 boolean val = RuntimePatches.applyCitizensPatch(plugin).join();
                                 if (val) {
-                                    Logger.getLogger(CraftServer.class.getName()).log(Level.INFO, "Callback returned a good state, Citizens patch was successful and Citizens is now loading.");
+                                    Logger.getLogger(CraftServer.class.getName()).log(Level.INFO, "Citizens patch was successful and Citizens is now loading.");
                                 } else {
                                     Logger.getLogger(CraftServer.class.getName()).log(Level.SEVERE, "An error occurred trying to patch Citizens, the plugin will not work as expected!");
                                     Thread.sleep(3000);
