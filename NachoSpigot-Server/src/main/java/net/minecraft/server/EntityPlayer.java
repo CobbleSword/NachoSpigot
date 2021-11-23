@@ -67,7 +67,8 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
     // Spigot start
     public boolean collidesWithEntities = true;
     public int viewDistance; // PaperSpigot - Player view distance API
-    private int containerUpdateDelay; // PaperSpigot
+    /*private int containerUpdateDelay;*/ // PaperSpigot
+    public List<EntityPotion> potions = new ArrayList<>(); // IonSpigot - Lag Compensated Potions
 
     @Override
     public boolean ad()
@@ -208,9 +209,9 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
         }
         
         // PaperSpigot start - Configurable container update tick rate
-        if (--containerUpdateDelay <= 0) {
+        if (/*--containerUpdateDelay <= 0*/ true) {
             this.activeContainer.b();
-            containerUpdateDelay = world.paperSpigotConfig.containerUpdateTickRate;
+            /*containerUpdateDelay = world.paperSpigotConfig.containerUpdateTickRate;*/
         }
         // PaperSpigot end
         if (!this.world.isClientSide && !this.activeContainer.a((EntityHuman) this)) {
@@ -318,6 +319,21 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
     public void l() {
         try {
             super.t_();
+            // IonSpigot start - Lag Compensated Potions
+            for (int i = 0; i < this.potions.size(); ++i) {
+                EntityPotion entityPotion = this.potions.get(i);
+                entityPotion.tick();
+            
+                // Check if size is > 9, this should cover some abuse
+                if (entityPotion.dead || this.potions.size() > 9) {
+                    if (!entityPotion.dead) {
+                        entityPotion.compensated = false;
+                    }
+            
+                    this.potions.remove(i--);
+                }
+            }
+            // IonSpigot end
 
             for (int i = 0; i < this.inventory.getSize(); ++i) {
                 ItemStack itemstack = this.inventory.getItem(i);
@@ -745,11 +761,11 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
         MerchantRecipeList merchantrecipelist = imerchant.getOffers(this);
 
         if (merchantrecipelist != null) {
-            PacketDataSerializer packetdataserializer = new PacketDataSerializer(Unpooled.buffer());
+            PacketDataSerializer serializer = new PacketDataSerializer(Unpooled.buffer());
 
-            packetdataserializer.writeInt(this.containerCounter);
-            merchantrecipelist.a(packetdataserializer);
-            this.playerConnection.sendPacket(new PacketPlayOutCustomPayload("MC|TrList", packetdataserializer));
+            serializer.writeInt(this.containerCounter);
+            merchantrecipelist.a(serializer);
+            this.playerConnection.sendPacket(new PacketPlayOutCustomPayload("MC|TrList", serializer));
         }
 
     }

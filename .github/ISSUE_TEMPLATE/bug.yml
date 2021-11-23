@@ -1,0 +1,79 @@
+name: Behavior Bug
+description: Report issues with behavior bugs.
+labels: [ "bug" ]
+body:
+  - type: textarea
+    attributes:
+      label: Observed Behavior
+      description: What you actually saw.
+    validations:
+      required: true
+      
+  - type: textarea
+    attributes:
+      label: Expected Behavior
+      description: What you expected to see.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Steps To Reproduce
+      description: You may submit a video or an ordered list of the steps you took to find the issue.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Plugin List
+      description: |
+        All plugins running on your server.
+        Use the command `/plugins`.
+
+        This is optional, we recommend you to provide it, but if you don't want to, then that's fine.
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Server Version
+      description: |
+        Run the command `/version` on your server and provide the output without any modifications.
+        <details>
+        <summary>	Example </summary>
+
+        ```
+        > version
+        [10:16:30 INFO]: This server is running NachoSpigot version git-NachoSpigot-"393f913" (MC: 1.8.8) (Implementing API version 1.8.8-R0.2-SNAPSHOT)
+        [10:16:30 INFO]: You are running the latest version
+        ```
+
+        </details>
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Other
+      description: |
+        If you have any additional information include it it here.
+    validations:
+      required: false
+
+  - type: checkboxes
+    attributes:
+      label: Agreements
+      description: "Please agree to the following:"
+      options:
+        - label: You were able to find this issue on the latest version of NachoSpigot.
+          required: true
+        - label: You have confirmed that there aren’t any issues open regarding this bug.
+          required: true
+        - label: You have confirmed that you are NOT using a fork of NachoSpigot in any way. **YOUR changes are not OUR faults.**
+          required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        If you have any other questions regarding your finding contact us on our discord `#nacho-support`
+        [Discord](https://discord.gg/ewcYeERKJw).

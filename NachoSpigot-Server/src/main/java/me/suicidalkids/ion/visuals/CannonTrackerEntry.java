@@ -8,7 +8,7 @@ import java.util.List;
  * This is a custom entity tracker made for the cannoning entities tnt and sand.
  * The goal behind this is to reduce packets and logic without hiding entities.
  * It may not completely replicate the original behavior, but it should make up
- * for that with it's advantages.
+ * for that with its advantages.
  */
 public class CannonTrackerEntry extends EntityTrackerEntry {
 
@@ -87,7 +87,7 @@ public class CannonTrackerEntry extends EntityTrackerEntry {
             entityplayer.removeQueue.remove(Integer.valueOf(this.tracker.getId()));
 
             this.trackedPlayerMap.put(entityplayer, true); // Paper
-            Packet packet = this.c(); // IonSpigot
+            Packet<?> packet = this.c(); // IonSpigot
             if (packet == null) return; // IonSpigot - If it's null don't update the client!
 
             entityplayer.playerConnection.sendPacket(packet);

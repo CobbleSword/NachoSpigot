@@ -566,43 +566,6 @@ public final class Bukkit {
     }
 
     /**
-     * Reloads the knockback config.
-     */
-    public static void reloadKB() {
-        server.reloadKB();
-    }
-
-    /**
-     * Checks if custom knockback is enabled.
-     */
-    public static boolean customKnockback() { 
-        return server.customKnockback(); 
-    }
-    
-    public static void toggleKnockback(Boolean b) {
-        server.toggleKnockback(b);
-    }
-
-    public static void setKnockbackFriction(double d) {
-        server.setKnockbackFriction(d);
-    }
-    public static void setKnockbackHorizontal(double d) {
-        server.setKnockbackHorizontal(d);
-    }
-    public static void setKnockbackVertical(double d) {
-        server.setKnockbackVertical(d);
-    }
-    public static void setKnockbackVerticalLimit(double d) {
-        server.setKnockbackVerticalLimit(d);
-    }
-    public static void setKnockbackExtraHorizontal(double d) {
-        server.setKnockbackExtraHorizontal(d);
-    }
-    public static void setKnockbackExtraVertical(double d) {
-        server.setKnockbackExtraVertical(d);
-    }
-
-    /**
      * Returns the primary logger associated with this server instance.
      *
      * @return Logger associated with this server

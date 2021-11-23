@@ -45,6 +45,19 @@
         </dependency>
 
         <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>9.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-util</artifactId>
+            <version>9.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.12.0</version>
@@ -66,6 +79,11 @@
             <version>1.8.8-SNAPSHOT</version>
             <type>jar</type>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.jafama</groupId>
+            <artifactId>jafama</artifactId>
+            <version>2.3.2</version>
         </dependency>
         <dependency>
             <groupId>net.sf.jopt-simple</groupId>
@@ -119,12 +137,21 @@
             <artifactId>fast-uuid</artifactId>
             <version>0.2.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.velocitypowered</groupId>
+            <artifactId>velocity-native</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <repositories>
         <repository>
             <id>elmakers-repo</id>
             <url>https://maven.elmakers.com/repository/</url>
+        </repository>
+        <repository>
+            <id>velocity-repo</id>
+            <url>https://repo.velocitypowered.com/snapshots/</url>
         </repository>
     </repositories>
 
@@ -271,6 +298,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M5</version>
                 <configuration>
+                    <trimStackTrace>false</trimStackTrace>
                     <workingDirectory>${basedir}/target/test-server</workingDirectory>
                     <excludes>
                         <exclude>org/bukkit/craftbukkit/inventory/ItemStack*Test.java</exclude>

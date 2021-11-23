@@ -3,7 +3,9 @@ package me.elier.nachospigot.config;
 import com.google.common.base.Throwables;
 import dev.cobblesword.nachospigot.OldNachoConfig;
 import dev.cobblesword.nachospigot.commons.FileUtils;
-import org.bukkit.Bukkit;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.sugarcanemc.sugarcane.util.yaml.YamlCommenter;
@@ -13,12 +15,12 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.nio.file.Files;
 import java.util.List;
-import java.util.logging.Level;
 
+@SuppressWarnings("unused")
 public class NachoConfig {
 
+    private static final Logger LOGGER = LogManager.getLogger(NachoConfig.class);
     private static File CONFIG_FILE;
     protected static final YamlCommenter c = new YamlCommenter();
     private static final String HEADER = "This is the main configuration file for NachoSpigot.\n"
@@ -41,30 +43,24 @@ public class NachoConfig {
             config.load(CONFIG_FILE);
         } catch (IOException ignored) {
         } catch (InvalidConfigurationException ex) {
-            Bukkit.getLogger().log(Level.SEVERE, "Could not load nacho.yml, please correct your syntax errors", ex);
+            LOGGER.log(Level.ERROR, "Could not load nacho.yml, please correct your syntax errors", ex);
             throw Throwables.propagate(ex);
         }
         config.options().copyDefaults(true);
         File old_config = new File("nacho.json");
         if(old_config.exists()) migrate(old_config);
 
-        int configVersion = 1; // Update this every new configuration update
+        int configVersion = 6; // Update this every new configuration update
         version = getInt("config-version", configVersion);
         set("config-version", configVersion);
-        readConfig(NachoConfig.class, null);
         c.setHeader(HEADER);
-        c.addComment("config-version", "Configuration version, do NOT modify this!");
+        readConfig(NachoConfig.class, null);
+        loadComments();
     }
 
-    private static void migrate(File old_config) {
+    static void migrate(File old_config) {
         OldNachoConfig nachoJson = FileUtils.toObject(old_config, OldNachoConfig.class);
-        try {
-            Files.delete(old_config.toPath());
-        } catch (IOException e) {
-            Bukkit.getLogger().log(Level.SEVERE, "Failed to delete nacho.json during migration to nacho.yml");
-            throw Throwables.propagate(e);
-        }
-        if(nachoJson == null) return;
+        if(nachoJson == null) {old_config.delete(); return;}
         set("settings.save-empty-scoreboard-teams", nachoJson.saveEmptyScoreboardTeams);
         set("settings.commands.enable-version-command", nachoJson.enableVersionCommand);
         set("settings.commands.enable-plugins-command", nachoJson.enablePluginsCommand);
@@ -105,6 +101,49 @@ public class NachoConfig {
         set("world-settings.default.disable-sponge-absorption", nachoJson.disableSpongeAbsorption);
         set("settings.fix-eat-while-running", nachoJson.fixEatWhileRunning);
         set("settings.hide-projectiles-from-hidden-players", nachoJson.hideProjectilesFromHiddenPlayers);
+        old_config.delete();
+    }
+
+    static void loadComments() {
+        c.addComment("config-version", "Configuration version, do NOT modify this!");
+        c.addComment("settings.save-empty-scoreboard-teams", "Toggles whether or not the server should save empty scoreboard teams");
+        c.addComment("settings.commands.enable-version-command", "Toggles the /version command");
+        c.addComment("settings.commands.enable-plugins-command", "Toggles the /plugins command");
+        c.addComment("settings.commands.enable-reload-command", "Toggles the /reload command");
+        c.addComment("settings.fast-operators", "Enables Fast Operators, which uses a faster method for managing operators");
+        c.addComment("settings.patch-protocollib", "Enables the ProtocolLib runtime patch (not required on ProtocolLib version 4.7+)");
+        c.addComment("settings.stop-notify-bungee", "Disables the firewall check when running BungeeCord");
+        c.addComment("settings.anti-malware", "Enables the built-in anti malware feature");
+        c.addComment("settings.kick-on-illegal-behavior", "Kicks players if they try to do an illegal action (e.g. using a creative mode action while not in creative mode.)");
+        c.addComment("settings.panda-wire", "Optimizes redstone wires.");
+        c.addComment("settings.event.fire-entity-explode-event", "Toggles the entity explode event");
+        c.addComment("settings.event.fire-player-move-event", "Toggles the player move event");
+        c.addComment("settings.event.fire-leaf-decay-event", "Toggles the leaf decay event");
+        c.addComment("settings.player-time-statistics-interval", "Changes when statistics are ticked (e.g. 20 would be every 20th tick)");
+        c.addComment("settings.brand-name", "Changes the brand name of the server.\nThis will show in statistics, server lists, client crashes,\n and in the client debug screen. (accessed by pressing F3)");
+        c.addComment("settings.stop-decoding-itemstack-on-place", "Disables decoding itemstacks when not needed");
+        c.addComment("settings.anti-crash", "Kicks players if they try to do an action that would/might crash the server");
+        c.addComment("settings.chunk.threads", "The amount of threads used for chunks");
+        c.addComment("settings.chunk.players-per-thread", "The amount of players for each thread");
+        c.addComment("settings.use-tcp-nodelay", "Enables the TCP_NODELAY socket option");
+        c.addComment("settings.fixed-pools.use-fixed-pools-for-explosions", "Enables fixed thread pool for explosions");
+        c.addComment("settings.fixed-pools.size", "The size for the fixed thread pool for explosions.");
+        c.addComment("settings.faster-cannon-tracker", "Enables a faster cannon entity tracker");
+        c.addComment("settings.fix-eat-while-running", "Fixes the eating while running bug");
+        c.addComment("settings.hide-projectiles-from-hidden-players", "Hides projectiles from hidden players");
+        c.addComment("settings.anti-enderpearl-glitch", "Enables anti enderpearl glitch");
+        c.addComment("settings.disabled-block-fall-animation", "Disables the fall animation for blocks");
+        c.addComment("settings.enable-protocollib-shim", "Enable ProtocolLib network shim. Allows ProtocolLib to work, but requires extra memory. Disable this if you don't use ProtocolLib!");
+        c.addComment("settings.instant-interaction", "Disables delay of all interactions");
+        c.addComment("settings.disable-infinisleeper-thread-usage", "Disable infinisleeper thread usage, just enable this if you know what are you doing.");
+        c.addComment("settings.enable-fastmath", "Enable Fast Math usage.");
+        c.addComment("settings.use-tcp-fastopen", "Options: 0 - Disabled.; 1 - TFO is enabled for outgoing connections (clients).; 2 - TFO is enabled for incoming connections (servers).; 3 - TFO is enabled for both clients and servers.");
+        c.addComment("settings.tile-entity-ticking-time", "Ticking time (20 ticks per second) for usage on tile entity operations.");
+        c.addComment("settings.item-dirty-ticks", "Controls the interval for the item-dirty check. Minecraft checks an item every tick to see if it was changed. This can be expensive because it also needs to check all NBT data. Spigot only checks for basic count/data/type data and does a deep check every 20 ticks by default.");
+        c.addComment("settings.use-tcp-fastopen", "Enables the TCP_FASTOPEN socket option");
+        c.addComment("settings.lag-compensated-potions", "Enables lag compensation throwing potions");
+        c.addComment("settings.smooth-potting", "Make potion throwing smoother");
+        NachoWorldConfig.loadComments();
     }
 
     static void readConfig(Class<?> clazz, Object instance) {
@@ -117,7 +156,7 @@ public class NachoConfig {
                     } catch (InvocationTargetException ex) {
                         throw Throwables.propagate(ex.getCause());
                     } catch (Exception ex) {
-                        Bukkit.getLogger().log(Level.SEVERE, "Error invoking " + method, ex);
+                        LOGGER.log(Level.ERROR, "Error invoking " + method, ex);
                     }
                 }
             }
@@ -125,41 +164,42 @@ public class NachoConfig {
 
         try {
             config.save(CONFIG_FILE);
+            c.saveComments(CONFIG_FILE, instance != null);
         } catch (IOException ex) {
-            Bukkit.getLogger().log(Level.SEVERE, "Could not save " + CONFIG_FILE, ex);
+            LOGGER.log(Level.ERROR, "Could not save " + CONFIG_FILE, ex);
         }
     }
 
-    private static void set(String path, Object val) {
+    static void set(String path, Object val) {
         config.set(path, val);
     }
 
-    private static boolean getBoolean(String path, boolean def) {
+    static boolean getBoolean(String path, boolean def) {
         config.addDefault(path, def);
         return config.getBoolean(path, config.getBoolean(path));
     }
 
-    private static double getDouble(String path, double def) {
+    static double getDouble(String path, double def) {
         config.addDefault(path, def);
         return config.getDouble(path, config.getDouble(path));
     }
 
-    private static float getFloat(String path, float def) {
+    static float getFloat(String path, float def) {
         config.addDefault(path, def);
         return config.getFloat(path, config.getFloat(path));
     }
 
-    private static int getInt(String path, int def) {
+    static int getInt(String path, int def) {
         config.addDefault(path, def);
         return config.getInt(path, config.getInt(path));
     }
 
-    private static <T> List getList(String path, T def) {
+    static <T> List getList(String path, T def) {
         config.addDefault(path, def);
-        return (List<T>) config.getList(path, config.getList(path));
+        return config.getList(path, config.getList(path));
     }
 
-    private static String getString(String path, String def) {
+    static String getString(String path, String def) {
         config.addDefault(path, def);
         return config.getString(path, config.getString(path));
     }
@@ -168,7 +208,6 @@ public class NachoConfig {
 
     private static void saveEmptyScoreboardTeams() {
         saveEmptyScoreboardTeams = getBoolean("settings.save-empty-scoreboard-teams", false);
-        c.addComment("settings.save-empty-scoreboard-teams", "Toggles whether or not the server should save empty scoreboard teams");
     }
     public static boolean enableVersionCommand;
     public static boolean enablePluginsCommand;
@@ -176,50 +215,41 @@ public class NachoConfig {
 
     private static void commands() {
         enableVersionCommand = getBoolean("settings.commands.enable-version-command", true);
-        c.addComment("settings.commands.enable-version-command", "Toggles the /version command");
         enablePluginsCommand = getBoolean("settings.commands.enable-plugins-command", true);
-        c.addComment("settings.commands.enable-plugins-command", "Toggles the /plugins command");
         enableReloadCommand = getBoolean("settings.commands.enable-reload-command", true);
-        c.addComment("settings.commands.enable-reload-command", "Toggles the /reload command");
     }
 
     public static boolean useFastOperators;
 
     private static void useFastOperators() {
         useFastOperators = getBoolean("settings.fast-operators", false);
-        c.addComment("settings.fast-operators", "Enables Fast Operators, which uses a faster method for managing operators");
     }
     public static boolean patchProtocolLib;
 
     private static void patchProtocolLib() {
         patchProtocolLib = getBoolean("settings.patch-protocollib", true);
-        c.addComment("settings.patch-protocollib", "Enables the ProtocolLib runtime patch (not required on ProtocolLib version 4.7+)");
     }
     public static boolean stopNotifyBungee;
 
     private static void stopNotifyBungee() {
         stopNotifyBungee = getBoolean("settings.stop-notify-bungee", false);
-        c.addComment("settings.stop-notify-bungee", "Disables the firewall check when running BungeeCord");
     }
     public static boolean checkForMalware;
 
     private static void antiMalware() {
         checkForMalware = getBoolean("settings.anti-malware", false);
-        c.addComment("settings.anti-malware", "Enables the built-in anti malware feature");
     }
 
     public static boolean kickOnIllegalBehavior;
 
     private static void kickOnIllegalBehavior() {
         kickOnIllegalBehavior = getBoolean("settings.kick-on-illegal-behavior", true);
-        c.addComment("settings.kick-on-illegal-behavior", "Kicks players if they try to do an illegal action (e.g. using a creative mode action while not in creative mode.)");
     }
 
     public static boolean usePandaWire;
 
     private static void usePandaWire() {
         usePandaWire = getBoolean("settings.panda-wire", true);
-        c.addComment("settings.panda-wire", "Optimizes redstone wires.");
     }
 
     public static boolean fireEntityExplodeEvent;
@@ -228,39 +258,32 @@ public class NachoConfig {
 
     private static void fireEntityExplodeEvent() {
         fireEntityExplodeEvent = getBoolean("settings.event.fire-entity-explode-event", true);
-        c.addComment("settings.event.fire-entity-explode-event", "Toggles the entity explode event");
         firePlayerMoveEvent = getBoolean("settings.event.fire-player-move-event", true);
-        c.addComment("settings.event.fire-player-move-event", "Toggles the player move event");
         leavesDecayEvent = getBoolean("settings.event.fire-leaf-decay-event", true);
-        c.addComment("settings.event.fire-leaf-decay-event", "Toggles the leaf decay event");
     }
 
     public static int playerTimeStatisticsInterval;
 
     private static void playerTimeStatisticsInterval() {
         playerTimeStatisticsInterval = getInt("settings.player-time-statistics-interval", 20);
-        c.addComment("settings.player-time-statistics-interval", "Changes when statistics are ticked (e.g. 20 would be every 20th tick)");
     }
 
     public static String serverBrandName;
 
     private static void serverBrandName() {
         serverBrandName = getString("settings.brand-name", "NachoSpigot");
-        c.addComment("settings.brand-name", "Changes the brand name of the server.\nThis will show in statistics, server lists, client crashes,\n and in the client debug screen. (accessed by pressing F3)");
     }
 
     public static boolean stopDecodingItemStackOnPlace;
 
     private static void stopDecodingItemStackOnPlace() {
         stopDecodingItemStackOnPlace = getBoolean("settings.stop-decoding-itemstack-on-place", true);
-        c.addComment("settings.stop-decoding-itemstack-on-place", "Disables decoding itemstacks when not needed");
     }
 
     public static boolean enableAntiCrash;
 
     private static void enableAntiCrash() {
         enableAntiCrash = getBoolean("settings.anti-crash", true);
-        c.addComment("settings.anti-crash", "Kicks players if they try to do an action that would/might crash the server");
     }
 
     public static int chunkThreads; // PaperSpigot - Bumped value
@@ -268,16 +291,13 @@ public class NachoConfig {
 
     private static void chunk() {
         chunkThreads = getInt("settings.chunk.threads", 2);
-        c.addComment("settings.chunk.threads", "The amount of threads used for chunks");
         playersPerThread = getInt("settings.chunk.players-per-thread", 50);
-        c.addComment("settings.chunk.players-per-thread", "The amount of players for each thread");
     }
 
     public static boolean enableTCPNODELAY;
 
     private static void enableTCPNODELAY() {
         enableTCPNODELAY = getBoolean("settings.use-tcp-nodelay", true);
-        c.addComment("settings.use-tcp-nodelay", "Enables the TCP_NODELAY socket option");
     }
 
     public static boolean useFixedPoolForTNT;
@@ -285,28 +305,95 @@ public class NachoConfig {
 
     private static void fixedPools() {
         useFixedPoolForTNT = getBoolean("settings.fixed-pools.use-fixed-pools-for-explosions", false);
-        c.addComment("settings.fixed-pools.use-fixed-pools-for-explosions", "Enables fixed thread pool for explosions");
         fixedPoolSize = getInt("settings.fixed-pools.size", 500);
-        c.addComment("settings.fixed-pools.size", "The size for the fixed thread pool for explosions.");
     }
     public static boolean useFasterCannonTracker;
 
     private static void useFasterCannonTracker() {
         useFasterCannonTracker = getBoolean("settings.faster-cannon-tracker", true);
-        c.addComment("settings.faster-cannon-tracker", "Enables a faster cannon entity tracker");
     }
 
     public static boolean fixEatWhileRunning;
 
     private static void fixEatWhileRunning() {
         fixEatWhileRunning = getBoolean("settings.fix-eat-while-running", false);
-        c.addComment("settings.fix-eat-while-running", "Fixes the eating while running bug");
     }
 
     public static boolean hideProjectilesFromHiddenPlayers;
 
-    public static void hideProjectilesFromHiddenPlayers() {
+    private static void hideProjectilesFromHiddenPlayers() {
         hideProjectilesFromHiddenPlayers = getBoolean("settings.hide-projectiles-from-hidden-players", false);
-        c.addComment("settings.hide-projectiles-from-hidden-players", "Hides projectiles from hidden players");
+    }
+
+    public static boolean lagCompensatedPotions;
+    
+    private static void lagCompensatedPotions() {
+        lagCompensatedPotions = getBoolean("settings.lag-compensated-potions", false);
+    }
+
+    public static boolean smoothPotting;
+    
+    private static void smoothPotting() {
+        smoothPotting = getBoolean("settings.smooth-potting", false);
+    }
+
+    public static boolean antiEnderPearlGlitch;
+    
+    private static void antiEnderPearlGlitch() {
+        antiEnderPearlGlitch = getBoolean("settings.anti-enderpearl-glitch", false);
+    }
+
+    public static boolean disabledFallBlockAnimation;
+
+    private static void disableFallAnimation() {
+        disabledFallBlockAnimation = getBoolean("settings.disabled-block-fall-animation", false);
+    }
+
+    public static boolean disableInfiniSleeperThreadUsage;
+
+    private static void disableInfiniSleeperThreadUsage() {
+        disableInfiniSleeperThreadUsage = getBoolean("settings.disable-infinisleeper-thread-usage", false);
+    }
+
+    public static boolean enableFastMath;
+
+    private static void enableFastMath() {
+        enableFastMath = getBoolean("settings.enable-fastmath", false);
+    }
+
+    public static int tileEntityTickingTime = 20;
+
+    private static void tileEntityTickingTime() {
+        tileEntityTickingTime = getInt("settings.tile-entity-ticking-time", 20);
+    }
+
+    public static int itemDirtyTicks;
+
+    private static void itemDirtyTicks() {
+        itemDirtyTicks = getInt("settings.item-dirty-ticks", 20);
+    }
+
+    public static boolean enableTcpFastOpen;
+
+    private static void enableTcpFastOpen() {
+        enableTcpFastOpen = getBoolean("settings.use-tcp-fastopen", true);
+    }
+
+    public static int modeTcpFastOpen;
+
+    private static void modeTcpFastOpen() {
+        modeTcpFastOpen = getInt("settings.tcp-fastopen-mode", 1);
+    }
+
+    public static boolean enableProtocolLibShim;
+
+    private static void enableProtocolLibShim() {
+        enableProtocolLibShim = getBoolean("settings.enable-protocollib-shim", true);
+    }
+
+    public static boolean instantPlayInUseEntity;
+
+    private static void instantPlayInUseEntity() {
+        instantPlayInUseEntity = getBoolean("settings.instant-interaction", false);
     }
 }

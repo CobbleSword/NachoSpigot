@@ -128,7 +128,7 @@ public class ShapedRecipes implements IRecipe {
                 ItemStack itemstack1 = inventorycrafting.c(k, l);
 
                 if (itemstack1 != null || itemstack != null) {
-                    if (itemstack1 == null && itemstack != null || itemstack1 != null && itemstack == null) {
+                    if (itemstack1 == null || itemstack == null) {
                         return false;
                     }
 

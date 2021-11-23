@@ -2,6 +2,7 @@ package net.minecraft.server;
 
 import com.eatthepath.uuid.FastUUID;
 import dev.cobblesword.nachospigot.commons.Constants;
+import me.elier.nachospigot.config.NachoConfig;
 
 import java.util.List;
 import java.util.UUID;
@@ -136,6 +137,13 @@ public abstract class EntityProjectile extends Entity implements IProjectile {
                     float f = 0.3F;
                     AxisAlignedBB axisalignedbb = entity1.getBoundingBox().grow((double) f, (double) f, (double) f);
                     MovingObjectPosition movingobjectposition1 = axisalignedbb.a(vec3d, vec3d1);
+
+                    // IonSpigot start - Smooth Potting
+                    if (this instanceof EntityPotion && NachoConfig.smoothPotting &&
+                        movingobjectposition1 == null && getBoundingBox().b(entity1.getBoundingBox())) {
+                        movingobjectposition1 = new MovingObjectPosition(entity1);
+                    }
+                    // IonSpigot end
 
                     if (movingobjectposition1 != null)
                     {

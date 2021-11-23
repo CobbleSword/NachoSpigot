@@ -154,6 +154,11 @@ public class Main {
                         .ofType(File.class)
                         .defaultsTo(new File("nacho.yml"))
                         .describedAs("Yml file");
+                acceptsAll(asList("knockback", "knockback-settings"), "File for nachospigot knockback settings")
+                        .withRequiredArg()
+                        .ofType(File.class)
+                        .defaultsTo(new File("knockback.yml"))
+                        .describedAs("Yml file");
                 // NachoSpigot end
             }
         };

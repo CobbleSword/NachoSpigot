@@ -68,7 +68,7 @@ public class PacketPlayOutSpawnEntity implements Packet<PacketListenerPlayOut> {
     }
 
     public void a(PacketDataSerializer var1) throws IOException {
-        this.a = var1.e();
+        this.a = var1.readVarInt();
         this.j = var1.readByte();
         this.b = var1.readInt();
         this.c = var1.readInt();

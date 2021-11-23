@@ -45,9 +45,9 @@ public abstract class PlayerList {
     public static final File c = new File("ops.json");
     public static final File d = new File("whitelist.json");
     private static final Logger f = LogManager.getLogger();
-    private static final SimpleDateFormat g = new SimpleDateFormat("yyyy-MM-dd \'at\' HH:mm:ss z");
+    private static final SimpleDateFormat g = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
     private final MinecraftServer server;
-    public final List<EntityPlayer> players = new java.util.concurrent.CopyOnWriteArrayList(); // CraftBukkit - ArrayList -> CopyOnWriteArrayList: Iterator safety
+    public final List<EntityPlayer> players = new java.util.concurrent.CopyOnWriteArrayList<>(); // CraftBukkit - ArrayList -> CopyOnWriteArrayList: Iterator safety
     private final Map<UUID, EntityPlayer> j = Maps.newHashMap();
     private final GameProfileBanList k;
     private final IpBanList l;
@@ -64,8 +64,8 @@ public abstract class PlayerList {
     private int u;
 
     // CraftBukkit start
-    private CraftServer cserver;
-    private final Map<String,EntityPlayer> playersByName = new org.spigotmc.CaseInsensitiveMap<EntityPlayer>();
+    private final CraftServer cserver;
+    private final Map<String, EntityPlayer> playersByName = new org.spigotmc.CaseInsensitiveMap<>();
 
     public PlayerList(MinecraftServer minecraftserver) {
         this.cserver = minecraftserver.server = new CraftServer(minecraftserver, this);

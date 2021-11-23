@@ -5,39 +5,34 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 import java.io.IOException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.Marker;
-import org.apache.logging.log4j.MarkerManager;
 
-public class PacketEncoder extends MessageToByteEncoder<Packet> {
+public class PacketEncoder extends MessageToByteEncoder<Packet<?>> {
 
-    private static final Logger a = LogManager.getLogger();
-    private static final Marker b = MarkerManager.getMarker("PACKET_SENT", NetworkManager.PACKET_MARKER);
+    // private static final Logger a = LogManager.getLogger();
+    // private static final Marker b = MarkerManager.getMarker("PACKET_SENT", NetworkManager.PACKET_MARKER);
     private final EnumProtocolDirection c;
 
     public PacketEncoder(EnumProtocolDirection enumprotocoldirection) {
         this.c = enumprotocoldirection;
     }
 
-    protected void a(ChannelHandlerContext channelhandlercontext, Packet packet, ByteBuf bytebuf) throws Exception {
-        Integer integer = ((EnumProtocol) channelhandlercontext.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get()).a(this.c, packet);
+    protected void a(ChannelHandlerContext ctx, Packet<?> packet, ByteBuf bytebuf) throws Exception {
+        Integer packetId = ctx.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get().getPacketIdForPacket(packet);
 
-        if (PacketEncoder.a.isDebugEnabled()) {
-            PacketEncoder.a.debug(PacketEncoder.b, "OUT: [{}:{}] {}", new Object[]{channelhandlercontext.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get(), integer, packet.getClass().getName()});
-        }
+        /*if (PacketEncoder.a.isDebugEnabled()) {
+            PacketEncoder.a.debug(PacketEncoder.b, "OUT: [{}:{}] {}", ctx.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get(), packetId, packet.getClass().getName());
+        }*/
 
-        if (integer == null) {
-            throw new IOException("Can\'t serialize unregistered packet");
+        if (packetId == null) {
+            throw new IOException("Can't serialize unregistered packet");
         } else {
-            PacketDataSerializer packetdataserializer = new PacketDataSerializer(bytebuf);
-
-            packetdataserializer.b(integer.intValue());
+            PacketDataSerializer serializer = new PacketDataSerializer(bytebuf);
+            serializer.b(packetId);
 
             try {
-                packet.b(packetdataserializer);
+                packet.b(serializer);
             } catch (ExploitException ex) {
-                System.out.println("rarrr " + channelhandlercontext.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get());
+                System.out.println("Exploit exception: " + ctx.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get());
             }
 
         }
@@ -45,6 +40,6 @@ public class PacketEncoder extends MessageToByteEncoder<Packet> {
 
     @Override
     protected void encode(ChannelHandlerContext channelHandlerContext, Packet packet, ByteBuf byteBuf) throws Exception {
-        this.a(channelHandlerContext, (Packet) packet, byteBuf);
+        this.a(channelHandlerContext, packet, byteBuf);
     }
 }

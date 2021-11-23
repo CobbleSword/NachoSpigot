@@ -43,11 +43,8 @@ public abstract class ChatBaseComponent implements IChatBaseComponent {
     public ChatModifier getChatModifier() {
         if (this.b == null) {
             this.b = new ChatModifier();
-            Iterator iterator = this.a.iterator();
 
-            while (iterator.hasNext()) {
-                IChatBaseComponent ichatbasecomponent = (IChatBaseComponent) iterator.next();
-
+            for (IChatBaseComponent ichatbasecomponent : this.a) {
                 ichatbasecomponent.getChatModifier().setChatModifier(this.b);
             }
         }
@@ -56,16 +53,13 @@ public abstract class ChatBaseComponent implements IChatBaseComponent {
     }
 
     public Iterator<IChatBaseComponent> iterator() {
-        return Iterators.concat(Iterators.forArray(new ChatBaseComponent[] { this}), a((Iterable) this.a));
+        return Iterators.concat(Iterators.forArray(this), a(this.a));
     }
 
     public final String c() {
         StringBuilder stringbuilder = new StringBuilder();
-        Iterator iterator = this.iterator();
 
-        while (iterator.hasNext()) {
-            IChatBaseComponent ichatbasecomponent = (IChatBaseComponent) iterator.next();
-
+        for (IChatBaseComponent ichatbasecomponent : this) {
             stringbuilder.append(ichatbasecomponent.getText());
         }
 

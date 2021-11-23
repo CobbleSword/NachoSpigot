@@ -21,7 +21,7 @@ import javax.imageio.ImageIO;
 
 import com.eatthepath.uuid.FastUUID;
 import dev.cobblesword.nachospigot.Nacho;
-import dev.cobblesword.nachospigot.knockback.Knockback;
+import dev.cobblesword.nachospigot.knockback.KnockbackConfig;
 import me.elier.nachospigot.config.NachoConfig;
 import org.bukkit.craftbukkit.inventory.*;
 import xyz.sculas.nacho.malware.AntiMalware;
@@ -737,7 +737,7 @@ public final class CraftServer implements Server {
         org.github.paperspigot.PaperSpigotConfig.init((File) console.options.valueOf("paper-settings")); // PaperSpigot
         net.techcable.tacospigot.TacoSpigotConfig.init((File) console.options.valueOf("taco-settings")); // TacoSpigot
         NachoConfig.init((File) console.options.valueOf("nacho-settings")); // NachoSpigot
-        Nacho.get(); // NachoSpigot
+        KnockbackConfig.init((File) console.options.valueOf("knockback-settings"));
         for (WorldServer world : console.worlds) {
             world.worldData.setDifficulty(difficulty);
             world.setSpawnFlags(monsters, animals);
@@ -755,6 +755,7 @@ public final class CraftServer implements Server {
             world.spigotConfig.init(); // Spigot
             world.paperSpigotConfig.init(); // PaperSpigot
             world.tacoSpigotConfig.init(); // TacoSpigot
+            world.nachoSpigotConfig.init(); // NachoSpigot
         }
 
         pluginManager.clearPlugins();
@@ -763,7 +764,6 @@ public final class CraftServer implements Server {
         org.spigotmc.SpigotConfig.registerCommands(); // Spigot
         org.github.paperspigot.PaperSpigotConfig.registerCommands(); // PaperSpigot
         Nacho.get().registerCommands(); // NachoSpigot :: Commands
-        Knockback.get().registerCommands(); // NS Knockback :: Commands
 
         overrideAllCommandBlockCommands = commandsConfiguration.getStringList("command-block-overrides").contains("*");
 
@@ -796,57 +796,6 @@ public final class CraftServer implements Server {
         enablePlugins(PluginLoadOrder.POSTWORLD);
     }
 
-    @Override
-    public void reloadKB() {
-        Knockback.get().reloadConfig();
-    }
-
-    @Override
-    public boolean customKnockback() { 
-        return Knockback.get().getConfig().customKnockback; 
-    };
-    
-    @Override
-    public void toggleKnockback(Boolean b) {
-        Knockback.get().getConfig().customKnockback = b;
-        Knockback.get().saveConfig();
-    }
-
-    @Override
-    public void setKnockbackFriction(double d) {
-        Knockback.get().getConfig().knockbackFriction = d;
-        Knockback.get().saveConfig();
-    }
-
-    @Override
-    public void setKnockbackHorizontal(double d) {
-        Knockback.get().getConfig().knockbackHorizontal = d;
-        Knockback.get().saveConfig();
-    }
-
-    @Override
-    public void setKnockbackVertical(double d) {
-        Knockback.get().getConfig().knockbackVertical = d;
-        Knockback.get().saveConfig();
-    }
-
-    @Override
-    public void setKnockbackVerticalLimit(double d) {
-        Knockback.get().getConfig().knockbackVerticalLimit = d;
-        Knockback.get().saveConfig();
-    }
-
-    @Override
-    public void setKnockbackExtraHorizontal(double d) {
-        Knockback.get().getConfig().knockbackExtraHorizontal = d;
-        Knockback.get().saveConfig();
-    }
-
-    @Override
-    public void setKnockbackExtraVertical(double d) {
-        Knockback.get().getConfig().knockbackExtraVertical = d;
-        Knockback.get().saveConfig();
-    }
 
     private void loadIcon() {
         icon = new CraftIconCache(null);

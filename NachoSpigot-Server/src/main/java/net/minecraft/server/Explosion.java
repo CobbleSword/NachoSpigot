@@ -5,10 +5,15 @@ import com.google.common.collect.Maps;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 
 // CraftBukkit start
+import com.google.common.util.concurrent.MoreExecutors;
 import dev.cobblesword.nachospigot.commons.Constants;
+import dev.cobblesword.nachospigot.commons.MCUtils;
 import me.elier.nachospigot.config.NachoConfig;
+import net.jafama.FastMath;
+
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.Location;
@@ -60,23 +65,7 @@ public class Explosion {
         Block b = chunk.getBlockData(pos).getBlock(); // TacoSpigot - get block of the explosion
 
         if (!this.world.tacoSpigotConfig.optimizeLiquidExplosions || !b.getMaterial().isLiquid()) { // TacoSpigot - skip calculating what blocks to blow up in water/lava
-            boolean protection = false;
-            if ((NachoConfig.fireEntityExplodeEvent || world.nachoSpigotConfig.explosionProtectedRegions) && source != null) {
-                Location location = new Location(world.getWorld(), posX, posY, posZ);
-
-                List<org.bukkit.block.Block> list = new java.util.ArrayList<>(1);
-                int x = org.bukkit.util.NumberConversions.floor(posX);
-                int y = org.bukkit.util.NumberConversions.floor(posY);
-                int z = org.bukkit.util.NumberConversions.floor(posZ);
-                list.add(chunk.bukkitChunk.getBlock(x, y, z));
-
-                EntityExplodeEvent event = new EntityExplodeEvent(source.getBukkitEntity(), location, list, 0.3F);
-                world.getServer().getPluginManager().callEvent(event);
-                if (event.isCancelled() || event.blockList().isEmpty()) {
-                    protection = true;
-                }
-            }
-            if (!protection) {
+            if (!world.nachoSpigotConfig.explosionProtectedRegions) {
                 it.unimi.dsi.fastutil.longs.LongSet set = new it.unimi.dsi.fastutil.longs.LongOpenHashSet();
                 searchForBlocks(set, chunk);
                 for (it.unimi.dsi.fastutil.longs.LongIterator iterator = set.iterator(); iterator.hasNext(); ) {
@@ -136,41 +125,37 @@ public class Explosion {
                         double finalD = d8;
                         double finalD1 = d9;
                         double finalD11 = d10;
-                        this.getBlockDensity(vec3d, entity).whenComplete((d12, __) -> {
+                        this.getBlockDensity(vec3d, entity.getBoundingBox()).thenAccept((d12) -> MCUtils.ensureMain(() -> {
                             double d13 = (1.0D - d7) * d12;
-                            boolean continueWA = false;
 
                             if (entity.isCannoningEntity) {
                                 entity.g(finalD * d13, finalD1 * d13, finalD11 * d13);
-                                continueWA = true;
+                                return;
                             }
-
                             // IonSpigot end
 
-                            if (!continueWA) {
-                                // entity.damageEntity(DamageSource.explosion(this), (float) ((int) ((d13 * d13 + d13) / 2.0D * 8.0D * (double) f3 + 1.0D)));+                        // CraftBukkit start
-                                CraftEventFactory.entityDamage = source;
-                                entity.forceExplosionKnockback = false;
-                                boolean wasDamaged = entity.damageEntity(DamageSource.explosion(this), (float) ((int) ((d13 * d13 + d13) / 2.0D * 8.0D * (double) f3 + 1.0D)));
-                                CraftEventFactory.entityDamage = null;
-                                if (!wasDamaged && !(entity instanceof EntityTNTPrimed || entity instanceof EntityFallingBlock) && !entity.forceExplosionKnockback) {
-                                    continueWA = true;
-                                }
-                                if (!continueWA) {
-                                    // CraftBukkit end
-                                    double d14 = entity instanceof EntityHuman && world.paperSpigotConfig.disableExplosionKnockback ? 0 : EnchantmentProtection.a(entity, d13); // PaperSpigot
+                            // entity.damageEntity(DamageSource.explosion(this), (float) ((int) ((d13 * d13 + d13) / 2.0D * 8.0D * (double) f3 + 1.0D))); // CraftBukkit start
+                            CraftEventFactory.entityDamage = source;
+                            entity.forceExplosionKnockback = false;
+                            boolean wasDamaged = entity.damageEntity(DamageSource.explosion(this), (float) ((int) ((d13 * d13 + d13) / 2.0D * 8.0D * (double) f3 + 1.0D)));
+                            CraftEventFactory.entityDamage = null;
 
-                                    // PaperSpigot start - Fix cannons
-                                    // This impulse method sets the dirty flag, so clients will get an immediate velocity update
-                                    entity.g(finalD * d14, finalD1 * d14, finalD11 * d14);
-                                    // PaperSpigot end
-
-                                    if (entity instanceof EntityHuman && !((EntityHuman) entity).abilities.isInvulnerable && !world.paperSpigotConfig.disableExplosionKnockback) { // PaperSpigot
-                                        this.k.put((EntityHuman) entity, new Vec3D(finalD * d13, finalD1 * d13, finalD11 * d13));
-                                    }
-                                }
+                            if (!wasDamaged && !(entity instanceof EntityTNTPrimed || entity instanceof EntityFallingBlock) && !entity.forceExplosionKnockback) {
+                                return;
                             }
-                        });
+
+                            // CraftBukkit end
+                            double d14 = entity instanceof EntityHuman && world.paperSpigotConfig.disableExplosionKnockback ? 0 : EnchantmentProtection.a(entity, d13); // PaperSpigot
+
+                            // PaperSpigot start - Fix cannons
+                            // This impulse method sets the dirty flag, so clients will get an immediate velocity update
+                            entity.g(finalD * d14, finalD1 * d14, finalD11 * d14);
+                            // PaperSpigot end
+
+                            if (entity instanceof EntityHuman && !((EntityHuman) entity).abilities.isInvulnerable && !world.paperSpigotConfig.disableExplosionKnockback) { // PaperSpigot
+                                this.k.put((EntityHuman) entity, new Vec3D(finalD * d13, finalD1 * d13, finalD11 * d13));
+                            }
+                        }));
                     }
                 }
             }
@@ -212,7 +197,9 @@ public class Explosion {
 
             if (explode != null) {
                 EntityExplodeEvent event = new EntityExplodeEvent(explode, location, blockList, 0.3F);
-                this.world.getServer().getPluginManager().callEvent(event);
+                if(NachoConfig.fireEntityExplodeEvent) {
+                    this.world.getServer().getPluginManager().callEvent(event);
+                }
                 cancelled = event.isCancelled();
                 bukkitBlocks = event.blockList();
                 yield = event.getYield();
@@ -328,7 +315,7 @@ public class Explosion {
                         double d0 = (float) k / 15.0F * 2.0F - 1.0F;
                         double d1 = (float) i / 15.0F * 2.0F - 1.0F;
                         double d2 = (float) j / 15.0F * 2.0F - 1.0F;
-                        double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+                        double d3 = (NachoConfig.enableFastMath ? FastMath.sqrt(d0 * d0 + d1 * d1 + d2 * d2) : Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2));
 
                         d0 = (d0 / d3) * 0.30000001192092896D;
                         d1 = (d1 / d3) * 0.30000001192092896D;
@@ -357,9 +344,9 @@ public class Explosion {
             double stepZ = this.posZ;
 
             for (; f > 0.0F; f -= 0.22500001F) {
-                int floorX = org.bukkit.util.NumberConversions.floor(stepX);
-                int floorY = org.bukkit.util.NumberConversions.floor(stepY);
-                int floorZ = org.bukkit.util.NumberConversions.floor(stepZ);
+                int floorX = (NachoConfig.enableFastMath ? FastMath.floorToInt((Double.doubleToRawLongBits(stepX) >>> 63)) : org.bukkit.util.NumberConversions.floor(stepX));
+                int floorY = (NachoConfig.enableFastMath ? FastMath.floorToInt((Double.doubleToRawLongBits(stepY) >>> 63)) : org.bukkit.util.NumberConversions.floor(stepY));
+                int floorZ = (NachoConfig.enableFastMath ? FastMath.floorToInt((Double.doubleToRawLongBits(stepZ) >>> 63)) : org.bukkit.util.NumberConversions.floor(stepZ));
 
                 if (position.getX() != floorX || position.getY() != floorY || position.getZ() != floorZ) {
                     position.setValues(floorX, floorY, floorZ);
@@ -395,10 +382,9 @@ public class Explosion {
     // IonSpigot end
 
     // Paper start - Optimize explosions
-    private CompletableFuture<Float> getBlockDensity(Vec3D vec3d, Entity entity) {
+    private CompletableFuture<Float> getBlockDensity(Vec3D vec3d, AxisAlignedBB aabb) {
         return CompletableFuture.supplyAsync(() -> {
             // IonSpigot start - Optimise Density Cache
-            AxisAlignedBB aabb = entity.getBoundingBox();
             int key = createKey(this, aabb);
             float blockDensity = this.world.explosionDensityCache.get(key);
             if (blockDensity == -1.0f) {
@@ -442,8 +428,8 @@ public class Explosion {
         double d0 = 1.0D / ((aabb.d - aabb.a) * 2.0D + 1.0D);
         double d1 = 1.0D / ((aabb.e - aabb.b) * 2.0D + 1.0D);
         double d2 = 1.0D / ((aabb.f - aabb.c) * 2.0D + 1.0D);
-        double d3 = (1.0D - Math.floor(1.0D / d0) * d0) / 2.0D;
-        double d4 = (1.0D - Math.floor(1.0D / d2) * d2) / 2.0D;
+        double d3 = (1.0D - ((NachoConfig.enableFastMath ? FastMath.floor(1.0D / d0) : Math.floor(1.0D / d0)) * d0)) / 2.0D;
+        double d4 = (1.0D - ((NachoConfig.enableFastMath ? FastMath.floor(1.0D / d2) : Math.floor(1.0D / d2)) * d2)) / 2.0D;
 
         if (d0 < 0.0 || d1 < 0.0 || d2 < 0.0) {
             return Collections.emptyList();

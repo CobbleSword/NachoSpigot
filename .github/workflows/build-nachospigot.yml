@@ -2,7 +2,7 @@ name: NachoSpigot Build
 
 on:
   push:
-    branches: [master]
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,6 +15,11 @@ jobs:
         java-version: 15
         server-id: github
         settings-path: ${{ github.workspace }}
+
+    - name: Install minecraft-server to local repo
+      run: |
+        git submodule update --init
+        ./remap.sh
 
     - name: Build with Maven
       run: mvn clean package --file $GITHUB_WORKSPACE/pom.xml

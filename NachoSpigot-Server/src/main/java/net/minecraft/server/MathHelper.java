@@ -2,6 +2,8 @@ package net.minecraft.server;
 
 import java.util.Random;
 import java.util.UUID;
+import me.elier.nachospigot.config.NachoConfig;
+import net.jafama.FastMath;
 
 public class MathHelper {
     public static final float a = c(2.0F);
@@ -10,6 +12,7 @@ public class MathHelper {
     private static final double d;
     private static final double[] e;
     private static final double[] f;
+    private static final boolean fastMathMode = NachoConfig.enableFastMath;
 
     public static float sin(float var0) {
         return b[(int)(var0 * 10430.378F) & '\uffff'];
@@ -20,19 +23,23 @@ public class MathHelper {
     }
 
     public static float c(float var0) {
-        return (float)Math.sqrt(var0);
+        return (float) (fastMathMode ? (FastMath.sqrt(var0)) : (Math.sqrt(var0)));
     }
 
     public static float sqrt(double var0) {
-        return (float) Math.sqrt(var0);
+        return (float) (fastMathMode ? (FastMath.sqrt(var0)) : (Math.sqrt(var0)));
     }
 
     public static int d(float var0) {
+        if (fastMathMode) return FastMath.floorToInt(var0);
+
         int var1 = (int)var0;
         return var0 < (float)var1 ? var1 - 1 : var1;
     }
 
     public static int floor(double var0) {
+        if (fastMathMode) return FastMath.floorToInt(var0);
+
         int var2 = (int)var0;
         return var0 < (double)var2 ? var2 - 1 : var2;
     }
@@ -51,11 +58,15 @@ public class MathHelper {
     }
 
     public static int f(float var0) {
+        if (fastMathMode) return FastMath.ceilToInt(var0);
+
         int var1 = (int)var0;
         return var0 > (float)var1 ? var1 + 1 : var1;
     }
 
     public static int f(double var0) {
+        if (fastMathMode) return FastMath.ceilToInt(var0);
+
         int var2 = (int)var0;
         return var0 > (double)var2 ? var2 + 1 : var2;
     }
@@ -80,7 +91,7 @@ public class MathHelper {
         if (var0 < var2) {
             return var2;
         } else {
-            return Math.min(var0, var4);
+            return (fastMathMode ? (FastMath.min(var0, var4)) : (Math.min(var0, var4)));
         }
     }
 
@@ -161,7 +172,7 @@ public class MathHelper {
     }
 
     public static int a(String var0, int var1, int var2) {
-        return Math.max(var2, a(var0, var1));
+        return (fastMathMode ? (FastMath.max(var2, a(var0, var1))) : (Math.max(var2, a(var0, var1))));
     }
 
     public static double a(String var0, double var1) {
@@ -227,7 +238,7 @@ public class MathHelper {
     public static double b(double var0, double var2) {
         double var4 = var2 * var2 + var0 * var0;
         if (Double.isNaN(var4)) {
-            return 0.0D / 0.0;
+            return Double.NaN;
         } else {
             boolean var6 = var0 < 0.0D;
             if (var6) {
@@ -259,11 +270,11 @@ public class MathHelper {
             double var22 = (6.0D + var20 * var20) * var20 * 0.16666666666666666D;
             double var24 = var14 + var22;
             if (var8) {
-                var24 = 1.5707963267948966D - var24;
+                var24 = (fastMathMode ? (FastMath.PI / 2) : (1.5707963267948966D)) - var24;
             }
 
             if (var7) {
-                var24 = 3.141592653589793D - var24;
+                var24 = (fastMathMode ? (FastMath.PI) : (3.141592653589793D)) - var24;
             }
 
             if (var6) {
@@ -286,7 +297,7 @@ public class MathHelper {
     static {
         int var0;
         for(var0 = 0; var0 < 65536; ++var0) {
-            b[var0] = (float)Math.sin((double)var0 * 3.141592653589793D * 2.0D / 65536.0D);
+            b[var0] = (float) Math.sin((double) var0 * 3.141592653589793D * 2.0D / 65536.0D);
         }
 
         c = new int[]{0, 1, 28, 2, 29, 14, 24, 3, 30, 22, 20, 15, 25, 17, 4, 8, 31, 27, 13, 23, 21, 19, 16, 7, 26, 12, 18, 6, 11, 5, 10, 9};
@@ -295,11 +306,10 @@ public class MathHelper {
         f = new double[257];
 
         for(var0 = 0; var0 < 257; ++var0) {
-            double var1 = (double)var0 / 256.0D;
-            double var3 = Math.asin(var1);
+            double var1 = (double) var0 / 256.0D;
+            double var3 = (fastMathMode ? (FastMath.asin(var1)) : (Math.asin(var1)));
             f[var0] = Math.cos(var3);
             e[var0] = var3;
         }
-
     }
 }

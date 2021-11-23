@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import dev.cobblesword.nachospigot.commons.Constants;
+import me.elier.nachospigot.config.NachoConfig;
 import net.minecraft.server.*;
 
 import org.apache.commons.lang.Validate;
@@ -57,6 +58,9 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.messaging.StandardMessenger;
 import org.bukkit.util.Vector;
+
+import net.jafama.FastMath;
+import me.elier.nachospigot.config.NachoConfig;
 
 public class CraftWorld implements World {
     public static final int CUSTOM_DIMENSION_OFFSET = 10;
@@ -335,7 +339,13 @@ public class CraftWorld implements World {
         Validate.isTrue(item.getTypeId() != 0, "Cannot drop AIR.");
         EntityItem entity = new EntityItem(world, loc.getX(), loc.getY(), loc.getZ(), CraftItemStack.asNMSCopy(item));
         entity.pickupDelay = 10;
-        world.addEntity(entity);
+
+        if (!world.isMainThread()) {
+            world.postToMainThread(()-> world.addEntity(entity));
+        } else {
+            world.addEntity(entity);
+        }
+
         // TODO this is inconsistent with how Entity.getBukkitEntity() works.
         // However, this entity is not at the moment backed by a server entity class so it may be left.
         return new CraftItem(world.getServer(), entity);
@@ -346,23 +356,44 @@ public class CraftWorld implements World {
         double prevY = loc.getY();
         double prevZ = loc.getZ();
         loc.add(xs, ys, zs);
-        if (loc.getX() < Math.floor(prevX)) {
-            loc.setX(Math.floor(prevX));
-        }
-        if (loc.getX() >= Math.ceil(prevX)) {
-            loc.setX(Math.ceil(prevX - 0.01));
-        }
-        if (loc.getY() < Math.floor(prevY)) {
-            loc.setY(Math.floor(prevY));
-        }
-        if (loc.getY() >= Math.ceil(prevY)) {
-            loc.setY(Math.ceil(prevY - 0.01));
-        }
-        if (loc.getZ() < Math.floor(prevZ)) {
-            loc.setZ(Math.floor(prevZ));
-        }
-        if (loc.getZ() >= Math.ceil(prevZ)) {
-            loc.setZ(Math.ceil(prevZ - 0.01));
+        if (NachoConfig.enableFastMath) {
+            if (loc.getX() < FastMath.floor(prevX)) {
+                loc.setX(FastMath.floor(prevX));
+            }
+            if (loc.getX() >= FastMath.ceil(prevX)) {
+                loc.setX(FastMath.ceil(prevX - 0.01));
+            }
+            if (loc.getY() < FastMath.floor(prevY)) {
+                loc.setY(FastMath.floor(prevY));
+            }
+            if (loc.getY() >= FastMath.ceil(prevY)) {
+                loc.setY(FastMath.ceil(prevY - 0.01));
+            }
+            if (loc.getZ() < FastMath.floor(prevZ)) {
+                loc.setZ(FastMath.floor(prevZ));
+            }
+            if (loc.getZ() >= Math.ceil(prevZ)) {
+                loc.setZ(FastMath.ceil(prevZ - 0.01));
+            }
+        } else {
+            if (loc.getX() < Math.floor(prevX)) {
+                loc.setX(Math.floor(prevX));
+            }
+            if (loc.getX() >= Math.ceil(prevX)) {
+                loc.setX(Math.ceil(prevX - 0.01));
+            }
+            if (loc.getY() < Math.floor(prevY)) {
+                loc.setY(Math.floor(prevY));
+            }
+            if (loc.getY() >= Math.ceil(prevY)) {
+                loc.setY(Math.ceil(prevY - 0.01));
+            }
+            if (loc.getZ() < Math.floor(prevZ)) {
+                loc.setZ(Math.floor(prevZ));
+            }
+            if (loc.getZ() >= Math.ceil(prevZ)) {
+                loc.setZ(Math.ceil(prevZ - 0.01));
+            }
         }
     }
 

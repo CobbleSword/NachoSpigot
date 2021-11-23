@@ -2,6 +2,7 @@ package org.sugarcanemc.sugarcane.util.yaml;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class YamlUtils {
     public static int findKey(List<String> lines, String key) {
@@ -11,7 +12,7 @@ public class YamlUtils {
         List<String> _cpath = new ArrayList<>();
         for (String part : parts) {
             _cpath.add(part);
-            for (int i = _line; i < lines.size(); i++) {
+            for (int i = 0; i < lines.size(); i++) {
                 if (lines.get(i).trim().startsWith(part)) {
                     _line = i;
                     if (String.join(".", _cpath).equals(key)) {

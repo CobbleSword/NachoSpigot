@@ -1,0 +1,3 @@
+[submodule "BuildData"]
+	path = BuildData
+	url = https://github.com/Elierrr/BuildData
