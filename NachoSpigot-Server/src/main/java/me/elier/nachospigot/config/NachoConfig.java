@@ -111,7 +111,6 @@ public class NachoConfig {
         c.addComment("settings.commands.enable-plugins-command", "Toggles the /plugins command");
         c.addComment("settings.commands.enable-reload-command", "Toggles the /reload command");
         c.addComment("settings.fast-operators", "Enables Fast Operators, which uses a faster method for managing operators");
-        c.addComment("settings.patch-protocollib", "Enables the ProtocolLib runtime patch (not required on ProtocolLib version 4.7+)");
         c.addComment("settings.stop-notify-bungee", "Disables the firewall check when running BungeeCord");
         c.addComment("settings.anti-malware", "Enables the built-in anti malware feature");
         c.addComment("settings.kick-on-illegal-behavior", "Kicks players if they try to do an illegal action (e.g. using a creative mode action while not in creative mode.)");
@@ -223,11 +222,6 @@ public class NachoConfig {
 
     private static void useFastOperators() {
         useFastOperators = getBoolean("settings.fast-operators", false);
-    }
-    public static boolean patchProtocolLib;
-
-    private static void patchProtocolLib() {
-        patchProtocolLib = getBoolean("settings.patch-protocollib", true);
     }
     public static boolean stopNotifyBungee;
 

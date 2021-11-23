@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import me.elier.util.Utils;
+import me.elier.util.StringUtils;
 
 public class YamlCommenter {
     private final HashMap<String, String> comments = new HashMap<>();
@@ -57,8 +57,8 @@ public class YamlCommenter {
                 ));
             }
 
-            String prefix = Utils.repeat(" ", getIndentation(lines.get(line))) + "# ";
-            boolean noNewline = getIndentation(lines.get(line)) > getIndentation(lines.get(line - 1));
+            String prefix = StringUtils.repeat(" ", StringUtils.getIndentation(lines.get(line))) + "# ";
+            boolean noNewline = StringUtils.getIndentation(lines.get(line)) > StringUtils.getIndentation(lines.get(line - 1));
             if (line >= 0)
                 lines.add(line, (noNewline ?"":"\n") + prefix + _comment.getValue().replace("\n", "\n" + prefix));
             else System.out.printf("Failed to find key %s in %s!", _comment.getKey(), file);
@@ -67,12 +67,5 @@ public class YamlCommenter {
         FileWriter fw = new FileWriter(file);
         fw.write(text);
         fw.close();
-    }
-
-    private int getIndentation(String s){
-        if(!s.startsWith(" ")) return 0;
-        int i = 0;
-        while((s = s.replaceFirst(" ", "")).startsWith(" ")) i++;
-        return i+1;
     }
 }
