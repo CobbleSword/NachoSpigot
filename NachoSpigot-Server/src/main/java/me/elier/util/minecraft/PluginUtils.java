@@ -5,7 +5,7 @@ import org.bukkit.plugin.Plugin;
 public class PluginUtils {
 
     public static int getCitizensBuild(Plugin plugin) {
-       return Integer.parseInt(plugin.getDescription().getVersion().split("\\(build")[1].trim().replace(")", ""));
+       return Integer.parseInt(plugin.getDescription().getVersion().split("\\(build ")[1].replace(")", ""));
     }
 
 }
