@@ -66,10 +66,4 @@ public class Nacho {
     }
 
     public Set<MovementListener> getMovementListeners() { return movementListeners; }
-
-    public void applyPatches() {
-        // Nacho start - [Nacho-0041] Fix block placement
-        RuntimePatches.applyViaVersionBlockPatch();
-        // Nacho end
-    }
 }
