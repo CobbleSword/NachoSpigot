@@ -1,7 +1,5 @@
 package dev.cobblesword.nachospigot.knockback;
 
-import dev.cobblesword.nachospigot.Nacho;
-
 public class CraftKnockbackProfile implements KnockbackProfile {
 
     private String name;
