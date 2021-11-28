@@ -83,7 +83,6 @@ public class ServerConnection {
             final int workerThreadCount = Runtime.getRuntime().availableProcessors();
 
             {
-                // First time using fall-through, lol
                 switch (eventGroupType) {
                     default:
                     case DEFAULT: {
@@ -92,7 +91,7 @@ public class ServerConnection {
 
                     case EPOLL: {
                         if (Epoll.isAvailable()) {
-                            boss = new EpollEventLoopGroup(2);
+                            boss = new EpollEventLoopGroup(0);
                             worker = new EpollEventLoopGroup(workerThreadCount);
 
                             channel = EpollServerSocketChannel.class;
@@ -104,7 +103,7 @@ public class ServerConnection {
                     }
                     case KQUEUE: {
                         if (KQueue.isAvailable()) {
-                            boss = new KQueueEventLoopGroup(2);
+                            boss = new KQueueEventLoopGroup(0);
                             worker = new KQueueEventLoopGroup(workerThreadCount);
 
                             channel = KQueueServerSocketChannel.class;
@@ -115,7 +114,7 @@ public class ServerConnection {
                         }
                     }
                     case NIO: {
-                        boss = new NioEventLoopGroup(2);
+                        boss = new NioEventLoopGroup(0);
                         worker = new NioEventLoopGroup(workerThreadCount);
 
                         channel = NioServerSocketChannel.class;
@@ -127,10 +126,10 @@ public class ServerConnection {
                 }
             }
 
-            // Paper start - indicate Velocity natives in use
+            // Paper/Nacho start - indicate Velocity natives in use
             LOGGER.info("Nacho: Using " + Natives.compress.getLoadedVariant() + " compression from Velocity.");
             LOGGER.info("Nacho: Using " + Natives.cipher.getLoadedVariant() + " cipher from Velocity.");
-            // Paper end
+            // Paper/Nacho end
 
             this.getListeningChannels().add(((new ServerBootstrap()
                     .channel(channel))
