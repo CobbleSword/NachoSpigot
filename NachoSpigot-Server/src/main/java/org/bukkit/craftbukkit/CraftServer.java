@@ -292,7 +292,7 @@ public final class CraftServer implements Server {
                         AntiMalware.find(plugin);
                     }
                     // Nacho end
-                    String message = String.format("Loading %s", plugin.getDescription().getFullName());
+
                     // Nacho start - Add notice for older ProtocolLib versions
                     if(plugin.getDescription().getFullName().contains("ProtocolLib")) {
                         String[] tmp = plugin.getDescription().getVersion().split("\\.");
@@ -309,35 +309,24 @@ public final class CraftServer implements Server {
                         }
                     }
                     // Nacho end
-                    // Nacho start - [Nacho-0044] Fix Citizens
+
+                    // Nacho start - Add notice for older Citizens versions
                     else if(plugin.getDescription().getFullName().contains("Citizens")) {
                         if(PluginUtils.getCitizensBuild(plugin) < 2396) {
                             logger.warning(
                                     "Please update to Citizens 2.0.28 #7 or higher!\n" +
-                                         "In older versions, we have to do a nasty fix which only works in Java versions before Java 11.\n" +
-                                         "So.. once again, please update!\n" +
+                                         "Previously, there was a fix for older versions, but that has been removed.\n" +
+                                         "So, if you want Citizens to work, please update!\n" +
                                          "You can download the latest version with this link: " +
-                                         "https://www.spigotmc.org/resources/citizens.13811/updates\n" +
-                                         "This fix may be removed at any moment without notice!\n" +
+                                         "https://ci.citizensnpcs.co/job/Citizens2/\n" +
                                          "Sleeping for 10s so this message can be read."
                             );
                             Thread.sleep(10000);
-                            if(SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_11)) {
-                                logger.warning("Unable to patch Citizens on Java " + System.getProperty("java.specification.version") + ", the plugin will not work as expected!");
-                                Thread.sleep(3000);
-                            } else {
-                                boolean val = RuntimePatches.applyCitizensPatch(plugin).join();
-                                if (val) {
-                                    Logger.getLogger(CraftServer.class.getName()).log(Level.INFO, "Citizens patch was successful and Citizens is now loading.");
-                                } else {
-                                    Logger.getLogger(CraftServer.class.getName()).log(Level.SEVERE, "An error occurred trying to patch Citizens, the plugin will not work as expected!");
-                                    Thread.sleep(3000);
-                                }
-                            }
                         }
                     }
                     // Nacho end
-                    plugin.getLogger().info(message);
+
+                    plugin.getLogger().info(String.format("Loading %s", plugin.getDescription().getFullName()));
                     plugin.onLoad();
                 } catch (Throwable ex) {
                     Logger.getLogger(CraftServer.class.getName()).log(Level.SEVERE, ex.getMessage() + " initializing " + plugin.getDescription().getFullName() + " (Is it up to date?)", ex);
