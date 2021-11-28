@@ -1,7 +1,6 @@
 package net.minecraft.server;
 
 import com.google.common.collect.Lists;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.velocitypowered.natives.util.Natives; // Paper
 import dev.cobblesword.nachospigot.protocol.MinecraftPipeline; // Nacho
 import io.netty.bootstrap.ServerBootstrap;
@@ -39,12 +38,7 @@ public class ServerConnection {
 
     private final EventGroupType eventGroupType;
 
-    public static LazyInitVar<EventLoopGroup> a, b; // a = boss, b = worker
-
-
-    public static final LazyInitVar<DefaultEventLoopGroup> c = new LazyInitVar<>(() ->
-            new DefaultEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Local Server IO #%d").setDaemon(true).build())
-    );
+    public static EventLoopGroup boss, worker;
 
     public final MinecraftServer server;
     public volatile boolean started;
@@ -98,8 +92,8 @@ public class ServerConnection {
 
                     case EPOLL: {
                         if (Epoll.isAvailable()) {
-                            a = new LazyInitVar<>(() -> new EpollEventLoopGroup(2));
-                            b = new LazyInitVar<>(() -> new EpollEventLoopGroup(workerThreadCount));
+                            boss = new EpollEventLoopGroup(2);
+                            worker = new EpollEventLoopGroup(workerThreadCount);
 
                             channel = EpollServerSocketChannel.class;
 
@@ -110,8 +104,8 @@ public class ServerConnection {
                     }
                     case KQUEUE: {
                         if (KQueue.isAvailable()) {
-                            a = new LazyInitVar<>(() -> new KQueueEventLoopGroup(2));
-                            b = new LazyInitVar<>(() -> new KQueueEventLoopGroup(workerThreadCount));
+                            boss = new KQueueEventLoopGroup(2);
+                            worker = new KQueueEventLoopGroup(workerThreadCount);
 
                             channel = KQueueServerSocketChannel.class;
 
@@ -121,8 +115,8 @@ public class ServerConnection {
                         }
                     }
                     case NIO: {
-                        a = new LazyInitVar<>(() -> new NioEventLoopGroup(2));
-                        b = new LazyInitVar<>(() -> new NioEventLoopGroup(workerThreadCount));
+                        boss = new NioEventLoopGroup(2);
+                        worker = new NioEventLoopGroup(workerThreadCount);
 
                         channel = NioServerSocketChannel.class;
 
@@ -142,7 +136,7 @@ public class ServerConnection {
                     .channel(channel))
                     .childOption(ChannelOption.WRITE_BUFFER_WATER_MARK, SERVER_WRITE_MARK)
                     .childHandler(new MinecraftPipeline(this))
-                    .group(a.get(), b.get())
+                    .group(boss, worker)
                     .localAddress(ip, port))
                     .bind()
                     .syncUninterruptibly());
@@ -152,13 +146,12 @@ public class ServerConnection {
     public void stopServer() throws InterruptedException {
         this.started = false;
         LOGGER.info("Shutting down event loops");
-        for (ChannelFuture channelfuture : this.getListeningChannels()) {
+        for (ChannelFuture future : this.getListeningChannels()) {
             try {
-                channelfuture.channel().close().sync();
+                future.channel().close().sync();
             } finally {
-                a.get().shutdownGracefully();
-                b.get().shutdownGracefully();
-                c.get().shutdownGracefully();
+                boss.shutdownGracefully();
+                worker.shutdownGracefully();
             }
         }
 

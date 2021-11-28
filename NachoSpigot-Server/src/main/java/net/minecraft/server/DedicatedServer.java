@@ -222,8 +222,6 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                         try {
                             String external = IPUtils.getExternalAddress();
                             int port = getServerPort();
-                            DedicatedServer.LOGGER.warn("External IP: " + external);
-                            DedicatedServer.LOGGER.warn("Port: " + port);
                             if (IPUtils.isAccessible(external, port)) {
                                 DedicatedServer.LOGGER.error("THIS SERVER IS ACCESSIBLE FROM THE OUTSIDE");
                                 DedicatedServer.LOGGER.error("WITHOUT HAVING A PROPER PLUGIN LIKE BUNGEEGUARD INSTALLED");
