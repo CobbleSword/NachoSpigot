@@ -294,7 +294,11 @@ public class EntityArrow extends Entity implements IProjectile {
                             }
                         }
 
-                        world.makeSound(this.shooter,"random.bowhit", 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
+                        if (this.shooter == null) {
+                            world.makeSound(d, e, f, "random.bowhit", 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
+                        } else {
+                            world.makeSound(this.shooter, "random.bowhit", 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
+                        }
                         if (!(movingobjectposition.entity instanceof EntityEnderman)) {
                             this.die();
                         }
