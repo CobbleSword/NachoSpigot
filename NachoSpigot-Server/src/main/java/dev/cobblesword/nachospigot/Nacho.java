@@ -5,7 +5,6 @@ import dev.cobblesword.nachospigot.knockback.KnockbackConfig;
 import me.elier.nachospigot.config.NachoConfig;
 import xyz.sculas.nacho.anticrash.AntiCrash;
 import xyz.sculas.nacho.async.AsyncExplosions;
-import xyz.sculas.nacho.patches.RuntimePatches;
 import dev.cobblesword.nachospigot.protocol.PacketListener;
 import dev.cobblesword.nachospigot.protocol.MovementListener;
 import net.minecraft.server.MinecraftServer;
