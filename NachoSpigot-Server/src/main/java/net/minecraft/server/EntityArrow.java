@@ -323,7 +323,7 @@ public class EntityArrow extends Entity implements IProjectile {
                     this.locX -= this.motX / (double) f1 * 0.05000000074505806D;
                     this.locY -= this.motY / (double) f1 * 0.05000000074505806D;
                     this.locZ -= this.motZ / (double) f1 * 0.05000000074505806D;
-                    world.makeSound(this.shooter,"random.bowhit", 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
+                    world.makeSound(d, e, f,"random.bowhit", 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
                     this.inGround = true;
                     this.shake = 7;
                     this.setCritical(false);
