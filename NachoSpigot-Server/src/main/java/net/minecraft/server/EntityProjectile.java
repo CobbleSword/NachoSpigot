@@ -30,9 +30,9 @@ public abstract class EntityProjectile extends Entity implements IProjectile {
     public EntityProjectile(World world, EntityLiving entityliving) {
         super(world);
         this.shooter = entityliving;
-        this.projectileSource = (org.bukkit.entity.LivingEntity) entityliving.getBukkitEntity(); // CraftBukkit
+        this.projectileSource = entityliving == null ? null : (org.bukkit.entity.LivingEntity) entityliving.getBukkitEntity(); // CraftBukkit
         this.setSize(0.25F, 0.25F);
-        this.setPositionRotation(entityliving.locX, entityliving.locY + (double) entityliving.getHeadHeight(), entityliving.locZ, entityliving.yaw, entityliving.pitch);
+        this.setPositionRotation(entityliving == null ? 0 : entityliving.locX, entityliving == null ? 0 : entityliving.locY + (double) entityliving.getHeadHeight(), entityliving == null ? 0 : entityliving.locZ, entityliving == null ? 0 : entityliving.yaw, entityliving == null ? 0 : entityliving.pitch);
         this.locX -= (double) (MathHelper.cos(this.yaw / 180.0F * 3.1415927F) * 0.16F);
         this.locY -= 0.10000000149011612D;
         this.locZ -= (double) (MathHelper.sin(this.yaw / 180.0F * 3.1415927F) * 0.16F);
