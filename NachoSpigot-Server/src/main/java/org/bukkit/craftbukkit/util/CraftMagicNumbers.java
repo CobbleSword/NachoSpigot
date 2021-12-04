@@ -142,4 +142,10 @@ public final class CraftMagicNumbers implements UnsafeValues {
         }
         return matches;
     }
+    // Paper start
+    @Override
+    public com.destroystokyo.paper.util.VersionFetcher getVersionFetcher() {
+        return new com.destroystokyo.paper.PaperVersionFetcher();
+    }
+    // Paper end
 }

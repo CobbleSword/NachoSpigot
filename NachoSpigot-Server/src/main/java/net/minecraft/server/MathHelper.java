@@ -91,7 +91,7 @@ public class MathHelper {
         if (var0 < var2) {
             return var2;
         } else {
-            return (fastMathMode ? (FastMath.min(var0, var4)) : (Math.min(var0, var4)));
+            return Math.min(var0, var4);
         }
     }
 

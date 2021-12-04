@@ -1,15 +1,13 @@
 package dev.cobblesword.nachospigot;
 
-import dev.cobblesword.nachospigot.knockback.KnockbackCommand;
-import dev.cobblesword.nachospigot.knockback.KnockbackConfig;
+import dev.cobblesword.nachospigot.commands.KnockbackCommand;
 import me.elier.nachospigot.config.NachoConfig;
 import xyz.sculas.nacho.anticrash.AntiCrash;
 import xyz.sculas.nacho.async.AsyncExplosions;
 import dev.cobblesword.nachospigot.protocol.PacketListener;
-import dev.cobblesword.nachospigot.protocol.MovementListener;
 import net.minecraft.server.MinecraftServer;
-import org.bukkit.command.defaults.nacho.SetMaxSlotCommand;
-import org.bukkit.command.defaults.nacho.SpawnMobCommand;
+import dev.cobblesword.nachospigot.commands.SetMaxSlotCommand;
+import dev.cobblesword.nachospigot.commands.SpawnMobCommand;
 
 import com.google.common.collect.Sets;
 import java.util.Set;
@@ -19,7 +17,6 @@ public class Nacho {
     private static Nacho INSTANCE;
 
     private final Set<PacketListener> packetListeners = Sets.newConcurrentHashSet();
-    private final Set<MovementListener> movementListeners = Sets.newConcurrentHashSet();
 
     public Nacho() {
         INSTANCE = this;
@@ -28,7 +25,7 @@ public class Nacho {
 
         if(NachoConfig.enableAntiCrash) {
             System.out.println("[NS-AntiCrash] Activating Anti Crash.");
-            Nacho.get().registerPacketListener(new AntiCrash());
+            this.packetListeners.add(new AntiCrash());
             System.out.println("[NS-AntiCrash] Activated Anti Crash.");
         }
     }
@@ -46,23 +43,6 @@ public class Nacho {
         MinecraftServer.getServer().server.getCommandMap().register(knockbackCommand.getName(), "ns", knockbackCommand);
     }
 
-    public void registerPacketListener(PacketListener packetListener) {
-        this.packetListeners.add(packetListener);
-    }
-
-    public void unregisterPacketListener(PacketListener packetListener) {
-        this.packetListeners.remove(packetListener);
-    }
-
     public Set<PacketListener> getPacketListeners() { return packetListeners; }
 
-    public void registerMovementListener(MovementListener movementListener) {
-        this.movementListeners.add(movementListener);
-    }
-
-    public void unregisterMovementListener(MovementListener movementListener) {
-        this.movementListeners.remove(movementListener);
-    }
-
-    public Set<MovementListener> getMovementListeners() { return movementListeners; }
 }

@@ -139,6 +139,11 @@ public class PacketDataSerializer extends ByteBuf {
     }
 
     public UUID g() {
+        // Nacho start - OBFHELPER
+        return readUUID();
+    }
+    public UUID readUUID() {
+        // Nacho end
         return new UUID(this.readLong(), this.readLong());
     }
 
@@ -148,6 +153,7 @@ public class PacketDataSerializer extends ByteBuf {
     }
 
     public void writeVarInt(int value) {
+        // Nacho end
         while ((value & -128) != 0) {
             this.writeByte(value & 127 | 128);
             value >>>= 7;
@@ -246,15 +252,20 @@ public class PacketDataSerializer extends ByteBuf {
     }
 
     public String c(int i) {
+        return readUtf(i);
+        // Nacho start - OBFHELPER
+    }
+    public String readUtf(int maxLength) {
         int j = this.readVarInt();
-        if (j > i * 4)
-            throw new DecoderException("The received encoded string buffer length is longer than maximum allowed (" + j + " > " + (i * 4) + ")");
+        if (j > maxLength * 4)
+            throw new DecoderException("The received encoded string buffer length is longer than maximum allowed (" + j + " > " + (maxLength * 4) + ")");
         if (j < 0)
             throw new DecoderException("The received encoded string buffer length is less than zero! Weird string!");
         String s = toString(readerIndex(), j, StandardCharsets.UTF_8);
         readerIndex(readerIndex() + j);
-        if (s.length() > i)
-            throw new DecoderException("The received string length is longer than maximum allowed (" + j + " > " + i + ")");
+        if (s.length() > maxLength)
+            throw new DecoderException("The received string length is longer than maximum allowed (" + j + " > " + maxLength + ")");
+        // Nacho end
         return s;
     }
 

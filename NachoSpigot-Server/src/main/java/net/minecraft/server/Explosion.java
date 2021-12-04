@@ -5,12 +5,10 @@ import com.google.common.collect.Maps;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
 
 // CraftBukkit start
-import com.google.common.util.concurrent.MoreExecutors;
 import dev.cobblesword.nachospigot.commons.Constants;
-import dev.cobblesword.nachospigot.commons.MCUtils;
+import dev.cobblesword.nachospigot.commons.minecraft.MCUtils;
 import me.elier.nachospigot.config.NachoConfig;
 import net.jafama.FastMath;
 

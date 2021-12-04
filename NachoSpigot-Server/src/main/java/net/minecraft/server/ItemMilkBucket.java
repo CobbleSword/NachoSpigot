@@ -1,7 +1,5 @@
 package net.minecraft.server;
 
-import org.github.paperspigot.PaperSpigotConfig; // PaperSpigot
-
 public class ItemMilkBucket extends Item {
 
     public ItemMilkBucket() {
@@ -19,15 +17,6 @@ public class ItemMilkBucket extends Item {
         }
 
         entityhuman.b(StatisticList.USE_ITEM_COUNT[Item.getId(this)]);
-        // PaperSpigot start - Stackable Buckets
-        if (PaperSpigotConfig.stackableMilkBuckets) {
-            if (itemstack.count <= 0) {
-                return new ItemStack(Items.BUCKET);
-            } else if (!entityhuman.inventory.pickup(new ItemStack(Items.BUCKET))) {
-                entityhuman.drop(new ItemStack(Items.BUCKET), false);
-            }
-        }
-        // PaperSpigot end
         return itemstack.count <= 0 ? new ItemStack(Items.BUCKET) : itemstack;
     }
 

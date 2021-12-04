@@ -10,7 +10,7 @@ import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.github.paperspigot.event.block.BeaconEffectEvent;
+import com.destroystokyo.paper.event.block.BeaconEffectEvent;
 // PaperSpigot end
 
 import java.util.List;

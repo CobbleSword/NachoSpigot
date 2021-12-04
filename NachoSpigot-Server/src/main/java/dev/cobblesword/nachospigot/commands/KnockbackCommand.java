@@ -1,6 +1,9 @@
-package dev.cobblesword.nachospigot.knockback;
+package dev.cobblesword.nachospigot.commands;
 
 import dev.cobblesword.nachospigot.commons.ClickableBuilder;
+import dev.cobblesword.nachospigot.knockback.CraftKnockbackProfile;
+import dev.cobblesword.nachospigot.knockback.KnockbackConfig;
+import dev.cobblesword.nachospigot.knockback.KnockbackProfile;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.math.NumberUtils;

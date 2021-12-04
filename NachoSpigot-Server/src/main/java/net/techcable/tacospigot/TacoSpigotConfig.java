@@ -24,7 +24,7 @@ public class TacoSpigotConfig {
     private static File CONFIG_FILE;
     private static final String HEADER = "This is the main configuration file for TacoSpigot.\n" + "As you can see, there's tons to configure. Some options may impact gameplay, so use\n" + "with caution, and make sure you know what each option does before configuring.\n" + "\n" + "If you need help with the configuration or have any questions related to TacoSpigot,\n" + "join us at the IRC.\n" + "\n" + "IRC: #taco @ irc.spi.gt ( http://irc.spi.gt/iris/?channels=taco )\n";
     /*========================================================================*/
-    static YamlConfiguration config;
+    public static YamlConfiguration config; // Nacho - make public
     static int version;
     /*========================================================================*/
 

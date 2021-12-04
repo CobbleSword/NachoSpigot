@@ -1,5 +1,6 @@
 package net.minecraft.server;
 
+import com.destroystokyo.paper.PaperConfig;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Floats;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
-import me.elier.nachospigot.config.NachoConfig;
+import me.elier.nachospigot.config.NachoConfig; // Nacho
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -65,8 +66,6 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.util.NumberConversions;
 import co.aikar.timings.SpigotTimings; // Spigot
 // CraftBukkit end
-
-import org.github.paperspigot.PaperSpigotConfig; // PaperSpigot
 
 public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerListBox {
 
@@ -357,26 +356,6 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                 // Prevent 40 event-calls for less than a single pixel of movement >.>
                 double delta = Math.pow(this.lastPosX - to.getX(), 2) + Math.pow(this.lastPosY - to.getY(), 2) + Math.pow(this.lastPosZ - to.getZ(), 2);
                 float deltaAngle = Math.abs(this.lastYaw - to.getYaw()) + Math.abs(this.lastPitch - to.getPitch());
-
-                if ((packetplayinflying.hasPos) && ((delta > 0.0D) && (this.checkMovement && !this.player.dead))) {
-                    for (dev.cobblesword.nachospigot.protocol.MovementListener movementListener : Nacho.get().getMovementListeners()) {
-                        try {
-                            movementListener.updateLocation(player, to, from, packetplayinflying);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                  
-                if ((packetplayinflying.hasLook) && ((deltaAngle > 0.0F) && (this.checkMovement && !this.player.dead))) {
-                    for (dev.cobblesword.nachospigot.protocol.MovementListener movementListener : Nacho.get().getMovementListeners()) {
-                        try {
-                            movementListener.updateRotation(player, to, from, packetplayinflying);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
 
                 if ((delta > 1f / 256 || deltaAngle > 10f) && (this.checkMovement && !this.player.dead))
                 {
@@ -795,7 +774,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
         WorldServer worldserver = this.minecraftServer.getWorldServer(this.player.dimension);
         boolean throttled = false;
         // PaperSpigot - Allow disabling the player interaction limiter
-        if (org.github.paperspigot.PaperSpigotConfig.interactLimitEnabled && lastPlace != -1 && packetplayinblockplace.timestamp - lastPlace < 30 && packets++ >= 4) {
+        if (PaperConfig.interactLimitEnabled && lastPlace != -1 && packetplayinblockplace.timestamp - lastPlace < 30 && packets++ >= 4) {
             throttled = true;
         } else if ( packetplayinblockplace.timestamp - lastPlace >= 30 || lastPlace == -1 )
         {
@@ -1842,19 +1821,6 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                         case ALLOW:
                         case DEFAULT:
                             itemstack = this.player.activeContainer.clickItem(packetplayinwindowclick.b(), packetplayinwindowclick.c(), packetplayinwindowclick.f(), this.player);
-                            // PaperSpigot start - Stackable Buckets
-                            if (itemstack != null &&
-                                    ((itemstack.getItem() == Items.LAVA_BUCKET && PaperSpigotConfig.stackableLavaBuckets) ||
-                                            (itemstack.getItem() == Items.WATER_BUCKET && PaperSpigotConfig.stackableWaterBuckets) ||
-                                            (itemstack.getItem() == Items.MILK_BUCKET && PaperSpigotConfig.stackableMilkBuckets))) {
-                                if (action == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
-                                    this.player.updateInventory(this.player.activeContainer);
-                                } else {
-                                    this.player.playerConnection.sendPacket(new PacketPlayOutSetSlot(-1, -1, this.player.inventory.getCarried()));
-                                    this.player.playerConnection.sendPacket(new PacketPlayOutSetSlot(this.player.activeContainer.windowId, packetplayinwindowclick.b(), this.player.activeContainer.getSlot(packetplayinwindowclick.b()).getItem()));
-                                }
-                            }
-                            // PaperSpigot end
                             break;
                         case DENY:
                             /* Needs enum constructor in InventoryAction

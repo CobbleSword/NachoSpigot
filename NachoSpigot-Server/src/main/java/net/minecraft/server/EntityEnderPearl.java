@@ -2,14 +2,12 @@ package net.minecraft.server;
 
 // CraftBukkit start
 
-import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.commons.Constants;
 import me.elier.nachospigot.config.NachoConfig;
 import org.bukkit.Bukkit;
-import org.github.paperspigot.PaperSpigotConfig;
+import com.destroystokyo.paper.PaperConfig;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.github.paperspigot.PaperSpigotConfig;
 
 // CraftBukkit end
 
@@ -52,11 +50,11 @@ public class EntityEnderPearl extends EntityProjectile {
             IBlockData blockData = world.getType(blockPosition);
             Block block = blockData.getBlock();
             boolean collides = 
-                PaperSpigotConfig.pearlPassthroughTripwire && block == Blocks.TRIPWIRE
-                || PaperSpigotConfig.pearlPassthroughCobweb && block == Blocks.WEB
-                || PaperSpigotConfig.pearlPassthroughBed && block == Blocks.BED
-                || PaperSpigotConfig.pearlPassthroughFenceGate && (block == Blocks.FENCE_GATE || block == Blocks.SPRUCE_FENCE_GATE || block == Blocks.BIRCH_FENCE_GATE || block == Blocks.JUNGLE_FENCE_GATE || block == Blocks.DARK_OAK_FENCE_GATE || block == Blocks.ACACIA_FENCE_GATE) && ((Boolean) blockData.get(BlockFenceGate.OPEN)).booleanValue()
-                || PaperSpigotConfig.pearlPassthroughSlab && (block == Blocks.STONE_SLAB || block == Blocks.WOODEN_SLAB || block == Blocks.STONE_SLAB2);
+                PaperConfig.pearlPassthroughTripwire && block == Blocks.TRIPWIRE
+                || PaperConfig.pearlPassthroughCobweb && block == Blocks.WEB
+                || PaperConfig.pearlPassthroughBed && block == Blocks.BED
+                || PaperConfig.pearlPassthroughFenceGate && (block == Blocks.FENCE_GATE || block == Blocks.SPRUCE_FENCE_GATE || block == Blocks.BIRCH_FENCE_GATE || block == Blocks.JUNGLE_FENCE_GATE || block == Blocks.DARK_OAK_FENCE_GATE || block == Blocks.ACACIA_FENCE_GATE) && ((Boolean) blockData.get(BlockFenceGate.OPEN)).booleanValue()
+                || PaperConfig.pearlPassthroughSlab && (block == Blocks.STONE_SLAB || block == Blocks.WOODEN_SLAB || block == Blocks.STONE_SLAB2);
         
             if (collides) {
                 return;

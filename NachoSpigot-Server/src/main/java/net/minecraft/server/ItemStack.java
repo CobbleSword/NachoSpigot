@@ -9,11 +9,9 @@ import java.util.Random;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.block.CraftBlockState;
 import org.bukkit.craftbukkit.util.CraftMagicNumbers;
@@ -21,7 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.world.StructureGrowEvent;
 // CraftBukkit end
 
-import org.github.paperspigot.PaperSpigotConfig; // PaperSpigot
+import com.destroystokyo.paper.PaperConfig; // PaperSpigot
 
 public final class ItemStack {
 
@@ -328,7 +326,7 @@ public final class ItemStack {
         int id = CraftMagicNumbers.getId(this.getItem());
         if (CraftMagicNumbers.getBlock(id) != Blocks.AIR) {
             // If vanilla doesn't use data on it don't allow any
-            if ((PaperSpigotConfig.dataValueAllowedItems == null || !PaperSpigotConfig.dataValueAllowedItems.contains(id)) &&
+            if ((PaperConfig.dataValueAllowedItems == null || !PaperConfig.dataValueAllowedItems.contains(id)) &&
                     (!(this.usesData() || this.getItem().usesDurability()))) {
             // PaperSpigot end
                 i = 0;

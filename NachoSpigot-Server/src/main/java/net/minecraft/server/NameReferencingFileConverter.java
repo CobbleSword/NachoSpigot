@@ -12,7 +12,6 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.ProfileLookupCallback;
 import com.mojang.authlib.yggdrasil.ProfileNotFoundException;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -26,6 +25,7 @@ import java.util.Map;
 import java.util.UUID;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import com.destroystokyo.paper.PaperConfig; // Paper
 
 public class NameReferencingFileConverter {
 
@@ -64,7 +64,7 @@ public class NameReferencingFileConverter {
             }
         }), String.class);
 
-        if (minecraftserver.getOnlineMode() || org.spigotmc.SpigotConfig.bungee) { // Spigot: bungee = online mode, for now.
+        if (PaperConfig.isProxyOnlineMode()) { // Spigot: bungee = online mode, for now. // Paper - Handle via setting // Nacho - Don't check for online mode twice
             minecraftserver.getGameProfileRepository().findProfilesByNames(astring, Agent.MINECRAFT, profilelookupcallback);
         } else {
             String[] astring1 = astring;

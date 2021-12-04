@@ -19,15 +19,16 @@ import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
+// Nacho start
 import com.eatthepath.uuid.FastUUID;
 import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.knockback.KnockbackConfig;
 import me.elier.nachospigot.config.NachoConfig;
-import me.elier.util.minecraft.PluginUtils;
-import org.apache.commons.lang3.JavaVersion;
-import org.apache.commons.lang3.SystemUtils;
-import org.bukkit.craftbukkit.inventory.*;
-import xyz.sculas.nacho.malware.AntiMalware;
+import dev.cobblesword.nachospigot.commons.minecraft.PluginUtils;
+import xyz.sculas.nacho.malware.AntiMalware; // Nacho
+// Nacho end
+
+import com.destroystokyo.paper.PaperConfig; // Paper
 import net.minecraft.server.*;
 
 import org.bukkit.BanList;
@@ -68,6 +69,7 @@ import org.bukkit.craftbukkit.util.CraftMagicNumbers;
 import org.bukkit.craftbukkit.util.DatFileFilter;
 import org.bukkit.craftbukkit.util.Versioning;
 import org.bukkit.craftbukkit.util.permissions.CraftDefaultPermissions;
+import org.bukkit.craftbukkit.inventory.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerChatTabCompleteEvent;
@@ -749,10 +751,10 @@ public final class CraftServer implements Server {
         }
 
         org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
-        org.github.paperspigot.PaperSpigotConfig.init((File) console.options.valueOf("paper-settings")); // PaperSpigot
+        PaperConfig.init((File) console.options.valueOf("paper-settings")); // PaperSpigot
         net.techcable.tacospigot.TacoSpigotConfig.init((File) console.options.valueOf("taco-settings")); // TacoSpigot
         NachoConfig.init((File) console.options.valueOf("nacho-settings")); // NachoSpigot
-        KnockbackConfig.init((File) console.options.valueOf("knockback-settings"));
+        KnockbackConfig.init((File) console.options.valueOf("knockback-settings")); // NachoSpigot
         for (WorldServer world : console.worlds) {
             world.worldData.setDifficulty(difficulty);
             world.setSpawnFlags(monsters, animals);
@@ -777,7 +779,7 @@ public final class CraftServer implements Server {
         commandMap.clearCommands();
         resetRecipes();
         org.spigotmc.SpigotConfig.registerCommands(); // Spigot
-        org.github.paperspigot.PaperSpigotConfig.registerCommands(); // PaperSpigot
+        PaperConfig.registerCommands(); // PaperSpigot
         Nacho.get().registerCommands(); // NachoSpigot :: Commands
 
         overrideAllCommandBlockCommands = commandsConfiguration.getStringList("command-block-overrides").contains("*");
@@ -1404,9 +1406,8 @@ public final class CraftServer implements Server {
             // Spigot Start
             GameProfile profile = null;
             // Only fetch an online UUID in online mode
-            if ( MinecraftServer.getServer().getOnlineMode() || org.spigotmc.SpigotConfig.bungee )
-            {
-                profile = MinecraftServer.getServer().getUserCache().getProfile( name );
+            if (PaperConfig.isProxyOnlineMode()) { // Paper - Handle via setting // Nacho - Don't check for online mode twice
+                profile = MinecraftServer.getServer().getUserCache().getProfile(name);
             }
             // Spigot end
             if (profile == null) {
@@ -1543,9 +1544,15 @@ public final class CraftServer implements Server {
         return console.console;
     }
 
+    // Nacho start
     @Override
     public boolean versionCommandEnabled() {
         return NachoConfig.enableVersionCommand;
+    }
+
+    @Override
+    public boolean versionPermissionEnabled() {
+        return NachoConfig.enableVersionPermission;
     }
 
     @Override
@@ -1557,6 +1564,15 @@ public final class CraftServer implements Server {
     public boolean pluginsCommandEnabled() {
         return NachoConfig.enablePluginsCommand;
     }
+
+    @Override
+    public boolean pluginsPermissionEnabled() {
+        return NachoConfig.enablePluginsPermission;
+    }
+
+    @Override
+    public boolean helpCommandEnabled() {return NachoConfig.enableHelpCommand;}
+    // Nacho end
 
     public EntityMetadataStore getEntityMetadata() {
         return entityMetadata;
@@ -1884,8 +1900,16 @@ public final class CraftServer implements Server {
         @Override
         public YamlConfiguration getPaperSpigotConfig()
         {
-            return org.github.paperspigot.PaperSpigotConfig.config;
+            return PaperConfig.config;
         }
+
+        // Nacho start
+        @Override
+        public YamlConfiguration getTacoSpigotConfig() { return net.techcable.tacospigot.TacoSpigotConfig.config; }
+
+        @Override
+        public YamlConfiguration getNachoSpigotConfig() { return me.elier.nachospigot.config.NachoConfig.config; }
+        // Nacho end
 
         @Override
         public void restart() {

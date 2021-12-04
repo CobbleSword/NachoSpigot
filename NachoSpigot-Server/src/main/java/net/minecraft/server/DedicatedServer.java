@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
+import com.destroystokyo.paper.PaperConfig;
 import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.commons.IPUtils;
 import dev.cobblesword.nachospigot.knockback.KnockbackConfig;
@@ -182,8 +183,8 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
             org.spigotmc.SpigotConfig.registerCommands();
             // Spigot end
             // PaperSpigot start
-            org.github.paperspigot.PaperSpigotConfig.init((File) options.valueOf("paper-settings"));
-            org.github.paperspigot.PaperSpigotConfig.registerCommands();
+            PaperConfig.init((File) options.valueOf("paper-settings"));
+            PaperConfig.registerCommands();
             // PaperSpigot end
             Nacho.get().registerCommands(); // NachoSpigot :: Commands
 
@@ -330,14 +331,6 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                     }
                 }
 
-                // [Nacho-0042] Remove Spigot Watchdog
-                /* if (this.aS() > 0L) {  // Spigot - disable
-                    Thread thread1 = new Thread(new ThreadWatchdog(this));
-                    thread1.setName("Server Watchdog");
-                    thread1.setDaemon(true);
-                    thread1.start();
-                } */
-
                 return true;
             }
         }
@@ -430,10 +423,10 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 
     public void aO() {
         SpigotTimings.serverCommandTimer.startTiming(); // Spigot
-        // [Paper-0350] start - use a Queue for Queueing Commands
+        // Paper start - use a Queue for Queueing Commands
         ServerCommand servercommand;
         while ((servercommand = this.l.poll()) != null) {
-            // [Paper-0350] end - use a Queue for Queueing Commands
+            // Paper end
 
             // CraftBukkit start - ServerCommand for preprocessing
             ServerCommandEvent event = new ServerCommandEvent(console, servercommand.command);
@@ -454,8 +447,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
     }
 
     public boolean ai() {
-        // [Nacho-0039] Add a check to see if we are using Linux or not, if not ignore this.
-        return this.getTransport() == ServerConnection.EventGroupType.EPOLL && org.apache.commons.lang.SystemUtils.IS_OS_LINUX;
+        return org.apache.commons.lang.SystemUtils.IS_OS_LINUX && this.getTransport() == ServerConnection.EventGroupType.EPOLL;  // Nacho - Add a check to see if we are using Linux or not, if not ignore this.
     }
 
     public ServerConnection.EventGroupType getTransport() {
@@ -467,6 +459,12 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
     }
 
     public DedicatedPlayerList aP() {
+        // Nacho start - OBFHELPER
+        return getDedicatedPlayerList();
+    }
+
+    public DedicatedPlayerList getDedicatedPlayerList() {
+        // Nacho end
         return (DedicatedPlayerList) super.getPlayerList();
     }
 

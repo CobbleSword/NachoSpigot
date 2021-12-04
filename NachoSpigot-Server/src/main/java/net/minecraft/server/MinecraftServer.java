@@ -69,7 +69,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     private String serverIp;
     private int u = -1; public int getServerPort() { return u; } // Nacho - OBFHELPER
     public WorldServer[] worldServer;
-    private PlayerList v;
+    private PlayerList v; // playerList
     private boolean isRunning = true;
     private boolean isStopped;
     private int ticks;

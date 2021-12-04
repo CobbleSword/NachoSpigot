@@ -32,7 +32,7 @@ public class NachoConfig {
             + "\n"
             + "Discord: https://discord.gg/SBTEbSx\n"
             + "Github: https://github.com/CobbleSword/NachoSpigot\n";
-    static YamlConfiguration config;
+    public static YamlConfiguration config;
     static int version;
 
     public static void init(File configFile) {
@@ -139,9 +139,12 @@ public class NachoConfig {
         c.addComment("settings.use-tcp-fastopen", "Options: 0 - Disabled.; 1 - TFO is enabled for outgoing connections (clients).; 2 - TFO is enabled for incoming connections (servers).; 3 - TFO is enabled for both clients and servers.");
         c.addComment("settings.tile-entity-ticking-time", "Ticking time (20 ticks per second) for usage on tile entity operations.");
         c.addComment("settings.item-dirty-ticks", "Controls the interval for the item-dirty check. Minecraft checks an item every tick to see if it was changed. This can be expensive because it also needs to check all NBT data. Spigot only checks for basic count/data/type data and does a deep check every 20 ticks by default.");
-        c.addComment("settings.use-tcp-fastopen", "Enables the TCP_FASTOPEN socket option");
+        c.addComment("settings.tcp-fastopen-mode", "Enables the TCP_FASTOPEN socket option");
         c.addComment("settings.lag-compensated-potions", "Enables lag compensation throwing potions");
         c.addComment("settings.smooth-potting", "Make potion throwing smoother");
+        c.addComment("settings.commands.permissions.version", "Enables a required permission to use /version");
+        c.addComment("settings.commands.permissions.plugins", "Enables a required permission to use /plugins");
+        c.addComment("settings.commands.enable-help-command", "Toggles the /help command");
         NachoWorldConfig.loadComments();
     }
 
@@ -209,13 +212,19 @@ public class NachoConfig {
         saveEmptyScoreboardTeams = getBoolean("settings.save-empty-scoreboard-teams", false);
     }
     public static boolean enableVersionCommand;
+    public static boolean enableVersionPermission;
     public static boolean enablePluginsCommand;
+    public static boolean enablePluginsPermission;
     public static boolean enableReloadCommand;
+    public static boolean enableHelpCommand;
 
     private static void commands() {
         enableVersionCommand = getBoolean("settings.commands.enable-version-command", true);
+        enableVersionPermission = getBoolean("settings.commands.permission.version", true);
         enablePluginsCommand = getBoolean("settings.commands.enable-plugins-command", true);
+        enablePluginsPermission = getBoolean("settings.commands.permission.plugins", true);
         enableReloadCommand = getBoolean("settings.commands.enable-reload-command", true);
+        enableHelpCommand = getBoolean("settings.commands.enable-help-command", true);
     }
 
     public static boolean useFastOperators;
