@@ -1,7 +1,9 @@
 # NachoSpigot [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/CobbleSword/NachoSpigot/NachoSpigot%20Build)](https://nightly.link/CobbleSword/NachoSpigot/workflows/build-nachospigot/master/NachoSpigot-server.zip)
 
 #### NachoSpigot is a fork of TacoSpigot 1.8.8
-NachoSpigot offers a number of enhancements to performance as well as bug fixes such as a built-in anti-crash system and being able to perform well with a large number of players.
+NachoSpigot offers a number of enhancements to performance as well as bug fixes and being able to perform well with a large number of players.
+
+While NachoSpigot hasn't been benchmarked properly yet, a server running NachoSpigot was successfully able to run a Minecraft event with 300 players and 20 TPS continuously.
 
 ## Current State
 Java 15 is natively supported and also the recommended version to use.
@@ -10,13 +12,15 @@ Nacho can now be used in production environments with some degree of stability.
 
 If you find any bugs, please [create an issue](../../issues/new) or contact us in the [Discord server](https://discord.gg/ewcYeERKJw)!
 
+If you find that things still do not work out for you, you may also try [BurritoSpigot](https://github.com/CobbleSword/BurritoSpigot/) which is worked on by a different maintainer.
+If you find any bugs on BurittoSpigot, please contact Heath/Sprock instead of Sculas.
+
 **NachoSpigot supports Java 8 to Java 17!**
 
 ## Download
-You can download the CI build for the latest commit [here](https://nightly.link/CobbleSword/NachoSpigot/workflows/build-nachospigot/master/NachoSpigot-server.zip).
+We do not provide stable release builds, since every commit should be stable to run.
 
-## If you run into a lot of plugin issues
-[Try out the more stable BurritoSpigot](https://github.com/CobbleSword/BurritoSpigot/)
+You can download the CI build for the latest commit [here](https://nightly.link/CobbleSword/NachoSpigot/workflows/build-nachospigot/master/NachoSpigot-server.zip).
 
 ## API Download
 [JitPack](https://jitpack.io/#CobbleSword/NachoSpigot/master-SNAPSHOT)
