@@ -1,22 +1,26 @@
 # NachoSpigot [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/CobbleSword/NachoSpigot/NachoSpigot%20Build)](https://nightly.link/CobbleSword/NachoSpigot/workflows/build-nachospigot/master/NachoSpigot-server.zip)
 
 #### NachoSpigot is a fork of TacoSpigot 1.8.8
-NachoSpigot offers a number of enhancements to performance as well as bug fixes such as a built-in anti-crash system and being able to perform well with a large number of players.
+NachoSpigot offers a number of enhancements to performance as well as bug fixes and being able to perform well with a large number of players.
+
+While NachoSpigot hasn't been benchmarked properly yet, a server running NachoSpigot was successfully able to run a Minecraft event with 300 players and 20 TPS continuously.
 
 ## Current State
-Java 15 is now natively supported, and [ProtocolLib](https://github.com/dmulloy2/ProtocolLib), [ViaVersion](https://github.com/ViaVersion/ViaVersion), and [Citizens2](https://github.com/CitizensDev/Citizens2) are patched at runtime to work with Nacho's modifications.
+Java 15 is natively supported and also the recommended version to use.
 
 Nacho can now be used in production environments with some degree of stability.
 
 If you find any bugs, please [create an issue](../../issues/new) or contact us in the [Discord server](https://discord.gg/ewcYeERKJw)!
 
+If you find that things still do not work out for you, you may also try [BurritoSpigot](https://github.com/CobbleSword/BurritoSpigot/) which is worked on by a different maintainer.
+If you find any bugs on BurittoSpigot, please contact Heath/Sprock instead of Sculas.
+
 **NachoSpigot supports Java 8 to Java 17!**
 
 ## Download
-You can download the CI build for the latest commit [here](https://nightly.link/CobbleSword/NachoSpigot/workflows/build-nachospigot/master/NachoSpigot-server.zip).
+We do not provide stable release builds, since every commit should be stable to run.
 
-## If you run into a lot of plugin issues
-[Try out the more stable BurritoSpigot](https://github.com/CobbleSword/BurritoSpigot/)
+You can download the CI build for the latest commit [here](https://nightly.link/CobbleSword/NachoSpigot/workflows/build-nachospigot/master/NachoSpigot-server.zip).
 
 ## API Download
 [JitPack](https://jitpack.io/#CobbleSword/NachoSpigot/master-SNAPSHOT)
@@ -110,8 +114,8 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [Nacho-0030] add a ChunkPreLoadEvent
 [Nacho-0031] remove unused vars
 [Nacho-0033] Faster Operator search method
-[Nacho-0049] Don't allocate empty int arrays for particles
-[Nacho-0050] Option to disable Enchantment table ticking
+[Nacho-0048] Don't allocate empty int arrays for particles
+[Nacho-0049] Option to disable Enchantment table ticking
 
 <--> by Sculas
 [Nacho-0034] Remove Java 8 message from TacoSpigot which made it so you couldn't run Java 8 or higher
@@ -122,14 +126,13 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [Nacho-0040] Change deprecated Netty parameter in ResourceLeakDetector
 [Nacho-0041] Fix block placement
 [Nacho-0042] Remove Spigot Watchdog
-[Nacho-0043] Fix ProtocolLib
-[Nacho-0044] Fix Citizens
-[Nacho-0045] Async obfuscation
-[Nacho-0046] Add Player#jump and Player#sendActionBar
-[Nacho-0047] Little anti-malware
-[Nacho-0048] Little anti-crash
-[Nacho-0051] Custom knockback
-[Nacho-0052] Rework ServerConnection and MinecraftPipeline (credits to Minestom)
+[Nacho-0043] Fix Citizens
+[Nacho-0044] Async obfuscation
+[Nacho-0045] Add Player#jump and Player#sendActionBar
+[Nacho-0046] Little anti-malware
+[Nacho-0047] Little anti-crash
+[Nacho-0050] Custom knockback
+[Nacho-0051] Rework ServerConnection and MinecraftPipeline (credits to Minestom)
 
 [Yatopia-0030] Don't save Fireworks and Arrows by tr7zw (Arrows and firework Entities, eg stuck arrows in the ground)
 [Yatopia-0047] Smarter statistics ticking

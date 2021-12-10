@@ -1,5 +1,6 @@
 package net.minecraft.server;
 
+import java.util.Arrays;
 import java.util.Random;
 
 // CraftBukkit start
@@ -16,7 +17,7 @@ public class TileEntityDispenser extends TileEntityContainer implements IInvento
     protected String a;
 
     // CraftBukkit start - add fields and methods
-    public List<HumanEntity> transaction = new java.util.ArrayList<HumanEntity>();
+    public List<HumanEntity> transaction = new java.util.ArrayList<>();
     private int maxStack = MAX_STACK;
 
     public ItemStack[] getContents() {
@@ -100,6 +101,7 @@ public class TileEntityDispenser extends TileEntityContainer implements IInvento
 
     public void setItem(int i, ItemStack itemstack) {
         this.items[i] = itemstack;
+
         if (itemstack != null && itemstack.count > this.getMaxStackSize()) {
             itemstack.count = this.getMaxStackSize();
         }
@@ -177,7 +179,7 @@ public class TileEntityDispenser extends TileEntityContainer implements IInvento
     }
 
     public boolean a(EntityHuman entityhuman) {
-        return this.world.getTileEntity(this.position) != this ? false : entityhuman.e((double) this.position.getX() + 0.5D, (double) this.position.getY() + 0.5D, (double) this.position.getZ() + 0.5D) <= 64.0D;
+        return this.world.getTileEntity(this.position) == this && entityhuman.e((double) this.position.getX() + 0.5D, (double) this.position.getY() + 0.5D, (double) this.position.getZ() + 0.5D) <= 64.0D;
     }
 
     public void startOpen(EntityHuman entityhuman) {}
@@ -207,9 +209,6 @@ public class TileEntityDispenser extends TileEntityContainer implements IInvento
     }
 
     public void l() {
-        for (int i = 0; i < this.items.length; ++i) {
-            this.items[i] = null;
-        }
-
+        Arrays.fill(this.items, null);
     }
 }

@@ -79,7 +79,7 @@ public class KnockbackConfig {
             profile.setSnowballHorizontal(getDouble(path + ".projectiles.snowball.horizontal", 0.4D));
             profile.setSnowballVertical(getDouble(path + ".projectiles.snowball.vertical", 0.4D));
             profile.setEggHorizontal(getDouble(path + ".projectiles.egg.horizontal", 0.4D));
-            profile.setEggHorizontal(getDouble(path + ".projectiles.egg.vertical", 0.4D));
+            profile.setEggVertical(getDouble(path + ".projectiles.egg.vertical", 0.4D));
         }
         currentKb = getKbProfileByName(getString("knockback.current", "default"));
         if (currentKb == null) {

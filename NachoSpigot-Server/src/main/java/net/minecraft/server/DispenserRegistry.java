@@ -350,7 +350,7 @@ public class DispenserRegistry {
                 Material material = block.getMaterial();
                 Item item;
 
-                if (Material.WATER.equals(material) && block instanceof BlockFluids && ((Integer) iblockdata.get(BlockFluids.LEVEL)).intValue() == 0) {
+                if (Material.WATER.equals(material) && block instanceof BlockFluids && iblockdata.get(BlockFluids.LEVEL) == 0) {
                     item = Items.WATER_BUCKET;
                 } else {
                     if (!Material.LAVA.equals(material) || !(block instanceof BlockFluids) || ((Integer) iblockdata.get(BlockFluids.LEVEL)).intValue() != 0) {

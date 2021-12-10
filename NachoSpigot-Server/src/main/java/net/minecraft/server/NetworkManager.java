@@ -5,12 +5,9 @@ import com.velocitypowered.natives.util.Natives; // Paper
 import dev.cobblesword.nachospigot.Nacho; // Nacho
 import dev.cobblesword.nachospigot.exception.ExploitException; // Nacho
 import com.google.common.collect.Queues;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.netty.channel.*;
-import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.local.LocalChannel;
 import io.netty.channel.local.LocalServerChannel;
-import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.timeout.TimeoutException;
 import io.netty.util.AttributeKey;
@@ -32,24 +29,13 @@ import org.apache.logging.log4j.MarkerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 
-public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
+public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
 
     private static final Logger LOGGER = LogManager.getLogger();
     public static final Marker ROOT_MARKER = MarkerManager.getMarker("NETWORK");
     public static final Marker PACKET_MARKER = MarkerManager.getMarker("NETWORK_PACKETS", NetworkManager.ROOT_MARKER);
     public static final AttributeKey<EnumProtocol> ATTRIBUTE_PROTOCOL = AttributeKey.valueOf("protocol");
     public static final AttributeKey<EnumProtocol> c = ATTRIBUTE_PROTOCOL;
-    // Nacho start - gave LazyInitVars a type
-    public static final LazyInitVar<NioEventLoopGroup> NETWORK_WORKER_GROUP = new LazyInitVar<>(() ->
-            new NioEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Client IO #%d").setDaemon(true).build())
-    );
-    public static final LazyInitVar<EpollEventLoopGroup> NETWORK_EPOLL_WORKER_GROUP = new LazyInitVar<>(() ->
-            new EpollEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Epoll Client IO #%d").setDaemon(true).build())
-    );
-    public static final LazyInitVar<DefaultEventLoopGroup> LOCAL_WORKER_GROUP = new LazyInitVar<>(() ->
-            new DefaultEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Local Client IO #%d").setDaemon(true).build())
-    );
-    // Nacho end
 
     private final EnumProtocolDirection h;
     private final Queue<NetworkManager.QueuedPacket> i = Queues.newConcurrentLinkedQueue();

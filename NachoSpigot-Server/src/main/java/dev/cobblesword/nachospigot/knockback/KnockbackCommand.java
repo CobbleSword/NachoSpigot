@@ -248,7 +248,7 @@ public class KnockbackCommand extends Command {
                             }
                             double value = Double.parseDouble(args[3]);
                             profile.setRodHorizontal(value);
-                            profile.save();
+                            profile.save(true);
                             knockbackCommandViewProjectiles(player, profile);
                             player.sendMessage("§aValue edited and saved.");
                             break;
@@ -260,7 +260,7 @@ public class KnockbackCommand extends Command {
                             }
                             double value = Double.parseDouble(args[3]);
                             profile.setRodVertical(value);
-                            profile.save();
+                            profile.save(true);
                             knockbackCommandViewProjectiles(player, profile);
                             player.sendMessage("§aValue edited and saved.");
                             break;
@@ -272,7 +272,7 @@ public class KnockbackCommand extends Command {
                             }
                             double value = Double.parseDouble(args[3]);
                             profile.setArrowHorizontal(value);
-                            profile.save();
+                            profile.save(true);
                             knockbackCommandViewProjectiles(player, profile);
                             player.sendMessage("§aValue edited and saved.");
                             break;
@@ -284,7 +284,7 @@ public class KnockbackCommand extends Command {
                             }
                             double value = Double.parseDouble(args[3]);
                             profile.setArrowVertical(value);
-                            profile.save();
+                            profile.save(true);
                             knockbackCommandViewProjectiles(player, profile);
                             player.sendMessage("§aValue edited and saved.");
                             break;
@@ -296,7 +296,7 @@ public class KnockbackCommand extends Command {
                             }
                             double value = Double.parseDouble(args[3]);
                             profile.setPearlHorizontal(value);
-                            profile.save();
+                            profile.save(true);
                             knockbackCommandViewProjectiles(player, profile);
                             player.sendMessage("§aValue edited and saved.");
                             break;
@@ -308,7 +308,7 @@ public class KnockbackCommand extends Command {
                             }
                             double value = Double.parseDouble(args[3]);
                             profile.setPearlVertical(value);
-                            profile.save();
+                            profile.save(true);
                             knockbackCommandViewProjectiles(player, profile);
                             player.sendMessage("§aValue edited and saved.");
                             break;
@@ -320,7 +320,7 @@ public class KnockbackCommand extends Command {
                             }
                             double value = Double.parseDouble(args[3]);
                             profile.setSnowballHorizontal(value);
-                            profile.save();
+                            profile.save(true);
                             knockbackCommandViewProjectiles(player, profile);
                             player.sendMessage("§aValue edited and saved.");
                             break;
@@ -332,7 +332,7 @@ public class KnockbackCommand extends Command {
                             }
                             double value = Double.parseDouble(args[3]);
                             profile.setSnowballVertical(value);
-                            profile.save();
+                            profile.save(true);
                             knockbackCommandViewProjectiles(player, profile);
                             player.sendMessage("§aValue edited and saved.");
                             break;
@@ -344,7 +344,7 @@ public class KnockbackCommand extends Command {
                             }
                             double value = Double.parseDouble(args[3]);
                             profile.setEggHorizontal(value);
-                            profile.save();
+                            profile.save(true);
                             knockbackCommandViewProjectiles(player, profile);
                             player.sendMessage("§aValue edited and saved.");
                             break;
@@ -356,7 +356,7 @@ public class KnockbackCommand extends Command {
                             }
                             double value = Double.parseDouble(args[3]);
                             profile.setEggVertical(value);
-                            profile.save();
+                            profile.save(true);
                             knockbackCommandViewProjectiles(player, profile);
                             player.sendMessage("§aValue edited and saved.");
                             break;
