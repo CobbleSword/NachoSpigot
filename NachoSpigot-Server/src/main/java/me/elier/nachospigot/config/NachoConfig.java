@@ -73,7 +73,6 @@ public class NachoConfig {
         set("world-settings.default.tick-enchantment-tables", nachoJson.shouldTickEnchantmentTables);
         set("settings.panda-wire", nachoJson.usePandaWire);
         set("world-settings.default.explosions.constant-radius", nachoJson.constantExplosions);
-        set("world-settings.default.explosions.explode-protected-regions", nachoJson.explosionProtectedRegions);
         set("settings.event.fire-entity-explode-event", nachoJson.fireEntityExplodeEvent);
         set("world-settings.default.explosions.reduced-density-rays", nachoJson.reducedDensityRays);
         set("settings.brand-name", nachoJson.serverBrandName);
