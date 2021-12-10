@@ -20,6 +20,8 @@ public class Main {
     public static boolean useConsole = true;
 
     public static void main(String[] args) {
+        System.setProperty("log4j2.formatMsgNoLookups", "true");
+
         try {
             if(!SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_15)) {
                 System.err.println("It seems like you are not using Java 15!");

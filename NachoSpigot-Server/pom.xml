@@ -116,7 +116,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j18-impl</artifactId>
+            <artifactId>log4j-slf4j-impl</artifactId>
             <version>2.15.0</version>
             <scope>compile</scope>
         </dependency>
@@ -170,14 +170,6 @@
         <repository>
             <id>velocity-repo</id>
             <url>https://repo.velocitypowered.com/snapshots/</url>
-        </repository>
-        <repository>
-            <id>apache.snapshots</id>
-            <name>Apache Snapshot Repository</name>
-            <url>https://repository.apache.org/snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
         </repository>
     </repositories>
 
