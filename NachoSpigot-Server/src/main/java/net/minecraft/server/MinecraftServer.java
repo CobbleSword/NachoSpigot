@@ -52,7 +52,7 @@ import xyz.sculas.nacho.async.AsyncExplosions;
 
 public abstract class MinecraftServer implements Runnable, ICommandListener, IAsyncTaskHandler, IMojangStatistics {
 
-    public static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogManager.getLogger(MinecraftServer.class);
     public static final File a = new File("usercache.json");
     private static MinecraftServer l;
     public Convertable convertable;
