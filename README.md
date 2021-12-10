@@ -1,21 +1,25 @@
 # NachoSpigot [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/CobbleSword/NachoSpigot/NachoSpigot%20Build)](https://nightly.link/CobbleSword/NachoSpigot/workflows/build-nachospigot/master/NachoSpigot-server.zip)
 
-#### NachoSpigot is a fork of TacoSpigot 1.8.8
 NachoSpigot offers a number of enhancements to performance as well as bug fixes and being able to perform well with a large number of players.
 
 While NachoSpigot hasn't been benchmarked properly yet, a server running NachoSpigot was successfully able to run a Minecraft event with 300 players and 20 TPS continuously.
 
+### Log4j Exploit ([CVE-2021-44228](https://github.com/advisories/GHSA-jfh8-c2jp-5v3q))
+An exploit was found in the Log4j library, and all versions of Minecraft are affected; both server and client.
+
+**NachoSpigot has fixed this issue, so it is safe to use NachoSpigot in production again.**
+
+For now, NachoSpigot has completely disabled lookups for Log4j if any other exploits come up since this one has raised popularity.
+If this ever causes issues, we can disable this and hope none of this ever happens again. We're also prepared for any new exploits with this so we can update Log4j ASAP.
+
 ## Current State
-Java 15 is natively supported and also the recommended version to use.
-
-Nacho can now be used in production environments with some degree of stability.
-
-If you find any bugs, please [create an issue](../../issues/new) or contact us in the [Discord server](https://discord.gg/ewcYeERKJw)!
-
-If you find that things still do not work out for you, you may also try [BurritoSpigot](https://github.com/CobbleSword/BurritoSpigot/) which is worked on by a different maintainer.
-If you find any bugs on BurittoSpigot, please contact Heath/Sprock instead of Sculas.
+Java 16 is the recommended version to use, otherwise Java 11 is fine. Java 8 works, but is not recommended due to security issues.
 
 **NachoSpigot supports Java 8 to Java 17!**
+
+Nacho can be used in production environments with a good degree of stability.
+
+If you find any bugs, please [create an issue](../../issues/new) or contact us in the [Discord server](https://discord.gg/ewcYeERKJw)!
 
 ## Download
 We do not provide stable release builds, since every commit should be stable to run.
