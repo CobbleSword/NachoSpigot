@@ -91,7 +91,7 @@ public final class ConsoleAppender extends AbstractOutputStreamAppender {
             return null;
         }
         if (layout == null) {
-            layout = PatternLayout.createLayout(null, null, null, null, null);
+            layout = PatternLayout.newBuilder().build();
         }
         final boolean isFollow = Boolean.parseBoolean(follow);
         final boolean ignoreExceptions = Booleans.parseBoolean(ignore, true);
@@ -155,7 +155,7 @@ public final class ConsoleAppender extends AbstractOutputStreamAppender {
 
         @Override
         public void write(final byte[] b) throws IOException {
-            System.err.write(b);
+            this.write(b, 0, b.length);
         }
 
         @Override
@@ -189,7 +189,7 @@ public final class ConsoleAppender extends AbstractOutputStreamAppender {
 
         @Override
         public void write(final byte[] b) throws IOException {
-            System.out.write(b);
+            this.write(b, 0, b.length);
         }
 
         @Override
@@ -238,7 +238,7 @@ public final class ConsoleAppender extends AbstractOutputStreamAppender {
          */
         @Override
         public OutputStreamManager createManager(final String name, final FactoryData data) {
-            return new OutputStreamManager(data.os, data.type, data.layout);
+            return new OutputStreamManager(data.os, data.type, data.layout, true);
         }
     }
 
