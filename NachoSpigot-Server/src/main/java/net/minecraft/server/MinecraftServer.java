@@ -54,26 +54,6 @@ import xyz.sculas.nacho.async.AsyncExplosions;
 
 public abstract class MinecraftServer implements Runnable, ICommandListener, IAsyncTaskHandler, IMojangStatistics {
 
-    static {
-        Method getCallerClass;
-        try {
-            final Class<?> sunReflectionClass = LoaderUtil.loadClass("sun.reflect.Reflection");
-            getCallerClass = sunReflectionClass.getDeclaredMethod("getCallerClass", int.class);
-            Object o = getCallerClass.invoke(null, 0);
-            getCallerClass.invoke(null, 0);
-            if (!(o == null || o != sunReflectionClass)) {
-                o = getCallerClass.invoke(null, 1);
-                if (o == sunReflectionClass) {
-                    System.out.println("WARNING: Java 1.7.0_25 is in use which has a broken implementation of Reflection.getCallerClass(). " +
-                            " Please consider upgrading to Java 1.7.0_40 or later.");
-                }
-            }
-        } catch (final Exception | LinkageError e) {
-            System.out.println("TESTING: WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.");
-            e.printStackTrace();
-        }
-    }
-
     public static final Logger LOGGER = LogManager.getLogger(MinecraftServer.class);
     public static final File a = new File("usercache.json");
     private static MinecraftServer l;

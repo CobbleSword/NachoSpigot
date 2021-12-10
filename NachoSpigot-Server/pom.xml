@@ -213,6 +213,7 @@
                             <!-- I don't see why this is necessary but I'll leave it alone for now -->
                             <Specification-Version>${api.version}</Specification-Version>
                             <Specification-Vendor>Bukkit Team</Specification-Vendor>
+                            <Multi-Release>true</Multi-Release>
                         </manifestEntries>
                         <manifestSections>
                             <manifestSection>
