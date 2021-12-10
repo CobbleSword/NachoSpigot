@@ -13,7 +13,7 @@ For now, NachoSpigot has completely disabled lookups for Log4j if any other expl
 If this ever causes issues, we can disable this and hope none of this ever happens again. We're also prepared for any new exploits with this so we can update Log4j ASAP.
 
 ## Current State
-Java 16 is the recommended version to use, otherwise Java 11 is fine. Java 8 works, but is not recommended due to security issues.
+Java 17 (LTS) is the recommended version to use, otherwise Java 11 is fine. Java 8 works, but is not recommended due to security issues.
 
 **NachoSpigot supports Java 8 to Java 17!**
 
