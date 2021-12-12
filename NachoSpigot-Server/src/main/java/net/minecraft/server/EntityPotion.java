@@ -115,7 +115,8 @@ public class EntityPotion extends EntityProjectile {
 
                     EntityLiving entityliving = ((CraftLivingEntity) victim).getHandle();
 
-                    if (entityliving instanceof EntityPlayer && !((EntityPlayer) entityliving).getBukkitEntity().canSee(this.getShooter().getBukkitEntity())) {
+                    // If entity is a player and the shooter is not null (so NPCs don't break?) and the player cannot see the shooter, skip.
+                    if (entityliving instanceof EntityPlayer && (this.getShooter() != null && !((EntityPlayer) entityliving).getBukkitEntity().canSee(this.getShooter().getBukkitEntity()))) {
                         continue;
                     }
 
