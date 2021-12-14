@@ -106,8 +106,8 @@ public class PacketDataSerializer extends ByteBuf {
         this.b(oenum.ordinal());
     }
 
-    public int e() { return readVarInt(); } // Nacho - OBFHELPER
-    public int readVarInt() {
+    public int readVarInt() { return e(); } // Nacho - OBFHELPER
+    public int e() {
         byte b0;
         int i = 0;
         int j = 0;
@@ -138,28 +138,21 @@ public class PacketDataSerializer extends ByteBuf {
         this.writeLong(uuid.getLeastSignificantBits());
     }
 
+    public UUID readUUID() { return g(); } // Nacho - OBFHELPER
+
     public UUID g() {
-        // Nacho start - OBFHELPER
-        return readUUID();
-    }
-    public UUID readUUID() {
-        // Nacho end
         return new UUID(this.readLong(), this.readLong());
     }
 
-    public void b(int i) {
-        // Nacho start - OBFHELPER
-        this.writeVarInt(i);
-    }
+    public void writeVarInt(int value) { this.b(value); } // Nacho - OBFHELPER
 
-    public void writeVarInt(int value) {
-        // Nacho end
-        while ((value & -128) != 0) {
-            this.writeByte(value & 127 | 128);
-            value >>>= 7;
+    public void b(int i) {
+        while ((i & -128) != 0) {
+            this.writeByte(i & 127 | 128);
+            i >>>= 7;
         }
 
-        this.writeByte(value);
+        this.writeByte(i);
     }
 
     public void b(long i) {
@@ -251,20 +244,18 @@ public class PacketDataSerializer extends ByteBuf {
         return itemstack;
     }
 
+    public String readUUID(int maxLength) { return c(maxLength); } // Nacho - OBFHELPER
+
     public String c(int i) {
-        return readUtf(i);
-        // Nacho start - OBFHELPER
-    }
-    public String readUtf(int maxLength) {
         int j = this.readVarInt();
-        if (j > maxLength * 4)
-            throw new DecoderException("The received encoded string buffer length is longer than maximum allowed (" + j + " > " + (maxLength * 4) + ")");
+        if (j > i * 4)
+            throw new DecoderException("The received encoded string buffer length is longer than maximum allowed (" + j + " > " + (i * 4) + ")");
         if (j < 0)
             throw new DecoderException("The received encoded string buffer length is less than zero! Weird string!");
         String s = toString(readerIndex(), j, StandardCharsets.UTF_8);
         readerIndex(readerIndex() + j);
-        if (s.length() > maxLength)
-            throw new DecoderException("The received string length is longer than maximum allowed (" + j + " > " + maxLength + ")");
+        if (s.length() > i)
+            throw new DecoderException("The received string length is longer than maximum allowed (" + j + " > " + i + ")");
         // Nacho end
         return s;
     }

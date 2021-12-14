@@ -458,12 +458,9 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
         }
     }
 
-    public DedicatedPlayerList aP() {
-        // Nacho start - OBFHELPER
-        return getDedicatedPlayerList();
-    }
+    public DedicatedPlayerList getDedicatedPlayerList() { return aP(); } // Nacho - OBFHELPER
 
-    public DedicatedPlayerList getDedicatedPlayerList() {
+    public DedicatedPlayerList aP() {
         // Nacho end
         return (DedicatedPlayerList) super.getPlayerList();
     }

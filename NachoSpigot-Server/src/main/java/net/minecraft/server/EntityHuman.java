@@ -1720,12 +1720,9 @@ public abstract class EntityHuman extends EntityLiving {
         return this.getDataWatcher().getFloat(17);
     }
 
-    public static UUID a(GameProfile gameProfile) {
-        // Nacho start - OBFHELPER
-        return createPlayerUUID(gameProfile);
-    }
-    public static UUID createPlayerUUID(GameProfile gameprofile) {
-        // Nacho end
+    public static UUID createPlayerUUID(GameProfile gameProfile) { return a(gameProfile); } // Nacho - OBFHELPER
+
+    public static UUID a(GameProfile gameprofile) {
         UUID uuid = gameprofile.getId();
 
         if (uuid == null) {
