@@ -1,5 +1,6 @@
 package net.minecraft.server;
 
+import com.destroystokyo.paper.PaperWorldConfig;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -11,16 +12,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftWorld;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.craftbukkit.util.CraftMagicNumbers;
-import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockCanBuildEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.generator.ChunkGenerator;
 
-import me.rastrian.dev.OptimizedWorldTileEntitySet;
+import dev.cobblesword.nachospigot.commons.OptimizedWorldTileEntitySet;
 
 import java.util.*;
 import java.util.concurrent.Callable;
@@ -176,7 +175,7 @@ public abstract class World implements IBlockAccess {
 
     public final org.spigotmc.SpigotWorldConfig spigotConfig; // Spigot
 
-    public final org.github.paperspigot.PaperSpigotWorldConfig paperSpigotConfig; // PaperSpigot
+    public final PaperWorldConfig paperSpigotConfig; // PaperSpigot
 
     public final co.aikar.timings.WorldTimingsHandler timings; // Spigot
     public final net.techcable.tacospigot.TacoSpigotWorldConfig tacoSpigotConfig; // TacoSpigot
@@ -196,7 +195,7 @@ public abstract class World implements IBlockAccess {
 
     protected World(IDataManager idatamanager, WorldData worlddata, WorldProvider worldprovider, MethodProfiler methodprofiler, boolean flag, ChunkGenerator gen, org.bukkit.World.Environment env) {
         this.spigotConfig = new org.spigotmc.SpigotWorldConfig( worlddata.getName() ); // Spigot
-        this.paperSpigotConfig = new org.github.paperspigot.PaperSpigotWorldConfig( worlddata.getName() ); // PaperSpigot
+        this.paperSpigotConfig = new PaperWorldConfig( worlddata.getName() ); // PaperSpigot
         this.tacoSpigotConfig = new net.techcable.tacospigot.TacoSpigotWorldConfig(worlddata.getName()); // TacoSpigot
         this.nachoSpigotConfig = new NachoWorldConfig(worlddata.getName()); // NachoSpigot
         this.generator = gen;

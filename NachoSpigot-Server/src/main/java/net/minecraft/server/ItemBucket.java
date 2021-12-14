@@ -8,8 +8,6 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 // CraftBukkit end
 
-import org.github.paperspigot.PaperSpigotConfig; // PaperSpigot
-
 public class ItemBucket extends Item {
 
     private Block a;
@@ -96,18 +94,6 @@ public class ItemBucket extends Item {
 
                     if (this.a(world, blockposition1) && !entityhuman.abilities.canInstantlyBuild) {
                         entityhuman.b(StatisticList.USE_ITEM_COUNT[Item.getId(this)]);
-                        // PaperSpigot start - Stackable Buckets
-                        if ((this == Items.LAVA_BUCKET && PaperSpigotConfig.stackableLavaBuckets) ||
-                                (this == Items.WATER_BUCKET && PaperSpigotConfig.stackableWaterBuckets)) {
-                            if (--itemstack.count <= 0) {
-                                return CraftItemStack.asNMSCopy(event.getItemStack());
-                            }
-                            if (!entityhuman.inventory.pickup(CraftItemStack.asNMSCopy(event.getItemStack()))) {
-                                entityhuman.drop(CraftItemStack.asNMSCopy(event.getItemStack()), false);
-                            }
-                            return itemstack;
-                        }
-                        // PaperSpigot end
                         return CraftItemStack.asNMSCopy(event.getItemStack()); // CraftBukkit
                     }
                 }

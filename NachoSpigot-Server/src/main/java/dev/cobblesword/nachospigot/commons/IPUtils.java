@@ -5,6 +5,9 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.URL;
 
+/**
+ * @author Sculas
+ */
 public class IPUtils {
 
     public static String getExternalAddress() throws Exception {
@@ -20,5 +23,4 @@ public class IPUtils {
             return false;
         }
     }
-
 }

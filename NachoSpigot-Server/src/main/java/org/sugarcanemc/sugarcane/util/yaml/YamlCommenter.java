@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import me.elier.util.StringUtils;
+import dev.cobblesword.nachospigot.commons.StringUtils;
 
 public class YamlCommenter {
     private final HashMap<String, String> comments = new HashMap<>();

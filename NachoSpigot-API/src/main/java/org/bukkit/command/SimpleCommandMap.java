@@ -29,21 +29,18 @@ public class SimpleCommandMap implements CommandMap {
     }
 
     private void setDefaultCommands() {
-        // [Nacho-0036] Add toggles for commands
-        try { // You might ask; "why?". Well, unit testing doesn't like this so I'll have to do it the ugly way. If anyone knows a better way to do this, please PR.
-            if(server.versionCommandEnabled()) register("bukkit", new VersionCommand("version"));
-            if(server.reloadCommandEnabled()) register("bukkit", new ReloadCommand("reload"));
-            if(server.pluginsCommandEnabled()) register("bukkit", new PluginsCommand("plugins"));
-        } catch (Exception e) {
-            register("bukkit", new VersionCommand("version"));
-            register("bukkit", new ReloadCommand("reload"));
-            register("bukkit", new PluginsCommand("plugins"));
-        }
+        // Nacho start - Add toggles for commands
+        if(server.versionCommandEnabled()) register("bukkit", new VersionCommand("version"));
+        if(server.reloadCommandEnabled()) register("bukkit", new ReloadCommand("reload"));
+        if(server.pluginsCommandEnabled()) register("bukkit", new PluginsCommand("plugins"));
+        // Nacho end
         register("bukkit", new co.aikar.timings.TimingsCommand("timings")); // Spigot
     }
 
     public void setFallbackCommands() {
-        register("bukkit", new HelpCommand());
+        // Nacho start
+        if(server.helpCommandEnabled()) register("bukkit", new HelpCommand());
+        // Nacho end
     }
 
     /**

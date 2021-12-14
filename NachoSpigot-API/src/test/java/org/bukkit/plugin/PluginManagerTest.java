@@ -12,7 +12,7 @@ import org.junit.After;
 import org.junit.Test;
 
 public class PluginManagerTest {
-    private class MutableObject {
+    private static class MutableObject {
         volatile Object value = null;
     }
 

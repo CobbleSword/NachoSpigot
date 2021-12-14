@@ -135,7 +135,7 @@ public interface Server extends PluginMessageRecipient {
      */
     public int getMaxPlayers();
 
-    public void setMaxPlayers(int maxPlayers); // [Nacho-0021] Add setMaxPlayers within Bukkit.getServer() and SetMaxSlot Command
+    public void setMaxPlayers(int maxPlayers); // Nacho
 
     /**
      * Get the game port that the server runs on.
@@ -707,18 +707,56 @@ public interface Server extends PluginMessageRecipient {
      */
     public ConsoleCommandSender getConsoleSender();
 
+    // Nacho start
+    /**
+     * Checks if /version is enabled.
+     * @return whether /version is enabled
+     */
     default boolean versionCommandEnabled() {
         return true;
     }
 
+    /**
+     * Checks if /version requires a permission to use it.
+     * @return if /version needs a permission to use
+     */
+    default boolean versionPermissionEnabled() {
+        return false;
+    }
+
+    /**
+     * Checks if /reload is enabled.
+     * @return whether /reload is enabled
+     */
     default boolean reloadCommandEnabled() {
         return true;
     }
 
+    /**
+     * Checks if /plugins is enabled.
+     * @return whether /plugins is enabled
+     */
     default boolean pluginsCommandEnabled() {
         return true;
     }
 
+    /**
+     * Checks if /plugins requires a permission to use it.
+     * @return if /plugins needs a permission to use
+     */
+    default boolean pluginsPermissionEnabled() {
+        return false;
+    }
+
+    /**
+     * Checks if /help is enabled
+     * @return whether /help is enabled
+     */
+    default boolean helpCommandEnabled() {
+        return true;
+    }
+
+    // Nacho end
     /**
      * Gets the folder that contains all of the various {@link World}s.
      *
@@ -983,10 +1021,29 @@ public interface Server extends PluginMessageRecipient {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
+        // Nacho start
+        public org.bukkit.configuration.file.YamlConfiguration getPaperConfig()
+        {
+            return getPaperSpigotConfig();
+        }
+        // Nacho end
+
         public org.bukkit.configuration.file.YamlConfiguration getPaperSpigotConfig()
         {
             throw new UnsupportedOperationException("Not supported yet.");
         }
+
+        // Nacho start
+        public org.bukkit.configuration.file.YamlConfiguration getTacoSpigotConfig()
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public org.bukkit.configuration.file.YamlConfiguration getNachoSpigotConfig()
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+        // Nacho end
 
         /**
          * Sends the component to the player

@@ -1,5 +1,6 @@
 package org.bukkit.command.defaults;
 
+import com.destroystokyo.paper.util.VersionFetcher; // Paper - version supplier
 import com.google.common.base.Charsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,16 +15,14 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.util.StringUtil;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.io.Resources;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -34,6 +33,17 @@ import java.net.HttpURLConnection;
 // TacoSpigot end
 
 public class VersionCommand extends BukkitCommand {
+    // Paper start
+    private VersionFetcher versionFetcher;
+    private VersionFetcher getVersionFetcher() { // lazy load because unsafe isn't available at command registration
+        if (versionFetcher == null) {
+            versionFetcher = Bukkit.getUnsafe().getVersionFetcher();
+        }
+
+        return versionFetcher;
+    }
+    // Paper end
+
     public VersionCommand(String name) {
         super(name);
 
@@ -48,7 +58,7 @@ public class VersionCommand extends BukkitCommand {
         if (!testPermission(sender)) return true;
 
         if (args.length == 0) {
-            sender.sendMessage("This server is running " + Bukkit.getName() + " version " + Bukkit.getVersion() + " (Implementing API version " + Bukkit.getBukkitVersion() + ")");
+            //sender.sendMessage("This server is running " + Bukkit.getName() + " version " + Bukkit.getVersion() + " (Implementing API version " + Bukkit.getBukkitVersion() + ")"); // Paper - moved to setVersionMessage
             sendVersion(sender);
         } else {
             StringBuilder name = new StringBuilder();
@@ -156,7 +166,7 @@ public class VersionCommand extends BukkitCommand {
 
     private void sendVersion(CommandSender sender) {
         if (hasVersion) {
-            if (System.currentTimeMillis() - lastCheck > 21600000) {
+            if (System.currentTimeMillis() - lastCheck > getVersionFetcher().getCacheTime()) { // Paper - use version supplier
                 lastCheck = System.currentTimeMillis();
                 hasVersion = false;
             } else {
@@ -171,7 +181,7 @@ public class VersionCommand extends BukkitCommand {
                 return;
             }
             versionWaiters.add(sender);
-            sender.sendMessage("Checking version, please wait...");
+            sender.sendMessage(ChatColor.ITALIC + "Checking version, please wait...");
             if (!versionTaskStarted) {
                 versionTaskStarted = true;
                 new Thread(this::obtainVersion).start();
@@ -183,6 +193,13 @@ public class VersionCommand extends BukkitCommand {
 
     private void obtainVersion() {
         String version = Bukkit.getVersion();
+        // Paper start
+        if (version.startsWith("null")) { // running from ide?
+            setVersionMessage(ChatColor.YELLOW + "Unknown version, custom build?");
+            return;
+        }
+        setVersionMessage(getVersionFetcher().getVersionMessage(version));
+        /*
         if (version == null) version = "Custom";
         // TacoSpigot start
         if (version.startsWith("git-NachoSpigot-")) {
@@ -258,16 +275,19 @@ public class VersionCommand extends BukkitCommand {
                     setVersionMessage("You are " + cbVersions + " version(s) behind");
                 }
             }
-            */
             // TacoSpigot end
         } else {
             setVersionMessage("Unknown version, custom build?");
         }
+         */
+        // Paper end
     }
 
-    private void setVersionMessage(String msg) {
+    // Paper start
+    private void setVersionMessage(final @NotNull String msg) {
         lastCheck = System.currentTimeMillis();
-        versionMessage = msg;
+        this.versionMessage = "This server is running " + Bukkit.getName() + " version " + Bukkit.getVersion() + " (Implementing API version " + Bukkit.getBukkitVersion() + ")\n"+msg;
+        // Paper end
         versionLock.lock();
         try {
             hasVersion = true;

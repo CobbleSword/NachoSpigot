@@ -20,7 +20,7 @@ import org.bukkit.map.MapView;
 import org.bukkit.plugin.messaging.PluginMessageRecipient;
 import org.bukkit.scoreboard.Scoreboard;
 // PaperSpigot start
-import org.github.paperspigot.Title;
+import com.destroystokyo.paper.Title;
 // PaperSpigot end
 
 /**

@@ -1,43 +1,28 @@
-package me.rastrian.dev;
+package dev.cobblesword.nachospigot.commons;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Multimap;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
-
-import java.util.AbstractSet;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import net.minecraft.server.BlockJukeBox.TileEntityRecordPlayer;
-import net.minecraft.server.TileEntity;
-import net.minecraft.server.TileEntityBeacon;
-import net.minecraft.server.TileEntityChest;
-import net.minecraft.server.TileEntityCommand;
-import net.minecraft.server.TileEntityComparator;
-import net.minecraft.server.TileEntityDispenser;
-import net.minecraft.server.TileEntityDropper;
-import net.minecraft.server.TileEntityEnchantTable;
-import net.minecraft.server.TileEntityEnderChest;
-import net.minecraft.server.TileEntityEnderPortal;
-import net.minecraft.server.TileEntityFlowerPot;
-import net.minecraft.server.TileEntityLightDetector;
-import net.minecraft.server.TileEntityMobSpawner;
-import net.minecraft.server.TileEntityNote;
-import net.minecraft.server.TileEntitySign;
-import net.minecraft.server.TileEntitySkull;
+import net.minecraft.server.*;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.*;
 
 
 /**
  * Optimized world tile entity list implementation, provides
  * an iterator of tile entities that need to be ticked based
  * on the world time to reduce needed iteration/checks.
+ * @author Rastrian
  */
 public final class OptimizedWorldTileEntitySet extends AbstractSet<TileEntity> {
 
-    /** Map of tile classes with modified tick intervals. */
+    /**
+     * Map of tile classes with modified tick intervals.
+     */
     private static final Object2LongMap<Class<? extends TileEntity>> CUSTOM_TICK_INTERVALS =
             new Object2LongOpenHashMap<Class<? extends TileEntity>>() {{
                 // Entities with empty tick# methods.
@@ -66,7 +51,9 @@ public final class OptimizedWorldTileEntitySet extends AbstractSet<TileEntity> {
                 this.put(TileEntityMobSpawner.class, 20L);
             }};
 
-    /** Multimap of all registered tile entities. */
+    /**
+     * Multimap of all registered tile entities.
+     */
     private final Multimap<Class<? extends TileEntity>, TileEntity> registeredTiles = HashMultimap.create();
 
     @Override
@@ -111,7 +98,7 @@ public final class OptimizedWorldTileEntitySet extends AbstractSet<TileEntity> {
     }
 
     @Override
-    public Iterator<TileEntity> iterator() {
+    public @NotNull Iterator<TileEntity> iterator() {
         return this.registeredTiles.values().iterator();
     }
 

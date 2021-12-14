@@ -46,6 +46,7 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [Spigot-0138] Branchless NibbleArray by md5
 [Spigot-2380] Hitting in the air will always load the chunk at 0,0 by md_5
 
+[Paper-0021] Implement Paper VersionChecker
 [Paper-0033] Optimize explosions
 [Paper-0044] Use UserCache for player heads
 [Paper-0072] Fix Furnace cook time bug when lagging by Aikar
@@ -53,9 +54,10 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [Paper-0083] Waving banner workaround by Gabscap
 [Paper-0068] Use a Shared Random for Entities by Aikar
 [Paper-0085] Add handshake event to allow plugins to handle client handshaking logic themselves
-[Paper-0097] Don't save empty scoreboard teams to scoreboard.dat by Aikar
+[Paper-0093] Don't save empty scoreboard teams to scoreboard.dat by Aikar
+[Paper-0097] Faster redstone torch rapid clock removal by Martin Panzer
 [Paper-0100] Avoid blocking on Network Manager creation by Aikar
-[Paper-0102] Faster redstone torch rapid clock removal by Martin Panzer.
+[Paper-0103] Add setting for proxy online mode status
 [Paper-0112] Reduce IO ops opening a new region file by Antony Riley
 [Paper-0122] Don't let fishinghooks use portals by Zach Brown
 [Paper-0125] Optimize World.isLoaded(BlockPosition)Z by Aikar

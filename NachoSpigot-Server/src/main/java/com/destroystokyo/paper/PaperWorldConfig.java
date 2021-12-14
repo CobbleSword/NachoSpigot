@@ -1,20 +1,20 @@
-package org.github.paperspigot;
+package com.destroystokyo.paper;
 
 import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-public class PaperSpigotWorldConfig
+public class PaperWorldConfig
 {
 
     private final String worldName;
     private final YamlConfiguration config;
     private boolean verbose;
 
-    public PaperSpigotWorldConfig(String worldName)
+    public PaperWorldConfig(String worldName)
     {
         this.worldName = worldName;
-        this.config = PaperSpigotConfig.config;
+        this.config = PaperConfig.config;
         init();
     }
 
@@ -23,7 +23,7 @@ public class PaperSpigotWorldConfig
         this.verbose = getBoolean( "verbose", true );
 
         log( "-------- World Settings For [" + worldName + "] --------" );
-        PaperSpigotConfig.readConfig( PaperSpigotWorldConfig.class, this );
+        PaperConfig.readConfig( PaperWorldConfig.class, this );
     }
 
     private void log(String s)
@@ -268,7 +268,7 @@ public class PaperSpigotWorldConfig
     private void fixCannons()
     {
         // TODO: Remove migrations after most users have upgraded.
-        if ( PaperSpigotConfig.version < 9 )
+        if ( PaperConfig.version < 9 )
         {
             // Migrate default value
 

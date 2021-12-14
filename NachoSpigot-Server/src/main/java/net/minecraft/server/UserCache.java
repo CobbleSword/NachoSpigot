@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -71,7 +70,11 @@ public class UserCache {
         this.b();
     }
 
-    private static GameProfile a(MinecraftServer minecraftserver, String s) {
+    // Nacho start - OBFHELPER
+    private static GameProfile a(MinecraftServer minecraftserver, String name) {
+        return lookupGameProfile(minecraftserver, name);
+    }
+    private static GameProfile lookupGameProfile(MinecraftServer minecraftServer, String name) {
         final GameProfile[] agameprofile = new GameProfile[1];
         ProfileLookupCallback profilelookupcallback = new ProfileLookupCallback() {
             public void onProfileLookupSucceeded(GameProfile gameprofile) {
@@ -83,10 +86,11 @@ public class UserCache {
             }
         };
 
-        minecraftserver.getGameProfileRepository().findProfilesByNames(new String[] { s}, Agent.MINECRAFT, profilelookupcallback);
-        if (!minecraftserver.getOnlineMode() && agameprofile[0] == null) {
-            UUID uuid = EntityHuman.a(new GameProfile((UUID) null, s));
-            GameProfile gameprofile = new GameProfile(uuid, s);
+        minecraftServer.getGameProfileRepository().findProfilesByNames(new String[] { name}, Agent.MINECRAFT, profilelookupcallback);
+        if (!minecraftServer.getOnlineMode() && agameprofile[0] == null && !org.apache.commons.lang3.StringUtils.isBlank(name)) { // Paper - Don't lookup a profile with a blank name
+            UUID uuid = EntityHuman.a(new GameProfile((UUID) null, name));
+            GameProfile gameprofile = new GameProfile(uuid, name);
+            // Nacho end
 
             profilelookupcallback.onProfileLookupSucceeded(gameprofile);
         }

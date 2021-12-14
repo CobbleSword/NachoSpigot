@@ -1,15 +1,14 @@
 package dev.cobblesword.nachospigot;
 
-import dev.cobblesword.nachospigot.knockback.KnockbackCommand;
-import dev.cobblesword.nachospigot.knockback.KnockbackConfig;
+import dev.cobblesword.nachospigot.commands.KnockbackCommand;
+import dev.cobblesword.nachospigot.protocol.MovementListener;
 import me.elier.nachospigot.config.NachoConfig;
 import xyz.sculas.nacho.anticrash.AntiCrash;
 import xyz.sculas.nacho.async.AsyncExplosions;
 import dev.cobblesword.nachospigot.protocol.PacketListener;
-import dev.cobblesword.nachospigot.protocol.MovementListener;
 import net.minecraft.server.MinecraftServer;
-import org.bukkit.command.defaults.nacho.SetMaxSlotCommand;
-import org.bukkit.command.defaults.nacho.SpawnMobCommand;
+import dev.cobblesword.nachospigot.commands.SetMaxSlotCommand;
+import dev.cobblesword.nachospigot.commands.SpawnMobCommand;
 
 import com.google.common.collect.Sets;
 import java.util.Set;
@@ -28,7 +27,7 @@ public class Nacho {
 
         if(NachoConfig.enableAntiCrash) {
             System.out.println("[NS-AntiCrash] Activating Anti Crash.");
-            Nacho.get().registerPacketListener(new AntiCrash());
+            this.packetListeners.add(new AntiCrash());
             System.out.println("[NS-AntiCrash] Activated Anti Crash.");
         }
     }
@@ -65,4 +64,5 @@ public class Nacho {
     }
 
     public Set<MovementListener> getMovementListeners() { return movementListeners; }
+
 }

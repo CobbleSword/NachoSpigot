@@ -1,4 +1,4 @@
-package org.github.paperspigot;
+package com.destroystokyo.paper;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;

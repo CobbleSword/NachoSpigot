@@ -874,18 +874,56 @@ public final class Bukkit {
         return server.getConsoleSender();
     }
 
+    // Nacho start
+    /**
+     * Checks if the /version is enabled.
+     * @return whether /version is enabled
+     */
     public static boolean versionCommandEnabled() {
         return server.versionCommandEnabled();
     }
 
+    /**
+     * Checks if /version requires a permission to use it.
+     * @return if /version needs a permission to use
+     */
+    public static boolean versionPermissionEnabled() {
+        return server.versionPermissionEnabled();
+    }
+
+    /**
+     * Checks if the /reload is enabled.
+     * @return whether /reload is enabled
+     */
     public static boolean reloadCommandEnabled() {
         return server.reloadCommandEnabled();
     }
 
+    /**
+     * Checks if the /plugins is enabled.
+     * @return whether /plugins is enabled
+     */
     public static boolean pluginsCommandEnabled() {
         return server.pluginsCommandEnabled();
     }
 
+    /**
+     * Checks if /plugins requires a permission to use it.
+     * @return if /plugins needs a permission to use
+     */
+    public static boolean pluginsPermissionEnabled() {
+        return server.pluginsPermissionEnabled();
+    }
+
+    /**
+     * Checks if /help is enabled
+     * @return whether /help is enabled
+     */
+    public static boolean helpCommandEnabled() {
+        return server.helpCommandEnabled();
+    }
+
+    // Nacho end
     /**
      * Gets the folder that contains all of the various {@link World}s.
      *
