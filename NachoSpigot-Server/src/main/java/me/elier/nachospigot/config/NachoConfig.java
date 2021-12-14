@@ -136,10 +136,10 @@ public class NachoConfig {
         c.addComment("settings.instant-interaction", "Disables delay of all interactions");
         c.addComment("settings.disable-infinisleeper-thread-usage", "Disable infinisleeper thread usage, just enable this if you know what are you doing.");
         c.addComment("settings.enable-fastmath", "Enable Fast Math usage.");
-        c.addComment("settings.use-tcp-fastopen", "Options: 0 - Disabled.; 1 - TFO is enabled for outgoing connections (clients).; 2 - TFO is enabled for incoming connections (servers).; 3 - TFO is enabled for both clients and servers.");
+        c.addComment("settings.tcp-fastopen-mode", "Options: 0 - Disabled.; 1 - TFO is enabled for outgoing connections (clients).; 2 - TFO is enabled for incoming connections (servers).; 3 - TFO is enabled for both clients and servers.");
         c.addComment("settings.tile-entity-ticking-time", "Ticking time (20 ticks per second) for usage on tile entity operations.");
         c.addComment("settings.item-dirty-ticks", "Controls the interval for the item-dirty check. Minecraft checks an item every tick to see if it was changed. This can be expensive because it also needs to check all NBT data. Spigot only checks for basic count/data/type data and does a deep check every 20 ticks by default.");
-        c.addComment("settings.tcp-fastopen-mode", "Enables the TCP_FASTOPEN socket option");
+        c.addComment("settings.use-tcp-fastopen", "Enables the TCP_FASTOPEN socket option");
         c.addComment("settings.lag-compensated-potions", "Enables lag compensation throwing potions");
         c.addComment("settings.smooth-potting", "Make potion throwing smoother");
         c.addComment("settings.commands.permissions.version", "Enables a required permission to use /version");
