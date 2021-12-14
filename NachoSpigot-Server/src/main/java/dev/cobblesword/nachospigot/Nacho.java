@@ -1,6 +1,7 @@
 package dev.cobblesword.nachospigot;
 
 import dev.cobblesword.nachospigot.commands.KnockbackCommand;
+import dev.cobblesword.nachospigot.protocol.MovementListener;
 import me.elier.nachospigot.config.NachoConfig;
 import xyz.sculas.nacho.anticrash.AntiCrash;
 import xyz.sculas.nacho.async.AsyncExplosions;
@@ -17,6 +18,7 @@ public class Nacho {
     private static Nacho INSTANCE;
 
     private final Set<PacketListener> packetListeners = Sets.newConcurrentHashSet();
+    private final Set<MovementListener> movementListeners = Sets.newConcurrentHashSet();
 
     public Nacho() {
         INSTANCE = this;
@@ -43,6 +45,24 @@ public class Nacho {
         MinecraftServer.getServer().server.getCommandMap().register(knockbackCommand.getName(), "ns", knockbackCommand);
     }
 
+    public void registerPacketListener(PacketListener packetListener) {
+        this.packetListeners.add(packetListener);
+    }
+
+    public void unregisterPacketListener(PacketListener packetListener) {
+        this.packetListeners.remove(packetListener);
+    }
+
     public Set<PacketListener> getPacketListeners() { return packetListeners; }
+
+    public void registerMovementListener(MovementListener movementListener) {
+        this.movementListeners.add(movementListener);
+    }
+
+    public void unregisterMovementListener(MovementListener movementListener) {
+        this.movementListeners.remove(movementListener);
+    }
+
+    public Set<MovementListener> getMovementListeners() { return movementListeners; }
 
 }
