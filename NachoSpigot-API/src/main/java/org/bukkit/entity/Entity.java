@@ -217,17 +217,19 @@ public interface Entity extends Metadatable, CommandSender {
     public void setFallDistance(float distance);
 
     /**
-     * Does nothing.
-     * @deprecated This is never used and only leads to memory leaks.
+     * Record the last {@link EntityDamageEvent} inflicted on this entity
+     *
+     * @param event a {@link EntityDamageEvent}
      */
-    @Deprecated // KigPaper - deprecate
     public void setLastDamageCause(EntityDamageEvent event);
 
     /**
-     * Always returns null.
-     * @deprecated This is never used and only leads to memory leaks.
+     * Retrieve the last {@link EntityDamageEvent} inflicted on this entity.
+     * This event may have been cancelled.
+     *
+     * @return the last known {@link EntityDamageEvent} or null if hitherto
+     *     unharmed
      */
-    @Deprecated // KigPaper - deprecate
     public EntityDamageEvent getLastDamageCause();
 
     /**
