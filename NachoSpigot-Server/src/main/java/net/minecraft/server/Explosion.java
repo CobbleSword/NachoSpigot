@@ -8,6 +8,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 
 // CraftBukkit start
+import com.google.common.collect.Sets;
 import com.google.common.util.concurrent.MoreExecutors;
 import dev.cobblesword.nachospigot.commons.Constants;
 import dev.cobblesword.nachospigot.commons.MCUtils;
@@ -77,7 +78,8 @@ public class Explosion {
 
                 EntityExplodeEvent event = new EntityExplodeEvent(source.getBukkitEntity(), location, list, 0.3F);
                 world.getServer().getPluginManager().callEvent(event);
-                if (event.isCancelled() || event.blockList().isEmpty()) {
+                // Nacho - blocklist is always empty for some reason?!? just see if the event is canceled or not
+                if (event.isCancelled()) {
                     protection = true;
                 }
             }
@@ -254,12 +256,10 @@ public class Explosion {
                     double d4 = d1 - this.posY;
                     double d5 = d2 - this.posZ;
                     double d6 = MathHelper.sqrt(d3 * d3 + d4 * d4 + d5 * d5);
-
                     d3 /= d6;
                     d4 /= d6;
                     d5 /= d6;
                     double d7 = 0.5D / (d6 / (double) this.size + 0.1D);
-
                     d7 *= this.world.random.nextFloat() * this.world.random.nextFloat() + 0.3F;
                     d3 *= d7;
                     d4 *= d7;
