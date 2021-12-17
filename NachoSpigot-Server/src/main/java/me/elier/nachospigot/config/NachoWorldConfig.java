@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class NachoWorldConfig {
 
     private final String worldName;
@@ -81,7 +82,6 @@ public class NachoWorldConfig {
         addComment("entity.endermite-spawning", "Enables endermite spawning.");
         addComment("infinite-water-sources", "Enables infinite water sources");
         addComment("explosions.constant-radius", "Changes the radius of explosions to be constant.");
-        addComment("explosions.explode-protected-regions", "Toggles whether explosions should explode protected regions");
         addComment("explosions.reduced-density-rays", "Toggles whether the server should use reduced rays when calculating density");
         addComment("tick-enchantment-tables", "Toggles whether enchantment tables should be ticked");
     }
@@ -137,12 +137,10 @@ public class NachoWorldConfig {
     }
 
     public boolean constantExplosions;
-    public boolean explosionProtectedRegions;
     public boolean reducedDensityRays;
 
     private void explosions() {
         constantExplosions = getBoolean("explosions.constant-radius", false);
-        explosionProtectedRegions = getBoolean("explosions.explode-protected-regions", true);
         reducedDensityRays = getBoolean("explosions.reduced-density-rays", true);
     }
 

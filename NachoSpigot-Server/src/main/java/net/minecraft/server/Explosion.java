@@ -3,21 +3,22 @@ package net.minecraft.server;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
-
-// CraftBukkit start
+// Nacho start
 import dev.cobblesword.nachospigot.commons.Constants;
 import dev.cobblesword.nachospigot.commons.minecraft.MCUtils;
 import me.elier.nachospigot.config.NachoConfig;
 import net.jafama.FastMath;
-
-import org.bukkit.craftbukkit.event.CraftEventFactory;
-import org.bukkit.event.entity.EntityExplodeEvent;
+// Nacho end
+// CraftBukkit start
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import xyz.sculas.nacho.async.AsyncExplosions;
 // CraftBukkit end
+
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 public class Explosion {
 
@@ -63,28 +64,10 @@ public class Explosion {
         Block b = chunk.getBlockData(pos).getBlock(); // TacoSpigot - get block of the explosion
 
         if (!this.world.tacoSpigotConfig.optimizeLiquidExplosions || !b.getMaterial().isLiquid()) { // TacoSpigot - skip calculating what blocks to blow up in water/lava
-            boolean protection = false;
-            if ((NachoConfig.fireEntityExplodeEvent || world.nachoSpigotConfig.explosionProtectedRegions) && source != null) {
-                Location location = new Location(world.getWorld(), posX, posY, posZ);
-
-                List<org.bukkit.block.Block> list = new java.util.ArrayList<>(1);
-                int x = org.bukkit.util.NumberConversions.floor(posX);
-                int y = org.bukkit.util.NumberConversions.floor(posY);
-                int z = org.bukkit.util.NumberConversions.floor(posZ);
-                list.add(chunk.bukkitChunk.getBlock(x, y, z));
-
-                EntityExplodeEvent event = new EntityExplodeEvent(source.getBukkitEntity(), location, list, 0.3F);
-                world.getServer().getPluginManager().callEvent(event);
-                if (event.isCancelled() || event.blockList().isEmpty()) {
-                    protection = true;
-                }
-            }
-            if (!protection) {
-                it.unimi.dsi.fastutil.longs.LongSet set = new it.unimi.dsi.fastutil.longs.LongOpenHashSet();
-                searchForBlocks(set, chunk);
-                for (it.unimi.dsi.fastutil.longs.LongIterator iterator = set.iterator(); iterator.hasNext(); ) {
-                    this.blocks.add(BlockPosition.fromLong(iterator.nextLong()));
-                }
+            it.unimi.dsi.fastutil.longs.LongSet set = new it.unimi.dsi.fastutil.longs.LongOpenHashSet();
+            searchForBlocks(set, chunk);
+            for (it.unimi.dsi.fastutil.longs.LongIterator iterator = set.iterator(); iterator.hasNext(); ) {
+                this.blocks.add(BlockPosition.fromLong(iterator.nextLong()));
             }
         }
 
@@ -198,25 +181,27 @@ public class Explosion {
 
             List<org.bukkit.block.Block> blockList = Lists.newArrayList();
             for (int i1 = this.blocks.size() - 1; i1 >= 0; i1--) {
-                BlockPosition cpos = (BlockPosition) this.blocks.get(i1);
+                BlockPosition cpos = this.blocks.get(i1);
                 org.bukkit.block.Block bblock = bworld.getBlockAt(cpos.getX(), cpos.getY(), cpos.getZ());
                 if (bblock.getType() != org.bukkit.Material.AIR) {
                     blockList.add(bblock);
                 }
             }
 
-            boolean cancelled;
-            List<org.bukkit.block.Block> bukkitBlocks;
-            float yield;
+            boolean cancelled = false;
+            List<org.bukkit.block.Block> bukkitBlocks = blockList;
+            float yield = 0.3F; // default
 
             if (explode != null) {
-                EntityExplodeEvent event = new EntityExplodeEvent(explode, location, blockList, 0.3F);
-                this.world.getServer().getPluginManager().callEvent(event);
-                cancelled = event.isCancelled();
-                bukkitBlocks = event.blockList();
-                yield = event.getYield();
+                if (NachoConfig.fireEntityExplodeEvent) {
+                    EntityExplodeEvent event = new EntityExplodeEvent(explode, location, blockList, yield);
+                    this.world.getServer().getPluginManager().callEvent(event);
+                    cancelled = event.isCancelled();
+                    bukkitBlocks = event.blockList();
+                    yield = event.getYield();
+                }
             } else {
-                BlockExplodeEvent event = new BlockExplodeEvent(location.getBlock(), blockList, 0.3F);
+                BlockExplodeEvent event = new BlockExplodeEvent(location.getBlock(), blockList, yield);
                 this.world.getServer().getPluginManager().callEvent(event);
                 cancelled = event.isCancelled();
                 bukkitBlocks = event.blockList();
@@ -332,7 +317,7 @@ public class Explosion {
                         d0 = (d0 / d3) * 0.30000001192092896D;
                         d1 = (d1 / d3) * 0.30000001192092896D;
                         d2 = (d2 / d3) * 0.30000001192092896D;
-                        VECTORS.add(new double[] {d0, d1, d2});
+                        VECTORS.add(new double[]{d0, d1, d2});
                     }
                 }
             }
