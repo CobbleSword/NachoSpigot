@@ -8,7 +8,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 
 // CraftBukkit start
-import com.google.common.collect.Sets;
 import com.google.common.util.concurrent.MoreExecutors;
 import dev.cobblesword.nachospigot.commons.Constants;
 import dev.cobblesword.nachospigot.commons.MCUtils;
