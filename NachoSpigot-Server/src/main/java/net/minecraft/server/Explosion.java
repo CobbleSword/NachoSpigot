@@ -193,13 +193,13 @@ public class Explosion {
             float yield;
 
             if (explode != null) {
-                EntityExplodeEvent event = new EntityExplodeEvent(explode, location, blockList, 0.3F);
                 if (NachoConfig.fireEntityExplodeEvent) {
+                    EntityExplodeEvent event = new EntityExplodeEvent(explode, location, blockList, 0.3F);
                     this.world.getServer().getPluginManager().callEvent(event);
+                    cancelled = event.isCancelled();
+                    bukkitBlocks = event.blockList();
+                    yield = event.getYield();
                 }
-                cancelled = event.isCancelled();
-                bukkitBlocks = event.blockList();
-                yield = event.getYield();
             } else {
                 BlockExplodeEvent event = new BlockExplodeEvent(location.getBlock(), blockList, 0.3F);
                 this.world.getServer().getPluginManager().callEvent(event);
