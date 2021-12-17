@@ -188,20 +188,20 @@ public class Explosion {
                 }
             }
 
-            boolean cancelled;
-            List<org.bukkit.block.Block> bukkitBlocks;
-            float yield;
+            boolean cancelled = false;
+            List<org.bukkit.block.Block> bukkitBlocks = blockList;
+            float yield = 0.3F; // default
 
             if (explode != null) {
                 if (NachoConfig.fireEntityExplodeEvent) {
-                    EntityExplodeEvent event = new EntityExplodeEvent(explode, location, blockList, 0.3F);
+                    EntityExplodeEvent event = new EntityExplodeEvent(explode, location, blockList, yield);
                     this.world.getServer().getPluginManager().callEvent(event);
                     cancelled = event.isCancelled();
                     bukkitBlocks = event.blockList();
                     yield = event.getYield();
                 }
             } else {
-                BlockExplodeEvent event = new BlockExplodeEvent(location.getBlock(), blockList, 0.3F);
+                BlockExplodeEvent event = new BlockExplodeEvent(location.getBlock(), blockList, yield);
                 this.world.getServer().getPluginManager().callEvent(event);
                 cancelled = event.isCancelled();
                 bukkitBlocks = event.blockList();
