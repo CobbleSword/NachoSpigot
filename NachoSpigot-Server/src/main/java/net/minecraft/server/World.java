@@ -1746,7 +1746,7 @@ public abstract class World implements IBlockAccess {
                 if (this.isLoaded(blockposition) && this.N.a(blockposition)) {
                     try {                            
 			if (this.getTileEntity(tileentity.getPosition()) == null){
-                            tileEntityList.remove(tileentity); //[Nacho-Spigot] Ghost Spawner Bug fixed By BeyazPolis
+                            tileIterator.remove(); //[Nacho-Spigot] Ghost Spawner Bug fixed By BeyazPolis
                             continue;
                         }
                         tileentity.tickTimer.startTiming(); // Spigot
