@@ -8,7 +8,7 @@ public class PacketPlayInCustomPayload implements Packet<PacketListenerPlayIn> {
     private PacketDataSerializer b;
 
     public void a(PacketDataSerializer paramPacketDataSerializer) throws IOException {
-        this.a = paramPacketDataSerializer.c(20);
+        this.a = paramPacketDataSerializer.readUtf(20); // Nacho - deobfuscate readUtf
         int i = paramPacketDataSerializer.readableBytes();
         if (i < 0 || i > 32767)
             throw new IOException("Payload may not be larger than 32767 bytes");

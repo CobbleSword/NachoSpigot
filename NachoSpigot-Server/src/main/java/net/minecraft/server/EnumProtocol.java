@@ -145,7 +145,7 @@ public enum EnumProtocol {
 
     private static final EnumProtocol[] STATES = new EnumProtocol[loginId - handshakeId + 1]; // 4
 
-    private final Map<EnumProtocolDirection, BiMap<Integer, Class<? extends Packet<?>>>> _protocolLibPacketShim = Maps.newEnumMap(EnumProtocolDirection.class);;
+    private final Map<EnumProtocolDirection, BiMap<Integer, Class<? extends Packet<?>>>> _protocolPacketShim = Maps.newEnumMap(EnumProtocolDirection.class);
 
     private static final Map<Class<? extends Packet<?>>, EnumProtocol> packetClass2State = Maps.newHashMap();
 
@@ -168,13 +168,13 @@ public enum EnumProtocol {
         this.packetClassToId.put(clazz, packetId);
         map.put(packetId, packet);
 
-        if (NachoConfig.enableProtocolLibShim) {
-            this._protocolLibRegisterShim(dir, clazz);
+        if (NachoConfig.enableProtocolShim) {
+            this._protocolRegisterShim(dir, clazz);
         }
     }
 
-    private void _protocolLibRegisterShim(EnumProtocolDirection dir, Class<? extends Packet<?>> clazz) {
-        BiMap<Integer, Class<? extends Packet<?>>> map = this._protocolLibPacketShim.computeIfAbsent(dir, k -> HashBiMap.create());
+    private void _protocolRegisterShim(EnumProtocolDirection dir, Class<? extends Packet<?>> clazz) {
+        BiMap<Integer, Class<? extends Packet<?>>> map = this._protocolPacketShim.computeIfAbsent(dir, k -> HashBiMap.create());
         map.put(map.size(), clazz);
     }
 
@@ -211,17 +211,4 @@ public enum EnumProtocol {
             }
         }
     }
-
-    // --- OBFHELPER Methods
-
-    // createPacket
-    public Packet<?> a(EnumProtocolDirection direction, int packetId) {
-        return createPacket(direction, packetId);
-    }
-
-    // getPacketIdForPacket
-    public Integer a(Packet<?> packet) {
-        return getPacketIdForPacket(packet);
-    }
-
 }

@@ -135,7 +135,7 @@ public class LoginListener implements PacketLoginInListener, IUpdatePlayerListBo
             if (this.server.aK() >= 0 && !this.networkManager.c()) {
                 this.networkManager.a(new PacketLoginOutSetCompression(this.server.aK()), new ChannelFutureListener() {
                     public void a(ChannelFuture channelfuture) {
-                        LoginListener.this.networkManager.a(LoginListener.this.server.aK());
+                        LoginListener.this.networkManager.setupCompression(LoginListener.this.server.aK()); // Nacho - deobfuscate setupCompression
                     }
 
                     public void operationComplete(ChannelFuture future) { // CraftBukkit - fix decompile error

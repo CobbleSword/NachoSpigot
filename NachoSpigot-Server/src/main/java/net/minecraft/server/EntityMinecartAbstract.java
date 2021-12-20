@@ -211,7 +211,7 @@ public abstract class EntityMinecartAbstract extends Entity implements INamableT
             MinecraftServer minecraftserver = ((WorldServer) this.world).getMinecraftServer();
 
             i = this.L();
-            if (this.ak) {
+            if (this.inPortal) { // Nacho - deobfuscate inPortal
                 if (true || minecraftserver.getAllowNether()) { // CraftBukkit - multi-world should still allow teleport even if default vanilla nether disabled
                     if (this.vehicle == null && this.al++ >= i) {
                         this.al = i;
@@ -227,7 +227,7 @@ public abstract class EntityMinecartAbstract extends Entity implements INamableT
                         this.c(b0);
                     }
 
-                    this.ak = false;
+                    this.inPortal = false; // Nacho - deobfuscate inPortal
                 }
             } else {
                 if (this.al > 0) {

@@ -2291,7 +2291,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                         }
                     }
 
-                    String s = serializer.c(serializer.readableBytes());
+                    String s = serializer.readUtf(serializer.readableBytes()); // Nacho - deobfuscate readUtf
                     boolean flag = serializer.readBoolean();
 
                     if (commandblocklistenerabstract != null) {
@@ -2339,7 +2339,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
             ContainerAnvil containeranvil = (ContainerAnvil) this.player.activeContainer;
 
             if (packetplayincustompayload.b() != null && packetplayincustompayload.b().readableBytes() >= 1) {
-                String s1 = SharedConstants.a(packetplayincustompayload.b().c(32767));
+                String s1 = SharedConstants.a(packetplayincustompayload.b().readUtf(32767)); // Nacho - deobfuscate readUtf
 
                 if (s1.length() <= 30) {
                     containeranvil.a(s1);

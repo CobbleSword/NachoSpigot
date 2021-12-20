@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 import org.apache.commons.lang3.ObjectUtils;
 // TacoSpigot start
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -311,7 +310,7 @@ public class DataWatcher {
                 break;
 
             case 4:
-                datawatcher_watchableobject = new DataWatcher.WatchableObject(i, j, serializer.c(32767));
+                datawatcher_watchableobject = new DataWatcher.WatchableObject(i, j, serializer.readUtf(32767)); // Nacho - deobfuscate readUtf
                 break;
 
             case 5:

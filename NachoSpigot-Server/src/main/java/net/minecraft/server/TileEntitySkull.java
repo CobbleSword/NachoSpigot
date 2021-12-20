@@ -58,7 +58,7 @@ public class TileEntitySkull extends TileEntity {
 
                     GameProfile profile = profiles[ 0 ];
                     if (profile == null) {
-                        UUID uuid = EntityHuman.a(new GameProfile(null, key));
+                        UUID uuid = EntityHuman.createPlayerUUID(new GameProfile(null, key)); // Nacho - deobfuscate createPlayerUUID
                         profile = new GameProfile(uuid, key);
 
                         gameProfileLookup.onProfileLookupSucceeded(profile);

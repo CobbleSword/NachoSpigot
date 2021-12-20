@@ -27,7 +27,7 @@ public class PacketDecompressor extends ByteToMessageDecoder {
     protected void decode(ChannelHandlerContext var1, ByteBuf var2, List<Object> var3) throws Exception {
         if (var2.readableBytes() != 0) {
             PacketDataSerializer var4 = new PacketDataSerializer(var2);
-            int var5 = var4.e();
+            int var5 = var4.readVarInt(); // Nacho - deobfuscate readVarInt
             if (var5 == 0) {
                 var3.add(var4.readBytes(var4.readableBytes()));
             } else {
@@ -76,7 +76,7 @@ public class PacketDecompressor extends ByteToMessageDecoder {
     }
     // Paper end
 
-    public void a(int var1) {
+    public void setThreshold(int var1) { // Nacho - deobfuscate
         this.threshold = var1;
     }
 }

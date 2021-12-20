@@ -10,7 +10,7 @@ public class PacketPlayInResourcePackStatus implements Packet<PacketListenerPlay
     public PacketPlayInResourcePackStatus() {}
 
     public void a(PacketDataSerializer serializer) throws IOException {
-        this.a = serializer.c(40);
+        this.a = serializer.readUtf(40); // Nacho - deobfuscate readUtf
         this.b = (PacketPlayInResourcePackStatus.EnumResourcePackStatus) serializer.a(PacketPlayInResourcePackStatus.EnumResourcePackStatus.class);
     }
 

@@ -3,7 +3,6 @@ package net.minecraft.server;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.commons.Constants;
 import dev.cobblesword.nachospigot.knockback.KnockbackConfig;
 import dev.cobblesword.nachospigot.knockback.KnockbackProfile;
@@ -157,8 +156,7 @@ public abstract class EntityLiving extends Entity {
         super.a(d0, flag, block, blockposition);
     }
 
-    public boolean canBreatheUnderwater() { return this.aY(); } // Paper - OBFHELPER
-    public boolean aY() {
+    public boolean canBreatheUnderwater() {
         return false;
     }
 
@@ -188,7 +186,7 @@ public abstract class EntityLiving extends Entity {
 
         if (this.isAlive()) {
             if (this.a(Material.WATER)) {
-                if (!this.canBreatheUnderwater() && !this.hasEffect(MobEffectList.WATER_BREATHING.id) && !flag1) { // Paper - use OBFHELPER so it can be overridden
+                if (!this.canBreatheUnderwater() && !this.hasEffect(MobEffectList.WATER_BREATHING.id) && !flag1) { // Nacho - deobfuscate canBreatheUnderwater
                     this.setAirTicks(this.j(this.getAirTicks()));
                     if (this.getAirTicks() == -20) {
                         this.setAirTicks(0);
@@ -1189,23 +1187,12 @@ public abstract class EntityLiving extends Entity {
         return (float) this.getAttributeInstance(GenericAttributes.maxHealth).getValue();
     }
 
-    // TacoSpigot start - deobfuscation helper
-    public int getArrowsStuck() {
-        return this.bv();
-    }
-    // TacoSpigot end
-    public final int bv() {
+    public final int getArrowsStuck() { // Nacho - deobfuscate
         return this.datawatcher.getByte(9);
     }
 
-
-    // TacoSpigot start - deobfuscation helper
-    public void setArrowsStuck(int i) {
-        this.o(i);
-    }
-    // TacoSpigot end
-    public final void o(int i) {
-        this.datawatcher.watch(9, Byte.valueOf((byte) i));
+    public final void setArrowsStuck(int i) { // Nacho - deobfuscate
+        this.datawatcher.watch(9, (byte) i);
     }
 
     private int n() {
@@ -1491,7 +1478,7 @@ public abstract class EntityLiving extends Entity {
         super.t_();
         if (!this.world.isClientSide)
         {
-            int i = this.bv();
+            int i = this.getArrowsStuck(); // Nacho - deobfuscate getArrowsStuck
 
             if (i > 0) {
                 if (this.at <= 0) {
@@ -1500,7 +1487,7 @@ public abstract class EntityLiving extends Entity {
 
                 --this.at;
                 if (this.at <= 0) {
-                    this.o(i - 1);
+                    this.setArrowsStuck(i - 1); // Nacho - deobfuscate setArrowsStuck
                 }
             }
 

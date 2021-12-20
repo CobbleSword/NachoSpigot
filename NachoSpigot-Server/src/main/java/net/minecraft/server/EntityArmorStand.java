@@ -208,7 +208,7 @@ public class EntityArmorStand extends EntityLiving {
 
     }
 
-    public boolean canBreatheUnderwater() { // Skips a bit of damage handling code, probably a micro-optimization
+    public boolean canBreatheUnderwater() { // Nacho - deobfuscate canBreatheUnderwater
         return true;
     }
 

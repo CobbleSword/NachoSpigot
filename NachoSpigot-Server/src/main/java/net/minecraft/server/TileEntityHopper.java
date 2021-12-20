@@ -5,7 +5,6 @@ import java.util.List;
 
 // CraftBukkit start
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
-import org.bukkit.craftbukkit.entity.CraftItem;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
@@ -174,7 +173,7 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
     public void c() {
         if (this.world != null && !this.world.isClientSide) {
             --this.g;
-            if (!this.n()) {
+            if (!this.isCooledDown()) { // Nacho - deobfuscate isCooledDown
                 this.d(0);
                 this.m();
             }
@@ -184,7 +183,7 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
 
     public boolean m() {
         if (this.world != null && !this.world.isClientSide) {
-            if (!this.n() && BlockHopper.f(this.u())) {
+            if (!this.isCooledDown() && BlockHopper.f(this.u())) { // Nacho - deobfuscate isCooledDown
                 boolean flag = false;
 
                 if (!this.p()) {
@@ -202,7 +201,7 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
                 }
             }
             // PaperSpigot start
-            if (world.paperSpigotConfig.useHopperCheck && !world.tacoSpigotConfig.isHopperPushBased && !this.n()) { // TacoSpigot - dont use hopper check in push mode
+            if (world.paperSpigotConfig.useHopperCheck && !world.tacoSpigotConfig.isHopperPushBased && !this.isCooledDown()) { // TacoSpigot - dont use hopper check in push mode // Nacho - deobfuscate isCooledDown
                 this.d(world.spigotConfig.hopperCheck);
             }
             // PaperSpigot end
@@ -229,7 +228,7 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
 
     // TacoSpigot start
     public boolean canAcceptItems() {
-        return !this.n() && !this.q() && BlockHopper.f(this.u());
+        return !this.isCooledDown() && !this.q() && BlockHopper.f(this.u()); // Nacho - deobfuscate isCooledDown
     }
     // TacoSpigot end
 
@@ -661,8 +660,8 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
         this.g = i;
     }
 
-    boolean isCooledDown() { return n(); } // Paper // OBFHELPER
-    public boolean n() {
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted") // Nacho
+    public boolean isCooledDown() { // Nacho - deobfuscate
         return this.g > 0;
     }
 
@@ -692,6 +691,5 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
         for (int i = 0; i < this.items.length; ++i) {
             this.items[i] = null;
         }
-
     }
 }

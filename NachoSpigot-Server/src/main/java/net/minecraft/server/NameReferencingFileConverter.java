@@ -72,7 +72,7 @@ public class NameReferencingFileConverter {
 
             for (int j = 0; j < i; ++j) {
                 String s = astring1[j];
-                UUID uuid = EntityHuman.a(new GameProfile((UUID) null, s));
+                UUID uuid = EntityHuman.createPlayerUUID(new GameProfile((UUID) null, s)); // Nacho - deobfuscate createPlayerUUID
                 GameProfile gameprofile = new GameProfile(uuid, s);
 
                 profilelookupcallback.onProfileLookupSucceeded(gameprofile);
@@ -295,7 +295,7 @@ public class NameReferencingFileConverter {
                 a(minecraftserver, Lists.newArrayList(new String[] { s}), profilelookupcallback);
                 return arraylist.size() > 0 && ((GameProfile) arraylist.get(0)).getId() != null ? ((GameProfile) arraylist.get(0)).getId().toString() : "";
             } else {
-                return EntityHuman.a(new GameProfile((UUID) null, s)).toString();
+                return EntityHuman.createPlayerUUID(new GameProfile((UUID) null, s)).toString(); // Nacho - deobfuscate createPlayerUUID
             }
         } else {
             return s;

@@ -27,7 +27,7 @@ public class PacketEncoder extends MessageToByteEncoder<Packet<?>> {
             throw new IOException("Can't serialize unregistered packet");
         } else {
             PacketDataSerializer serializer = new PacketDataSerializer(bytebuf);
-            serializer.b(packetId);
+            serializer.writeVarInt(packetId); // Nacho - deobfuscate writeVarInt
 
             try {
                 packet.b(serializer);

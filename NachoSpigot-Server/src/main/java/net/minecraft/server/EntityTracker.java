@@ -220,8 +220,8 @@ public class EntityTracker {
     public void a(EntityPlayer entityplayer, Chunk chunk) {
         for (EntityTrackerEntry entry : this.getTrackedEntities()) {
             if (entry.getTracker() != entityplayer &&
-                entry.getTracker().getChunkX() == chunk.locX &&
-                entry.getTracker().getChunkZ() == chunk.locZ
+                entry.getTracker().chunkX == chunk.locX && // Nacho - deobfuscate chunkX
+                entry.getTracker().chunkZ == chunk.locZ // Nacho - deobfuscate chunkZ
             )   entry.updatePlayer(entityplayer);
         }
     }

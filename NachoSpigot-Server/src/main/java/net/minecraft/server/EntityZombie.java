@@ -508,7 +508,7 @@ public class EntityZombie extends EntityMonster {
             for (int k = (int) this.locX - 4; k < (int) this.locX + 4 && j < 14; ++k) {
                 for (int l = (int) this.locY - 4; l < (int) this.locY + 4 && j < 14; ++l) {
                     for (int i1 = (int) this.locZ - 4; i1 < (int) this.locZ + 4 && j < 14; ++i1) {
-                        Block block = this.world.getType(blockposition_mutableblockposition.c(k, l, i1)).getBlock();
+                        Block block = this.world.getType(blockposition_mutableblockposition.setValues(k, l, i1)).getBlock(); // Nacho - deobfuscate setValues
 
                         if (block == Blocks.IRON_BARS || block == Blocks.BED) {
                             if (this.random.nextFloat() < 0.3F) {

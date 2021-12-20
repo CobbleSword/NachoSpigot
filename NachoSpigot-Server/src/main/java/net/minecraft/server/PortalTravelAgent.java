@@ -5,8 +5,6 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 // CraftBukkit start
-import it.unimi.dsi.fastutil.longs.LongArrayList;
-import it.unimi.dsi.fastutil.longs.LongListIterator;
 import org.bukkit.Location;
 import org.bukkit.event.entity.EntityPortalExitEvent;
 import org.bukkit.util.Vector;
@@ -313,8 +311,8 @@ public class PortalTravelAgent {
 
                 label271:
                 for (k2 = this.a.V() - 1; k2 >= 0; --k2) {
-                    if (this.a.isEmpty(blockposition_mutableblockposition.c(i2, k2, j2))) {
-                        while (k2 > 0 && this.a.isEmpty(blockposition_mutableblockposition.c(i2, k2 - 1, j2))) {
+                    if (this.a.isEmpty(blockposition_mutableblockposition.setValues(i2, k2, j2))) { // Nacho - deobfuscate setValues
+                        while (k2 > 0 && this.a.isEmpty(blockposition_mutableblockposition.setValues(i2, k2 - 1, j2))) { // Nacho - deobfuscate setValues
                             --k2;
                         }
 
@@ -333,7 +331,7 @@ public class PortalTravelAgent {
                                         k4 = k2 + i4;
                                         int l4 = j2 + (l3 - 1) * j3 - k3 * i3;
 
-                                        blockposition_mutableblockposition.c(j4, k4, l4);
+                                        blockposition_mutableblockposition.setValues(j4, k4, l4); // Nacho - deobfuscate setValues
                                         if (i4 < 0 && !this.a.getType(blockposition_mutableblockposition).getBlock().getMaterial().isBuildable() || i4 >= 0 && !this.a.isEmpty(blockposition_mutableblockposition)) {
                                             continue label271;
                                         }
@@ -365,8 +363,8 @@ public class PortalTravelAgent {
 
                     label219:
                     for (k2 = this.a.V() - 1; k2 >= 0; --k2) {
-                        if (this.a.isEmpty(blockposition_mutableblockposition.c(i2, k2, j2))) {
-                            while (k2 > 0 && this.a.isEmpty(blockposition_mutableblockposition.c(i2, k2 - 1, j2))) {
+                        if (this.a.isEmpty(blockposition_mutableblockposition.setValues(i2, k2, j2))) { // Nacho - deobfuscate setValues
+                            while (k2 > 0 && this.a.isEmpty(blockposition_mutableblockposition.setValues(i2, k2 - 1, j2))) { // Nacho - deobfuscate setValues
                                 --k2;
                             }
 
@@ -379,7 +377,7 @@ public class PortalTravelAgent {
                                         i4 = i2 + (k3 - 1) * i3;
                                         j4 = k2 + l3;
                                         k4 = j2 + (k3 - 1) * j3;
-                                        blockposition_mutableblockposition.c(i4, j4, k4);
+                                        blockposition_mutableblockposition.setValues(i4, j4, k4); // Nacho - deobfuscate setValues
                                         if (l3 < 0 && !this.a.getType(blockposition_mutableblockposition).getBlock().getMaterial().isBuildable() || l3 >= 0 && !this.a.isEmpty(blockposition_mutableblockposition)) {
                                             continue label219;
                                         }

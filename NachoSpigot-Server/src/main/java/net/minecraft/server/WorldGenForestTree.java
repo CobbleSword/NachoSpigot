@@ -149,7 +149,7 @@ public class WorldGenForestTree extends WorldGenTreeAbstract {
 
             for (int j1 = -b0; j1 <= b0; ++j1) {
                 for (int k1 = -b0; k1 <= b0; ++k1) {
-                    if (!this.a(world.getType(blockposition_mutableblockposition.c(j + j1, k + i1, l + k1)).getBlock())) {
+                    if (!this.a(world.getType(blockposition_mutableblockposition.setValues(j + j1, k + i1, l + k1)).getBlock())) { // Nacho - deobfuscate setValues
                         return false;
                     }
                 }

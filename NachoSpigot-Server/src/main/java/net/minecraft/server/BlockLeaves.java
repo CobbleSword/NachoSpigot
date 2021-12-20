@@ -2,8 +2,6 @@ package net.minecraft.server;
 
 import java.util.Random;
 
-import dev.cobblesword.nachospigot.Nacho;
-
 import me.elier.nachospigot.config.NachoConfig;
 import org.bukkit.event.block.LeavesDecayEvent; // CraftBukkit
 
@@ -72,7 +70,7 @@ public abstract class BlockLeaves extends BlockTransparent {
                     for (k1 = -b0; k1 <= b0; ++k1) {
                         for (l1 = -b0; l1 <= b0; ++l1) {
                             for (i2 = -b0; i2 <= b0; ++i2) {
-                                Block block = world.getType(blockposition_mutableblockposition.c(j + k1, k + l1, l + i2)).getBlock();
+                                Block block = world.getType(blockposition_mutableblockposition.setValues(j + k1, k + l1, l + i2)).getBlock(); // Nacho - deobfuscate setValues
 
                                 if (block != Blocks.LOG && block != Blocks.LOG2) {
                                     if (block.getMaterial() == Material.LEAVES) {

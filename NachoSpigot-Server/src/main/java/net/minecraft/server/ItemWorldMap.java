@@ -101,7 +101,7 @@ public class ItemWorldMap extends ItemWorldMapBase {
                                             if (k4 > 1) {
                                                 do {
                                                     --k4;
-                                                    iblockdata = chunk.getBlockData(blockposition_mutableblockposition.c(i4 + i3, k4, j4 + j3));
+                                                    iblockdata = chunk.getBlockData(blockposition_mutableblockposition.setValues(i4 + i3, k4, j4 + j3)); // Nacho - deobfuscate setValues
                                                 } while (iblockdata.getBlock().g(iblockdata) == MaterialMapColor.b && k4 > 0);
 
                                                 if (k4 > 0 && iblockdata.getBlock().getMaterial().isLiquid()) {

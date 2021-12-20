@@ -117,16 +117,16 @@ public abstract class Entity implements ICommandListener {
         int chunkY = MathHelper.floor(locY / 16.0D);
         int chunkZ = MathHelper.floor(locZ / 16.0D);
 
-        return ad && getChunkX() == chunkX && getChunkY() == chunkY || getChunkZ() == chunkZ;
+        return ad && this.chunkX == chunkX && this.chunkY == chunkY || this.chunkZ == chunkZ; // Nacho - deobfuscate chunkX, chunkY, chunkZ
     }
-    public int ae; public int getChunkX() { return ae; } // PAIL
-    public int af; public int getChunkY() { return af; } // PAIL
-    public int ag; public int getChunkZ() { return ag; } // PAIL
+    public int chunkX; // Nacho - deobfuscate
+    public int chunkY; // Nacho - deobfuscate
+    public int chunkZ; // Nacho - deobfuscate
     // PaperSpigot end
     public boolean ah;
     public boolean ai;
     public int portalCooldown;
-    protected boolean ak; public final boolean inPortal() { return this.ak; } // Paper - OBFHELPER
+    protected boolean inPortal; // Nacho - deobfuscate inPortal
     protected int al;
     public int dimension;
     protected BlockPosition an;
@@ -312,7 +312,7 @@ public abstract class Entity implements ICommandListener {
             MinecraftServer minecraftserver = ((WorldServer) this.world).getMinecraftServer();
             int i = this.L();
 
-            if (this.ak) {
+            if (this.inPortal) { // Nacho - deobfuscate inPortal
                 if (true || minecraftserver.getAllowNether()) { // CraftBukkit
                     if (this.vehicle == null && this.al++ >= i) {
                         this.al = i;
@@ -328,7 +328,7 @@ public abstract class Entity implements ICommandListener {
                         this.c(b0);
                     }
 
-                    this.ak = false;
+                    this.inPortal = false; // Nacho - deobfuscate inPortal
                 }
             } else {
                 if (this.al > 0) {
@@ -1567,7 +1567,7 @@ public abstract class Entity implements ICommandListener {
                 int l = MathHelper.floor(this.locZ + (double) (((float) ((i >> 2) % 2) - 0.5F) * this.width * 0.8F));
 
                 if (blockposition_mutableblockposition.getX() != k || blockposition_mutableblockposition.getY() != j || blockposition_mutableblockposition.getZ() != l) {
-                    blockposition_mutableblockposition.c(k, j, l);
+                    blockposition_mutableblockposition.setValues(k, j, l); // Nacho - deobfuscate setValues
                     if (this.world.getType(blockposition_mutableblockposition).getBlock().w()) {
                         return true;
                     }
@@ -1777,7 +1777,7 @@ public abstract class Entity implements ICommandListener {
                 this.ap = shapedetector_shapedetectorcollection.b();
             }
 
-            this.ak = true;
+            this.inPortal = true; // Nacho - deobfuscate inPortal
         }
     }
 

@@ -9,11 +9,8 @@ import java.util.List;
 import java.util.UUID;
 
 // CraftBukkit start
-import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.knockback.KnockbackConfig;
 import dev.cobblesword.nachospigot.knockback.KnockbackProfile;
-import me.elier.nachospigot.config.NachoConfig;
-import net.jafama.FastMath;
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 import org.bukkit.craftbukkit.entity.CraftItem;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
@@ -80,7 +77,7 @@ public abstract class EntityHuman extends EntityLiving {
 
     public EntityHuman(World world, GameProfile gameprofile) {
         super(world);
-        this.uniqueID = a(gameprofile);
+        this.uniqueID = createPlayerUUID(gameprofile); // Nacho - deobfuscate createPlayerUUID
         this.bH = gameprofile;
         this.defaultContainer = new ContainerPlayer(this.inventory, !world.isClientSide, this);
         this.activeContainer = this.defaultContainer;
@@ -700,7 +697,7 @@ public abstract class EntityHuman extends EntityLiving {
 
     public void a(NBTTagCompound nbttagcompound) {
         super.a(nbttagcompound);
-        this.uniqueID = a(this.bH);
+        this.uniqueID = createPlayerUUID(this.bH); // Nacho - deobfuscate createPlayerUUID
         NBTTagList nbttaglist = nbttagcompound.getList("Inventory", 10);
 
         this.inventory.b(nbttaglist);
@@ -1720,9 +1717,7 @@ public abstract class EntityHuman extends EntityLiving {
         return this.getDataWatcher().getFloat(17);
     }
 
-    public static UUID createPlayerUUID(GameProfile gameProfile) { return a(gameProfile); } // Nacho - OBFHELPER
-
-    public static UUID a(GameProfile gameprofile) {
+    public static UUID createPlayerUUID(GameProfile gameprofile) { // Nacho - deobfuscate
         UUID uuid = gameprofile.getId();
 
         if (uuid == null) {

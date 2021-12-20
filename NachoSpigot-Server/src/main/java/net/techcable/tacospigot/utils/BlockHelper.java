@@ -42,7 +42,7 @@ public class BlockHelper {
         for (int x = startX; x <= endX; x++) {
             for (int y = startY; y <= endY; y++) {
                 for (int z = startZ; z <= endZ; z++) {
-                    adjacent.setValues(x, y, z);
+                    adjacent.setValues(x, y, z); // Nacho - deobfuscate setValues
                     if (!predicate.test(world, adjacent)) return false;
                 }
             }
