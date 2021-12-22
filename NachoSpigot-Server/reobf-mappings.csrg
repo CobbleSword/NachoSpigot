@@ -49,3 +49,4 @@ net/minecraft/server/v1_8_R3/DedicatedServer getDedicatedPlayerList ()Lnet/minec
 net/minecraft/server/v1_8_R3/MinecraftServer setPlayerList (Lnet/minecraft/server/v1_8_R3/PlayerList;)V a
 net/minecraft/server/v1_8_R3/MinecraftServer port u
 net/minecraft/server/v1_8_R3/MinecraftServer getPort ()I R
+net/minecraft/server/v1_8_R3/MinecraftServer playerList v
