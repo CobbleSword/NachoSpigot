@@ -29,7 +29,7 @@ net/minecraft/server/v1_8_R3/EntityLiving canBreatheUnderwater ()Z aY
 net/minecraft/server/v1_8_R3/EntityLiving getArrowsStuck ()I bv
 net/minecraft/server/v1_8_R3/EntityLiving setArrowsStuck (I)V o
 net/minecraft/server/v1_8_R3/EntityHuman createPlayerUUID (Lcom/mojang/authlib/GameProfile;)Ljava/util/UUID; a
-net/minecraft/server/v1_8_R3/UserCache lookupGameProfile ()Lcom/mojang/authlib/GameProfile; a
+net/minecraft/server/v1_8_R3/UserCache lookupGameProfile (Lnet/minecraft/server/v1_8_R3/MinecraftServer;Ljava/lang/String;)Lcom/mojang/authlib/GameProfile; a
 
 # Network
 net/minecraft/server/v1_8_R3/PacketCompressor setThreshold (I)V a
