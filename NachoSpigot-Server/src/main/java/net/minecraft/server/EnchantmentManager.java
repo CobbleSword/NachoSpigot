@@ -135,8 +135,6 @@ public class EnchantmentManager {
         }
 
         // KigPaper start
-        EnchantmentManager.d.a = null;
-        EnchantmentManager.d.b = null;
         EnchantmentManager.b.b = null;
         // KigPaper end
 
@@ -161,10 +159,10 @@ public class EnchantmentManager {
             a(EnchantmentManager.d, entityliving.bA());
         }
 
-        // FlamePaper - Minetick fix memory leaks
-        EnchantmentManager.e.a = null;
-        EnchantmentManager.e.b = null;
-
+        // KigPaper start
+        EnchantmentManager.d.a = null;
+        EnchantmentManager.d.b = null;
+        // KigPaper end
     }
 
     public static void b(EntityLiving entityliving, Entity entity) {
@@ -178,10 +176,10 @@ public class EnchantmentManager {
             a(EnchantmentManager.e, entityliving.bA());
         }
 
-        // FlamePaper - Minetick fix memory leaks
+        // KigPaper start
         EnchantmentManager.e.a = null;
         EnchantmentManager.e.b = null;
-
+        // KigPaper end
     }
 
     public static int a(EntityLiving entityliving) {
