@@ -60,7 +60,7 @@ public class PacketDataSerializer extends ByteBuf {
     }
 
     public void a(byte[] abyte) {
-        this.b(abyte.length);
+        this.writeVarInt(abyte.length); // Nacho - deobfuscate writeVarInt
         this.writeBytes(abyte);
     }
 
@@ -91,7 +91,7 @@ public class PacketDataSerializer extends ByteBuf {
     }
 
     public IChatBaseComponent d() throws IOException {
-        return IChatBaseComponent.ChatSerializer.a(this.c(32767));
+        return IChatBaseComponent.ChatSerializer.a(this.readUtf(32767)); // Nacho - deobfuscate readUtf
     }
 
     public void a(IChatBaseComponent ichatbasecomponent) throws IOException {
@@ -103,11 +103,10 @@ public class PacketDataSerializer extends ByteBuf {
     }
 
     public void a(Enum<?> oenum) {
-        this.b(oenum.ordinal());
+        this.writeVarInt(oenum.ordinal()); // Nacho - deobfuscate writeVarInt
     }
 
-    public int readVarInt() { return e(); } // Nacho - OBFHELPER
-    public int e() {
+    public int readVarInt() { // Nacho - deobfuscate
         byte b0;
         int i = 0;
         int j = 0;
@@ -138,15 +137,11 @@ public class PacketDataSerializer extends ByteBuf {
         this.writeLong(uuid.getLeastSignificantBits());
     }
 
-    public UUID readUUID() { return g(); } // Nacho - OBFHELPER
-
-    public UUID g() {
+    public UUID readUUID() { // Nacho - deobfuscate
         return new UUID(this.readLong(), this.readLong());
     }
 
-    public void writeVarInt(int value) { this.b(value); } // Nacho - OBFHELPER
-
-    public void b(int i) {
+    public void writeVarInt(int i) { // Nacho - deobfuscate
         while ((i & -128) != 0) {
             this.writeByte(i & 127 | 128);
             i >>>= 7;
@@ -244,9 +239,7 @@ public class PacketDataSerializer extends ByteBuf {
         return itemstack;
     }
 
-    public String readUUID(int maxLength) { return c(maxLength); } // Nacho - OBFHELPER
-
-    public String c(int i) {
+    public String readUtf(int i) { // Nacho - deobfuscate
         int j = this.readVarInt();
         if (j > i * 4)
             throw new DecoderException("The received encoded string buffer length is longer than maximum allowed (" + j + " > " + (i * 4) + ")");
@@ -266,7 +259,7 @@ public class PacketDataSerializer extends ByteBuf {
         if (abyte.length > 32767) {
             throw new EncoderException("String too big (was " + s.length() + " bytes encoded, max " + 32767 + ")");
         } else {
-            this.b(abyte.length);
+            this.writeVarInt(abyte.length); // Nacho - deobfuscate writeVarInt
             this.writeBytes(abyte);
             return this;
         }

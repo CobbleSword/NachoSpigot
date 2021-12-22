@@ -1,9 +1,5 @@
 package net.minecraft.server;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import dev.cobblesword.nachospigot.commons.Constants;
@@ -119,7 +115,7 @@ public class BlockRedstoneTorch extends BlockTorch {
         if (redstoneUpdateInfos != null)
         {
             BlockRedstoneTorch.RedstoneUpdateInfo curr;
-            while ((curr = redstoneUpdateInfos.peek()) != null && world.getTime() - curr.getTime() > 60L)
+            while ((curr = redstoneUpdateInfos.peek()) != null && world.getTime() - curr.time > 60L) // Nacho - deobfuscate time
             {
                 redstoneUpdateInfos.poll();
             }
@@ -203,11 +199,11 @@ public class BlockRedstoneTorch extends BlockTorch {
     static class RedstoneUpdateInfo {
 
         BlockPosition a;
-        long b;  final long getTime() { return this.b; } // Paper - OBFHELPER
+        long time; // Nacho - deobfuscate
 
         public RedstoneUpdateInfo(BlockPosition blockposition, long i) {
             this.a = blockposition;
-            this.b = i;
+            this.time = i; // Nacho
         }
     }
 }

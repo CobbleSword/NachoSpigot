@@ -13,7 +13,7 @@ public class PacketPlayInUseEntity implements Packet<PacketListenerPlayIn> {
     }
 
     public void a(PacketDataSerializer var1) throws IOException {
-        this.a = var1.e();
+        this.a = var1.readVarInt(); // Nacho - deobfuscate readVarInt
         this.action = var1.a(PacketPlayInUseEntity.EnumEntityUseAction.class);
         if (this.action == PacketPlayInUseEntity.EnumEntityUseAction.INTERACT_AT) {
             this.c = new Vec3D(var1.readFloat(), var1.readFloat(), var1.readFloat());
@@ -22,7 +22,7 @@ public class PacketPlayInUseEntity implements Packet<PacketListenerPlayIn> {
     }
 
     public void b(PacketDataSerializer var1) throws IOException {
-        var1.b(this.a);
+        var1.writeVarInt(this.a); // Nacho - deobfuscate writeVarInt
         var1.a(this.action);
         if (this.action == PacketPlayInUseEntity.EnumEntityUseAction.INTERACT_AT) {
             var1.writeFloat((float)this.c.a);

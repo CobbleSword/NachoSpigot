@@ -1523,7 +1523,7 @@ public class WorldGenVillagePieces {
 
             for (int k = this.l.c; k <= this.l.f; ++k) {
                 for (int l = this.l.a; l <= this.l.d; ++l) {
-                    blockposition_mutableblockposition.c(l, 64, k);
+                    blockposition_mutableblockposition.setValues(l, 64, k); // Nacho - deobfuscate setValues
                     if (structureboundingbox.b((BaseBlockPosition) blockposition_mutableblockposition)) {
                         i += Math.max(world.r(blockposition_mutableblockposition).getY(), world.worldProvider.getSeaLevel());
                         ++j;

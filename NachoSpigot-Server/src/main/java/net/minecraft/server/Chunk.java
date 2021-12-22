@@ -4,7 +4,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -816,9 +815,9 @@ public class Chunk {
         }
 
         entity.ad = true;
-        entity.ae = this.locX;
-        entity.af = k;
-        entity.ag = this.locZ;
+        entity.chunkX = this.locX; // Nacho - deobfuscate chunkX
+        entity.chunkY = k; // Nacho - deobfuscate chunkY
+        entity.chunkZ = this.locZ; // Nacho - deobfuscate chunkZ
         this.entitySlices[k].add(entity);
         // PaperSpigot start - update counts
         if (entity instanceof EntityItem) {
@@ -845,15 +844,11 @@ public class Chunk {
         // Spigot end
     }
 
-    public void removeEntity(Entity entity)
-    {
-        b(entity);
-    } // Paper - OBFHELPER
-    public void b(Entity entity) {
-        this.a(entity, entity.af);
+    public void removeEntity(Entity entity) { // Nacho - deobfuscate
+        this.removeEntity(entity, entity.chunkY); // Nacho - deobfuscate chunkY
     }
 
-    public void a(Entity entity, int i) {
+    public void removeEntity(Entity entity, int i) { // Nacho - deobfuscate
         if (i < 0) {
             i = 0;
         }
@@ -1539,7 +1534,7 @@ public class Chunk {
         int l;
 
         for (l = k + 16 - 1; l > this.world.F() || l > 0 && !flag1; --l) {
-            blockposition_mutableblockposition.c(blockposition_mutableblockposition.getX(), l, blockposition_mutableblockposition.getZ());
+            blockposition_mutableblockposition.setValues(blockposition_mutableblockposition.getX(), l, blockposition_mutableblockposition.getZ()); // Nacho - deobfuscate setValues
             int i1 = this.b((BlockPosition) blockposition_mutableblockposition);
 
             if (i1 == 255 && blockposition_mutableblockposition.getY() < this.world.F()) {
@@ -1554,7 +1549,7 @@ public class Chunk {
         }
 
         for (l = blockposition_mutableblockposition.getY(); l > 0; --l) {
-            blockposition_mutableblockposition.c(blockposition_mutableblockposition.getX(), l, blockposition_mutableblockposition.getZ());
+            blockposition_mutableblockposition.setValues(blockposition_mutableblockposition.getX(), l, blockposition_mutableblockposition.getZ()); // Nacho - deobfuscate setValues
             if (this.getType(blockposition_mutableblockposition).r() > 0) {
                 this.world.x(blockposition_mutableblockposition);
             }

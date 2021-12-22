@@ -29,7 +29,7 @@ public class PathfinderNormal extends PathfinderAbstract {
 
             for (Block block = this.a.getType(blockposition_mutableblockposition).getBlock(); block == Blocks.FLOWING_WATER || block == Blocks.WATER; block = this.a.getType(blockposition_mutableblockposition).getBlock()) {
                 ++i;
-                blockposition_mutableblockposition.c(MathHelper.floor(entity.locX), i, MathHelper.floor(entity.locZ));
+                blockposition_mutableblockposition.setValues(MathHelper.floor(entity.locX), i, MathHelper.floor(entity.locZ)); // Nacho - deobfuscate setValues
             }
 
             this.h = false;
@@ -138,7 +138,7 @@ public class PathfinderNormal extends PathfinderAbstract {
         for (int k1 = i; k1 < i + l; ++k1) {
             for (int l1 = j; l1 < j + i1; ++l1) {
                 for (int i2 = k; i2 < k + j1; ++i2) {
-                    blockposition_mutableblockposition.c(k1, l1, i2);
+                    blockposition_mutableblockposition.setValues(k1, l1, i2); // Nacho - deobfuscate setValues
                     Block block = iblockaccess.getType(blockposition_mutableblockposition).getBlock();
 
                     if (block.getMaterial() != Material.AIR) {

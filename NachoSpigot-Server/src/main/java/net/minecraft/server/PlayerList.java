@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
-import dev.cobblesword.nachospigot.Nacho;
 import io.netty.buffer.Unpooled;
 import java.io.File;
 import java.net.SocketAddress;
@@ -406,7 +405,7 @@ public abstract class PlayerList {
     // CraftBukkit start - Whole method, SocketAddress to LoginListener, added hostname to signature, return EntityPlayer
     public EntityPlayer attemptLogin(LoginListener loginlistener, GameProfile gameprofile, String hostname) {
         // Moved from processLogin
-        UUID uuid = EntityHuman.a(gameprofile);
+        UUID uuid = EntityHuman.createPlayerUUID(gameprofile); // Nacho - deobfuscate createPlayerUUID
         ArrayList<EntityPlayer> arraylist = Lists.newArrayList();
 
         EntityPlayer entityplayer;

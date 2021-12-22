@@ -61,7 +61,7 @@ public class PacketPlayOutMapChunkBulk implements Packet<PacketListenerPlayOut> 
 
     public void b(PacketDataSerializer serializer) throws IOException {
         serializer.writeBoolean(this.d);
-        serializer.b(this.c.length);
+        serializer.writeVarInt(this.c.length); // Nacho - deobfuscate writeVarInt
 
         int i;
 

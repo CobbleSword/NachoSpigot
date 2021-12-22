@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import dev.cobblesword.nachospigot.events.ChunkPreLoadEvent;
-import me.elier.nachospigot.config.NachoConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 // CraftBukkit start
@@ -76,7 +75,7 @@ public class ChunkProviderServer implements IChunkProvider {
         }
         // PaperSpigot end
         if (this.world.worldProvider.e()) {
-            if (!this.world.c(i, j)) {
+            if (!this.world.shouldStayLoaded(i, j)) { // Nacho - deobfuscate shouldStayLoaded
                 // CraftBukkit start
                 this.unloadQueue.add(key);  // TacoSpigot - directly invoke LongHash
 

@@ -27,7 +27,7 @@ public class PacketPlayInChat implements Packet<PacketListenerPlayIn> {
     }
 
     public void a(PacketDataSerializer serializer) throws IOException {
-        this.a = serializer.c(100);
+        this.a = serializer.readUtf(100); // Nacho - deobfuscate readUtf
     }
 
     public void b(PacketDataSerializer serializer) throws IOException {

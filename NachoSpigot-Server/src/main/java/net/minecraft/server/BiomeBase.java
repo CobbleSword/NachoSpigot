@@ -304,7 +304,7 @@ public abstract class BiomeBase {
                         }
 
                         if (l1 < k && (iblockdata == null || iblockdata.getBlock().getMaterial() == Material.AIR)) {
-                            if (this.a((BlockPosition) blockposition_mutableblockposition.c(i, l1, j)) < 0.15F) {
+                            if (this.a((BlockPosition) blockposition_mutableblockposition.setValues(i, l1, j)) < 0.15F) { // Nacho - deobfuscate setValues
                                 iblockdata = Blocks.ICE.getBlockData();
                             } else {
                                 iblockdata = Blocks.WATER.getBlockData();

@@ -50,7 +50,7 @@ public class PacketPlayOutNamedEntitySpawn implements Packet<PacketListenerPlayO
 
     public void a(PacketDataSerializer var1) throws IOException {
         this.a = var1.readVarInt();
-        this.b = var1.g();
+        this.b = var1.readUUID(); // Nacho - deobfuscate readUUID
         this.c = var1.readInt();
         this.d = var1.readInt();
         this.e = var1.readInt();
@@ -61,7 +61,7 @@ public class PacketPlayOutNamedEntitySpawn implements Packet<PacketListenerPlayO
     }
 
     public void b(PacketDataSerializer var1) throws IOException {
-        var1.b(this.a);
+        var1.writeVarInt(this.a); // Nacho - deobfuscate writeVarInt
         var1.a(this.b);
         var1.writeInt(this.c);
         var1.writeInt(this.d);

@@ -49,9 +49,8 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
     // Spigot End
     private PacketListener m;
     private IChatBaseComponent n;
-    private boolean o; public boolean isEncrypted() { return this.o; } // Nacho - OBFHELPER
-    private boolean p; public boolean isDisconnectionHandled() { return this.p; } // Nacho - OBFHELPER
-    public void setDisconnectionHandled(boolean handled) { this.p = handled; } // Nacho - OBFHELPER
+    private boolean encrypted; // Nacho - deobfuscate
+    private boolean isDisconnectionHandled; // Nacho - deobfuscate
 
     // Tuinity start - allow controlled flushing
     volatile boolean canFlush = true;
@@ -344,10 +343,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
     }
 
     // Paper start
-    /*public void a(SecretKey secretkey) {
-        // Nacho - OBFHELPER
-        this.setEncryptionKey(secretkey);
-    }
+    /*
     public void setEncryptionKey(SecretKey secretkey) {
         this.o = true;
         this.channel.pipeline().addBefore("splitter", "decrypt", new PacketDecrypter(MinecraftEncryption.a(2, secretkey)));
@@ -355,12 +351,12 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
     }*/
 
     public void setupEncryption(javax.crypto.SecretKey key) throws CryptException {
-        if (!this.o) {
+        if (!this.encrypted) { // Nacho - deobfuscate encrypted
             try {
                 com.velocitypowered.natives.encryption.VelocityCipher decryption = com.velocitypowered.natives.util.Natives.cipher.get().forDecryption(key);
                 com.velocitypowered.natives.encryption.VelocityCipher encryption = com.velocitypowered.natives.util.Natives.cipher.get().forEncryption(key);
 
-                this.o = true;
+                this.encrypted = true; // Nacho - deobfuscate encrypted
                 this.channel.pipeline().addBefore("splitter", "decrypt", new PacketDecrypter(decryption));
                 this.channel.pipeline().addBefore("prepender", "encrypt", new PacketEncrypter(encryption));
             } catch (java.security.GeneralSecurityException e) {
@@ -395,25 +391,17 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
         this.channel.config().setAutoRead(false);
     }
 
-    public void a(int i)
-    {
-        // Nacho start - OBFHELPER
-        this.setupCompression(i);
-    }
-
-    public void setupCompression(int compressionThreshold) {
-        // Nacho end
-        if (compressionThreshold >= 0)
-        {
+    public void setupCompression(int compressionThreshold) { // Nacho - deobfuscate
+        if (compressionThreshold >= 0) {
             VelocityCompressor compressor = Natives.compress.get().create(-1); // Paper
             if (this.channel.pipeline().get("decompress") instanceof PacketDecompressor) {
-                ((PacketDecompressor) this.channel.pipeline().get("decompress")).a(compressionThreshold);
+                ((PacketDecompressor) this.channel.pipeline().get("decompress")).setThreshold(compressionThreshold); // Nacho - deobfuscate setThreshold
             } else {
                 this.channel.pipeline().addBefore("decoder", "decompress", new PacketDecompressor(compressor, compressionThreshold)); // Paper
             }
 
             if (this.channel.pipeline().get("compress") instanceof PacketCompressor) {
-                ((PacketCompressor) this.channel.pipeline().get("decompress")).a(compressionThreshold);
+                ((PacketCompressor) this.channel.pipeline().get("decompress")).setThreshold(compressionThreshold); // Nacho - deobfuscate setThreshold
             } else {
                 this.channel.pipeline().addBefore("encoder", "compress", new PacketCompressor(compressor, compressionThreshold)); // Paper
             }
@@ -432,9 +420,9 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
     {
         if (this.channel != null && !this.channel.isOpen())
         {
-            if (!this.isDisconnectionHandled())
+            if (!this.isDisconnectionHandled) // Nacho - deobfuscate isDisconnectionHandled
             {
-                this.setDisconnectionHandled(true);
+                this.isDisconnectionHandled = true; // Nacho - deobfuscate isDisconnectionHandled
                 if (this.j() != null) {
                     this.getPacketListener().a(this.j());
                 } else if (this.getPacketListener() != null) {

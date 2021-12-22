@@ -362,7 +362,7 @@ public class EntityFishingHook extends Entity {
                 this.motZ *= (double) f2;
                 this.setPosition(this.locX, this.locY, this.locZ);
 
-                if (inPortal())
+                if (inPortal) // Nacho - deobfuscate inPortal
                     die();
             }
         }

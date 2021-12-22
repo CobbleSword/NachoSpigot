@@ -302,8 +302,7 @@
                             <goal>remap</goal>
                         </goals>
                         <configuration>
-                            <srgIn>${project.basedir}/deprecation-mappings.csrg</srgIn>
-                            <accessIn>${project.basedir}/deprecation-mappings.at</accessIn>
+                            <srgIn>${project.basedir}/reobf-mappings.csrg</srgIn>
                         </configuration>
                     </execution>
                 </executions>

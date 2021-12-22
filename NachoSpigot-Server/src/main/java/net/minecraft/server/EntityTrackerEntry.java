@@ -453,7 +453,7 @@ public class EntityTrackerEntry {
     }
 
     protected boolean e(EntityPlayer entityplayer) { // IonSpigot - private -> protected
-        return entityplayer.u().getPlayerChunkMap().a(entityplayer, this.tracker.ae, this.tracker.ag);
+        return entityplayer.u().getPlayerChunkMap().a(entityplayer, this.tracker.chunkX, this.tracker.chunkZ); // Nacho - deobfuscate chunkX, chunkZ
     }
 
     public void scanPlayers(List<EntityHuman> list) {

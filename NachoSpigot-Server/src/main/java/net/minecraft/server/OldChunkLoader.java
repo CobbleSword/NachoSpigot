@@ -108,7 +108,7 @@ public class OldChunkLoader {
 
         for (j = 0; j < 16; ++j) {
             for (k = 0; k < 16; ++k) {
-                blockposition_mutableblockposition.c(oldchunkloader_oldchunk.k << 4 | j, 0, oldchunkloader_oldchunk.l << 4 | k);
+                blockposition_mutableblockposition.setValues(oldchunkloader_oldchunk.k << 4 | j, 0, oldchunkloader_oldchunk.l << 4 | k); // Nacho - deobfuscate setValues
                 abyte1[k << 4 | j] = (byte) (worldchunkmanager.getBiome(blockposition_mutableblockposition, BiomeBase.ad).id & 255);
             }
         }

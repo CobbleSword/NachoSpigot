@@ -1,0 +1,52 @@
+# EnumProtocol
+net/minecraft/server/v1_8_R3/EnumProtocol packetClass2State h
+net/minecraft/server/v1_8_R3/EnumProtocol _protocolPacketShim j
+net/minecraft/server/v1_8_R3/EnumProtocol stateId i
+net/minecraft/server/v1_8_R3/EnumProtocol STATES g
+net/minecraft/server/v1_8_R3/EnumProtocol stateId i
+net/minecraft/server/v1_8_R3/EnumProtocol getStateId ()I a
+net/minecraft/server/v1_8_R3/EnumProtocol getProtocolForPacket (Lnet/minecraft/server/v1_8_R3/Packet;)Lnet/minecraft/server/v1_8_R3/EnumProtocol; a
+net/minecraft/server/v1_8_R3/EnumProtocol createPacket (Lnet/minecraft/server/v1_8_R3/EnumProtocolDirection;I)Lnet/minecraft/server/v1_8_R3/Packet; a
+net/minecraft/server/v1_8_R3/EnumProtocol getPacketIdForPacket (Lnet/minecraft/server/v1_8_R3/Packet;)Ljava/lang/Integer; a
+
+
+# Blocks
+net/minecraft/server/v1_8_R3/BlockPosition$MutableBlockPosition setValues (III)Lnet/minecraft/server/v1_8_R3/BlockPosition$MutableBlockPosition; c
+net/minecraft/server/v1_8_R3/BlockRedstoneTorch$RedstoneUpdateInfo time b
+net/minecraft/server/v1_8_R3/TileEntityHopper isCooledDown ()Z n
+
+# World
+net/minecraft/server/v1_8_R3/World shouldStayLoaded (II)Z c
+net/minecraft/server/v1_8_R3/Chunk removeEntity (Lnet/minecraft/server/v1_8_R3/Entity;)V b
+net/minecraft/server/v1_8_R3/Chunk removeEntity (Lnet/minecraft/server/v1_8_R3/Entity;I)V a
+
+# Entities
+net/minecraft/server/v1_8_R3/Entity chunkX ae
+net/minecraft/server/v1_8_R3/Entity chunkY af
+net/minecraft/server/v1_8_R3/Entity chunkZ ag
+net/minecraft/server/v1_8_R3/Entity inPortal ak
+net/minecraft/server/v1_8_R3/EntityLiving canBreatheUnderwater ()Z aY
+net/minecraft/server/v1_8_R3/EntityLiving getArrowsStuck ()I bv
+net/minecraft/server/v1_8_R3/EntityLiving setArrowsStuck (I)V o
+net/minecraft/server/v1_8_R3/EntityHuman createPlayerUUID (Lcom/mojang/authlib/GameProfile;)Ljava/util/UUID; a
+net/minecraft/server/v1_8_R3/UserCache lookupGameProfile (Lnet/minecraft/server/v1_8_R3/MinecraftServer;Ljava/lang/String;)Lcom/mojang/authlib/GameProfile; a
+
+# Network
+net/minecraft/server/v1_8_R3/PacketCompressor setThreshold (I)V a
+net/minecraft/server/v1_8_R3/PacketDecompressor setThreshold (I)V a
+net/minecraft/server/v1_8_R3/NetworkManager setupCompression (I)V a
+net/minecraft/server/v1_8_R3/NetworkManager encrypted o
+net/minecraft/server/v1_8_R3/NetworkManager isDisconnectionHandled p
+net/minecraft/server/v1_8_R3/PacketDataSerializer readVarInt ()I e
+net/minecraft/server/v1_8_R3/PacketDataSerializer writeVarInt (I)V b
+net/minecraft/server/v1_8_R3/PacketDataSerializer readUUID ()Ljava/util/UUID; g
+net/minecraft/server/v1_8_R3/PacketDataSerializer readUtf (I)Ljava/lang/String; c
+net/minecraft/server/v1_8_R3/ServerConnection listeningChannels g
+net/minecraft/server/v1_8_R3/ServerConnection connectedChannels h
+
+# MinecraftServer
+net/minecraft/server/v1_8_R3/DedicatedServer getDedicatedPlayerList ()Lnet/minecraft/server/v1_8_R3/DedicatedPlayerList; aP
+net/minecraft/server/v1_8_R3/MinecraftServer setPlayerList (Lnet/minecraft/server/v1_8_R3/PlayerList;)V a
+net/minecraft/server/v1_8_R3/MinecraftServer port u
+net/minecraft/server/v1_8_R3/MinecraftServer getPort ()I R
+net/minecraft/server/v1_8_R3/MinecraftServer playerList v

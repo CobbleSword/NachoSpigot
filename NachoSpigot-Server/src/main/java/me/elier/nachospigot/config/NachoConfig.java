@@ -66,7 +66,6 @@ public class NachoConfig {
         set("settings.commands.enable-plugins-command", nachoJson.enablePluginsCommand);
         set("settings.commands.enable-reload-command", nachoJson.enableReloadCommand);
         set("settings.fast-operators", nachoJson.useFastOperators);
-        set("settings.patch-protocollib", nachoJson.patchProtocolLib);
         set("settings.stop-notify-bungee", nachoJson.stopNotifyBungee);
         set("settings.anti-malware", nachoJson.checkForMalware);
         set("settings.kick-on-illegal-behavior", nachoJson.kickOnIllegalBehavior);
@@ -129,7 +128,7 @@ public class NachoConfig {
         c.addComment("settings.hide-projectiles-from-hidden-players", "Hides projectiles from hidden players");
         c.addComment("settings.anti-enderpearl-glitch", "Enables anti enderpearl glitch");
         c.addComment("settings.disabled-block-fall-animation", "Disables the fall animation for blocks");
-        c.addComment("settings.enable-protocollib-shim", "Enable ProtocolLib network shim. Allows ProtocolLib to work, but requires extra memory. Disable this if you don't use ProtocolLib!");
+        c.addComment("settings.enable-protocol-shim", "Enables packet network shim. Allows ProtocolLib and ProtocolSupport to work, but requires extra memory. Disable this if you don't use these plugins!");
         c.addComment("settings.instant-interaction", "Disables delay of all interactions");
         c.addComment("settings.disable-infinisleeper-thread-usage", "Disable infinisleeper thread usage, just enable this if you know what are you doing.");
         c.addComment("settings.enable-fastmath", "Enable Fast Math usage.");
@@ -379,10 +378,11 @@ public class NachoConfig {
         modeTcpFastOpen = getInt("settings.tcp-fastopen-mode", 1);
     }
 
-    public static boolean enableProtocolLibShim;
+    public static boolean enableProtocolShim;
 
-    private static void enableProtocolLibShim() {
-        enableProtocolLibShim = getBoolean("settings.enable-protocollib-shim", true);
+    private static void enableProtocolShim() {
+        if (config.contains("settings.enable-protocolib-shim")) getBoolean("settings.enable-protocol-shim", config.getBoolean("settings.enable-protocolib-shim")); else
+        enableProtocolShim = getBoolean("settings.enable-protocol-shim", true);
     }
 
     public static boolean instantPlayInUseEntity;

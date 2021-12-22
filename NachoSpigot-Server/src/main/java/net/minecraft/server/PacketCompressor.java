@@ -34,14 +34,14 @@ public class PacketCompressor extends MessageToByteEncoder<ByteBuf> {
         int var4 = var2.readableBytes();
         PacketDataSerializer var5 = new PacketDataSerializer(var3);
         if (var4 < this.threshold) {
-            var5.b(0);
+            var5.writeVarInt(0); // Nacho - deobfuscate writeVarInt
             var5.writeBytes(var2);
         } else {
             // Paper start
             if (this.deflater != null) {
                 byte[] var6 = new byte[var4];
                 var2.readBytes(var6);
-                var5.b(var6.length);
+                var5.writeVarInt(var6.length); // Nacho - deobfuscate writeVarInt
                 this.deflater.setInput(var6, 0, var4);
                 this.deflater.finish();
 
@@ -92,13 +92,9 @@ public class PacketCompressor extends MessageToByteEncoder<ByteBuf> {
     }
     // Paper end
 
-    public void a(int var1) {
-        // Nacho start - OBFHELPER
-        this.setThreshold(var1);
-    }
-
+    // Nacho start - deobfuscate
     public void setThreshold(int threshold) {
         this.threshold = threshold;
+        // Nacho end
     }
-    // Nacho end
 }

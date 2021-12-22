@@ -85,7 +85,7 @@ public class PacketPlayOutSpawnEntity implements Packet<PacketListenerPlayOut> {
     }
 
     public void b(PacketDataSerializer var1) throws IOException {
-        var1.b(this.a);
+        var1.writeVarInt(this.a); // Nacho - deobfuscate writeVarInt
         var1.writeByte(this.j);
         var1.writeInt(this.b);
         var1.writeInt(this.c);

@@ -633,7 +633,7 @@ public class WorldGenRegistration {
 
                 for (int l = this.l.c; l <= this.l.f; ++l) {
                     for (int i1 = this.l.a; i1 <= this.l.d; ++i1) {
-                        blockposition_mutableblockposition.c(i1, 64, l);
+                        blockposition_mutableblockposition.setValues(i1, 64, l); // Nacho - deobfuscate setValues
                         if (structureboundingbox.b((BaseBlockPosition) blockposition_mutableblockposition)) {
                             j += Math.max(world.r(blockposition_mutableblockposition).getY(), world.worldProvider.getSeaLevel());
                             ++k;

@@ -274,7 +274,7 @@ public class EntityArrow extends Entity implements IProjectile {
                             EntityLiving entityliving = (EntityLiving) movingobjectposition.entity;
 
                             if (!this.world.isClientSide) {
-                                entityliving.o(entityliving.bv() + 1);
+                                entityliving.setArrowsStuck(entityliving.getArrowsStuck() + 1); // Nacho - deobfuscate getArrowsStuck, setArrowsStuck
                             }
 
                             if (this.knockbackStrength > 0) {
