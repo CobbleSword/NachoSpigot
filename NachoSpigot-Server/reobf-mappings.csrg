@@ -13,7 +13,7 @@ net/minecraft/server/v1_8_R3/EnumProtocol getPacketIdForPacket (Lnet/minecraft/s
 # Blocks
 net/minecraft/server/v1_8_R3/BlockPosition$MutableBlockPosition setValues (III)Lnet/minecraft/server/v1_8_R3/BlockPosition$MutableBlockPosition; c
 net/minecraft/server/v1_8_R3/BlockRedstoneTorch$RedstoneUpdateInfo time b
-net/minecraft/server/v1_8_R3/TileEntityHopper isCooledDown ()V n
+net/minecraft/server/v1_8_R3/TileEntityHopper isCooledDown ()Z n
 
 # World
 net/minecraft/server/v1_8_R3/World shouldStayLoaded (II)Z c
