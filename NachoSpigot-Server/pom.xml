@@ -76,7 +76,7 @@
         <dependency>
             <groupId>jline</groupId>
             <artifactId>jline</artifactId>
-            <version>2.12</version>
+            <version>2.12.1</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
@@ -101,7 +101,7 @@
             <version>2.17.0</version>
             <scope>compile</scope>
         </dependency>
-		<dependency>
+	<dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
             <version>2.17.0</version>
@@ -249,6 +249,16 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <!-- Paper start - Update Log4j -->
+                            <filters>
+                                <filter>
+                                    <artifact>org.spigotmc:minecraft-server:**</artifact>
+                                    <excludes>
+                                        <exclude>org/apache/logging/log4j/**</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                            <!-- Paper end - Update Log4j -->
                             <relocations>
                                 <relocation>
                                     <pattern>joptsimple</pattern>
@@ -272,14 +282,6 @@
                                     <excludes>
                                         <exclude>org.bukkit.craftbukkit.Main*</exclude>
                                     </excludes>
-                                </relocation>
-                                <relocation>
-                                    <pattern>com.github.benmanes.caffeine</pattern>
-                                    <shadedPattern>org.bukkit.craftbukkit.libs.caffeine</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>javassist</pattern>
-                                    <shadedPattern>org.bukkit.craftbukkit.libs.javassist</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>net.minecraft.server</pattern>
