@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Floats;
 import dev.cobblesword.nachospigot.Nacho;
+import dev.cobblesword.nachospigot.commons.minecraft.ItemHashUtil;
 import dev.cobblesword.nachospigot.events.PlayerIllegalBehaviourEvent;
 import io.netty.buffer.Unpooled;
 import io.netty.util.concurrent.Future;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
@@ -1903,7 +1905,9 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                 }
                 // CraftBukkit end
 
-                if (ItemStack.matches(packetplayinwindowclick.e(), itemstack)) {
+                // Nacho start - 1337 nbt hacks
+                if (Arrays.equals(ItemHashUtil.calculateItemHash(itemstack), packetplayinwindowclick.getItemHash())) {
+                    // Nacho end
                     this.player.playerConnection.sendPacket(new PacketPlayOutTransaction(packetplayinwindowclick.a(), packetplayinwindowclick.d(), true));
                     this.player.g = true;
                     this.player.activeContainer.b();

@@ -1,6 +1,7 @@
 package net.minecraft.server;
 
 import com.google.common.base.Charsets;
+import dev.cobblesword.nachospigot.commons.minecraft.ItemHashUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.ByteBufInputStream;
@@ -238,6 +239,13 @@ public class PacketDataSerializer extends ByteBuf {
         }
         return itemstack;
     }
+
+    // Nacho - 1337 NBT hacks
+    public byte[] readItemHash()
+    {
+        return ItemHashUtil.calculateItemHash(new ByteBufInputStream(this));
+    }
+    //Nacho end
 
     public String readUtf(int i) { // Nacho - deobfuscate
         int j = this.readVarInt();
