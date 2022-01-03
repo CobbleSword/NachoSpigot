@@ -11,7 +11,7 @@ import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
 
 public class NachoSessionService implements MinecraftSessionService {
@@ -46,14 +46,13 @@ public class NachoSessionService implements MinecraftSessionService {
                 .withParam("serverId", serverId).getMap();
 
         return this.authenticator.get(JOINED_URL + NachoAuthenticatorService.query(request), HasJoinedServerResponse.class).thenApply(response -> {
-
             if (response == null || response.getUuid() == null) {
                 return null;
             }
 
             GameProfile profile = new GameProfile(response.getUuid(), gameProfile.getName());
-
             PropertyMap propertyMap = response.getPropertyMap();
+
             if (propertyMap != null && !propertyMap.isEmpty()) {
                 profile.getProperties().putAll(response.getPropertyMap());
             }
@@ -66,7 +65,7 @@ public class NachoSessionService implements MinecraftSessionService {
 
     @Override
     public Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> getTextures(GameProfile gameProfile, boolean secure) {
-        return new HashMap<>();
+        return Collections.emptyMap(); //not used at all?
     }
 
     @Override

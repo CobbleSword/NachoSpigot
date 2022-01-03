@@ -7,10 +7,7 @@ import net.minecraft.server.MinecraftServer;
 import org.apache.commons.io.FileUtils;
 import org.spigotmc.CaseInsensitiveMap;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
@@ -41,7 +38,7 @@ public class ProfileCache {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else try (FileReader fileReader = new FileReader(CACHE_FILE)) {
+        } else try (BufferedReader fileReader = new BufferedReader(new FileReader(CACHE_FILE))) {
             Map<String, CachedProfile> loadedCache = NachoAuthenticatorService.GSON
                     .fromJson(fileReader, new TypeToken<HashMap<String, CachedProfile>>() {}.getType());
             return this.filter(loadedCache);
@@ -69,8 +66,8 @@ public class ProfileCache {
         }
 
         Runnable runnable = () -> {
-            try (FileWriter fileWriter = new FileWriter(CACHE_FILE)) {
-                NachoAuthenticatorService.GSON.toJson(cachedProfiles, fileWriter);
+            try (BufferedWriter fileWriter = new BufferedWriter(new FileWriter(CACHE_FILE))) {
+                NachoAuthenticatorService.GSON.toJson(this.cachedProfiles, fileWriter);
             } catch (IOException e) {
                 e.printStackTrace();
             }
