@@ -322,7 +322,7 @@ public abstract class EntityHuman extends EntityLiving {
                 return;
             }
             // CraftBukkit end
-            
+
             ItemStack itemstack = this.g.b(this.world, this);
 
             if (itemstack != this.g || itemstack != null && itemstack.count != i) {
@@ -435,13 +435,13 @@ public abstract class EntityHuman extends EntityLiving {
             List list = this.world.getEntities(this, axisalignedbb);
 
             if (this.ae()) { // Spigot: Add this.ae() condition (second !this.isDead near bottom of EntityLiving)
-            for (int i = 0; i < list.size(); ++i) {
-                Entity entity = (Entity) list.get(i);
+                for (int i = 0; i < list.size(); ++i) {
+                    Entity entity = (Entity) list.get(i);
 
-                if (!entity.dead) {
-                    this.d(entity);
+                    if (!entity.dead) {
+                        this.d(entity);
+                    }
                 }
-            }
             } // Spigot 
         }
 
@@ -660,21 +660,21 @@ public abstract class EntityHuman extends EntityLiving {
             float f1 = 1.0F;
 
             switch (this.getEffect(MobEffectList.SLOWER_DIG).getAmplifier()) {
-            case 0:
-                f1 = 0.3F;
-                break;
+                case 0:
+                    f1 = 0.3F;
+                    break;
 
-            case 1:
-                f1 = 0.09F;
-                break;
+                case 1:
+                    f1 = 0.09F;
+                    break;
 
-            case 2:
-                f1 = 0.0027F;
-                break;
+                case 2:
+                    f1 = 0.0027F;
+                    break;
 
-            case 3:
-            default:
-                f1 = 8.1E-4F;
+                case 3:
+                default:
+                    f1 = 8.1E-4F;
             }
 
             f *= f1;
@@ -1015,7 +1015,7 @@ public abstract class EntityHuman extends EntityLiving {
                                     KnockbackConfig.getCurrentKb() : entity.getKnockbackProfile();
                             entity.g(
                                     (-MathHelper.sin((float) (this.yaw * Math.PI / 180.0D)) * i * profile.getExtraHorizontal()),
-                                   profile.getExtraVertical(),
+                                    profile.getExtraVertical(),
                                     (MathHelper.cos((float) (this.yaw * Math.PI / 180.0D)) * i * profile.getExtraHorizontal()));
                             this.motX *= 0.6D;
                             this.motZ *= 0.6D;
@@ -1175,20 +1175,20 @@ public abstract class EntityHuman extends EntityLiving {
             float f1 = 0.5F;
 
             switch (EntityHuman.SyntheticClass_1.a[enumdirection.ordinal()]) {
-            case 1:
-                f1 = 0.9F;
-                break;
+                case 1:
+                    f1 = 0.9F;
+                    break;
 
-            case 2:
-                f1 = 0.1F;
-                break;
+                case 2:
+                    f1 = 0.1F;
+                    break;
 
-            case 3:
-                f = 0.1F;
-                break;
+                case 3:
+                    f = 0.1F;
+                    break;
 
-            case 4:
-                f = 0.9F;
+                case 4:
+                    f = 0.9F;
             }
 
             this.a(enumdirection);
@@ -1212,20 +1212,20 @@ public abstract class EntityHuman extends EntityLiving {
         this.by = 0.0F;
         this.bz = 0.0F;
         switch (EntityHuman.SyntheticClass_1.a[enumdirection.ordinal()]) {
-        case 1:
-            this.bz = -1.8F;
-            break;
+            case 1:
+                this.bz = -1.8F;
+                break;
 
-        case 2:
-            this.bz = 1.8F;
-            break;
+            case 2:
+                this.bz = 1.8F;
+                break;
 
-        case 3:
-            this.by = 1.8F;
-            break;
+            case 3:
+                this.by = 1.8F;
+                break;
 
-        case 4:
-            this.by = -1.8F;
+            case 4:
+                this.by = -1.8F;
         }
 
     }
