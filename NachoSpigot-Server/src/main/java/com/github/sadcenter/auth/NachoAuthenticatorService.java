@@ -57,17 +57,15 @@ public class NachoAuthenticatorService implements AuthenticationService {
                         gameProfile
                                 .thenAccept(profile -> profileCache.putAndSave(profile.getName(), CachedProfile.fromGameProfile(profile)));
                     } else {
-                        GameProfile profile = cachedProfile.toGameProfile(key);
-                        CompletableFuture.runAsync(() -> {
-                            GameProfile join = gameProfile.join();
-
-                            if (!ProfileUtil.equals(profile, join)) {
-                                profileCache.putAndSave(join.getName(), CachedProfile.fromGameProfile(join));
-                                gameProfileCache.put(join.getName(), gameProfile);
+                        GameProfile cachedGameProfile = cachedProfile.toGameProfile(key);
+                        gameProfile.thenAccept(profile -> {
+                            if (!ProfileUtil.equals(profile, cachedGameProfile)) {
+                                profileCache.putAndSave(profile.getName(), CachedProfile.fromGameProfile(profile));
+                                gameProfileCache.put(profile.getName(), gameProfile);
                             }
-                        }, ProfileCache.EXECUTOR);
+                        });
 
-                        return CompletableFuture.completedFuture(profile);
+                        return CompletableFuture.completedFuture(cachedGameProfile);
                     }
 
                     return gameProfile;
