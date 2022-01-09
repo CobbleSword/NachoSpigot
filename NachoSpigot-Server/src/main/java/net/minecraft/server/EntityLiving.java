@@ -884,6 +884,10 @@ public abstract class EntityLiving extends Entity {
     }
 
     protected void dropEquipment(boolean flag, int i) {}
+    
+    public void a(Entity entity, float f, double d0, double d1) {
+          a(x, z, null);
+    }
 
     public void a(double x, double z, DamageSource source) {
         if (this.random.nextDouble() >= this.getAttributeInstance(GenericAttributes.c).getValue()) {
