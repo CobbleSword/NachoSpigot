@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 public class CachedProfile {
 
-    public static final long CACHE_TIME = TimeUnit.DAYS.toMillis(1);
+    private static final long CACHE_TIME = TimeUnit.DAYS.toMillis(1);
 
     private final String texture;
     private long expiresOn;

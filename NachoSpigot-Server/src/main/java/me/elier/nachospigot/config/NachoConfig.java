@@ -141,7 +141,7 @@ public class NachoConfig {
         c.addComment("settings.commands.permissions.version", "Enables a required permission to use /version");
         c.addComment("settings.commands.permissions.plugins", "Enables a required permission to use /plugins");
         c.addComment("settings.commands.enable-help-command", "Toggles the /help command");
-        c.addComment("settings.use-nacho-authenticator", "Enables nacho authentication");
+        c.addComment("settings.use-nacho-authenticator", "Enables our own authentication system which uses Electroid's Mojang API.");
         NachoWorldConfig.loadComments();
     }
 

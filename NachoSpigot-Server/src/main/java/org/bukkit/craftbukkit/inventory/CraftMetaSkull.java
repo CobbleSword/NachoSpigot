@@ -70,6 +70,7 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
         super.applyToItem(tag);
 
         if (profile != null) {
+            // Nacho start - Use our own authentication system
             setSkullNbt(tag, profile);
 
             if (NachoConfig.useNachoAuthenticator) {
@@ -82,14 +83,17 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
                 setSkullNbt(tag, gameProfile);
                 return false;
             });
+            // Nacho end
         }
     }
 
+    // Nacho start
     private void setSkullNbt(NBTTagCompound tag, GameProfile gameProfile) {
         NBTTagCompound ownerTag = new NBTTagCompound();
         GameProfileSerializer.serialize(ownerTag, gameProfile);
         tag.set(SKULL_OWNER.NBT, ownerTag);
     }
+    // Nacho end
 
     @Override
     boolean isEmpty() {
@@ -136,9 +140,11 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
 
         if (profile == null) {
         	// name.toLowerCase(java.util.Locale.ROOT) causes the NPE
+            // Nacho start - Use our own authentication system
         	profile = NachoConfig.useNachoAuthenticator ?
                     ((NachoAuthenticatorService) MinecraftServer.getServer().getAuthenticator()).getPresentProfile(name) :
-                    TileEntitySkull.skinCache.getIfPresent(name);
+                    TileEntitySkull.skinCache.getIfPresent(name);  // Paper // tries to get from skincache
+            // Nacho end
         }
         if (profile == null) profile = new GameProfile(null, name);
 

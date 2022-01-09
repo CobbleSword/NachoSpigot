@@ -797,9 +797,11 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
             processQueue.remove().run();
         }
         SpigotTimings.processQueueTimer.stopTiming(); // Spigot
+        // Nacho start
         if(NachoConfig.useNachoAuthenticator) {
             ((NachoAuthenticatorService) this.V).getProfileCache().setTicked(false);
         }
+        // Nacho end
 
         SpigotTimings.chunkIOTickTimer.startTiming(); // Spigot
         org.bukkit.craftbukkit.chunkio.ChunkIOExecutor.tick();
@@ -1425,9 +1427,11 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
         return this.F;
     }
 
+    // Nacho start
     public AuthenticationService getAuthenticator() {
         return this.V;
     }
+    // Nacho end
 
     public void c(int i) {
         this.F = i;
