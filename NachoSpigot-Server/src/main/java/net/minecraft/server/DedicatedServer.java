@@ -181,10 +181,12 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
             // Spigot start
             NachoConfig.init((File) options.valueOf("nacho-settings")); // NachoSpigot - Load config before PlayerList
             KnockbackConfig.init((File) options.valueOf("knockback-settings"));
+            // Nacho start - Use our own authentication system
             YggdrasilAuthenticationService yggdrasilAuthenticationService = new YggdrasilAuthenticationService(super.e, UUID.randomUUID().toString());
             this.V = NachoConfig.useNachoAuthenticator ? new NachoAuthenticatorService(yggdrasilAuthenticationService) : yggdrasilAuthenticationService;
             this.W = this.V.createMinecraftSessionService();
             this.Y = this.V.createProfileRepository();
+            // Nacho end
 
             this.setPlayerList(new DedicatedPlayerList(this));
             org.spigotmc.SpigotConfig.init((File) options.valueOf("spigot-settings"));

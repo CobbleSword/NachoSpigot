@@ -126,6 +126,7 @@ public class ItemSkull extends Item {
             GameProfile gameprofile = new GameProfile((UUID) null, nbttagcompound.getString("SkullOwner"));
 
             // Spigot start
+            // Nacho start - Use our own authentication system
             if(NachoConfig.useNachoAuthenticator) {
                 ((NachoAuthenticatorService) MinecraftServer.getServer().getAuthenticator()).getProfile(gameprofile.getName()).thenAccept(profile -> {
                     nbttagcompound.set("SkullOwner", GameProfileSerializer.serialize(new NBTTagCompound(), profile));
@@ -139,6 +140,7 @@ public class ItemSkull extends Item {
                     }
                 });
             }
+            // Nacho end
             // Spigot end
             return true;
         } else {
