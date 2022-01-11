@@ -1,7 +1,7 @@
-package me.elier.nachospigot.config;
+package dev.cobblesword.nachospigot;
 
-import dev.cobblesword.nachospigot.OldNachoConfig;
 import dev.cobblesword.nachospigot.commons.FileUtils;
+import me.elier.nachospigot.config.NachoConfig;
 import org.junit.Test;
 import org.objectweb.asm.*;
 import org.sugarcanemc.sugarcane.util.yaml.YamlCommenter;
