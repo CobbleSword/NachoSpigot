@@ -36,5 +36,6 @@ public class MinecraftPipeline extends ChannelInitializer<SocketChannel>
         this.serverConnection.pending.add(networkmanager); // Paper
         channel.pipeline().addLast("packet_handler", networkmanager);
         networkmanager.a(new HandshakeListener(this.serverConnection.server, networkmanager));
+        io.papermc.paper.network.ChannelInitializeListenerHolder.callListeners(channel); // Paper
     }
 }
