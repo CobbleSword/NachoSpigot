@@ -9,6 +9,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import com.destroystokyo.paper.PaperConfig;
+import dev.cobblesword.nachospigot.GuavaInjector;
 import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.commons.IPUtils;
 import dev.cobblesword.nachospigot.knockback.KnockbackConfig;
@@ -205,6 +206,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 
             // Spigot Start - Move DedicatedPlayerList up and bring plugin loading from CraftServer to here
             // this.a((PlayerList) (new DedicatedPlayerList(this))); // CraftBukkit
+            GuavaInjector.load();
             server.loadPlugins();
             server.enablePlugins(org.bukkit.plugin.PluginLoadOrder.STARTUP);
             // Spigot End
