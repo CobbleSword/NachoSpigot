@@ -27,28 +27,19 @@ public class GuavaInjector {
         defineClass.invoke(GuavaInjector.class.getClassLoader(), name, b, 0, b.length);
     }
 
-    private static boolean setup = false;
-
-    public static void setup() {
-        if (setup) throw new RuntimeException("Already setup!");
-        try {
-            load();
-        } catch (ReflectiveOperationException e) {
-            Bukkit.getLogger().log(Level.SEVERE, "Exception while loading Guava classes");
-        }
-    }
-
-    static void load() throws ReflectiveOperationException {
+    static {
         // MoreExecutors.sameThreadExecutors
         try {
             ClassReader cr = new ClassReader("com.google.common.util.concurrent.MoreExecutors");
             ClassWriter cw = new ClassWriter(cr, 0);
             cr.accept(new MoreExecutorsVisitor(cw), 0);
             defineClass("com.google.common.util.concurrent.MoreExecutors", cw.toByteArray());
-        } catch (Throwable e) {
-            throw new ReflectiveOperationException("com.google.common.util.concurrent.MoreExecutors", e);
+        } catch (Exception e) {
+            Bukkit.getLogger().log(Level.SEVERE, "Error creating method com.google.common.util.concurrent.MoreExecutors.sameThreadExecutor", e);
         }
     }
+
+    public static void load() {}
 
     private static class MoreExecutorsVisitor extends ClassVisitor {
         public MoreExecutorsVisitor(ClassVisitor cv) {
