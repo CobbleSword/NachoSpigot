@@ -97,26 +97,8 @@
         <!-- https://mvnrepository.com/artifact/net.kyori/adventure-api -->
         <dependency>
             <groupId>net.kyori</groupId>
-            <artifactId>adventure-api</artifactId>
+            <artifactId>adventure-key</artifactId>
             <version>4.9.3</version>
-        </dependency>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-text-serializer-gson</artifactId>
-            <version>4.9.3</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-text-serializer-legacy</artifactId>
-            <version>4.9.3</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-text-serializer-plain</artifactId>
-            <version>4.9.3</version>
-            <scope>runtime</scope>
         </dependency>
 
         <!-- testing -->
