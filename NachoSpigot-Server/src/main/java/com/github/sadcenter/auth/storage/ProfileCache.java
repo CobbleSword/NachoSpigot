@@ -1,10 +1,11 @@
 package com.github.sadcenter.auth.storage;
 
-import com.github.sadcenter.auth.NachoAuthenticatorService;
+import com.github.sadcenter.auth.NachoAuthenticationService;
 import com.google.common.reflect.TypeToken;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import net.minecraft.server.MinecraftServer;
 import org.apache.commons.io.FileUtils;
+import org.bukkit.Bukkit;
 import org.spigotmc.CaseInsensitiveMap;
 
 import java.io.*;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class ProfileCache {
@@ -39,11 +41,12 @@ public class ProfileCache {
                 e.printStackTrace();
             }
         } else try (BufferedReader fileReader = new BufferedReader(new FileReader(CACHE_FILE))) {
-            Map<String, CachedProfile> loadedCache = NachoAuthenticatorService.GSON
-                    .fromJson(fileReader, new TypeToken<HashMap<String, CachedProfile>>() {}.getType());
+            Map<String, CachedProfile> loadedCache = NachoAuthenticationService.GSON
+                    .fromJson(fileReader, new TypeToken<HashMap<String, CachedProfile>>() {
+                    }.getType());
             return this.filter(loadedCache);
         } catch (IOException e) {
-            e.printStackTrace();
+            Bukkit.getLogger().log(Level.SEVERE, "Error while loading profile caches", e);
         }
 
         return new CaseInsensitiveMap<>();
@@ -67,7 +70,7 @@ public class ProfileCache {
 
         Runnable runnable = () -> {
             try (BufferedWriter fileWriter = new BufferedWriter(new FileWriter(CACHE_FILE))) {
-                NachoAuthenticatorService.GSON.toJson(this.cachedProfiles, fileWriter);
+                NachoAuthenticationService.GSON.toJson(this.cachedProfiles, fileWriter);
             } catch (IOException e) {
                 e.printStackTrace();
             }

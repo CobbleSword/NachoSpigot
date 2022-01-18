@@ -1,6 +1,6 @@
 package org.bukkit.craftbukkit.inventory;
 
-import com.github.sadcenter.auth.NachoAuthenticatorService;
+import com.github.sadcenter.auth.NachoAuthenticationService;
 import com.google.common.collect.ImmutableMap.Builder;
 import com.mojang.authlib.GameProfile;
 import me.elier.nachospigot.config.NachoConfig;
@@ -74,7 +74,7 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
             setSkullNbt(tag, profile);
 
             if (NachoConfig.useNachoAuthenticator) {
-                NachoAuthenticatorService authenticator = (NachoAuthenticatorService) MinecraftServer.getServer().getAuthenticator();
+                NachoAuthenticationService authenticator = (NachoAuthenticationService) MinecraftServer.getServer().getAuthenticator();
 
                 authenticator.getProfile(profile.getName()).thenAccept(gameProfile -> {
                     setSkullNbt(tag, gameProfile);
@@ -142,7 +142,7 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
         	// name.toLowerCase(java.util.Locale.ROOT) causes the NPE
             // Nacho start - Use our own authentication system
         	profile = NachoConfig.useNachoAuthenticator ?
-                    ((NachoAuthenticatorService) MinecraftServer.getServer().getAuthenticator()).getPresentProfile(name) :
+                    ((NachoAuthenticationService) MinecraftServer.getServer().getAuthenticator()).getPresentProfile(name) :
                     TileEntitySkull.skinCache.getIfPresent(name);  // Paper // tries to get from skincache
             // Nacho end
         }

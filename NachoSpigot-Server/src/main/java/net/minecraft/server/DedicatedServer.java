@@ -9,7 +9,7 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-import com.github.sadcenter.auth.NachoAuthenticatorService;
+import com.github.sadcenter.auth.NachoAuthenticationService;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.destroystokyo.paper.PaperConfig;
 import dev.cobblesword.nachospigot.Nacho;
@@ -183,7 +183,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
             KnockbackConfig.init((File) options.valueOf("knockback-settings"));
             // Nacho start - Use our own authentication system
             YggdrasilAuthenticationService yggdrasilAuthenticationService = new YggdrasilAuthenticationService(super.e, UUID.randomUUID().toString());
-            this.V = NachoConfig.useNachoAuthenticator ? new NachoAuthenticatorService(yggdrasilAuthenticationService) : yggdrasilAuthenticationService;
+            this.V = NachoConfig.useNachoAuthenticator ? new NachoAuthenticationService(yggdrasilAuthenticationService) : yggdrasilAuthenticationService;
             this.W = this.V.createMinecraftSessionService();
             this.Y = this.V.createProfileRepository();
             // Nacho end

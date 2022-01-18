@@ -1,51 +1,55 @@
 package com.github.sadcenter.auth.session;
 
-import com.github.sadcenter.auth.NachoAuthenticatorService;
+import com.github.sadcenter.auth.NachoAuthenticationService;
 import com.github.sadcenter.auth.response.HasJoinedServerResponse;
-import com.github.sadcenter.auth.utils.HashMapBuilder;
 import com.google.common.collect.Iterables;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
+import org.bukkit.Bukkit;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 public class NachoSessionService implements MinecraftSessionService {
 
     private static final String JOIN_URL = "https://sessionserver.mojang.com/session/minecraft/join";
     private static final String JOINED_URL = "https://sessionserver.mojang.com/session/minecraft/hasJoined";
 
-    private final NachoAuthenticatorService authenticator;
+    private final NachoAuthenticationService authenticator;
 
-    public NachoSessionService(NachoAuthenticatorService authenticator) {
+    public NachoSessionService(NachoAuthenticationService authenticator) {
         this.authenticator = authenticator;
     }
 
     @Override
     public void joinServer(GameProfile gameProfile, String authToken, String serverId) {
-        Map<String, Object> request = new HashMapBuilder()
-                .withParam("accessToken", authToken)
-                .withParam("selectedProfile", gameProfile.getId())
-                .withParam("serverId", serverId).getMap();
+        Map<String, Object> request = new HashMap<String, Object>() {{
+            put("accessToken", authToken);
+            put("selectedProfile", gameProfile.getId());
+            put("serverId", serverId);
+        }};
 
         try {
-            this.authenticator.fetchPost(NachoAuthenticatorService.url(JOIN_URL), NachoAuthenticatorService.json(request));
+            this.authenticator.fetchPost(NachoAuthenticationService.url(JOIN_URL), NachoAuthenticationService.json(request));
         } catch (IOException e) {
-            e.printStackTrace();
+            Bukkit.getLogger().log(Level.SEVERE, "Error loading profile " + gameProfile.getName() + " (UUID: " + gameProfile.getId() + ")", e);
         }
     }
 
     @Override
     public GameProfile hasJoinedServer(GameProfile gameProfile, String serverId) {
-        Map<String, Object> request = new HashMapBuilder()
-                .withParam("username", gameProfile.getName())
-                .withParam("serverId", serverId).getMap();
+        Map<String, Object> request = new HashMap<String, Object>() {{
+            put("username", gameProfile.getName());
+            put("serverId", serverId);
+        }};
 
-        return this.authenticator.get(JOINED_URL + NachoAuthenticatorService.query(request), HasJoinedServerResponse.class).thenApply(response -> {
+        return this.authenticator.get(JOINED_URL + NachoAuthenticationService.query(request), HasJoinedServerResponse.class).thenApply(response -> {
             if (response == null || response.getUuid() == null) {
                 return null;
             }

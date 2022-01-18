@@ -3,7 +3,6 @@ package com.github.sadcenter.auth.serializer;
 import com.google.gson.*;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import com.mojang.authlib.properties.PropertyMap;
 
 import java.lang.reflect.Type;
 import java.util.UUID;

@@ -1,7 +1,6 @@
 package com.github.sadcenter.auth.storage;
 
 import com.google.common.collect.Iterables;
-import com.google.gson.annotations.Expose;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
