@@ -1,6 +1,6 @@
 package com.github.sadcenter.auth.profile;
 
-import com.github.sadcenter.auth.NachoAuthenticatorService;
+import com.github.sadcenter.auth.NachoAuthenticationService;
 import com.mojang.authlib.Agent;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.GameProfileRepository;
@@ -8,9 +8,9 @@ import com.mojang.authlib.ProfileLookupCallback;
 
 public class NachoGameProfileRepository implements GameProfileRepository {
 
-    private final NachoAuthenticatorService authenticator;
+    private final NachoAuthenticationService authenticator;
 
-    public NachoGameProfileRepository(NachoAuthenticatorService authenticator) {
+    public NachoGameProfileRepository(NachoAuthenticationService authenticator) {
         this.authenticator = authenticator;
     }
 
@@ -23,6 +23,7 @@ public class NachoGameProfileRepository implements GameProfileRepository {
                 profileLookupCallback.onProfileLookupFailed(gameProfile, new Exception("Name isn't provided in the proper way."));
                 continue;
             }
+
 
             this.authenticator.getUuid(name)
                     .thenApply(uuid -> new GameProfile(uuid, name))

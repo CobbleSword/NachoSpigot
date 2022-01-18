@@ -1,6 +1,6 @@
 package net.minecraft.server;
 
-import com.github.sadcenter.auth.NachoAuthenticatorService;
+import com.github.sadcenter.auth.NachoAuthenticationService;
 import com.google.common.base.Predicate;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -140,7 +140,7 @@ public class TileEntitySkull extends TileEntity {
         setSkullType( 0 ); // Work around client bug
         // Nacho start - Use our own authentication system
         if (NachoConfig.useNachoAuthenticator) {
-            NachoAuthenticatorService authenticator = (NachoAuthenticatorService) MinecraftServer.getServer().getAuthenticator();
+            NachoAuthenticationService authenticator = (NachoAuthenticationService) MinecraftServer.getServer().getAuthenticator();
             authenticator.getProfile(profile.getName()).thenAccept(gameProfile -> {
                 setSkullType(3); // Work around client bug
                 g = gameProfile;

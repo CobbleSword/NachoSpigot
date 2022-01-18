@@ -1,6 +1,6 @@
 package net.minecraft.server;
 
-import com.github.sadcenter.auth.NachoAuthenticatorService;
+import com.github.sadcenter.auth.NachoAuthenticationService;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.Futures;
@@ -799,7 +799,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
         SpigotTimings.processQueueTimer.stopTiming(); // Spigot
         // Nacho start
         if(NachoConfig.useNachoAuthenticator) {
-            ((NachoAuthenticatorService) this.V).getProfileCache().setTicked(false);
+            ((NachoAuthenticationService) this.V).getProfileCache().setTicked(false);
         }
         // Nacho end
 

@@ -5,7 +5,6 @@ import com.github.sadcenter.auth.serializer.GameProfileSerializer;
 import com.github.sadcenter.auth.session.NachoSessionService;
 import com.github.sadcenter.auth.storage.CachedProfile;
 import com.github.sadcenter.auth.storage.ProfileCache;
-import com.github.sadcenter.auth.utils.ProfileUtil;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -15,7 +14,6 @@ import com.mojang.authlib.*;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
-import com.mojang.authlib.yggdrasil.YggdrasilGameProfileRepository;
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import org.apache.commons.io.Charsets;
@@ -36,7 +34,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class NachoAuthenticatorService implements AuthenticationService {
+public class NachoAuthenticationService implements AuthenticationService {
 
     public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(GameProfile.class, new GameProfileSerializer())
@@ -60,7 +58,7 @@ public class NachoAuthenticatorService implements AuthenticationService {
                     } else {
                         GameProfile cachedGameProfile = cachedProfile.toGameProfile(key);
                         gameProfile.thenAccept(profile -> {
-                            if (!ProfileUtil.equals(profile, cachedGameProfile)) {
+                            if (!profile.equals(cachedGameProfile)) {
                                 profileCache.putAndSave(profile.getName(), CachedProfile.fromGameProfile(profile));
                                 gameProfileCache.put(profile.getName(), gameProfile);
                             }
@@ -75,7 +73,7 @@ public class NachoAuthenticatorService implements AuthenticationService {
     private final ProfileCache profileCache = new ProfileCache();
     private final YggdrasilAuthenticationService yggdrasilAuthenticationService;
 
-    public NachoAuthenticatorService(YggdrasilAuthenticationService yggdrasilAuthenticationService) {
+    public NachoAuthenticationService(YggdrasilAuthenticationService yggdrasilAuthenticationService) {
         this.yggdrasilAuthenticationService = yggdrasilAuthenticationService;
     }
 
