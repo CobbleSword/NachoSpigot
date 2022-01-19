@@ -42,6 +42,7 @@
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm</artifactId>
             <version>9.2</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -100,7 +101,7 @@
             <version>2.17.1</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
+	<dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
             <version>2.17.1</version>
@@ -206,7 +207,6 @@
                         <manifestEntries>
                             <Main-Class>org.bukkit.craftbukkit.Main</Main-Class>
                             <Implementation-Title>CraftBukkit</Implementation-Title>
-                            <!--suppress UnresolvedMavenProperty -->
                             <Implementation-Version>${describe}</Implementation-Version>
                             <Implementation-Vendor>${maven.build.timestamp}</Implementation-Vendor>
                             <Specification-Title>Bukkit</Specification-Title>
