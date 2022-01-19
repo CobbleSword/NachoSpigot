@@ -2,7 +2,6 @@ package com.github.sadcenter.auth.storage;
 
 import com.github.sadcenter.auth.NachoAuthenticationService;
 import com.google.common.reflect.TypeToken;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import net.minecraft.server.MinecraftServer;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
@@ -11,17 +10,11 @@ import org.spigotmc.CaseInsensitiveMap;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class ProfileCache {
 
-    public static final Executor EXECUTOR = Executors.newSingleThreadExecutor(new ThreadFactoryBuilder()
-            .setNameFormat("Profile Cache Thread - %1$d")
-            .setUncaughtExceptionHandler((t, e) -> e.printStackTrace())
-            .build());
     private static final File CACHE_FILE = new File("texturecache.json");
 
     private final Map<String, CachedProfile> cachedProfiles;
@@ -77,7 +70,7 @@ public class ProfileCache {
         };
 
         this.setTicked(true);
-        MinecraftServer.getServer().processQueue.add(runAsync ? () -> EXECUTOR.execute(runnable) : runnable);
+        MinecraftServer.getServer().processQueue.add(runAsync ? () -> NachoAuthenticationService.EXECUTOR.execute(runnable) : runnable);
     }
 
     public void put(String name, CachedProfile cachedProfile) {

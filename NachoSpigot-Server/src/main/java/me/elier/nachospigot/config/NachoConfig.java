@@ -141,7 +141,8 @@ public class NachoConfig {
         c.addComment("settings.commands.permissions.version", "Enables a required permission to use /version");
         c.addComment("settings.commands.permissions.plugins", "Enables a required permission to use /plugins");
         c.addComment("settings.commands.enable-help-command", "Toggles the /help command");
-        c.addComment("settings.use-nacho-authenticator", "Enables our own authentication system which uses Electroid's Mojang API.");
+        c.addComment("settings.authenticator.use-nacho-authenticator", "Enables our own authentication system which uses Electroid's Mojang API.");
+        c.addComment("settings.authenticator.always-use-mojang", "Force to use mojang api no matter what");
         NachoWorldConfig.loadComments();
     }
 
@@ -320,19 +321,19 @@ public class NachoConfig {
     }
 
     public static boolean lagCompensatedPotions;
-    
+
     private static void lagCompensatedPotions() {
         lagCompensatedPotions = getBoolean("settings.lag-compensated-potions", false);
     }
 
     public static boolean smoothPotting;
-    
+
     private static void smoothPotting() {
         smoothPotting = getBoolean("settings.smooth-potting", false);
     }
 
     public static boolean antiEnderPearlGlitch;
-    
+
     private static void antiEnderPearlGlitch() {
         antiEnderPearlGlitch = getBoolean("settings.anti-enderpearl-glitch", false);
     }
@@ -395,6 +396,12 @@ public class NachoConfig {
     public static boolean useNachoAuthenticator;
 
     private static void useNachoAuthenticator() {
-        useNachoAuthenticator = getBoolean("settings.use-nacho-authenticator", false);
+        useNachoAuthenticator = getBoolean("settings.authenticator.use-nacho-authenticator", false);
+    }
+
+    public static boolean alwaysUseMojang;
+
+    private static void alwaysUseMojang() {
+        alwaysUseMojang = getBoolean("settings.authenticator.always-use-mojang", true);
     }
 }
