@@ -799,7 +799,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
         SpigotTimings.processQueueTimer.stopTiming(); // Spigot
         // Nacho start
         if(NachoConfig.useNachoAuthenticator) {
-            ((NachoAuthenticationService) this.V).getProfileCache().setTicked(false);
+            ((NachoAuthenticationService) this.V).tick();
         }
         // Nacho end
 

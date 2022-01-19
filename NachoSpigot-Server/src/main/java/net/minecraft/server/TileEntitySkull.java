@@ -137,9 +137,9 @@ public class TileEntitySkull extends TileEntity {
     private void e() {
         // Spigot start
         GameProfile profile = this.g;
-        setSkullType( 0 ); // Work around client bug
+        setSkullType(0); // Work around client bug
         // Nacho start - Use our own authentication system
-        if (NachoConfig.useNachoAuthenticator) {
+        if (NachoConfig.useNachoAuthenticator && profile != null) {
             NachoAuthenticationService authenticator = (NachoAuthenticationService) MinecraftServer.getServer().getAuthenticator();
             authenticator.getProfile(profile.getName()).thenAccept(gameProfile -> {
                 setSkullType(3); // Work around client bug
@@ -149,15 +149,17 @@ public class TileEntitySkull extends TileEntity {
                     world.notify(position);
                 }
             });
-        } else b(profile, input -> {
-            setSkullType(3); // Work around client bug
-            g = input;
-            update();
-            if (world != null) {
-                world.notify(position);
-            }
-            return false;
-        });
+        } else if (!NachoConfig.useNachoAuthenticator) {
+            b(profile, input -> {
+                setSkullType(3); // Work around client bug
+                g = input;
+                update();
+                if (world != null) {
+                    world.notify(position);
+                }
+                return false;
+            });
+        } else setSkullType(3); // Work around client bug
         // Spigot/Nacho end
     }
 

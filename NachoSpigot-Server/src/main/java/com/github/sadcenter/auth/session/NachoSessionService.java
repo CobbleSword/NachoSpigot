@@ -74,14 +74,14 @@ public class NachoSessionService implements MinecraftSessionService {
 
     @Override
     public GameProfile fillProfileProperties(GameProfile gameProfile, boolean secure) {
-        Property property = Iterables.getFirst(this.authenticator.getProfile(gameProfile.getName()).join()
-                .getProperties()
-                .get("textures"), null);
+        this.authenticator.getProfile(gameProfile.getName()).thenAccept(profile -> {
+            Property property = Iterables.getFirst(profile.getProperties().get("textures"), null);
 
-        if (property != null) {
-            gameProfile.getProperties()
-                    .put("textures", property);
-        }
+            if (property != null) {
+                gameProfile.getProperties()
+                        .put("textures", property);
+            }
+        }); //this might give more "steve" skin delay at the expense of better performance (not locking thread)
 
         return gameProfile;
     }

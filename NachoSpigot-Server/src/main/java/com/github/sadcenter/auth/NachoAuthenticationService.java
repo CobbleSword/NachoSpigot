@@ -2,18 +2,22 @@ package com.github.sadcenter.auth;
 
 import com.github.sadcenter.auth.profile.NachoGameProfileRepository;
 import com.github.sadcenter.auth.serializer.GameProfileSerializer;
+import com.github.sadcenter.auth.serializer.UUIDSerializer;
 import com.github.sadcenter.auth.session.NachoSessionService;
 import com.github.sadcenter.auth.storage.CachedProfile;
 import com.github.sadcenter.auth.storage.ProfileCache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.authlib.*;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
+import com.mojang.util.UUIDTypeAdapter;
+import me.elier.nachospigot.config.NachoConfig;
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import org.apache.commons.io.Charsets;
@@ -29,9 +33,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class NachoAuthenticationService implements AuthenticationService {
@@ -39,18 +41,26 @@ public class NachoAuthenticationService implements AuthenticationService {
     public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(GameProfile.class, new GameProfileSerializer())
             .registerTypeAdapter(PropertyMap.class, new PropertyMap.Serializer())
+            .registerTypeAdapter(UUID.class, new UUIDSerializer())
             .create();
+    public static final Executor EXECUTOR = Executors.newSingleThreadExecutor(new ThreadFactoryBuilder()
+            .setNameFormat("Authenticator Thread - %1$d")
+            .setUncaughtExceptionHandler((t, e) -> e.printStackTrace())
+            .build());
     private static final String API = "https://api.ashcon.app/mojang/v2/user/";
+    private static final String BACKUP_API = "https://sessionserver.mojang.com/session/minecraft/profile/";
     private static final String UUID_API = "https://api.ashcon.app/mojang/v2/uuid/";
+    private static final String BACKUP_UUID_API = "https://api.mojang.com/users/profiles/minecraft/";
 
     private final LoadingCache<String, CompletableFuture<GameProfile>> gameProfileCache = CacheBuilder.newBuilder()
             .expireAfterWrite(3, TimeUnit.HOURS)
+            .maximumSize(5000) //idk what's size is the best so you can give some advices
             .build(new CacheLoader<String, CompletableFuture<GameProfile>>() {
                 @Override
                 public CompletableFuture<GameProfile> load(String key) {
                     EntityPlayer player = MinecraftServer.getServer().getPlayerList().getPlayer(key);
                     CachedProfile cachedProfile = profileCache.getCachedProfile(key);
-                    CompletableFuture<GameProfile> gameProfile = player == null ? get(API + key, GameProfile.class) : CompletableFuture.completedFuture(player.getProfile());
+                    CompletableFuture<GameProfile> gameProfile = player == null ? getProfileFromApi(key) : CompletableFuture.completedFuture(player.getProfile());
 
                     if (cachedProfile == null) {
                         gameProfile
@@ -98,16 +108,38 @@ public class NachoAuthenticationService implements AuthenticationService {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 
     public GameProfile getPresentProfile(String name) {
         CompletableFuture<GameProfile> profile = this.gameProfileCache.getIfPresent(name);
-        return profile == null ? null : profile.join();
+        return profile == null ? null :
+                profile.getNow(null);
     }
 
     public CompletableFuture<UUID> getUuid(String name) {
-        return get(UUID_API + name, UUID.class);
+        return this.getUuidFromApi(name, NachoConfig.alwaysUseMojang).exceptionallyCompose(throwable -> this.getUuidFromApi(name, !NachoConfig.alwaysUseMojang));
+    }
+
+    private CompletableFuture<GameProfile> getProfileFromApi(String name) {
+        return this.getProfileFromApi(name, NachoConfig.alwaysUseMojang)
+                .exceptionallyComposeAsync(throwable -> this.getProfileFromApi(name, !NachoConfig.alwaysUseMojang), EXECUTOR);
+    }
+
+    private CompletableFuture<UUID> getUuidFromApi(String name, boolean mojang) {
+        return mojang ? this.get(BACKUP_UUID_API + name, UUID.class) :
+                this.get(UUID_API + name, UUID.class);
+    }
+
+    private CompletableFuture<GameProfile> getProfileFromApi(String name, boolean mojang) {
+        if (mojang) {
+            CompletableFuture<UUID> uuidFuture = this.getUuidFromApi(name, true);
+            return uuidFuture
+                    .thenCompose(uuid -> this.get(BACKUP_API + UUIDTypeAdapter.fromUUID(uuid), GameProfile.class));
+        } else {
+            return this.get(API + name, GameProfile.class);
+        }
     }
 
     public <T> CompletableFuture<T> get(String url, Class<T> type) {
@@ -115,13 +147,13 @@ public class NachoAuthenticationService implements AuthenticationService {
             String result = null;
             try {
                 result = this.fetchGet(url(url));
-            } catch (IOException exception) {
+            } catch (Exception exception) {
                 if (!(exception instanceof FileNotFoundException)) {
-                    exception.printStackTrace();
+                    throw new CompletionException(exception);
                 }
             }
             return GSON.fromJson(result, type);
-        });
+        }, EXECUTOR);
     }
 
     public <T> CompletableFuture<T> post(String url, Object content, Class<T> type) {
@@ -135,7 +167,7 @@ public class NachoAuthenticationService implements AuthenticationService {
             }
 
             return null;
-        });
+        }, EXECUTOR);
     }
 
     public String fetchGet(URL url) throws IOException {
@@ -157,8 +189,8 @@ public class NachoAuthenticationService implements AuthenticationService {
         }
     }
 
-    public ProfileCache getProfileCache() {
-        return this.profileCache;
+    public void tick() {
+        this.profileCache.setTicked(false);
     }
 
     public static URL url(String url) {
@@ -170,8 +202,8 @@ public class NachoAuthenticationService implements AuthenticationService {
         }
     }
 
-    public static String json(Map<?, ?> map) {
-        return GSON.toJson(map);
+    public static <T> String json(T source) {
+        return GSON.toJson(source);
     }
 
     public static String query(Map<?, ?> map) {

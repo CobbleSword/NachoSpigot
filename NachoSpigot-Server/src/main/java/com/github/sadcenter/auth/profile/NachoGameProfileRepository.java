@@ -15,21 +15,18 @@ public class NachoGameProfileRepository implements GameProfileRepository {
     }
 
     @Override
-    public void findProfilesByNames(String[] names, Agent agent, ProfileLookupCallback profileLookupCallback) {
+    public void findProfilesByNames(String[] names, Agent agent, ProfileLookupCallback callback) {
         for (String name : names) {
-            GameProfile gameProfile = new GameProfile(null, name);
-
             if (name == null || name.isEmpty()) {
-                profileLookupCallback.onProfileLookupFailed(gameProfile, new Exception("Name isn't provided in the proper way."));
                 continue;
             }
 
-
+            GameProfile gameProfile = new GameProfile(null, name);
             this.authenticator.getUuid(name)
                     .thenApply(uuid -> new GameProfile(uuid, name))
-                    .thenAccept(profileLookupCallback::onProfileLookupSucceeded)
+                    .thenAccept(callback::onProfileLookupSucceeded)
                     .exceptionally(throwable -> {
-                        profileLookupCallback.onProfileLookupFailed(gameProfile, (Exception) throwable);
+                        callback.onProfileLookupFailed(gameProfile, (Exception) throwable);
                         return null;
                     });
         }
