@@ -271,19 +271,11 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
         // CraftBukkit end
         final ChatComponentText chatcomponenttext = new ChatComponentText(s);
 
-        this.networkManager.a(new PacketPlayOutKickDisconnect(chatcomponenttext), new GenericFutureListener() {
-            public void operationComplete(Future future) throws Exception { // CraftBukkit - fix decompile error
-                PlayerConnection.this.networkManager.close(chatcomponenttext);
-            }
-        }, new GenericFutureListener[0]);
+        this.networkManager.a(new PacketPlayOutKickDisconnect(chatcomponenttext), future -> PlayerConnection.this.networkManager.close(chatcomponenttext));
         this.a(chatcomponenttext); // CraftBukkit - fire quit instantly
         this.networkManager.k();
         // CraftBukkit - Don't wait
-        this.minecraftServer.postToMainThread(new Runnable() {
-             public void run() {
-                 PlayerConnection.this.networkManager.l();
-            }
-        });
+        this.minecraftServer.postToMainThread(this.networkManager::l);
     }
 
     public void a(PacketPlayInSteerVehicle packetplayinsteervehicle) {
