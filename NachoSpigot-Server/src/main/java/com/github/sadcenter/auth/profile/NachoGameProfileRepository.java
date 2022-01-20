@@ -22,7 +22,7 @@ public class NachoGameProfileRepository implements GameProfileRepository {
             }
 
             GameProfile gameProfile = new GameProfile(null, name);
-            this.authenticator.getUuid(name)
+            this.authenticator.getUuidFromApi(name)
                     .thenApply(uuid -> new GameProfile(uuid, name))
                     .thenAccept(callback::onProfileLookupSucceeded)
                     .exceptionally(throwable -> {

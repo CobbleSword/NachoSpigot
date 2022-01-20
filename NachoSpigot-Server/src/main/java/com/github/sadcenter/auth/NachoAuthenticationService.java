@@ -54,7 +54,7 @@ public class NachoAuthenticationService implements AuthenticationService {
 
     private final LoadingCache<String, CompletableFuture<GameProfile>> gameProfileCache = CacheBuilder.newBuilder()
             .expireAfterWrite(3, TimeUnit.HOURS)
-            .maximumSize(5000) //idk what's size is the best so you can give some advices
+            .maximumSize(5000)
             .build(new CacheLoader<String, CompletableFuture<GameProfile>>() {
                 @Override
                 public CompletableFuture<GameProfile> load(String key) {
@@ -118,18 +118,13 @@ public class NachoAuthenticationService implements AuthenticationService {
                 profile.getNow(null);
     }
 
-    public CompletableFuture<UUID> getUuid(String name) {
-        return this.getUuidFromApi(name, NachoConfig.alwaysUseMojang).exceptionallyCompose(throwable -> this.getUuidFromApi(name, !NachoConfig.alwaysUseMojang));
-    }
-
     private CompletableFuture<GameProfile> getProfileFromApi(String name) {
-        return this.getProfileFromApi(name, NachoConfig.alwaysUseMojang)
-                .exceptionallyComposeAsync(throwable -> this.getProfileFromApi(name, !NachoConfig.alwaysUseMojang), EXECUTOR);
-    }
-
-    private CompletableFuture<UUID> getUuidFromApi(String name, boolean mojang) {
-        return mojang ? this.get(BACKUP_UUID_API + name, UUID.class) :
-                this.get(UUID_API + name, UUID.class);
+        CompletableFuture<GameProfile> profileFuture = this.getProfileFromApi(name, NachoConfig.texturesMojangPriority);
+        if (NachoConfig.backups) {
+            return profileFuture
+                    .exceptionallyComposeAsync(throwable -> this.getProfileFromApi(name, !NachoConfig.texturesMojangPriority), EXECUTOR);
+        }
+        return profileFuture;
     }
 
     private CompletableFuture<GameProfile> getProfileFromApi(String name, boolean mojang) {
@@ -140,6 +135,20 @@ public class NachoAuthenticationService implements AuthenticationService {
         } else {
             return this.get(API + name, GameProfile.class);
         }
+    }
+
+    public CompletableFuture<UUID> getUuidFromApi(String name) {
+        CompletableFuture<UUID> uuidFuture = this.getUuidFromApi(name, NachoConfig.uuidMojangPriority);
+        if (NachoConfig.backups) {
+            return uuidFuture
+                    .exceptionallyCompose(throwable -> this.getUuidFromApi(name, !NachoConfig.uuidMojangPriority));
+        }
+        return uuidFuture;
+    }
+
+    private CompletableFuture<UUID> getUuidFromApi(String name, boolean mojang) {
+        return mojang ? this.get(BACKUP_UUID_API + name, UUID.class) :
+                this.get(UUID_API + name, UUID.class);
     }
 
     public <T> CompletableFuture<T> get(String url, Class<T> type) {
