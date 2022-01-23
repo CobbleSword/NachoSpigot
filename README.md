@@ -46,6 +46,7 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [Spigot-0138] Branchless NibbleArray by md5
 [Spigot-2380] Hitting in the air will always load the chunk at 0,0 by md_5
 
+[Paper-0012] Adventure
 [Paper-0021] Implement Paper VersionChecker
 [Paper-0033] Optimize explosions
 [Paper-0044] Use UserCache for player heads
