@@ -238,17 +238,9 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      * @param message the message
      * @return the number of players
      * @deprecated use {@link #broadcast(net.kyori.adventure.text.Component)}
-<<<<<<< found
-     */
-    public int broadcastMessage(String message);
-||||||| expected
-     */
-    public int broadcastMessage(@NotNull String message);
-=======
      */
     @Deprecated // Paper
     public int broadcastMessage(@NotNull String message);
->>>>>>> replacement
 
     // Paper start
     /**
@@ -616,13 +608,6 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      *     permissibles} must have to receive the broadcast
      * @return number of message recipients
      * @deprecated in favour of {@link #broadcast(net.kyori.adventure.text.Component, String)}
-<<<<<<< found
-     */
-    public int broadcast(String message, String permission);
-||||||| expected
-     */
-    public int broadcast(@NotNull String message, @NotNull String permission);
-=======
      */
     @Deprecated // Paper
     public int broadcast(@NotNull String message, @NotNull String permission);
@@ -649,7 +634,6 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      */
     int broadcast(@NotNull net.kyori.adventure.text.Component message, @NotNull String permission);
     // Paper end
->>>>>>> replacement
 
     /**
      * Gets the player by the given name, regardless if they are offline or
@@ -892,7 +876,6 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
     @Deprecated // Paper
     @NotNull
     Inventory createInventory(@Nullable InventoryHolder owner, @NotNull InventoryType type, @NotNull String title);
->>>>>>> replacement
 
     /**
      * Creates an empty inventory of type {@link InventoryType#CHEST} with the
@@ -932,19 +915,10 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      * @return a new inventory
      * @throws IllegalArgumentException if the size is not a multiple of 9
      * @deprecated in favour of {@link #createInventory(InventoryHolder, int, net.kyori.adventure.text.Component)}
-<<<<<<< found
-     */
-    Inventory createInventory(InventoryHolder owner, int size, String title) throws IllegalArgumentException;
-||||||| expected
-     */
-    @NotNull
-    Inventory createInventory(@Nullable InventoryHolder owner, int size, @NotNull String title) throws IllegalArgumentException;
-=======
      */
     @Deprecated // Paper
     @NotNull
     Inventory createInventory(@Nullable InventoryHolder owner, int size, @NotNull String title) throws IllegalArgumentException;
->>>>>>> replacement
 
     // Paper start
     /**
@@ -962,19 +936,10 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      * when the merchant inventory is viewed
      * @return a new merchant
      * @deprecated in favour of {@link #createMerchant(net.kyori.adventure.text.Component)}
-<<<<<<< found
-     */
-    int getMonsterSpawnLimit();
-||||||| expected
-     */
-    @NotNull
-    Merchant createMerchant(@Nullable String title);
-=======
      */
     @NotNull
     @Deprecated // Paper
     Merchant createMerchant(@Nullable String title);
->>>>>>> replacement
 
     /**
      * Gets user-specified limit for number of animals that can spawn in a
@@ -1205,17 +1170,9 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
          *
          * @param component the components to send
          * @deprecated use {@link #broadcast(net.kyori.adventure.text.Component)}
-<<<<<<< found
-         */
-        public void broadcast(net.md_5.bungee.api.chat.BaseComponent component) {
-||||||| expected
-         */
-        public void broadcast(@NotNull net.md_5.bungee.api.chat.BaseComponent component) {
-=======
          */
         @Deprecated // Paper
         public void broadcast(@NotNull net.md_5.bungee.api.chat.BaseComponent component) {
->>>>>>> replacement
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
@@ -1224,17 +1181,9 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
          *
          * @param components the components to send
          * @deprecated use {@link #broadcast(net.kyori.adventure.text.Component)}
-<<<<<<< found
-         */
-        public void broadcast(net.md_5.bungee.api.chat.BaseComponent... components) {
-||||||| expected
-         */
-        public void broadcast(@NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
-=======
          */
         @Deprecated // Paper
         public void broadcast(@NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
->>>>>>> replacement
             throw new UnsupportedOperationException("Not supported yet.");
         }
 

@@ -27,16 +27,9 @@ public interface CommandBlock extends BlockState {
      *
      * @return Name of this CommandBlock.
      * @deprecated in favour of {@link #name()}
-<<<<<<< found
-     */
-||||||| expected
-     */
-    @NotNull
-=======
      */
     @Deprecated // Paper
     @NotNull
->>>>>>> replacement
     public String getName();
 
     /**
@@ -46,13 +39,6 @@ public interface CommandBlock extends BlockState {
      *
      * @param name New name for this CommandBlock.
      * @deprecated in favour of {@link #name(net.kyori.adventure.text.Component)}
-<<<<<<< found
-     */
-    public void setName(String name);
-||||||| expected
-     */
-    public void setName(@Nullable String name);
-=======
      */
     @Deprecated // Paper
     public void setName(@Nullable String name);
@@ -76,5 +62,4 @@ public interface CommandBlock extends BlockState {
      */
     public void name(@Nullable net.kyori.adventure.text.Component name);
     // Paper end
->>>>>>> replacement
 }

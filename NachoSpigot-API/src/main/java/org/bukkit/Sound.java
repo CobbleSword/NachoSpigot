@@ -1,16 +1,4 @@
 package org.bukkit;
-<<<<<<< found
-||||||| expected
- * guarantee values will not be removed from this Enum. As such, you should not
- * depend on the ordinal values of this class.
- */
-public enum Sound implements Keyed {
-=======
- * guarantee values will not be removed from this Enum. As such, you should not
- * depend on the ordinal values of this class.
- */
-public enum Sound implements Keyed, net.kyori.adventure.sound.Sound.Type { // Paper - implement Sound.Type
->>>>>>> replacement
 
 /**
  * An Enum of Sounds the server is able to send to players.
@@ -20,7 +8,7 @@ public enum Sound implements Keyed, net.kyori.adventure.sound.Sound.Type { // Pa
  * guarantee values will not be removed from this Enum. As such, you should
  * not depend on the ordinal values of this class.
  */
-public enum Sound {
+public enum Sound implements net.kyori.adventure.sound.Sound.Type { // Paper
     AMBIENCE_CAVE,
     AMBIENCE_RAIN,
     AMBIENCE_THUNDER,

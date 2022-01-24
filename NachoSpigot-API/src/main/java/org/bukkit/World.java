@@ -20,13 +20,7 @@ import org.bukkit.util.Vector;
 /**
  * Represents a world, which may contain entities, chunks and blocks
  */
-<<<<<<< found
-public interface World extends PluginMessageRecipient, Metadatable {
-||||||| expected
-public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient, Metadatable {
-=======
-public interface World extends RegionAccessor, WorldInfo, PluginMessageRecipient, Metadatable, net.kyori.adventure.audience.ForwardingAudience { // Paper
->>>>>>> replacement
+public interface World extends PluginMessageRecipient, Metadatable, net.kyori.adventure.audience.ForwardingAudience { // Paper
 
     /**
      * Gets the {@link Block} at the given coordinates

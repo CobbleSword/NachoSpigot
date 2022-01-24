@@ -386,20 +386,11 @@ public abstract class Command {
      *     default message, or an empty string to indicate no message
      * @return this command object, for chaining
      * @deprecated use {@link #permissionMessage(net.kyori.adventure.text.Component)}
-<<<<<<< found
-     */
-    public Command setPermissionMessage(String permissionMessage) {
-||||||| expected
-     */
-    @NotNull
-    public Command setPermissionMessage(@Nullable String permissionMessage) {
-=======
      */
     @NotNull
     @Deprecated // Paper
     public Command setPermissionMessage(@Nullable String permissionMessage) {
         this.permissionMessage = io.papermc.paper.text.PaperComponents.legacySectionSerializer().deserializeOrNull(permissionMessage); // Paper
->>>>>>> replacement
         return this;
     }
 
@@ -421,15 +412,6 @@ public abstract class Command {
      */
     public @Nullable net.kyori.adventure.text.Component permissionMessage() {
         return this.permissionMessage;
-<<<<<<< found
-    }
-
-    public static void broadcastCommandMessage(CommandSender source, String message) {
-||||||| expected
-    }
-
-    public static void broadcastCommandMessage(@NotNull CommandSender source, @NotNull String message) {
-=======
     }
 
     /**
@@ -443,7 +425,6 @@ public abstract class Command {
     // Paper end
 
     public static void broadcastCommandMessage(@NotNull CommandSender source, @NotNull String message) {
->>>>>>> replacement
         broadcastCommandMessage(source, message, true);
     }
 
