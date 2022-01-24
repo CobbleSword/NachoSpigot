@@ -3,7 +3,7 @@ package org.bukkit.command;
 import org.bukkit.Server;
 import org.bukkit.permissions.Permissible;
 
-public interface CommandSender extends Permissible {
+public interface CommandSender extends net.kyori.adventure.audience.Audience, Permissible {
 
     /**
      * Sends this sender a message
