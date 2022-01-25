@@ -10,6 +10,8 @@ import java.util.concurrent.Callable;
 import com.eatthepath.uuid.FastUUID;
 import dev.cobblesword.nachospigot.commons.Constants;
 import dev.cobblesword.nachospigot.knockback.KnockbackProfile;
+import dev.cobblesword.nachospigot.hitdetection.LagCompensator;
+import me.elier.nachospigot.config.NachoConfig;
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -1181,11 +1183,24 @@ public abstract class Entity implements ICommandListener {
     }
 
     public double h(Entity entity) {
-        double d0 = this.locX - entity.locX;
-        double d1 = this.locY - entity.locY;
-        double d2 = this.locZ - entity.locZ;
+        if (entity instanceof EntityPlayer && NachoConfig.enableImprovedHitReg) {
+            Location loc = LagCompensator.getHistoryLocation(
+                    ((EntityPlayer) entity).ping,
+                    ((EntityPlayer) entity).getBukkitEntity()
+            );
 
-        return d0 * d0 + d1 * d1 + d2 * d2;
+            double d0 = this.locX - loc.getX();
+            double d1 = this.locY - loc.getY();
+            double d2 = this.locZ - loc.getZ();
+
+            return d0 * d0 + d1 * d1 + d2 * d2;
+        } else {
+            double d0 = this.locX - entity.locX;
+            double d1 = this.locY - entity.locY;
+            double d2 = this.locZ - entity.locZ;
+
+            return d0 * d0 + d1 * d1 + d2 * d2;
+        }
     }
 
     public void d(EntityHuman entityhuman) {}

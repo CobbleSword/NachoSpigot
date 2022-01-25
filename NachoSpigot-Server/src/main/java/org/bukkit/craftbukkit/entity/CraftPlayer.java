@@ -21,6 +21,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.minecraft.server.*;
 import net.minecraft.server.PacketPlayOutTitle.EnumTitleAction;
 
+import dev.cobblesword.nachospigot.hitdetection.LagCompensator;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.*;
@@ -533,6 +534,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         // To = Players new Location if Teleport is Successful
         Location to = location;
         // Create & Call the Teleport Event.
+        LagCompensator.registerTeleport(this, to);
         PlayerTeleportEvent event = new PlayerTeleportEvent(this, from, to, cause);
         server.getPluginManager().callEvent(event);
 
