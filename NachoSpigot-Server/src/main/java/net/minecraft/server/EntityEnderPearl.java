@@ -106,7 +106,7 @@ public class EntityEnderPearl extends EntityProjectile {
                     }
                     // Nacho end
 
-                    LagCompensator.registerTeleport(player, location);
+                    MinecraftServer.getServer().getLagCompensator().registerTeleport(player, location);
 
                     PlayerTeleportEvent teleEvent = new PlayerTeleportEvent(player, player.getLocation(), location, PlayerTeleportEvent.TeleportCause.ENDER_PEARL);
                     Bukkit.getPluginManager().callEvent(teleEvent);

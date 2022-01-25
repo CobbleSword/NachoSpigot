@@ -576,7 +576,7 @@ public abstract class PlayerList {
 
             Player respawnPlayer = cserver.getPlayer(entityplayer1);
 
-            LagCompensator.registerRespawn(respawnPlayer, location);
+            this.server.getLagCompensator().registerRespawn(respawnPlayer, location);
 
             PlayerRespawnEvent respawnEvent = new PlayerRespawnEvent(respawnPlayer, location, isBedSpawn);
             cserver.getPluginManager().callEvent(respawnEvent);
@@ -638,7 +638,7 @@ public abstract class PlayerList {
         // CraftBukkit start
         // Don't fire on respawn
         if (fromWorld != location.getWorld()) {
-            LagCompensator.registerWorldChange(entityplayer.getBukkitEntity(), entityplayer.getBukkitEntity().getLocation());
+            this.server.getLagCompensator().registerWorldChange(entityplayer.getBukkitEntity(), entityplayer.getBukkitEntity().getLocation());
             PlayerChangedWorldEvent event = new PlayerChangedWorldEvent(entityplayer.getBukkitEntity(), fromWorld);
             server.server.getPluginManager().callEvent(event);
         }
@@ -697,7 +697,7 @@ public abstract class PlayerList {
         }
         exitWorld = ((CraftWorld) exit.getWorld()).getHandle();
 
-        LagCompensator.registerTeleport(entityplayer.getBukkitEntity(), exit);
+        this.server.getLagCompensator().registerTeleport(entityplayer.getBukkitEntity(), exit);
         org.bukkit.event.player.PlayerTeleportEvent tpEvent = new org.bukkit.event.player.PlayerTeleportEvent(entityplayer.getBukkitEntity(), enter, exit, cause);
         Bukkit.getServer().getPluginManager().callEvent(tpEvent);
         if (tpEvent.isCancelled() || tpEvent.getTo() == null) {

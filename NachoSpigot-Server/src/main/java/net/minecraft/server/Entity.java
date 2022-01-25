@@ -1184,7 +1184,7 @@ public abstract class Entity implements ICommandListener {
 
     public double h(Entity entity) {
         if (entity instanceof EntityPlayer && NachoConfig.enableImprovedHitReg) {
-            Location loc = LagCompensator.getHistoryLocation(
+            Location loc = MinecraftServer.getServer().getLagCompensator().getHistoryLocation(
                     ((EntityPlayer) entity).ping,
                     ((EntityPlayer) entity).getBukkitEntity()
             );

@@ -1796,22 +1796,16 @@ public abstract class EntityLiving extends Entity {
 
             double parts = entity.getHeadHeight() / 3;
 
-            boolean firstCondition = this.world.rayTrace(
+            return this.world.rayTrace(
                     new Vec3D(this.locX, this.locY + (double) this.getHeadHeight(), this.locZ),
                     new Vec3D(entity.locX, entity.locY + (parts * 3), entity.locZ)
-            ) == null;
-
-            boolean secondCondition = this.world.rayTrace(
+            ) == null || this.world.rayTrace(
                     new Vec3D(this.locX, this.locY + (double) this.getHeadHeight(), this.locZ),
                     new Vec3D(entity.locX, entity.locY + (parts * 2), entity.locZ)
-            ) == null;
-
-            boolean thirdCondition = this.world.rayTrace(
+            ) == null || this.world.rayTrace(
                     new Vec3D(this.locX, this.locY + (double) this.getHeadHeight(), this.locZ),
                     new Vec3D(entity.locX, entity.locY + (parts * 1), entity.locZ)
             ) == null;
-
-            return firstCondition | secondCondition | thirdCondition;
         } else {
             return this.world.rayTrace(
                     new Vec3D(this.locX, this.locY + (double) this.getHeadHeight(), this.locZ),

@@ -9,6 +9,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.GameProfileRepository;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
+import dev.cobblesword.nachospigot.hitdetection.LagCompensator;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
@@ -118,6 +119,8 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     public int autosavePeriod;
     // CraftBukkit end
 
+    private final LagCompensator lagCompensator;
+
     public MinecraftServer(OptionSet options, Proxy proxy, File file1) {
         io.netty.util.ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.DISABLED); // [Nacho-0040] Change deprecated Netty parameter // Spigot - disable
         this.e = proxy;
@@ -137,6 +140,8 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
             System.setProperty("jline.terminal", "jline.UnsupportedTerminal");
             Main.useJline = false;
         }
+
+        this.lagCompensator = new LagCompensator(35, 175, 30);
 
         try {
             reader = new ConsoleReader(System.in, System.out);
@@ -1118,6 +1123,10 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
 
     public String getServerModName() {
         return NachoConfig.serverBrandName; // [Nacho-0035] // NachoSpigot - NachoSpigot >  // TacoSpigot - TacoSpigot // PaperSpigot - PaperSpigot > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
+    }
+
+    public LagCompensator getLagCompensator() {
+        return lagCompensator;
     }
 
     public CrashReport b(CrashReport crashreport) {

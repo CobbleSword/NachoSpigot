@@ -534,7 +534,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         // To = Players new Location if Teleport is Successful
         Location to = location;
         // Create & Call the Teleport Event.
-        LagCompensator.registerTeleport(this, to);
+        MinecraftServer.getServer().getLagCompensator().registerTeleport(this, to);
         PlayerTeleportEvent event = new PlayerTeleportEvent(this, from, to, cause);
         server.getPluginManager().callEvent(event);
 

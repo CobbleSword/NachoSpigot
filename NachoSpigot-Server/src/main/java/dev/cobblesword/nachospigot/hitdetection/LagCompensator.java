@@ -1,6 +1,9 @@
 package dev.cobblesword.nachospigot.hitdetection;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 import me.elier.nachospigot.config.NachoConfig;
+import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -14,17 +17,24 @@ public class LagCompensator {
         Adjusts hit detection to be more fair for players with worse ping.
      */
 
-    private static final Map<UUID, List<Pair<Location, Long>>> locationTimes = new HashMap<>();
-    private static final int historySize = 35;
-    private static final int pingOffset = 175;
-    private static final int TIME_RESOLUTION = 30;
+    private final ListMultimap<UUID, Pair<Location, Long>> locationTimes;
+    private final int historySize;
+    private final int pingOffset;
+    private final int timeResolution;
 
-    public static Location getHistoryLocation(int rewindMillisecs, Player player) {
+    public LagCompensator(int historySize, int pingOffset, int timeResolution) {
+        this.locationTimes = ArrayListMultimap.create();
+        this.historySize = historySize;
+        this.pingOffset = pingOffset;
+        this.timeResolution = timeResolution;
+    }
+
+    public Location getHistoryLocation(int rewindMillisecs, Player player) {
+        if (!locationTimes.containsKey(player.getUniqueId()))
+            return player.getLocation();
+
         List<Pair<Location, Long>> times = locationTimes.get(player.getUniqueId());
         long currentTime = System.currentTimeMillis();
-
-        if (times == null)
-            return player.getLocation();
 
         int rewindTime = rewindMillisecs + pingOffset;
 
@@ -50,47 +60,36 @@ public class LagCompensator {
         return player.getLocation();
     }
 
-    private static void processPosition(Location loc, Player p) {
+    private void processPosition(Location loc, Player p) {
         if (!NachoConfig.enableImprovedHitReg) return;
 
-        List<Pair<Location, Long>> times = locationTimes.getOrDefault(p.getUniqueId(), new ArrayList<>());
+        int timesSize = locationTimes.get(p.getUniqueId()).size();
         long currTime = System.currentTimeMillis();
 
-        if (times.size() > 0 && currTime - times.get(times.size() - 1).getValue() < TIME_RESOLUTION)
+        if (timesSize > 0 && currTime - locationTimes.get(p.getUniqueId()).get(timesSize - 1).getValue() < timeResolution)
             return;
 
-        times.add(new Pair<>(loc, currTime));
+        locationTimes.put(p.getUniqueId(), Pair.of(loc, currTime));
 
-        if (times.size() > historySize)
-            times.remove(0);
-
-        locationTimes.put(p.getUniqueId(), times);
+        if (timesSize > historySize)
+            locationTimes.get(p.getUniqueId()).remove(0);
     }
 
 
-    public static void registerMovement(Player player, Location to) {
+    public void registerMovement(Player player, Location to) {
         processPosition(to, player);
     }
 
-    public static void registerRespawn(Player player, Location respawnLocation) {
+    public void registerRespawn(Player player, Location respawnLocation) {
         processPosition(respawnLocation, player);
     }
 
-    public static void registerTeleport(Player player, Location to) {
+    public void registerTeleport(Player player, Location to) {
         processPosition(to, player);
     }
 
-    public static void registerWorldChange(Player player, Location to) {
+    public void registerWorldChange(Player player, Location to) {
         processPosition(to, player);
-    }
-
-
-    public int getHistorySize() {
-        return historySize;
-    }
-
-    public int getPingOffset() {
-        return pingOffset;
     }
 
 }
