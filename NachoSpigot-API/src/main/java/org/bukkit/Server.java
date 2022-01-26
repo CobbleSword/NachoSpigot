@@ -927,7 +927,7 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      *
      * @return the monster spawn limit
      */
-    @NotNull Merchant createMerchant(@Nullable net.kyori.adventure.text.Component title);
+    int getMonsterSpawnLimit()
     // Paper start
     /**
      * Creates an empty merchant.
