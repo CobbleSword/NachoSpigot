@@ -7,8 +7,7 @@ net/minecraft/server/v1_8_R3/EnumProtocol stateId i
 net/minecraft/server/v1_8_R3/EnumProtocol getStateId ()I a
 net/minecraft/server/v1_8_R3/EnumProtocol getProtocolForPacket (Lnet/minecraft/server/v1_8_R3/Packet;)Lnet/minecraft/server/v1_8_R3/EnumProtocol; a
 net/minecraft/server/v1_8_R3/EnumProtocol createPacket (Lnet/minecraft/server/v1_8_R3/EnumProtocolDirection;I)Lnet/minecraft/server/v1_8_R3/Packet; a
-net/minecraft/server/v1_8_R3/EnumProtocol getPacketIdForPacket (Lnet/minecraft/server/v1_8_R3/Packet;)Ljava/lang/Integer; a
-
+net/minecraft/server/v1_8_R3/EnumProtocol getPacketIdForPacket (Lnet/minecraft/server/v1_8_R3/EnumProtocolDirection;Lnet/minecraft/server/v1_8_R3/Packet;)Ljava/lang/Integer; a
 
 # Blocks
 net/minecraft/server/v1_8_R3/BlockPosition$MutableBlockPosition setValues (III)Lnet/minecraft/server/v1_8_R3/BlockPosition$MutableBlockPosition; c
