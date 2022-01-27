@@ -37,13 +37,13 @@ public class LagCompensator {
         long currentTime = System.currentTimeMillis();
 
         int rewindTime = rewindMillisecs + pingOffset;
-        int timesSize = times.size();
+        int timesSize = times.size() - 1;
 
-        for (int i = timesSize - 1; i >= 0; i--) {
+        for (int i = timesSize; i >= 0; i--) {
             int elapsedTime = (int) (currentTime - times.get(i).getValue());
 
             if (elapsedTime >= rewindTime) {
-                if (i == timesSize - 1)
+                if (i == timesSize)
                     return times.get(i).getKey();
 
                 double nextMoveWeight = (elapsedTime - rewindTime) / (double) (elapsedTime - (currentTime - times.get(i + 1).getValue()));
