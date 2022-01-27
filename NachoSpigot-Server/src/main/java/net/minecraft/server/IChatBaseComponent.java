@@ -47,11 +47,10 @@ public interface IChatBaseComponent extends Iterable<IChatBaseComponent> {
                 if (jsonelement.isJsonArray()) {
                     JsonArray jsonarray = jsonelement.getAsJsonArray();
                     IChatBaseComponent ichatbasecomponent = null;
-                    Iterator<JsonElement> iterator = jsonarray.iterator();
-                    int iterations = 0; // FlamePaper - Limit jsonarray iterations
 
-                    while (iterator.hasNext() && ++iterations < 5) {
-                        JsonElement jsonelement1 = iterator.next();
+                    for (JsonElement jsonelement1 : jsonarray) {
+                        if (jsonelement1.isJsonArray()) continue; // FlamePaper - Don't iterate over arrays
+
                         IChatBaseComponent ichatbasecomponent1 = this.a(jsonelement1, jsonelement1.getClass(), jsondeserializationcontext);
 
                         if (ichatbasecomponent == null) {
