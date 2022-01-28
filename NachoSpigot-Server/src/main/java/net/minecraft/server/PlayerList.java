@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
+import dev.cobblesword.nachospigot.Nacho;
 import io.netty.buffer.Unpooled;
 import java.io.File;
 import java.net.SocketAddress;
@@ -576,7 +577,7 @@ public abstract class PlayerList {
 
             Player respawnPlayer = cserver.getPlayer(entityplayer1);
 
-            this.server.getLagCompensator().registerRespawn(respawnPlayer, location);
+            Nacho.get().getLagCompensator().registerRespawn(respawnPlayer, location);
 
             PlayerRespawnEvent respawnEvent = new PlayerRespawnEvent(respawnPlayer, location, isBedSpawn);
             cserver.getPluginManager().callEvent(respawnEvent);
@@ -638,7 +639,7 @@ public abstract class PlayerList {
         // CraftBukkit start
         // Don't fire on respawn
         if (fromWorld != location.getWorld()) {
-            this.server.getLagCompensator().registerWorldChange(entityplayer.getBukkitEntity(), entityplayer.getBukkitEntity().getLocation());
+            Nacho.get().getLagCompensator().registerWorldChange(entityplayer.getBukkitEntity(), entityplayer.getBukkitEntity().getLocation());
             PlayerChangedWorldEvent event = new PlayerChangedWorldEvent(entityplayer.getBukkitEntity(), fromWorld);
             server.server.getPluginManager().callEvent(event);
         }
@@ -697,7 +698,7 @@ public abstract class PlayerList {
         }
         exitWorld = ((CraftWorld) exit.getWorld()).getHandle();
 
-        this.server.getLagCompensator().registerTeleport(entityplayer.getBukkitEntity(), exit);
+        Nacho.get().getLagCompensator().registerTeleport(entityplayer.getBukkitEntity(), exit);
         org.bukkit.event.player.PlayerTeleportEvent tpEvent = new org.bukkit.event.player.PlayerTeleportEvent(entityplayer.getBukkitEntity(), enter, exit, cause);
         Bukkit.getServer().getPluginManager().callEvent(tpEvent);
         if (tpEvent.isCancelled() || tpEvent.getTo() == null) {

@@ -8,6 +8,7 @@ import java.util.concurrent.Callable;
 
 // CraftBukkit start
 import com.eatthepath.uuid.FastUUID;
+import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.commons.Constants;
 import dev.cobblesword.nachospigot.knockback.KnockbackProfile;
 import dev.cobblesword.nachospigot.hitdetection.LagCompensator;
@@ -1184,8 +1185,7 @@ public abstract class Entity implements ICommandListener {
 
     public double h(Entity entity) {
         if (entity instanceof EntityPlayer && NachoConfig.enableImprovedHitReg) {
-            Location loc = MinecraftServer.getServer().getLagCompensator().getHistoryLocation(
-                    ((EntityPlayer) entity).ping,
+            Location loc = Nacho.get().getLagCompensator().getHistoryLocation(
                     ((EntityPlayer) entity).getBukkitEntity()
             );
 

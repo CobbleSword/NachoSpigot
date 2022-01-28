@@ -378,7 +378,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                     this.lastYaw = to.getYaw();
                     this.lastPitch = to.getPitch();
 
-                    this.minecraftServer.getLagCompensator().registerMovement(player, to);
+                    Nacho.get().getLagCompensator().registerMovement(player, to);
 
                     // Skip the first time we do this
                     if (NachoConfig.firePlayerMoveEvent) { // Spigot - don't skip any move events
@@ -621,7 +621,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 
 
         Location to = new Location(this.getPlayer().getWorld(), x, y, z, yaw, pitch);
-        this.minecraftServer.getLagCompensator().registerTeleport(player, to);
+        Nacho.get().getLagCompensator().registerTeleport(player, to);
         PlayerTeleportEvent event = new PlayerTeleportEvent(player, from.clone(), to.clone(), PlayerTeleportEvent.TeleportCause.UNKNOWN);
         this.server.getPluginManager().callEvent(event);
 

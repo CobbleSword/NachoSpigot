@@ -29,9 +29,11 @@ public class LagCompensator {
         this.timeResolution = timeResolution;
     }
 
-    public Location getHistoryLocation(int rewindMillisecs, Player player) {
+    public Location getHistoryLocation(Player player) {
         if (!locationTimes.containsKey(player.getUniqueId()))
             return player.getLocation();
+
+        int rewindMillisecs = player.spigot().getPing();
 
         List<Pair<Location, Long>> times = locationTimes.get(player.getUniqueId());
         long currentTime = System.currentTimeMillis();
