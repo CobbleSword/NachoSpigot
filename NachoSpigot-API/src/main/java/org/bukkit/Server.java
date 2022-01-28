@@ -43,6 +43,8 @@ import org.bukkit.generator.ChunkGenerator;
 
 import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull; // Paper
+import org.jetbrains.annotations.Nullable; // Paper
 
 /**
  * Represents a server implementation.
@@ -835,14 +837,6 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      * @param type The type of inventory to create.
      * @param title The title of the inventory, to be displayed when it is viewed.
      * @return The new inventory.
-<<<<<<< found
-     */
-    Inventory createInventory(InventoryHolder owner, InventoryType type, String title);
-||||||| expected
-     */
-    @NotNull
-    Inventory createInventory(@Nullable InventoryHolder owner, @NotNull InventoryType type, @NotNull String title);
-=======
      */
     @NotNull
     Inventory createInventory(@Nullable InventoryHolder owner, @NotNull InventoryType type, @NotNull net.kyori.adventure.text.Component title);
@@ -920,7 +914,6 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
     @NotNull
     Inventory createInventory(@Nullable InventoryHolder owner, int size, @NotNull String title) throws IllegalArgumentException;
 
-    // Paper start
     /**
      * Gets user-specified limit for number of monsters that can spawn in a
      * chunk.
@@ -928,18 +921,6 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      * @return the monster spawn limit
      */
     int getMonsterSpawnLimit()
-    // Paper start
-    /**
-     * Creates an empty merchant.
-     *
-     * @param title the title of the corresponding merchant inventory, displayed
-     * when the merchant inventory is viewed
-     * @return a new merchant
-     * @deprecated in favour of {@link #createMerchant(net.kyori.adventure.text.Component)}
-     */
-    @NotNull
-    @Deprecated // Paper
-    Merchant createMerchant(@Nullable String title);
 
     /**
      * Gets user-specified limit for number of animals that can spawn in a

@@ -8,7 +8,7 @@ package org.bukkit;
  * guarantee values will not be removed from this Enum. As such, you should
  * not depend on the ordinal values of this class.
  */
-public enum Sound implements net.kyori.adventure.sound.Sound.Type { // Paper
+public enum Sound { // Paper
     AMBIENCE_CAVE,
     AMBIENCE_RAIN,
     AMBIENCE_THUNDER,
@@ -208,12 +208,4 @@ public enum Sound implements net.kyori.adventure.sound.Sound.Type { // Paper
     VILLAGER_IDLE,
     VILLAGER_NO,
     VILLAGER_YES,
-
-    // Paper start
-    @NotNull
-    @Override
-    public net.kyori.adventure.key.@org.checkerframework.checker.nullness.qual.NonNull Key key() {
-        return this.key;
-    }
-    // Paper end
 }

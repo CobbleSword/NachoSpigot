@@ -21,17 +21,14 @@ import org.bukkit.plugin.messaging.PluginMessageRecipient;
 import org.bukkit.scoreboard.Scoreboard;
 // PaperSpigot start
 import com.destroystokyo.paper.Title;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 // PaperSpigot end
 
 /**
  * Represents a player, connected or not
  */
-<<<<<<< found
-public interface Player extends HumanEntity, Conversable, CommandSender, OfflinePlayer, PluginMessageRecipient {
-||||||| expected
-public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginMessageRecipient {
-=======
-public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginMessageRecipient, net.kyori.adventure.identity.Identified { // Paper
+public interface Player extends HumanEntity, Conversable, CommandSender, OfflinePlayer, PluginMessageRecipient, net.kyori.adventure.identity.Identified { // Paper
 
     // Paper start
     @Override
@@ -53,7 +50,6 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
      */
     void displayName(final @Nullable net.kyori.adventure.text.Component displayName);
     // Paper end
->>>>>>> replacement
 
     /**
      * Gets the "friendly" name to display of this player. This may include
@@ -64,16 +60,8 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
      *
      * @return the friendly name
      * @deprecated in favour of {@link #displayName()}
-<<<<<<< found
-     */
-||||||| expected
-     */
-    @NotNull
-=======
      */
     @Deprecated // Paper
-    @NotNull
->>>>>>> replacement
     public String getDisplayName();
 
 
@@ -86,17 +74,9 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
      *
      * @param name The new display name.
      * @deprecated in favour of {@link #displayName(net.kyori.adventure.text.Component)}
-<<<<<<< found
-     */
-    public void setDisplayName(String name);
-||||||| expected
-     */
-    public void setDisplayName(@Nullable String name);
-=======
      */
     @Deprecated // Paper
-    public void setDisplayName(@Nullable String name);
->>>>>>> replacement
+    public void setDisplayName(String name);
 
     // Paper start
     /**
@@ -153,122 +133,36 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
      * characters long in the default implementation). If the joining player's
      * name is 15 or 16 characters long, part of the name will be truncated at
      * the end to allow the addition of the two digits.
-<<<<<<< found
      *
      * @param name new player list name
      * @throws IllegalArgumentException if the name is already used by someone
      *     else
      * @throws IllegalArgumentException if the length of the name is too long
-||||||| expected
-     *
-     * @param name new player list name
-=======
-     *
-     * @param name new player list name
      * @deprecated in favour of {@link #playerListName(net.kyori.adventure.text.Component)}
->>>>>>> replacement
-<<<<<<< found
-     */
-    public void setPlayerListName(String name);
-||||||| expected
-     */
-    public void setPlayerListName(@Nullable String name);
-=======
      */
     @Deprecated // Paper
-    public void setPlayerListName(@Nullable String name);
->>>>>>> replacement
+    public void setPlayerListName(String name);
 
     /**
-<<<<<<< found
      * Set the target of the player's compass.
-||||||| expected
-     * Gets the currently displayed player list header for this player.
-     *
-     * @return player list header or null
-     */
-    @Nullable
-    public String getPlayerListHeader();
-
-=======
-     * Gets the currently displayed player list header for this player.
-     *
-     * @return player list header or null
-     * @deprecated in favour of {@link #playerListHeader()}
-     */
-    @Deprecated // Paper
-    @Nullable
-    public String getPlayerListHeader();
-
->>>>>>> replacement
-<<<<<<< found
-||||||| expected
-     * Gets the currently displayed player list footer for this player.
-     *
-     * @return player list header or null
-     */
-    @Nullable
-    public String getPlayerListFooter();
-
-=======
-     * Gets the currently displayed player list footer for this player.
-     *
-     * @return player list header or null
-     * @deprecated in favour of {@link #playerListFooter()}
-     */
-    @Deprecated // Paper
-    @Nullable
-    public String getPlayerListFooter();
-
->>>>>>> replacement
      *
      * @param loc Location to point to
-     * @deprecated in favour of {@link #sendPlayerListHeader(net.kyori.adventure.text.Component)}
-<<<<<<< found
      */
     public void setCompassTarget(Location loc);
-||||||| expected
-     */
-    public void setPlayerListHeader(@Nullable String header);
-=======
-     */
-    @Deprecated // Paper
-    public void setPlayerListHeader(@Nullable String header);
->>>>>>> replacement
 
     /**
      * Get the previously set compass target.
      *
      * @return location of the target
-     * @deprecated in favour of {@link #sendPlayerListFooter(net.kyori.adventure.text.Component)}
-<<<<<<< found
      */
     public Location getCompassTarget();
-||||||| expected
-     */
-    public void setPlayerListFooter(@Nullable String footer);
-=======
-     */
-    @Deprecated // Paper
-    public void setPlayerListFooter(@Nullable String footer);
->>>>>>> replacement
 
     /**
      * Gets the socket address of this player
      *
      * @return the player's address
-     * @deprecated in favour of {@link #sendPlayerListHeaderAndFooter(net.kyori.adventure.text.Component, net.kyori.adventure.text.Component)}
-<<<<<<< found
      */
     public InetSocketAddress getAddress();
-||||||| expected
-     */
-    public void setPlayerListHeaderFooter(@Nullable String header, @Nullable String footer);
-=======
-     */
-    @Deprecated // Paper
-    public void setPlayerListHeaderFooter(@Nullable String header, @Nullable String footer);
->>>>>>> replacement
 
     /**
      * Sends this sender a message raw
@@ -282,17 +176,9 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
      *
      * @param message kick message
      * @deprecated in favour of {@link #kick(net.kyori.adventure.text.Component)}
-<<<<<<< found
-     */
-    public void kickPlayer(String message);
-||||||| expected
-     */
-    public void kickPlayer(@Nullable String message);
-=======
      */
     @Deprecated // Paper
-    public void kickPlayer(@Nullable String message);
->>>>>>> replacement
+    public void kickPlayer(String message);
 
     // Paper start
     /**
@@ -302,7 +188,6 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
      */
     void kick(final @Nullable net.kyori.adventure.text.Component message);
     // Paper end
-
     /**
      * Says a message (or runs a command).
      *
@@ -496,90 +381,6 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
     @Deprecated
     public void sendBlockChange(Location loc, int material, byte data);
 
-    // Paper start
-    /**
-     * Send a sign change. This fakes a sign change packet for a user at
-     * a certain location. This will not actually change the world in any way.
-     * This method will use a sign at the location's block or a faked sign
-     * sent via
-     * {@link #sendBlockChange(org.bukkit.Location, org.bukkit.Material, byte)}.
-     * <p>
-     * If the client does not have a sign at the given location it will
-     * display an error message to the user.
-     *
-     * @param loc the location of the sign
-     * @param lines the new text on the sign or null to clear it
-     * @throws IllegalArgumentException if location is null
-     * @throws IllegalArgumentException if lines is non-null and has a length less than 4
-     */
-    default void sendSignChange(@NotNull Location loc, @Nullable java.util.List<net.kyori.adventure.text.Component> lines) throws IllegalArgumentException {
-        this.sendSignChange(loc, lines, DyeColor.BLACK);
-    }
-
-    /**
-     * Send a sign change. This fakes a sign change packet for a user at
-     * a certain location. This will not actually change the world in any way.
-     * This method will use a sign at the location's block or a faked sign
-     * sent via
-     * {@link #sendBlockChange(org.bukkit.Location, org.bukkit.Material, byte)}.
-     * <p>
-     * If the client does not have a sign at the given location it will
-     * display an error message to the user.
-     *
-     * @param loc the location of the sign
-     * @param lines the new text on the sign or null to clear it
-     * @param dyeColor the color of the sign
-     * @throws IllegalArgumentException if location is null
-     * @throws IllegalArgumentException if dyeColor is null
-     * @throws IllegalArgumentException if lines is non-null and has a length less than 4
-     */
-    default void sendSignChange(@NotNull Location loc, @Nullable java.util.List<net.kyori.adventure.text.Component> lines, @NotNull DyeColor dyeColor) throws IllegalArgumentException {
-        this.sendSignChange(loc, lines, dyeColor, false);
-    }
-
-    /**
-     * Send a sign change. This fakes a sign change packet for a user at
-     * a certain location. This will not actually change the world in any way.
-     * This method will use a sign at the location's block or a faked sign
-     * sent via
-     * {@link #sendBlockChange(org.bukkit.Location, org.bukkit.Material, byte)}.
-     * <p>
-     * If the client does not have a sign at the given location it will
-     * display an error message to the user.
-     *
-     * @param loc the location of the sign
-     * @param lines the new text on the sign or null to clear it
-     * @param hasGlowingText whether the text of the sign should glow as if dyed with a glowing ink sac
-     * @throws IllegalArgumentException if location is null
-     * @throws IllegalArgumentException if dyeColor is null
-     * @throws IllegalArgumentException if lines is non-null and has a length less than 4
-     */
-    default void sendSignChange(@NotNull Location loc, @Nullable java.util.List<net.kyori.adventure.text.Component> lines, boolean hasGlowingText) throws IllegalArgumentException {
-        this.sendSignChange(loc, lines, DyeColor.BLACK, hasGlowingText);
-    }
-
-    /**
-     * Send a sign change. This fakes a sign change packet for a user at
-     * a certain location. This will not actually change the world in any way.
-     * This method will use a sign at the location's block or a faked sign
-     * sent via
-     * {@link #sendBlockChange(org.bukkit.Location, org.bukkit.Material, byte)}.
-     * <p>
-     * If the client does not have a sign at the given location it will
-     * display an error message to the user.
-     *
-     * @param loc the location of the sign
-     * @param lines the new text on the sign or null to clear it
-     * @param dyeColor the color of the sign
-     * @param hasGlowingText whether the text of the sign should glow as if dyed with a glowing ink sac
-     * @throws IllegalArgumentException if location is null
-     * @throws IllegalArgumentException if dyeColor is null
-     * @throws IllegalArgumentException if lines is non-null and has a length less than 4
-     */
-    void sendSignChange(@NotNull Location loc, @Nullable java.util.List<net.kyori.adventure.text.Component> lines, @NotNull DyeColor dyeColor, boolean hasGlowingText)
-        throws IllegalArgumentException;
-    // Paper end
-
     /**
      * Send a sign change. This fakes a sign change packet for a user at
      * a certain location. This will not actually change the world in any way.
@@ -595,17 +396,28 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
      * @throws IllegalArgumentException if location is null
      * @throws IllegalArgumentException if lines is non-null and has a length less than 4
      * @deprecated in favour of {@link #sendSignChange(org.bukkit.Location, java.util.List)}
-<<<<<<< found
-     */
-    public void sendSignChange(Location loc, String[] lines) throws IllegalArgumentException;
-||||||| expected
-     */
-    public void sendSignChange(@NotNull Location loc, @Nullable String[] lines) throws IllegalArgumentException;
-=======
      */
     @Deprecated // Paper
-    public void sendSignChange(@NotNull Location loc, @Nullable String[] lines) throws IllegalArgumentException;
->>>>>>> replacement
+    public void sendSignChange(Location loc, String[] lines) throws IllegalArgumentException;
+
+    // Paper start
+    /**
+     * Send a sign change. This fakes a sign change packet for a user at
+     * a certain location. This will not actually change the world in any way.
+     * This method will use a sign at the location's block or a faked sign
+     * sent via
+     * {@link #sendBlockChange(org.bukkit.Location, org.bukkit.Material, byte)}.
+     * <p>
+     * If the client does not have a sign at the given location it will
+     * display an error message to the user.
+     *
+     * @param loc the location of the sign
+     * @param lines the new text on the sign or null to clear it
+     * @throws IllegalArgumentException if location is null
+     * @throws IllegalArgumentException if lines is non-null and has a length less than 4
+     */
+    void sendSignChange(@NotNull Location loc, @Nullable java.util.List<net.kyori.adventure.text.Component> lines) throws IllegalArgumentException;
+    // Paper end
 
     /**
      * Render a map and send it to the player in its entirety. This may be
@@ -620,37 +432,17 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
      * Sends the component to the player
      *
      * @param component the components to send
-     * @deprecated in favour of {@link #sendSignChange(org.bukkit.Location, java.util.List, org.bukkit.DyeColor)}
-<<<<<<< found
      */
     @Override
     public void sendMessage(net.md_5.bungee.api.chat.BaseComponent component);
-||||||| expected
-     */
-    public void sendSignChange(@NotNull Location loc, @Nullable String[] lines, @NotNull DyeColor dyeColor) throws IllegalArgumentException;
-=======
-     */
-    @Deprecated // Paper
-    public void sendSignChange(@NotNull Location loc, @Nullable String[] lines, @NotNull DyeColor dyeColor) throws IllegalArgumentException;
->>>>>>> replacement
 
     /**
      * Sends an array of components as a single message to the player
      *
      * @param components the components to send
-     * @deprecated Deprecated in favour of {@link #sendSignChange(Location, java.util.List, DyeColor, boolean)}
-<<<<<<< found
      */
     @Override
     public void sendMessage(net.md_5.bungee.api.chat.BaseComponent... components);
-||||||| expected
-     */
-    public void sendSignChange(@NotNull Location loc, @Nullable String[] lines, @NotNull DyeColor dyeColor, boolean hasGlowingText) throws IllegalArgumentException;
-=======
-     */
-    @Deprecated // Paper
-    public void sendSignChange(@NotNull Location loc, @Nullable String[] lines, @NotNull DyeColor dyeColor, boolean hasGlowingText) throws IllegalArgumentException;
->>>>>>> replacement
 
     /**
      * Set the text displayed in the player list header and footer for this player
@@ -1389,54 +1181,6 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
     @Deprecated
     public void setTexturePack(String url);
 
-    // Paper start
-    /**
-     * Request that the player's client download and switch resource packs.
-     * <p>
-     * The player's client will download the new resource pack asynchronously
-     * in the background, and will automatically switch to it once the
-     * download is complete. If the client has downloaded and cached a
-     * resource pack with the same hash in the past it will not download but
-     * directly apply the cached pack. If the hash is null and the client has
-     * downloaded and cached the same resource pack in the past, it will
-     * perform a file size check against the response content to determine if
-     * the resource pack has changed and needs to be downloaded again. When
-     * this request is sent for the very first time from a given server, the
-     * client will first display a confirmation GUI to the player before
-     * proceeding with the download.
-     * <p>
-     * Notes:
-     * <ul>
-     * <li>Players can disable server resources on their client, in which
-     *     case this method will have no affect on them. Use the
-     *     {@link PlayerResourcePackStatusEvent} to figure out whether or not
-     *     the player loaded the pack!
-     * <li>There is no concept of resetting resource packs back to default
-     *     within Minecraft, so players will have to relog to do so or you
-     *     have to send an empty pack.
-     * <li>The request is sent with empty string as the hash when the hash is
-     *     not provided. This might result in newer versions not loading the
-     *     pack correctly.
-     * </ul>
-     *
-     * @param url The URL from which the client will download the resource
-     *     pack. The string must contain only US-ASCII characters and should
-     *     be encoded as per RFC 1738.
-     * @param hash The sha1 hash sum of the resource pack file which is used
-     *     to apply a cached version of the pack directly without downloading
-     *     if it is available. Hast to be 20 bytes long!
-     * @param prompt The optional custom prompt message to be shown to client.
-     * @throws IllegalArgumentException Thrown if the URL is null.
-     * @throws IllegalArgumentException Thrown if the URL is too long. The
-     *     length restriction is an implementation specific arbitrary value.
-     * @throws IllegalArgumentException Thrown if the hash is not 20 bytes
-     *     long.
-     */
-    default void setResourcePack(@NotNull String url, byte @Nullable [] hash, net.kyori.adventure.text.@Nullable Component prompt) {
-        this.setResourcePack(url, hash, prompt, false);
-    }
-    // Paper end
-
     /**
      * Request that the player's client download and switch resource packs.
      * <p>
@@ -1467,54 +1211,6 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
      */
     @Deprecated // TacoSpigot
     public void setResourcePack(String url);
-
-    // Paper end
-    /**
-     * Request that the player's client download and switch resource packs.
-     * <p>
-     * The player's client will download the new resource pack asynchronously
-     * in the background, and will automatically switch to it once the
-     * download is complete. If the client has downloaded and cached a
-     * resource pack with the same hash in the past it will not download but
-     * directly apply the cached pack. If the hash is null and the client has
-     * downloaded and cached the same resource pack in the past, it will
-     * perform a file size check against the response content to determine if
-     * the resource pack has changed and needs to be downloaded again. When
-     * this request is sent for the very first time from a given server, the
-     * client will first display a confirmation GUI to the player before
-     * proceeding with the download.
-     * <p>
-     * Notes:
-     * <ul>
-     * <li>Players can disable server resources on their client, in which
-     *     case this method will have no affect on them. Use the
-     *     {@link PlayerResourcePackStatusEvent} to figure out whether or not
-     *     the player loaded the pack!
-     * <li>There is no concept of resetting resource packs back to default
-     *     within Minecraft, so players will have to relog to do so or you
-     *     have to send an empty pack.
-     * <li>The request is sent with empty string as the hash when the hash is
-     *     not provided. This might result in newer versions not loading the
-     *     pack correctly.
-     * </ul>
-     *
-     * @param url The URL from which the client will download the resource
-     *     pack. The string must contain only US-ASCII characters and should
-     *     be encoded as per RFC 1738.
-     * @param hash The sha1 hash sum of the resource pack file which is used
-     *     to apply a cached version of the pack directly without downloading
-     *     if it is available. Hast to be 20 bytes long!
-     * @param prompt The optional custom prompt message to be shown to client.
-     * @param force If true, the client will be disconnected from the server
-     *     when it declines to use the resource pack.
-     * @throws IllegalArgumentException Thrown if the URL is null.
-     * @throws IllegalArgumentException Thrown if the URL is too long. The
-     *     length restriction is an implementation specific arbitrary value.
-     * @throws IllegalArgumentException Thrown if the hash is not 20 bytes
-     *     long.
-     */
-    public void setResourcePack(@NotNull String url, byte @Nullable [] hash, net.kyori.adventure.text.@Nullable Component prompt, boolean force);
-    // Paper end
 
     /**
      * Gets the Scoreboard displayed to this player
@@ -1607,32 +1303,10 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
      *
      * @param title Title text
      * @param subtitle Subtitle text
-<<<<<<< found
-     * @deprecated API subject to change
-||||||| expected
-     * @deprecated API behavior subject to change
-=======
      * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
->>>>>>> replacement
      */
     @Deprecated
     public void sendTitle(String title, String subtitle);
-<<<<<<< found
-||||||| expected
-     * @param fadeIn time in ticks for titles to fade in. Defaults to 10.
-     * @param stay time in ticks for titles to stay. Defaults to 70.
-     * @param fadeOut time in ticks for titles to fade out. Defaults to 20.
-     */
-    public void sendTitle(@Nullable String title, @Nullable String subtitle, int fadeIn, int stay, int fadeOut);
-=======
-     * @param fadeIn time in ticks for titles to fade in. Defaults to 10.
-     * @param stay time in ticks for titles to stay. Defaults to 70.
-     * @param fadeOut time in ticks for titles to fade out. Defaults to 20.
-     * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
-     */
-    @Deprecated // Paper - Adventure
-    public void sendTitle(@Nullable String title, @Nullable String subtitle, int fadeIn, int stay, int fadeOut);
->>>>>>> replacement
 
     /**
      * Resets the title displayed to the player.
@@ -1685,31 +1359,11 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
      */
     void setResourcePack(String url, String hash);
 
-    // Paper start
-    /**
-     * Gets the player's current locale.
-     *
-     * @return the player's locale
-     */
-    @NotNull java.util.Locale locale();
-    // Paper end
     /**
      * @return the most recent resource pack status received from the player,
      *         or null if no status has ever been received from this player.
-     * @deprecated in favour of {@link #locale()}
-<<<<<<< found
      */
     org.bukkit.event.player.PlayerResourcePackStatusEvent.Status getResourcePackStatus();
-||||||| expected
-     */
-    @NotNull
-    public String getLocale();
-=======
-     */
-    @NotNull
-    @Deprecated // Paper
-    public String getLocale();
->>>>>>> replacement
 
     /**
      * @return the most recent resource pack hash received from the player,
@@ -1723,14 +1377,6 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
      */
     boolean hasResourcePack();
     // TacoSpigot end
-
-    // Paper start
-    @NotNull
-    @Override
-    default net.kyori.adventure.text.event.HoverEvent<net.kyori.adventure.text.event.HoverEvent.ShowEntity> asHoverEvent(final @NotNull java.util.function.UnaryOperator<net.kyori.adventure.text.event.HoverEvent.ShowEntity> op) {
-        return net.kyori.adventure.text.event.HoverEvent.showEntity(op.apply(net.kyori.adventure.text.event.HoverEvent.ShowEntity.of(this.getType().getKey(), this.getUniqueId(), this.displayName())));
-    }
-    // Paper end
 
     // Spigot start
     public class Spigot extends Entity.Spigot
@@ -1785,11 +1431,25 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
          * Gets player locale language.
          *
          * @return the player's client language settings
+         * @deprecated in favour of {@link #locale()}
          */
+        @Deprecated
         public String getLocale()
         {
             throw new UnsupportedOperationException( "Not supported yet." );
         }
+
+        // Paper start
+        /**
+         * Gets the player's current locale.
+         *
+         * @return the player's locale
+         */
+        public @NotNull java.util.Locale locale()
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+        // Paper end
 
         /**
          * Gets all players hidden with {@link Player#hidePlayer(Player)}.
@@ -1805,30 +1465,24 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
          * Sends the component to the player
          *
          * @param component the components to send
+         * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
          */
+        @Deprecated // Paper
         public void sendMessage(net.md_5.bungee.api.chat.BaseComponent component) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
-<<<<<<< found
         /**
          * Sends an array of components as a single message to the player
          *
          * @param components the components to send
+         * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
          */
+        @Deprecated
         public void sendMessage(net.md_5.bungee.api.chat.BaseComponent... components) {
-||||||| expected
-        @Override
-        public void sendMessage(@NotNull net.md_5.bungee.api.chat.BaseComponent component) {
-=======
-        @Deprecated // Paper
-        @Override
-        public void sendMessage(@NotNull net.md_5.bungee.api.chat.BaseComponent component) {
->>>>>>> replacement
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
-<<<<<<< found
         /**
          * Get whether the player affects mob spawning
          *
@@ -1885,55 +1539,15 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
         /**
          * Sends an actionbar message to the player
          * @param message the message
-||||||| expected
-        @Override
-        public void sendMessage(@NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
-            throw new UnsupportedOperationException("Not supported yet.");
-=======
-        @Deprecated // Paper
-        @Override
-        public void sendMessage(@NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
-            throw new UnsupportedOperationException("Not supported yet.");
->>>>>>> replacement
-<<<<<<< found
-||||||| expected
-         *
-         * @param position the screen position
-         * @param component the components to send
-=======
-         *
-         * @param position the screen position
-         * @param component the components to send
-         * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
->>>>>>> replacement
-<<<<<<< found
          */
         public void sendActionBar(String message) {
-||||||| expected
-         */
-        public void sendMessage(@NotNull net.md_5.bungee.api.ChatMessageType position, @NotNull net.md_5.bungee.api.chat.BaseComponent component) {
-=======
-         */
-        @Deprecated // Paper
-        public void sendMessage(@NotNull net.md_5.bungee.api.ChatMessageType position, @NotNull net.md_5.bungee.api.chat.BaseComponent component) {
->>>>>>> replacement
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
         /**
          * Makes the player jump, like a vanilla MC client would do
-         * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
-<<<<<<< found
          */
         public void jump() {
-||||||| expected
-         */
-        public void sendMessage(@NotNull net.md_5.bungee.api.ChatMessageType position, @NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
-=======
-         */
-        @Deprecated // Paper
-        public void sendMessage(@NotNull net.md_5.bungee.api.ChatMessageType position, @NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
->>>>>>> replacement
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }
@@ -1945,39 +1559,11 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
         /**
          * Send a packet to a player
          * @param packet the packet to send
-         * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
-<<<<<<< found
          */
         public void sendPacket(Object packet) {
-||||||| expected
-         */
-        public void sendMessage(@NotNull net.md_5.bungee.api.ChatMessageType position, @Nullable UUID sender, @NotNull net.md_5.bungee.api.chat.BaseComponent component) {
-=======
-         */
-        @Deprecated // Paper
-        public void sendMessage(@NotNull net.md_5.bungee.api.ChatMessageType position, @Nullable UUID sender, @NotNull net.md_5.bungee.api.chat.BaseComponent component) {
->>>>>>> replacement
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }
-<<<<<<< found
-||||||| expected
-         * @param position the screen position
-         * @param sender the sender of the message
-         * @param components the components to send
-         */
-        public void sendMessage(@NotNull net.md_5.bungee.api.ChatMessageType position, @Nullable UUID sender, @NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
-            throw new UnsupportedOperationException("Not supported yet.");
-=======
-         * @param position the screen position
-         * @param sender the sender of the message
-         * @param components the components to send
-         * @deprecated use {@code sendMessage} methods that accept {@link net.kyori.adventure.text.Component}
-         */
-        @Deprecated // Paper
-        public void sendMessage(@NotNull net.md_5.bungee.api.ChatMessageType position, @Nullable UUID sender, @NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
-            throw new UnsupportedOperationException("Not supported yet.");
->>>>>>> replacement
 
     /**
      * Unsafe methods, be careful.
