@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-NachoSpigot-API/src/main/java/org/bukkit/Server.java
-NachoSpigot-API/src/main/java/org/bukkit/entity/Entity.java
-NachoSpigot-API/src/main/java/org/bukkit/entity/Player.java
-=======
->>>>>>> 57611d2 (More todo)
 NachoSpigot-API/src/main/java/org/bukkit/entity/minecart/CommandMinecart.java
 NachoSpigot-API/src/main/java/org/bukkit/event/block/SignChangeEvent.java
 NachoSpigot-API/src/main/java/org/bukkit/event/entity/PlayerDeathEvent.java
