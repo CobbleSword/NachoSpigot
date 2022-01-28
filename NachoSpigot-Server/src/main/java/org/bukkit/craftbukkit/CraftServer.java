@@ -312,7 +312,7 @@ public final class CraftServer implements Server {
                     // Nacho end
 
                     // Nacho start - Add notice for older Citizens versions
-                    else if(plugin.getDescription().getFullName().contains("Citizens")) {
+                    else if(plugin.getDescription().getFullName().equals("Citizens")) {
                         if(PluginUtils.getCitizensBuild(plugin) < 2396) {
                             logger.warning(
                                     "Please update to Citizens 2.0.28 #7 or higher!\n" +

@@ -7,6 +7,10 @@ import org.bukkit.plugin.Plugin;
  */
 public class PluginUtils {
     public static int getCitizensBuild(Plugin plugin) {
-        return Integer.parseInt(plugin.getDescription().getVersion().split("\\(build ")[1].replace(")", ""));
+        try {
+            return Integer.parseInt(plugin.getDescription().getVersion().split("\\(build ")[1].replace(")", ""));
+        } catch (Throwable ignored) {
+            return 2396;
+        }
     }
 }
