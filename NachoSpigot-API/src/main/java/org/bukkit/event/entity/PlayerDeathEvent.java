@@ -1,9 +1,11 @@
 package org.bukkit.event.entity;
 
-import java.util.List;
-
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * Thrown whenever a {@link Player} dies
@@ -16,17 +18,11 @@ public class PlayerDeathEvent extends EntityDeathEvent {
     private int newTotalExp = 0;
     private boolean keepLevel = false;
     private boolean keepInventory = false;
+
     // Paper start
     public PlayerDeathEvent(@NotNull final Player player, @NotNull final List<ItemStack> drops, final int droppedExp, @Nullable final net.kyori.adventure.text.Component adventure$deathMessage) {
         this(player, drops, droppedExp, 0, adventure$deathMessage, null);
     }
-<<<<<<< found
-
-    public PlayerDeathEvent(final Player player, final List<ItemStack> drops, final int droppedExp, final String deathMessage) {
-||||||| expected
-
-    public PlayerDeathEvent(@NotNull final Player player, @NotNull final List<ItemStack> drops, final int droppedExp, @Nullable final String deathMessage) {
-=======
 
     public PlayerDeathEvent(@NotNull final Player player, @NotNull final List<ItemStack> drops, final int droppedExp, final int newExp, @Nullable final net.kyori.adventure.text.Component adventure$deathMessage, @Nullable String deathMessage) {
         this(player, drops, droppedExp, newExp, 0, 0, adventure$deathMessage, deathMessage);
@@ -43,30 +39,17 @@ public class PlayerDeathEvent extends EntityDeathEvent {
     // Paper end
 
     @Deprecated // Paper
-    public PlayerDeathEvent(@NotNull final Player player, @NotNull final List<ItemStack> drops, final int droppedExp, @Nullable final String deathMessage) {
->>>>>>> replacement
+    public PlayerDeathEvent(final Player player, final List<ItemStack> drops, final int droppedExp, final String deathMessage) {
         this(player, drops, droppedExp, 0, deathMessage);
     }
 
-<<<<<<< found
-    public PlayerDeathEvent(final Player player, final List<ItemStack> drops, final int droppedExp, final int newExp, final String deathMessage) {
-||||||| expected
-    public PlayerDeathEvent(@NotNull final Player player, @NotNull final List<ItemStack> drops, final int droppedExp, final int newExp, @Nullable final String deathMessage) {
-=======
     @Deprecated // Paper
-    public PlayerDeathEvent(@NotNull final Player player, @NotNull final List<ItemStack> drops, final int droppedExp, final int newExp, @Nullable final String deathMessage) {
->>>>>>> replacement
+    public PlayerDeathEvent(final Player player, final List<ItemStack> drops, final int droppedExp, final int newExp, final String deathMessage) {
         this(player, drops, droppedExp, newExp, 0, 0, deathMessage);
     }
 
-<<<<<<< found
-    public PlayerDeathEvent(final Player player, final List<ItemStack> drops, final int droppedExp, final int newExp, final int newTotalExp, final int newLevel, final String deathMessage) {
-||||||| expected
-    public PlayerDeathEvent(@NotNull final Player player, @NotNull final List<ItemStack> drops, final int droppedExp, final int newExp, final int newTotalExp, final int newLevel, @Nullable final String deathMessage) {
-=======
     @Deprecated // Paper
-    public PlayerDeathEvent(@NotNull final Player player, @NotNull final List<ItemStack> drops, final int droppedExp, final int newExp, final int newTotalExp, final int newLevel, @Nullable final String deathMessage) {
->>>>>>> replacement
+    public PlayerDeathEvent(final Player player, final List<ItemStack> drops, final int droppedExp, final int newExp, final int newTotalExp, final int newLevel, final String deathMessage) {
         super(player, drops, droppedExp);
         this.newExp = newExp;
         this.newTotalExp = newTotalExp;
@@ -86,11 +69,6 @@ public class PlayerDeathEvent extends EntityDeathEvent {
      *
      * @param deathMessage Message to appear to other players on the server.
      */
-<<<<<<< found
-    public void setDeathMessage(String deathMessage) {
-||||||| expected
-    public void setDeathMessage(@Nullable String deathMessage) {
-=======
     public void deathMessage(@Nullable net.kyori.adventure.text.Component deathMessage) {
         this.deathMessage = null;
         this.adventure$deathMessage = deathMessage;
@@ -109,14 +87,12 @@ public class PlayerDeathEvent extends EntityDeathEvent {
     /**
      * Set the death message that will appear to everyone on the server.
      *
-     * @param deathMessage Message to appear to other players on the server.
+     * @param deathMessage Message to appear to other players on the server
      * @deprecated in favour of {@link #deathMessage(net.kyori.adventure.text.Component)}
      */
     @Deprecated // Paper
-    public void setDeathMessage(@Nullable String deathMessage) {
->>>>>>> replacement
+    public void setDeathMessage(String deathMessage) {
         this.deathMessage = deathMessage;
-        this.adventure$deathMessage = deathMessage != null ? org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(deathMessage) : net.kyori.adventure.text.Component.empty(); // Paper
     }
 
     /**
@@ -125,15 +101,12 @@ public class PlayerDeathEvent extends EntityDeathEvent {
      * @return Message to appear to other players on the server.
      * @deprecated in favour of {@link #deathMessage()}
      */
+    @Nullable
     @Deprecated // Paper
     public String getDeathMessage() {
-        return this.deathMessage != null ? this.deathMessage : (this.adventure$deathMessage != null ? getDeathMessageString(this.adventure$deathMessage) : null); // Paper
+        return this.deathMessage != null ? this.deathMessage : (this.adventure$deathMessage != null ? org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().serialize(this.adventure$deathMessage) : null); // Paper
     }
-    // Paper start //TODO: add translation API to drop String deathMessage in favor of just Adventure
-    private static String getDeathMessageString(net.kyori.adventure.text.Component component) {
-        return org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().serialize(component);
-    }
-    // Paper end
+
     /**
      * Gets how much EXP the Player should have at respawn.
      * <p>

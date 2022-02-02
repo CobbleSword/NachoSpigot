@@ -3,6 +3,7 @@ package org.bukkit.event.player;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Called when a player gets kicked from the server
@@ -11,15 +12,6 @@ public class PlayerKickEvent extends PlayerEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private net.kyori.adventure.text.Component leaveMessage; // Paper
     private net.kyori.adventure.text.Component kickReason; // Paper
-<<<<<<< found
-    private Boolean cancel;
-
-    public PlayerKickEvent(final Player playerKicked, final String kickReason, final String leaveMessage) {
-||||||| expected
-    private Boolean cancel;
-
-    public PlayerKickEvent(@NotNull final Player playerKicked, @NotNull final String kickReason, @NotNull final String leaveMessage) {
-=======
     private Boolean cancel;
 
     @Deprecated // Paper
@@ -31,7 +23,6 @@ public class PlayerKickEvent extends PlayerEvent implements Cancellable {
     }
     // Paper start
     public PlayerKickEvent(@NotNull final Player playerKicked, @NotNull final net.kyori.adventure.text.Component kickReason, @NotNull final net.kyori.adventure.text.Component leaveMessage) {
->>>>>>> replacement
         super(playerKicked);
         this.kickReason = kickReason;
         this.leaveMessage = leaveMessage;
@@ -110,18 +101,10 @@ public class PlayerKickEvent extends PlayerEvent implements Cancellable {
      *
      * @param kickReason kick reason
      * @deprecated in favour of {@link #reason(net.kyori.adventure.text.Component)}
-<<<<<<< found
-     */
-    public void setReason(String kickReason) {
-||||||| expected
-     */
-    public void setReason(@NotNull String kickReason) {
-=======
      */
     @Deprecated // Paper
     public void setReason(@NotNull String kickReason) {
         this.kickReason = org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(kickReason); // Paper
->>>>>>> replacement
     }
 
     /**
@@ -129,18 +112,10 @@ public class PlayerKickEvent extends PlayerEvent implements Cancellable {
      *
      * @param leaveMessage leave message
      * @deprecated in favour of {@link #leaveMessage(net.kyori.adventure.text.Component)}
-<<<<<<< found
-     */
-    public void setLeaveMessage(String leaveMessage) {
-||||||| expected
-     */
-    public void setLeaveMessage(@NotNull String leaveMessage) {
-=======
      */
     @Deprecated // Paper
     public void setLeaveMessage(@NotNull String leaveMessage) {
         this.leaveMessage = org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(leaveMessage); // Paper
->>>>>>> replacement
     }
 
     @Override

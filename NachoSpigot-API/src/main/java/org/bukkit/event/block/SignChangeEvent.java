@@ -4,6 +4,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Called when a sign is changed by a player.
@@ -16,13 +18,6 @@ public class SignChangeEvent extends BlockEvent implements Cancellable {
     private final Player player;
     // Paper start
     private final java.util.List<net.kyori.adventure.text.Component> adventure$lines;
-<<<<<<< found
-
-    public SignChangeEvent(final Block theBlock, final Player thePlayer, final String[] theLines) {
-||||||| expected
-
-    public SignChangeEvent(@NotNull final Block theBlock, @NotNull final Player thePlayer, @NotNull final String[] theLines) {
-=======
 
     public SignChangeEvent(@NotNull final Block theBlock, @NotNull final Player player, @NotNull final java.util.List<net.kyori.adventure.text.Component> adventure$lines) {
         super(theBlock);
@@ -31,11 +26,9 @@ public class SignChangeEvent extends BlockEvent implements Cancellable {
     }
 
     @Deprecated // Paper end
-    public SignChangeEvent(@NotNull final Block theBlock, @NotNull final Player thePlayer, @NotNull final String[] theLines) {
->>>>>>> replacement
+    public SignChangeEvent(final Block theBlock, final Player thePlayer, final String[] theLines) {
         super(theBlock);
         this.player = thePlayer;
-        // Paper start
         this.adventure$lines = new java.util.ArrayList<>();
         for (String theLine : theLines) {
             this.adventure$lines.add(org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(theLine));
@@ -53,6 +46,7 @@ public class SignChangeEvent extends BlockEvent implements Cancellable {
     }
 
     // Paper start
+
     /**
      * Gets all of the lines of text from the sign involved in this event.
      *
@@ -67,9 +61,9 @@ public class SignChangeEvent extends BlockEvent implements Cancellable {
      *
      * @param index index of the line to get
      * @return the String containing the line of text associated with the
-     *     provided index
+     * provided index
      * @throws IndexOutOfBoundsException thrown when the provided index is {@literal > 3
-     *     or < 0}
+     *                                   or < 0}
      */
     public @Nullable net.kyori.adventure.text.Component line(int index) throws IndexOutOfBoundsException {
         return this.adventure$lines.get(index);
@@ -79,9 +73,9 @@ public class SignChangeEvent extends BlockEvent implements Cancellable {
      * Sets a single line for the sign involved in this event
      *
      * @param index index of the line to set
-     * @param line text to set
+     * @param line  text to set
      * @throws IndexOutOfBoundsException thrown when the provided index is {@literal > 3
-     *     or < 0}
+     *                                   or < 0}
      */
     public void line(int index, @Nullable net.kyori.adventure.text.Component line) throws IndexOutOfBoundsException {
         this.adventure$lines.set(index, line);
@@ -94,6 +88,7 @@ public class SignChangeEvent extends BlockEvent implements Cancellable {
      * @return the String array for the sign's lines new text
      * @deprecated in favour of {@link #lines()}
      */
+    @NotNull
     @Deprecated // Paper
     public String[] getLines() {
         return adventure$lines.stream().map(org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer()::serialize).toArray(String[]::new); // Paper
@@ -104,11 +99,12 @@ public class SignChangeEvent extends BlockEvent implements Cancellable {
      *
      * @param index index of the line to get
      * @return the String containing the line of text associated with the
-     *     provided index
+     * provided index
      * @throws IndexOutOfBoundsException thrown when the provided index is {@literal > 3
-     *     or < 0}
+     *                                   or < 0}
      * @deprecated in favour of {@link #line(int)}
      */
+    @Nullable
     @Deprecated // Paper
     public String getLine(int index) throws IndexOutOfBoundsException {
         return org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().serialize(this.adventure$lines.get(index)); // Paper
@@ -118,22 +114,14 @@ public class SignChangeEvent extends BlockEvent implements Cancellable {
      * Sets a single line for the sign involved in this event
      *
      * @param index index of the line to set
-     * @param line text to set
+     * @param line  text to set
      * @throws IndexOutOfBoundsException thrown when the provided index is {@literal > 3
-     *     or < 0}
+     *                                   or < 0}
      * @deprecated in favour of {@link #line(int, net.kyori.adventure.text.Component)}
-<<<<<<< found
      */
+    @Deprecated
     public void setLine(int index, String line) throws IndexOutOfBoundsException {
-||||||| expected
-     */
-    public void setLine(int index, @Nullable String line) throws IndexOutOfBoundsException {
-=======
-     */
-    @Deprecated // Paper
-    public void setLine(int index, @Nullable String line) throws IndexOutOfBoundsException {
         adventure$lines.set(index, line != null ? org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(line) : null); // Paper
->>>>>>> replacement
     }
 
     public boolean isCancelled() {

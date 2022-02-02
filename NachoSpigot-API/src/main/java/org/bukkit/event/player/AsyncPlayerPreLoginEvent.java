@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Stores details for players attempting to log in.
@@ -93,13 +94,7 @@ public class AsyncPlayerPreLoginEvent extends Event {
      *
      * @param message New kick message
      */
-<<<<<<< found
-    public void setKickMessage(final String message) {
-||||||| expected
-    public void setKickMessage(@NotNull final String message) {
-=======
     public void kickMessage(@NotNull final net.kyori.adventure.text.Component message) {
->>>>>>> replacement
         this.message = message;
     }
 
@@ -167,17 +162,9 @@ public class AsyncPlayerPreLoginEvent extends Event {
      * @param result New result for disallowing the player
      * @param message Kick message to display to the user
      * @deprecated in favour of {@link #disallow(org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result, net.kyori.adventure.text.Component)}
-<<<<<<< found
      */
+    @Deprecated
     public void disallow(final Result result, final String message) {
-||||||| expected
-     */
-    public void disallow(@NotNull final Result result, @NotNull final String message) {
-=======
-     */
-    @Deprecated // Paper
-    public void disallow(@NotNull final Result result, @NotNull final String message) {
->>>>>>> replacement
         this.result = result;
         this.message = org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(message); // Paper
     }

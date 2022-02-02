@@ -2,6 +2,7 @@ package org.bukkit.event.player;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a player related event
@@ -13,16 +14,9 @@ public abstract class PlayerEvent extends Event {
         player = who;
     }
 
-<<<<<<< found
-    public PlayerEvent(final Player who, boolean async) {
-||||||| expected
-    PlayerEvent(@NotNull final Player who, boolean async) {
-=======
     public PlayerEvent(@NotNull final Player who, boolean async) { // Paper - public
->>>>>>> replacement
         super(async);
         player = who;
-
     }
 
     /**

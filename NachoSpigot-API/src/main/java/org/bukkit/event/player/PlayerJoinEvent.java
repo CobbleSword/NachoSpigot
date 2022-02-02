@@ -2,6 +2,8 @@ package org.bukkit.event.player;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Called when a player joins a server
@@ -14,17 +16,9 @@ public class PlayerJoinEvent extends PlayerEvent {
         super(playerJoined);
         this.joinMessage = joinMessage;
     }
-<<<<<<< found
-
-    public PlayerJoinEvent(final Player playerJoined, final String joinMessage) {
-||||||| expected
-
-    public PlayerJoinEvent(@NotNull final Player playerJoined, @Nullable final String joinMessage) {
-=======
 
     @Deprecated // Paper end
     public PlayerJoinEvent(@NotNull final Player playerJoined, @Nullable final String joinMessage) {
->>>>>>> replacement
         super(playerJoined);
         this.joinMessage = joinMessage != null ? org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(joinMessage) : null; // Paper end
     }
@@ -65,18 +59,10 @@ public class PlayerJoinEvent extends PlayerEvent {
      *
      * @param joinMessage join message
      * @deprecated in favour of {@link #joinMessage(net.kyori.adventure.text.Component)}
-<<<<<<< found
-     */
-    public void setJoinMessage(String joinMessage) {
-||||||| expected
-     */
-    public void setJoinMessage(@Nullable String joinMessage) {
-=======
      */
     @Deprecated // Paper
     public void setJoinMessage(@Nullable String joinMessage) {
         this.joinMessage = joinMessage != null ? org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(joinMessage) : null; // Paper
->>>>>>> replacement
     }
 
     @Override

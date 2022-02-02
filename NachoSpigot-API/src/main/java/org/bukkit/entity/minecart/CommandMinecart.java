@@ -2,6 +2,7 @@ package org.bukkit.entity.minecart;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Minecart;
+import org.jetbrains.annotations.Nullable;
 
 public interface CommandMinecart extends Minecart, CommandSender {
 
@@ -31,16 +32,7 @@ public interface CommandMinecart extends Minecart, CommandSender {
      *
      * @param name New name for this CommandMinecart.
      * @deprecated in favour of {@link #customName(net.kyori.adventure.text.Component)}
-<<<<<<< found
-     */
-    public void setName(String name);
-||||||| expected
-     */
-    public void setName(@Nullable String name);
-=======
      */
     @Deprecated // Paper
     public void setName(@Nullable String name);
->>>>>>> replacement
-
 }

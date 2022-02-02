@@ -1,5 +1,7 @@
 package org.bukkit.event.inventory;
 
+import org.jetbrains.annotations.NotNull;
+
 public enum InventoryType {
 
     /**
@@ -73,15 +75,6 @@ public enum InventoryType {
 
     private final int size;
     private final String title;
-<<<<<<< found
-
-    private InventoryType(int defaultSize, String defaultTitle) {
-||||||| expected
-
-    private InventoryType(int defaultSize, /*@NotNull*/ String defaultTitle) {
-        this(defaultSize, defaultTitle, true);
-    }
-=======
 
     // Paper start
     private final net.kyori.adventure.text.Component defaultTitleComponent;
@@ -95,10 +88,8 @@ public enum InventoryType {
         return defaultTitleComponent;
     }
     // Paper end
-    private InventoryType(int defaultSize, /*@NotNull*/ String defaultTitle) {
-        this(defaultSize, defaultTitle, true);
-    }
->>>>>>> replacement
+
+    private InventoryType(int defaultSize, String defaultTitle) {
         size = defaultSize;
         title = defaultTitle;
         this.defaultTitleComponent = net.kyori.adventure.text.Component.text(defaultTitle); // Paper - Adventure

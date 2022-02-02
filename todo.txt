@@ -1,12 +1,3 @@
-NachoSpigot-API/src/main/java/org/bukkit/entity/minecart/CommandMinecart.java
-NachoSpigot-API/src/main/java/org/bukkit/event/block/SignChangeEvent.java
-NachoSpigot-API/src/main/java/org/bukkit/event/entity/PlayerDeathEvent.java
-NachoSpigot-API/src/main/java/org/bukkit/event/inventory/InventoryType.java
-NachoSpigot-API/src/main/java/org/bukkit/event/player/AsyncPlayerPreLoginEvent.java
-NachoSpigot-API/src/main/java/org/bukkit/event/player/PlayerEvent.java
-NachoSpigot-API/src/main/java/org/bukkit/event/player/PlayerJoinEvent.java
-NachoSpigot-API/src/main/java/org/bukkit/event/player/PlayerKickEvent.java
-NachoSpigot-API/src/main/java/org/bukkit/event/player/PlayerLocaleChangeEvent.java
 NachoSpigot-API/src/main/java/org/bukkit/event/player/PlayerLoginEvent.java
 NachoSpigot-API/src/main/java/org/bukkit/event/player/PlayerPreLoginEvent.java
 NachoSpigot-API/src/main/java/org/bukkit/event/player/PlayerQuitEvent.java
