@@ -7,6 +7,7 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.util.CachedServerIcon;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Called when a server list ping is coming in. Displayed players can be
@@ -20,17 +21,9 @@ public class ServerListPingEvent extends ServerEvent implements Iterable<Player>
     private final int numPlayers;
     private int maxPlayers;
 
-<<<<<<< found
+    @Deprecated
     public ServerListPingEvent(final InetAddress address, final String motd, final int numPlayers, final int maxPlayers) {
         super(); // Paper - Is this event being fired async?
-||||||| expected
-    public ServerListPingEvent(@NotNull final InetAddress address, @NotNull final String motd, final int numPlayers, final int maxPlayers) {
-        super(true);
-=======
-    @Deprecated // Paper
-    public ServerListPingEvent(@NotNull final InetAddress address, @NotNull final String motd, final int numPlayers, final int maxPlayers) {
-        super(true);
->>>>>>> replacement
         Validate.isTrue(numPlayers >= 0, "Cannot have negative number of players online", numPlayers);
         this.address = address;
         this.motd = org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(motd); // Paper
@@ -42,25 +35,15 @@ public class ServerListPingEvent extends ServerEvent implements Iterable<Player>
      * This constructor is intended for implementations that provide the
      * {@link #iterator()} method, thus provided the {@link #getNumPlayers()}
      * count.
-     * 
+     *
      * @param address the address of the pinger
      * @param motd the message of the day
      * @param maxPlayers the max number of players
      * @deprecated in favour of {@link #ServerListPingEvent(java.net.InetAddress, net.kyori.adventure.text.Component, int)}
-<<<<<<< found
-     */
-    protected ServerListPingEvent(final InetAddress address, final String motd, final int maxPlayers) {
-        super(); // Paper - Is this event being fired async?
-||||||| expected
-     */
-    protected ServerListPingEvent(@NotNull final InetAddress address, @NotNull final String motd, final int maxPlayers) {
-        super(true);
-=======
      */
     @Deprecated // Paper
-    protected ServerListPingEvent(@NotNull final InetAddress address, @NotNull final String motd, final int maxPlayers) {
-        super(true);
->>>>>>> replacement
+    protected ServerListPingEvent(final InetAddress address, final String motd, final int maxPlayers) {
+        super(); // Paper - Is this event being fired async?
         this.numPlayers = MAGIC_PLAYER_COUNT;
         this.address = address;
         this.motd = org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(motd); // Paper
@@ -85,7 +68,7 @@ public class ServerListPingEvent extends ServerEvent implements Iterable<Player>
      * @param maxPlayers the max number of players
      */
     protected ServerListPingEvent(@NotNull final InetAddress address, @NotNull final net.kyori.adventure.text.Component motd, final int maxPlayers) {
-        super(true);
+        super(); // Paper - Is this event being fired async?
         this.numPlayers = MAGIC_PLAYER_COUNT;
         this.address = address;
         this.motd = motd;
@@ -134,18 +117,10 @@ public class ServerListPingEvent extends ServerEvent implements Iterable<Player>
      *
      * @param motd the message of the day
      * @deprecated in favour of {@link #motd(net.kyori.adventure.text.Component)}
-<<<<<<< found
-     */
-    public void setMotd(String motd) {
-||||||| expected
-     */
-    public void setMotd(@NotNull String motd) {
-=======
      */
     @Deprecated // Paper
-    public void setMotd(@NotNull String motd) {
+    public void setMotd(String motd) {
         this.motd = org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(motd); // Paper
->>>>>>> replacement
     }
 
     /**

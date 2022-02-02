@@ -7,6 +7,7 @@ import java.util.Set;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This type represents the storage mechanism for auxiliary item data.
@@ -14,6 +15,7 @@ import org.bukkit.inventory.ItemFlag;
  * An implementation will handle the creation and application for ItemMeta.
  * This class should not be implemented by a plugin in a live environment.
  */
+@SuppressWarnings({"UnusedReturnValue", "unused", "SpellCheckingInspection"}) // Nacho
 public interface ItemMeta extends Cloneable, ConfigurationSerializable {
 
     /**
@@ -49,16 +51,8 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable {
      *
      * @return the display name that is set
      * @deprecated in favour of {@link #displayName()}
-<<<<<<< found
-     */
-||||||| expected
-     */
-    @NotNull
-=======
      */
     @Deprecated // Paper
-    @NotNull
->>>>>>> replacement
     String getDisplayName();
 
     /**
@@ -66,17 +60,9 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable {
      *
      * @param name the name to set
      * @deprecated in favour of {@link #displayName(net.kyori.adventure.text.Component)}
-<<<<<<< found
-     */
-    void setDisplayName(String name);
-||||||| expected
-     */
-    void setDisplayName(@Nullable String name);
-=======
      */
     @Deprecated // Paper
-    void setDisplayName(@Nullable String name);
->>>>>>> replacement
+    void setDisplayName(String name);
 
     /**
      * Checks for existence of lore.
@@ -102,7 +88,6 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable {
      */
     void lore(final @Nullable List<net.kyori.adventure.text.Component> lore);
     // Paper end
-
     /**
      * Gets the lore that is set.
      * <p>
@@ -111,16 +96,8 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable {
      * 
      * @return a list of lore that is set
      * @deprecated in favour of {@link #lore()}
-<<<<<<< found
-     */
-||||||| expected
-     */
-    @Nullable
-=======
      */
     @Deprecated // Paper
-    @Nullable
->>>>>>> replacement
     List<String> getLore();
 
     /**
@@ -129,17 +106,9 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable {
      *
      * @param lore the lore that will be set
      * @deprecated in favour of {@link #lore(List)}
-<<<<<<< found
-     */
-    void setLore(List<String> lore);
-||||||| expected
-     */
-    void setLore(@Nullable List<String> lore);
-=======
      */
     @Deprecated // Paper
-    void setLore(@Nullable List<String> lore);
->>>>>>> replacement
+    void setLore(List<String> lore);
 
     /**
      * Checks for the existence of any enchantments.
@@ -231,11 +200,10 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable {
      */
     boolean hasItemFlag(ItemFlag flag);
 
-    @SuppressWarnings("javadoc")
     ItemMeta clone();
 
     // Spigot start
-    public class Spigot
+    class Spigot
     {
 
         /**

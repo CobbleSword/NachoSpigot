@@ -6,6 +6,7 @@ import org.bukkit.Server;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * An instance of the ItemFactory can be obtained with {@link

@@ -2,6 +2,7 @@ package org.bukkit.command;
 
 import org.bukkit.Server;
 import org.bukkit.permissions.Permissible;
+import org.jetbrains.annotations.NotNull;
 
 public interface CommandSender extends net.kyori.adventure.audience.Audience, Permissible {
 
@@ -11,7 +12,7 @@ public interface CommandSender extends net.kyori.adventure.audience.Audience, Pe
      * @param message Message to be displayed
      * @see #sendMessage(net.kyori.adventure.text.Component)
      */
-    public void sendMessage(@NotNull String message);
+    void sendMessage(@NotNull String message);
 
     /**
      * Sends this sender multiple messages
@@ -19,21 +20,21 @@ public interface CommandSender extends net.kyori.adventure.audience.Audience, Pe
      * @param messages An array of messages to be displayed
      * @see #sendMessage(net.kyori.adventure.text.Component)
      */
-    public void sendMessage(@NotNull String[] messages);
+    void sendMessage(@NotNull String[] messages);
 
     /**
      * Returns the server instance that this command is running on
      *
      * @return Server instance
      */
-    public Server getServer();
+    Server getServer();
 
     /**
      * Gets the name of this command sender
      *
      * @return Name of the sender
      */
-    public String getName();
+    String getName();
 
     // Paper start
     /**
@@ -69,8 +70,9 @@ public interface CommandSender extends net.kyori.adventure.audience.Audience, Pe
      *
      * @return Name of the sender
      */
-    public @NotNull net.kyori.adventure.text.Component name();
+    @NotNull net.kyori.adventure.text.Component name();
 
+    @SuppressWarnings("deprecation")
     @Override
     default void sendMessage(final @NotNull net.kyori.adventure.identity.Identity identity, final @NotNull net.kyori.adventure.text.Component message, final @NotNull net.kyori.adventure.audience.MessageType type) {
         this.sendMessage(org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().serialize(message));

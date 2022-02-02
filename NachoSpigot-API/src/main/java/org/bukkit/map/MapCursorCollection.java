@@ -7,8 +7,9 @@ import java.util.List;
  * Represents all the map cursors on a {@link MapCanvas}. Like MapCanvas, a
  * MapCursorCollection is linked to a specific {@link MapRenderer}.
  */
+@SuppressWarnings({"DeprecatedIsStillUsed", "unused", "UnusedReturnValue"})
 public final class MapCursorCollection {
-    private List<MapCursor> cursors = new ArrayList<MapCursor>();
+    private final List<MapCursor> cursors = new ArrayList<>();
 
     /**
      * Get the amount of cursors in this collection.
@@ -91,30 +92,5 @@ public final class MapCursorCollection {
     @Deprecated
     public MapCursor addCursor(int x, int y, byte direction, byte type, boolean visible) {
         return addCursor(new MapCursor((byte) x, (byte) y, direction, type, visible));
-<<<<<<< found
     }
-
-||||||| expected
-    }
-=======
-    }
-    // Paper start
-    /**
-     * Add a cursor to the collection.
-     *
-     * @param x The x coordinate, from -128 to 127.
-     * @param y The y coordinate, from -128 to 127.
-     * @param direction The facing of the cursor, from 0 to 15.
-     * @param type The type (color/style) of the map cursor.
-     * @param visible Whether the cursor is visible.
-     * @param caption banner caption
-     * @return The newly added MapCursor.
-     * @deprecated Magic value
-     */
-    @Deprecated
-    public @NotNull MapCursor addCursor(int x, int y, byte direction, byte type, boolean visible, @Nullable net.kyori.adventure.text.Component caption) {
-        return addCursor(new MapCursor((byte) x, (byte) y, direction, type, visible, caption));
-    }
-    // Paper end
->>>>>>> replacement
 }

@@ -63,6 +63,7 @@ import org.bukkit.plugin.messaging.StandardMessenger;
 import org.bukkit.scoreboard.Scoreboard;
 // PaperSpigot start
 import com.destroystokyo.paper.Title;
+import org.jetbrains.annotations.NotNull;
 // PaperSpigot end
 
 @DelegateDeserialization(CraftOfflinePlayer.class)
@@ -149,7 +150,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
     }
 
     @Override
-    public void sendMessage(String message) {
+    public void sendMessage(@NotNull String message) {
         if (!conversationTracker.isConversingModaly()) {
             this.sendRawMessage(message);
         }

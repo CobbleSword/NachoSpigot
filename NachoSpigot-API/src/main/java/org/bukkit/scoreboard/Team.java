@@ -2,14 +2,18 @@ package org.bukkit.scoreboard;
 
 import java.util.Set;
 
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A team on a scoreboard that has a common display theme and other
  * properties. This team is only relevant to the display of the associated
  * {@link #getScoreboard() scoreboard}.
  */
+@SuppressWarnings({"unused", "SpellCheckingInspection"})
 public interface Team {
 
     /**
@@ -102,9 +106,7 @@ public interface Team {
      *
      * @return Team display name
      * @throws IllegalStateException if this team has been unregistered
-     * @deprecated in favour of {@link #displayName()}
      */
-    @Deprecated // Paper
     String getDisplayName() throws IllegalStateException;
 
     /**
@@ -114,27 +116,15 @@ public interface Team {
      * @throws IllegalArgumentException if displayName is longer than 32
      *     characters.
      * @throws IllegalStateException if this team has been unregistered
-     * @deprecated in favour of {@link #displayName(net.kyori.adventure.text.Component)}
-<<<<<<< found
      */
     void setDisplayName(String displayName) throws IllegalStateException, IllegalArgumentException;
-||||||| expected
-     */
-    void setDisplayName(@NotNull String displayName) throws IllegalStateException, IllegalArgumentException;
-=======
-     */
-    @Deprecated // Paper
-    void setDisplayName(@NotNull String displayName) throws IllegalStateException, IllegalArgumentException;
->>>>>>> replacement
 
     /**
      * Gets the prefix prepended to the display of entries on this team.
      *
      * @return Team prefix
      * @throws IllegalStateException if this team has been unregistered
-     * @deprecated in favour of {@link #prefix()}
      */
-    @Deprecated // Paper
     String getPrefix() throws IllegalStateException;
 
     /**
@@ -145,27 +135,15 @@ public interface Team {
      * @throws IllegalArgumentException if prefix is longer than 16
      *     characters
      * @throws IllegalStateException if this team has been unregistered
-     * @deprecated in favour of {@link #prefix(net.kyori.adventure.text.Component)}
-<<<<<<< found
      */
     void setPrefix(String prefix) throws IllegalStateException, IllegalArgumentException;
-||||||| expected
-     */
-    void setPrefix(@NotNull String prefix) throws IllegalStateException, IllegalArgumentException;
-=======
-     */
-    @Deprecated // Paper
-    void setPrefix(@NotNull String prefix) throws IllegalStateException, IllegalArgumentException;
->>>>>>> replacement
 
     /**
      * Gets the suffix appended to the display of entries on this team.
      *
      * @return the team's current suffix
      * @throws IllegalStateException if this team has been unregistered
-     * @deprecated in favour of {@link #suffix()}
      */
-    @Deprecated // Paper
     String getSuffix() throws IllegalStateException;
 
     /**
@@ -176,18 +154,8 @@ public interface Team {
      * @throws IllegalArgumentException if suffix is longer than 16
      *     characters
      * @throws IllegalStateException if this team has been unregistered
-     * @deprecated in favour of {@link #suffix(net.kyori.adventure.text.Component)}
-<<<<<<< found
      */
     void setSuffix(String suffix) throws IllegalStateException, IllegalArgumentException;
-||||||| expected
-     */
-    void setSuffix(@NotNull String suffix) throws IllegalStateException, IllegalArgumentException;
-=======
-     */
-    @Deprecated // Paper
-    void setSuffix(@NotNull String suffix) throws IllegalStateException, IllegalArgumentException;
->>>>>>> replacement
 
     /**
      * Gets the team friendly fire state
@@ -254,7 +222,7 @@ public interface Team {
      * Gets the Set of entries on the team
      *
      * @return entries on the team
-     * @throws IllegalStateException if this entries has been unregistered\
+     * @throws IllegalStateException if the entries has been unregistered
      */
     Set<String> getEntries() throws IllegalStateException;
 
@@ -326,25 +294,12 @@ public interface Team {
      * Unregisters this team from the Scoreboard
      *
      * @throws IllegalStateException if this team has been unregistered
-     * @deprecated in favour of {@link #color()}
-<<<<<<< found
      */
     void unregister() throws IllegalStateException;
-||||||| expected
-     */
-    @NotNull
-    ChatColor getColor() throws IllegalStateException;
-=======
-     */
-    @NotNull
-    @Deprecated // Paper
-    ChatColor getColor() throws IllegalStateException;
->>>>>>> replacement
 
     /**
      * Checks to see if the specified player is a member of this team.
      *
-<<<<<<< found
      * @param player the player to search for
      * @return true if the player is a member of this team
      * @throws IllegalArgumentException if player is null
@@ -352,6 +307,7 @@ public interface Team {
      * @deprecated Teams can contain entries that aren't players
      * @see #hasEntry(String)
      */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     @Deprecated
     boolean hasPlayer(OfflinePlayer player) throws IllegalArgumentException, IllegalStateException;
     /**
@@ -364,20 +320,3 @@ public interface Team {
      */
     boolean hasEntry(String entry) throws IllegalArgumentException,IllegalStateException;
 }
-||||||| expected
-     * @param color new color, must be non-null. Use {@link ChatColor#RESET} for
-     * no color
-     */
-    void setColor(@NotNull ChatColor color);
-
-    /**
-=======
-     * @param color new color, must be non-null. Use {@link ChatColor#RESET} for
-     * no color
-     * @deprecated in favour of {@link #color(net.kyori.adventure.text.format.NamedTextColor)}
-     */
-    @Deprecated // Paper
-    void setColor(@NotNull ChatColor color);
-
-    /**
->>>>>>> replacement

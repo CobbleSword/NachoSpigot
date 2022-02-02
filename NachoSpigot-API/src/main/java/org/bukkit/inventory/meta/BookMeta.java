@@ -1,37 +1,17 @@
 package org.bukkit.inventory.meta;
-<<<<<<< found
 
 import java.util.List;
 
-||||||| expected
-
-import java.util.List;
-import net.md_5.bungee.api.chat.BaseComponent;
-=======
-
-import java.util.List;
-
-import net.kyori.adventure.inventory.Book;
-import net.md_5.bungee.api.chat.BaseComponent;
->>>>>>> replacement
-<<<<<<< found
 import org.bukkit.Material;
-||||||| expected
-import org.bukkit.Material;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-=======
-import org.bukkit.Material;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.common.returnsreceiver.qual.This;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
->>>>>>> replacement
 
 /**
  * Represents a book ({@link Material#BOOK_AND_QUILL} or {@link
  * Material#WRITTEN_BOOK}) that can have a title, an author, and pages.
  */
+@SuppressWarnings({"unused", "NonExtendableApiUsage", "NullableProblems"})
 public interface BookMeta extends ItemMeta, net.kyori.adventure.inventory.Book { // Paper
 
     /**
@@ -101,7 +81,7 @@ public interface BookMeta extends ItemMeta, net.kyori.adventure.inventory.Book {
      *
      * @return the title of the book
      */
-    @Nullable
+    @NotNull
     @Override
     net.kyori.adventure.text.Component title();
 
@@ -125,7 +105,7 @@ public interface BookMeta extends ItemMeta, net.kyori.adventure.inventory.Book {
      *
      * @return the author of the book
      */
-    @Nullable
+    @NotNull
     @Override
     net.kyori.adventure.text.Component author();
 
@@ -186,6 +166,7 @@ public interface BookMeta extends ItemMeta, net.kyori.adventure.inventory.Book {
 
         @NotNull
         @Override
+        @SuppressWarnings("NullableProblems")
         BookMetaBuilder pages(@NotNull net.kyori.adventure.text.Component... pages);
 
         @NotNull
@@ -198,9 +179,8 @@ public interface BookMeta extends ItemMeta, net.kyori.adventure.inventory.Book {
     }
 
     @Override
-    @NonNull
+    @NotNull
     BookMetaBuilder toBuilder();
-
     // Paper end
 
     /**
@@ -210,6 +190,7 @@ public interface BookMeta extends ItemMeta, net.kyori.adventure.inventory.Book {
      * @return the page from the book
      * @deprecated in favour of {@link #page(int)}
      */
+    @NotNull
     @Deprecated // Paper
     String getPage(int page);
 
@@ -223,17 +204,9 @@ public interface BookMeta extends ItemMeta, net.kyori.adventure.inventory.Book {
      * @param page the page number to set
      * @param data the data to set for that page
      * @deprecated in favour of {@link #page(int, net.kyori.adventure.text.Component)}
-<<<<<<< found
      */
+    @Deprecated
     void setPage(int page, String data);
-||||||| expected
-     */
-    void setPage(int page, @NotNull String data);
-=======
-     */
-    @Deprecated // Paper
-    void setPage(int page, @NotNull String data);
->>>>>>> replacement
 
     /**
      * Gets all the pages in the book.
@@ -241,6 +214,7 @@ public interface BookMeta extends ItemMeta, net.kyori.adventure.inventory.Book {
      * @return list of all the pages in the book
      * @deprecated in favour of {@link #pages()}
      */
+    @NotNull
     @Deprecated // Paper
     List<String> getPages();
 
@@ -250,17 +224,9 @@ public interface BookMeta extends ItemMeta, net.kyori.adventure.inventory.Book {
      *
      * @param pages A list of pages to set the book to use
      * @deprecated in favour of {@link #pages(List)}
-<<<<<<< found
-     */
-    void setPages(List<String> pages);
-||||||| expected
-     */
-    void setPages(@NotNull List<String> pages);
-=======
      */
     @Deprecated // Paper
-    void setPages(@NotNull List<String> pages);
->>>>>>> replacement
+    void setPages(List<String> pages);
 
     /**
      * Clears the existing book pages, and sets the book to use the provided
@@ -268,17 +234,9 @@ public interface BookMeta extends ItemMeta, net.kyori.adventure.inventory.Book {
      *
      * @param pages A list of strings, each being a page
      * @deprecated in favour of {@link #pages(net.kyori.adventure.text.Component...)}
-<<<<<<< found
-     */
-    void setPages(String... pages);
-||||||| expected
-     */
-    void setPages(@NotNull String... pages);
-=======
      */
     @Deprecated // Paper
-    void setPages(@NotNull String... pages);
->>>>>>> replacement
+    void setPages(String... pages);
 
     /**
      * Adds new pages to the end of the book. Up to a maximum of 50 pages with
@@ -286,17 +244,9 @@ public interface BookMeta extends ItemMeta, net.kyori.adventure.inventory.Book {
      *
      * @param pages A list of strings, each being a page
      * @deprecated in favour of {@link #addPages(net.kyori.adventure.text.Component...)}
-<<<<<<< found
      */
+    @Deprecated
     void addPage(String... pages);
-||||||| expected
-     */
-    void addPage(@NotNull String... pages);
-=======
-     */
-    @Deprecated // Paper
-    void addPage(@NotNull String... pages);
->>>>>>> replacement
 
     /**
      * Gets the number of pages in the book.
@@ -307,127 +257,3 @@ public interface BookMeta extends ItemMeta, net.kyori.adventure.inventory.Book {
 
     BookMeta clone();
 }
-<<<<<<< found
-||||||| expected
-         *
-         * @param page the page number to get
-         * @return the page from the book
-         */
-        @NotNull
-        public BaseComponent[] getPage(int page) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-=======
-         *
-         * @param page the page number to get
-         * @return the page from the book
-         * @deprecated in favour of {@link #page(int)}
-         */
-        @NotNull
-        @Deprecated // Paper
-        public BaseComponent[] getPage(int page) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
->>>>>>> replacement
-<<<<<<< found
-||||||| expected
-         *
-         * @param page the page number to set
-         * @param data the data to set for that page
-         */
-        public void setPage(int page, @Nullable BaseComponent... data) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-=======
-         *
-         * @param page the page number to set
-         * @param data the data to set for that page
-         * @deprecated in favour of {@link #page(int, net.kyori.adventure.text.Component)}
-         */
-        @Deprecated // Paper
-        public void setPage(int page, @Nullable BaseComponent... data) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
->>>>>>> replacement
-<<<<<<< found
-||||||| expected
-         * Gets all the pages in the book.
-         *
-         * @return list of all the pages in the book
-         */
-        @NotNull
-        public List<BaseComponent[]> getPages() {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-=======
-         * Gets all the pages in the book.
-         *
-         * @return list of all the pages in the book
-         * @deprecated in favour of {@link #pages()}
-         */
-        @NotNull
-        @Deprecated // Paper
-        public List<BaseComponent[]> getPages() {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
->>>>>>> replacement
-<<<<<<< found
-||||||| expected
-         * pages. Maximum 50 pages with 256 characters per page.
-         *
-         * @param pages A list of pages to set the book to use
-         */
-        public void setPages(@NotNull List<BaseComponent[]> pages) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-=======
-         * pages. Maximum 50 pages with 256 characters per page.
-         *
-         * @param pages A list of pages to set the book to use
-         * @deprecated in favour of {@link #pages(java.util.List)}
-         */
-        @Deprecated // Paper
-        public void setPages(@NotNull List<BaseComponent[]> pages) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
->>>>>>> replacement
-<<<<<<< found
-||||||| expected
-         * pages. Maximum 50 pages with 256 characters per page.
-         *
-         * @param pages A list of component arrays, each being a page
-         */
-        public void setPages(@NotNull BaseComponent[]... pages) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-=======
-         * pages. Maximum 50 pages with 256 characters per page.
-         *
-         * @param pages A list of component arrays, each being a page
-         * @deprecated in favour of {@link #pages(net.kyori.adventure.text.Component...)}
-         */
-        @Deprecated // Paper
-        public void setPages(@NotNull BaseComponent[]... pages) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
->>>>>>> replacement
-<<<<<<< found
-||||||| expected
-         * with 256 characters per page.
-         *
-         * @param pages A list of component arrays, each being a page
-         */
-        public void addPage(@NotNull BaseComponent[]... pages) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-=======
-         * with 256 characters per page.
-         *
-         * @param pages A list of component arrays, each being a page
-         * @deprecated in favour of {@link #addPages(net.kyori.adventure.text.Component...)}
-         */
-        @Deprecated // Paper
-        public void addPage(@NotNull BaseComponent[]... pages) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
->>>>>>> replacement

@@ -1,6 +1,7 @@
 package org.bukkit.enchantments;
 
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A simple wrapper for ease of selecting {@link Enchantment}s

@@ -2,6 +2,8 @@ package org.bukkit.event.player;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Called when a player leaves a server
@@ -9,22 +11,14 @@ import org.bukkit.event.HandlerList;
 public class PlayerQuitEvent extends PlayerEvent {
     private static final HandlerList handlers = new HandlerList();
     private net.kyori.adventure.text.Component quitMessage; // Paper
-<<<<<<< found
 
+    @Deprecated
     public PlayerQuitEvent(final Player who, final String quitMessage) {
-||||||| expected
-
-    public PlayerQuitEvent(@NotNull final Player who, @Nullable final String quitMessage) {
-=======
-
-    @Deprecated // Paper
-    public PlayerQuitEvent(@NotNull final Player who, @Nullable final String quitMessage) {
         super(who);
         this.quitMessage = quitMessage != null ? org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(quitMessage) : null; // Paper
     }
     // Paper start
     public PlayerQuitEvent(@NotNull final Player who, @Nullable final net.kyori.adventure.text.Component quitMessage) {
->>>>>>> replacement
         super(who);
         this.quitMessage = quitMessage;
     }
@@ -54,6 +48,7 @@ public class PlayerQuitEvent extends PlayerEvent {
      * @return string quit message
      * @deprecated in favour of {@link #quitMessage()}
      */
+    @Nullable
     @Deprecated // Paper
     public String getQuitMessage() {
         return this.quitMessage == null ? null : org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().serialize(this.quitMessage); // Paper
@@ -64,18 +59,10 @@ public class PlayerQuitEvent extends PlayerEvent {
      *
      * @param quitMessage quit message
      * @deprecated in favour of {@link #quitMessage(net.kyori.adventure.text.Component)}
-<<<<<<< found
-     */
-    public void setQuitMessage(String quitMessage) {
-||||||| expected
-     */
-    public void setQuitMessage(@Nullable String quitMessage) {
-=======
      */
     @Deprecated // Paper
-    public void setQuitMessage(@Nullable String quitMessage) {
+    public void setQuitMessage(String quitMessage) {
         this.quitMessage = quitMessage != null ? org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(quitMessage) : null; // Paper
->>>>>>> replacement
     }
 
     @Override

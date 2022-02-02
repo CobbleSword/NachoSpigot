@@ -1,5 +1,6 @@
-
 package org.bukkit.command;
+
+import org.jetbrains.annotations.NotNull;
 
 public interface ProxiedCommandSender extends CommandSender, net.kyori.adventure.audience.ForwardingAudience.Single { // Paper
 

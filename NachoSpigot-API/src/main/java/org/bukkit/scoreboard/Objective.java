@@ -1,6 +1,8 @@
 package org.bukkit.scoreboard;
 
 import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * An objective on a scoreboard that can show scores specific to entries. This
@@ -12,7 +14,7 @@ public interface Objective {
     /**
      * Gets the name of this Objective
      *
-     * @return this objective'ss name
+     * @return this objective's name
      * @throws IllegalStateException if this objective has been unregistered
      */
     String getName() throws IllegalStateException;
@@ -55,17 +57,10 @@ public interface Objective {
      * @throws IllegalArgumentException if displayName is longer than 32
      *     characters.
      * @deprecated in favour of {@link #displayName(net.kyori.adventure.text.Component)}
-<<<<<<< found
      */
-    void setDisplayName(String displayName) throws IllegalStateException, IllegalArgumentException;
-||||||| expected
-     */
-    void setDisplayName(@NotNull String displayName) throws IllegalStateException, IllegalArgumentException;
-=======
-     */
+    @SuppressWarnings("NullableProblems")
     @Deprecated // Paper
     void setDisplayName(@NotNull String displayName) throws IllegalStateException, IllegalArgumentException;
->>>>>>> replacement
 
     /**
      * Gets the criteria this objective tracks.
@@ -114,6 +109,7 @@ public interface Objective {
      * @return the display slot for this objective, or null if not displayed
      * @throws IllegalStateException if this objective has been unregistered
      */
+    @SuppressWarnings("unused")
     DisplaySlot getDisplaySlot() throws IllegalStateException;
 
     /**

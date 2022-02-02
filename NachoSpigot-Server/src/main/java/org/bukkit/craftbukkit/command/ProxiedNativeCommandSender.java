@@ -11,6 +11,7 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 public class ProxiedNativeCommandSender implements ProxiedCommandSender {
 
@@ -39,7 +40,7 @@ public class ProxiedNativeCommandSender implements ProxiedCommandSender {
     }
 
     @Override
-    public void sendMessage(String message) {
+    public void sendMessage(@NotNull String message) {
         getCaller().sendMessage(message);
     }
 

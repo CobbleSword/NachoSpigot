@@ -7,6 +7,7 @@ import net.minecraft.server.IChatBaseComponent;
 import org.bukkit.block.Block;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.craftbukkit.util.CraftChatMessage;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents input from a command block
@@ -23,7 +24,7 @@ public class CraftBlockCommandSender extends ServerCommandSender implements Bloc
         return commandBlock.getWorld().getWorld().getBlockAt(commandBlock.getChunkCoordinates().getX(), commandBlock.getChunkCoordinates().getY(), commandBlock.getChunkCoordinates().getZ());
     }
 
-    public void sendMessage(String message) {
+    public void sendMessage(@NotNull String message) {
         for (IChatBaseComponent component : CraftChatMessage.fromString(message)) {
             commandBlock.sendMessage(component);
         }

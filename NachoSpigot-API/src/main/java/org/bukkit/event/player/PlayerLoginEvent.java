@@ -4,6 +4,7 @@ import java.net.InetAddress;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Stores details for players attempting to log in
@@ -79,16 +80,9 @@ public class PlayerLoginEvent extends PlayerEvent {
      * @param result The result status for this event
      * @param message The message to be displayed if result denies login
      * @deprecated in favour of {@link #PlayerLoginEvent(Player, String, InetAddress, Result, net.kyori.adventure.text.Component, InetAddress)}
-<<<<<<< found
-     */
-    public PlayerLoginEvent(final Player player, String hostname, final InetAddress address, final Result result, final String message, final InetAddress realAddress) { // Spigot
-||||||| expected
-     */
-    public PlayerLoginEvent(@NotNull final Player player, @NotNull String hostname, @NotNull final InetAddress address, @NotNull final Result result, @NotNull final String message, @NotNull final InetAddress realAddress) { // Spigot
-=======
      */
     @Deprecated // Paper
-    public PlayerLoginEvent(@NotNull final Player player, @NotNull String hostname, @NotNull final InetAddress address, @NotNull final Result result, @NotNull final String message, @NotNull final InetAddress realAddress) { // Spigot
+    public PlayerLoginEvent(final Player player, String hostname, final InetAddress address, final Result result, final String message, final InetAddress realAddress) { // Spigot
         this(player, hostname, address, realAddress); // Spigot
         this.result = result;
         this.message = org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(message); // Paper
@@ -107,7 +101,6 @@ public class PlayerLoginEvent extends PlayerEvent {
      * @param realAddress the actual, unspoofed connecting address
      */
     public PlayerLoginEvent(@NotNull final Player player, @NotNull String hostname, @NotNull final InetAddress address, @NotNull final Result result, @NotNull final net.kyori.adventure.text.Component message, @NotNull final InetAddress realAddress) { // Spigot
->>>>>>> replacement
         this(player, hostname, address, realAddress); // Spigot
         this.result = result;
         this.message = message;
@@ -169,9 +162,10 @@ public class PlayerLoginEvent extends PlayerEvent {
      * @return Current kick message
      * @deprecated in favour of {@link #kickMessage()}
      */
+    @NotNull
     @Deprecated // Paper
     public String getKickMessage() {
-        return org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().serialize(this.message); // Paper
+        return org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().serialize(this.message);
     }
 
     /**
@@ -179,18 +173,10 @@ public class PlayerLoginEvent extends PlayerEvent {
      *
      * @param message New kick message
      * @deprecated in favour of {@link #kickMessage(net.kyori.adventure.text.Component)}
-<<<<<<< found
-     */
-    public void setKickMessage(final String message) {
-||||||| expected
-     */
-    public void setKickMessage(@NotNull final String message) {
-=======
      */
     @Deprecated // Paper
-    public void setKickMessage(@NotNull final String message) {
+    public void setKickMessage(final String message) {
         this.message = org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(message); // Paper
->>>>>>> replacement
     }
 
     /**
@@ -217,16 +203,9 @@ public class PlayerLoginEvent extends PlayerEvent {
      * @param result New result for disallowing the player
      * @param message Kick message to display to the user
      * @deprecated in favour of {@link #disallow(Result, net.kyori.adventure.text.Component)}
-<<<<<<< found
-     */
-    public void disallow(final Result result, final String message) {
-||||||| expected
-     */
-    public void disallow(@NotNull final Result result, @NotNull final String message) {
-=======
      */
     @Deprecated // Paper start
-    public void disallow(@NotNull final Result result, @NotNull final String message) {
+    public void disallow(final Result result, final String message) {
         this.result = result;
         this.message = org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(message);
     }
@@ -238,7 +217,6 @@ public class PlayerLoginEvent extends PlayerEvent {
      */
     public void disallow(@NotNull final Result result, @NotNull final net.kyori.adventure.text.Component message) {
         // Paper end
->>>>>>> replacement
         this.result = result;
         this.message = message;
     }

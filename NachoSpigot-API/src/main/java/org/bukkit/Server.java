@@ -920,7 +920,7 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      *
      * @return the monster spawn limit
      */
-    int getMonsterSpawnLimit()
+    int getMonsterSpawnLimit();
 
     /**
      * Gets user-specified limit for number of animals that can spawn in a

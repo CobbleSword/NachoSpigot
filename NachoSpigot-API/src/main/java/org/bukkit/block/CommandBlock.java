@@ -1,5 +1,8 @@
 package org.bukkit.block;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 public interface CommandBlock extends BlockState {
 
     /**
@@ -9,7 +12,7 @@ public interface CommandBlock extends BlockState {
      *
      * @return Command that this CommandBlock will run when powered.
      */
-    public String getCommand();
+    String getCommand();
 
     /**
      * Sets the command that this CommandBlock will run when powered.
@@ -18,7 +21,7 @@ public interface CommandBlock extends BlockState {
      *
      * @param command Command that this CommandBlock will run when powered.
      */
-    public void setCommand(String command);
+    void setCommand(String command);
 
     /**
      * Gets the name of this CommandBlock.  The name is used with commands
@@ -29,8 +32,7 @@ public interface CommandBlock extends BlockState {
      * @deprecated in favour of {@link #name()}
      */
     @Deprecated // Paper
-    @NotNull
-    public String getName();
+    @NotNull String getName();
 
     /**
      * Sets the name of this CommandBlock.  The name is used with commands
@@ -41,7 +43,7 @@ public interface CommandBlock extends BlockState {
      * @deprecated in favour of {@link #name(net.kyori.adventure.text.Component)}
      */
     @Deprecated // Paper
-    public void setName(@Nullable String name);
+    void setName(@Nullable String name);
 
     // Paper start
     /**
@@ -51,7 +53,7 @@ public interface CommandBlock extends BlockState {
      *
      * @return Name of this CommandBlock.
      */
-    public @NotNull net.kyori.adventure.text.Component name();
+    @NotNull net.kyori.adventure.text.Component name();
 
     /**
      * Sets the name of this CommandBlock.  The name is used with commands
@@ -60,6 +62,6 @@ public interface CommandBlock extends BlockState {
      *
      * @param name New name for this CommandBlock.
      */
-    public void name(@Nullable net.kyori.adventure.text.Component name);
+    void name(@Nullable net.kyori.adventure.text.Component name);
     // Paper end
 }

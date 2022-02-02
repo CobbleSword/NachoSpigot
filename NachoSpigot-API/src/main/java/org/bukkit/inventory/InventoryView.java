@@ -3,6 +3,7 @@ package org.bukkit.inventory;
 import org.bukkit.GameMode;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a view linking two inventories and a single player (whose
@@ -12,11 +13,13 @@ import org.bukkit.event.inventory.InventoryType;
  * contracts of certain methods, there's no guarantee that the game will work
  * as it should.
  */
+@SuppressWarnings("unused")
 public abstract class InventoryView {
     public final static int OUTSIDE = -999;
     /**
      * Represents various extra properties of certain inventory windows.
      */
+    @SuppressWarnings("NonFinalFieldInEnum")
     public enum Property {
         /**
          * The progress of the down-pointing arrow in a brewing inventory.
@@ -51,7 +54,7 @@ public abstract class InventoryView {
         ENCHANT_BUTTON3(2, InventoryType.ENCHANTING);
         int id;
         InventoryType style;
-        private Property(int id, InventoryType appliesTo) {
+        Property(int id, InventoryType appliesTo) {
             this.id = id;
             style = appliesTo;
         }
@@ -227,16 +230,7 @@ public abstract class InventoryView {
      *
      * @return The title.
      */
-<<<<<<< found
-    public final String getTitle() {
-        return getTopInventory().getTitle();
-    }
-}
-||||||| expected
-    @NotNull
-    public abstract String getTitle();
-}
-=======
+    @SuppressWarnings("deprecation")
     @NotNull
     public /*abstract*/ net.kyori.adventure.text.Component title() {
         return org.bukkit.Bukkit.getUnsafe().legacyComponentSerializer().deserialize(this.getTitle());
@@ -251,6 +245,7 @@ public abstract class InventoryView {
      */
     @Deprecated // Paper
     @NotNull
-    public abstract String getTitle();
+    public final String getTitle() {
+        return getTopInventory().getTitle();
+    }
 }
->>>>>>> replacement

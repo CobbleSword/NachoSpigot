@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CommandBlock;
 import org.bukkit.craftbukkit.CraftWorld;
+import org.jetbrains.annotations.NotNull;
 
 public class CraftCommandBlock extends CraftBlockState implements CommandBlock {
     private final TileEntityCommand commandBlock;
@@ -35,7 +36,7 @@ public class CraftCommandBlock extends CraftBlockState implements CommandBlock {
         this.command = command != null ? command : "";
     }
 
-    public String getName() {
+    public @NotNull String getName() {
         return name;
     }
 

@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.craftbukkit.CraftServer;
+import org.jetbrains.annotations.NotNull;
 
 public class ColouredConsoleSender extends CraftConsoleCommandSender {
     private final Terminal terminal;
@@ -47,7 +48,7 @@ public class ColouredConsoleSender extends CraftConsoleCommandSender {
     }
 
     @Override
-    public void sendMessage(String message) {
+    public void sendMessage(@NotNull String message) {
         if (terminal.isAnsiSupported()) {
             if (!conversationTracker.isConversingModaly()) {
                 String result = message;

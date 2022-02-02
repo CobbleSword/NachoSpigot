@@ -25,6 +25,7 @@ import org.bukkit.permissions.ServerOperator;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 import com.destroystokyo.paper.PaperConfig;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class CraftEntity implements org.bukkit.entity.Entity {
     private static final PermissibleBase perm = new PermissibleBase(new ServerOperator() {
@@ -478,7 +479,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
     }
 
     @Override
-    public void sendMessage(String message) {
+    public void sendMessage(@NotNull String message) {
 
     }
 

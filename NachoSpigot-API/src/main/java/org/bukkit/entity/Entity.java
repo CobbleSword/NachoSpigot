@@ -12,17 +12,13 @@ import java.util.List;
 import java.util.UUID;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a base entity in the world
  */
-<<<<<<< found
-public interface Entity extends Metadatable, CommandSender {
-||||||| expected
-public interface Entity extends Metadatable, CommandSender, Nameable, PersistentDataHolder {
-=======
-public interface Entity extends Metadatable, CommandSender, Nameable, PersistentDataHolder, net.kyori.adventure.text.event.HoverEventSource<net.kyori.adventure.text.event.HoverEvent.ShowEntity>, net.kyori.adventure.sound.Sound.Emitter { // Paper
->>>>>>> replacement
+@SuppressWarnings("unused")
+public interface Entity extends Metadatable, CommandSender, net.kyori.adventure.sound.Sound.Emitter {
 
     /**
      * Gets the entity's current position
@@ -114,9 +110,9 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
      * Returns a list of entities within a bounding box centered around this
      * entity
      *
-     * @param x 1/2 the size of the box along x axis
-     * @param y 1/2 the size of the box along y axis
-     * @param z 1/2 the size of the box along z axis
+     * @param x 1/2 the size of the box along x-axis
+     * @param y 1/2 the size of the box along y-axis
+     * @param z 1/2 the size of the box along z-axis
      * @return {@code List<Entity>} List of entities nearby
      */
     public List<org.bukkit.entity.Entity> getNearbyEntities(double x, double y, double z);
@@ -164,7 +160,7 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
     public boolean isDead();
 
     /**
-     * Returns false if the entity has died or been despawned for some other
+     * Returns false if the entity has died or despawned for some other
      * reason.
      *
      * @return True if valid.
@@ -329,7 +325,7 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
     public String getCustomName();
 
     /**
-     * Sets whether or not to display the mob's custom name client side. The
+     * Sets whether to display the mob's custom name client side. The
      * name will be displayed above the mob similarly to a player.
      * <p>
      * This value has no effect on players, they will always display their
@@ -340,7 +336,7 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
     public void setCustomNameVisible(boolean flag);
 
     /**
-     * Gets whether or not the mob's custom name is displayed client side.
+     * Gets whether the mob's custom name is displayed client side.
      * <p>
      * This value has no effect on players, they will always display their
      * name.
@@ -375,11 +371,5 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
      * @return the team display name
      */
     @NotNull net.kyori.adventure.text.Component teamDisplayName();
-
-    @NotNull
-    @Override
-    default net.kyori.adventure.text.event.HoverEvent<net.kyori.adventure.text.event.HoverEvent.ShowEntity> asHoverEvent(final @NotNull java.util.function.UnaryOperator<net.kyori.adventure.text.event.HoverEvent.ShowEntity> op) {
-        return net.kyori.adventure.text.event.HoverEvent.showEntity(op.apply(net.kyori.adventure.text.event.HoverEvent.ShowEntity.of(this.getType().getKey(), this.getUniqueId(), this.customName())));
-    }
     // Paper end
 }

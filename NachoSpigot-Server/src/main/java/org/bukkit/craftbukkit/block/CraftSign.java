@@ -8,6 +8,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.util.CraftChatMessage;
+import org.jetbrains.annotations.NotNull;
 
 public class CraftSign extends CraftBlockState implements Sign {
     private final TileEntitySign sign;
@@ -43,7 +44,7 @@ public class CraftSign extends CraftBlockState implements Sign {
         return lines[index];
     }
 
-    public void setLine(int index, String line) throws IndexOutOfBoundsException {
+    public void setLine(int index, @NotNull String line) throws IndexOutOfBoundsException {
         lines[index] = line;
     }
 

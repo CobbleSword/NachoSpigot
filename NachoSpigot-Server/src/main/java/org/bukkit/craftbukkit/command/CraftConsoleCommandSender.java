@@ -7,6 +7,7 @@ import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
 import org.bukkit.conversations.ManuallyAbandonedConversationCanceller;
 import org.bukkit.craftbukkit.conversations.ConversationTracker;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents CLI input from a console
@@ -19,7 +20,7 @@ public class CraftConsoleCommandSender extends ServerCommandSender implements Co
         super();
     }
 
-    public void sendMessage(String message) {
+    public void sendMessage(@NotNull String message) {
         sendRawMessage(message);
     }
 
