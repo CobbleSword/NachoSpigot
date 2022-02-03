@@ -20,7 +20,7 @@ public class TileEntityChest extends TileEntityContainer implements IInventory {
     public int l; // PaperSpigot - numPlayersUsing
     private int n;
     private int o = -1;
-    private String p;
+    private String customName;
 
     public TileEntityChest() {}
 
@@ -101,15 +101,15 @@ public class TileEntityChest extends TileEntityContainer implements IInventory {
     }
 
     public String getName() {
-        return this.hasCustomName() ? this.p : "container.chest";
+        return this.hasCustomName() ? this.customName : "container.chest";
     }
 
     public boolean hasCustomName() {
-        return this.p != null && this.p.length() > 0;
+        return this.customName != null && this.customName.length() > 0;
     }
 
-    public void a(String s) {
-        this.p = s;
+    public void setCustomName(String s) {
+        this.customName = s;
     }
 
     public void a(NBTTagCompound nbttagcompound) {
@@ -118,7 +118,7 @@ public class TileEntityChest extends TileEntityContainer implements IInventory {
 
         this.items = new ItemStack[this.getSize()];
         if (nbttagcompound.hasKeyOfType("CustomName", 8)) {
-            this.p = nbttagcompound.getString("CustomName");
+            this.customName = nbttagcompound.getString("CustomName");
         }
 
         for (int i = 0; i < nbttaglist.size(); ++i) {
@@ -148,7 +148,7 @@ public class TileEntityChest extends TileEntityContainer implements IInventory {
 
         nbttagcompound.set("Items", nbttaglist);
         if (this.hasCustomName()) {
-            nbttagcompound.setString("CustomName", this.p);
+            nbttagcompound.setString("CustomName", this.customName);
         }
 
     }

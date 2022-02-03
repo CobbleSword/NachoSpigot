@@ -26,7 +26,7 @@ public class TileEntityBeacon extends TileEntityContainer implements IUpdatePlay
     private int k;
     private int l;
     private ItemStack inventorySlot;
-    private String n;
+    private String customName;
     // CraftBukkit start - add fields and methods
     private int maxStack = MAX_STACK;
 	
@@ -265,15 +265,15 @@ public class TileEntityBeacon extends TileEntityContainer implements IUpdatePlay
     }
 
     public String getName() {
-        return this.hasCustomName() ? this.n : "container.beacon";
+        return this.hasCustomName() ? this.customName : "container.beacon";
     }
 
     public boolean hasCustomName() {
-        return this.n != null && this.n.length() > 0;
+        return this.customName != null && this.customName.length() > 0;
     }
 
-    public void a(String s) {
-        this.n = s;
+    public void setCustomName(String s) {
+        this.customName = s;
     }
 
     public int getMaxStackSize() {

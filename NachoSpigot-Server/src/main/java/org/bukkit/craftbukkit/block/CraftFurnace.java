@@ -57,4 +57,14 @@ public class CraftFurnace extends CraftBlockState implements Furnace {
     public TileEntityFurnace getTileEntity() {
         return furnace;
     }
+
+    @Override
+    public String getCustomName() {
+        return furnace.hasCustomName() ? furnace.getName() : null;
+    }
+
+    @Override
+    public void setCustomName(String name) {
+        furnace.setCustomName(name);
+    }
 }

@@ -8,6 +8,7 @@ import org.bukkit.block.Beacon;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.inventory.CraftInventoryBeacon;
 import org.bukkit.inventory.Inventory;
+import org.jetbrains.annotations.Nullable;
 
 public class CraftBeacon extends CraftBlockState implements Beacon {
     private final CraftWorld world;
@@ -44,6 +45,16 @@ public class CraftBeacon extends CraftBlockState implements Beacon {
     @Override
     public TileEntityBeacon getTileEntity() {
         return beacon;
+    }
+
+    @Override
+    public @Nullable String getCustomName() {
+        return beacon.hasCustomName() ? beacon.getName() : null;
+    }
+
+    @Override
+    public void setCustomName(@Nullable String name) {
+        beacon.setCustomName(name);
     }
 }
 

@@ -131,7 +131,7 @@ public class BlockDispenser extends BlockContainer {
             TileEntity tileentity = world.getTileEntity(blockposition);
 
             if (tileentity instanceof TileEntityDispenser) {
-                ((TileEntityDispenser) tileentity).a(itemstack.getName());
+                ((TileEntityDispenser) tileentity).setCustomName(itemstack.getName());
             }
         }
 

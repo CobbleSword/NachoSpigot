@@ -14,7 +14,7 @@ public class TileEntityDispenser extends TileEntityContainer implements IInvento
 
     private static final Random f = new Random();
     private ItemStack[] items = new ItemStack[9];
-    protected String a;
+    protected String customName;
 
     // CraftBukkit start - add fields and methods
     public List<HumanEntity> transaction = new java.util.ArrayList<>();
@@ -121,15 +121,15 @@ public class TileEntityDispenser extends TileEntityContainer implements IInvento
     }
 
     public String getName() {
-        return this.hasCustomName() ? this.a : "container.dispenser";
+        return this.hasCustomName() ? this.customName : "container.dispenser";
     }
 
-    public void a(String s) {
-        this.a = s;
+    public void setCustomName(String s) {
+        this.customName = s;
     }
 
     public boolean hasCustomName() {
-        return this.a != null;
+        return this.customName != null;
     }
 
     public void a(NBTTagCompound nbttagcompound) {
@@ -148,7 +148,7 @@ public class TileEntityDispenser extends TileEntityContainer implements IInvento
         }
 
         if (nbttagcompound.hasKeyOfType("CustomName", 8)) {
-            this.a = nbttagcompound.getString("CustomName");
+            this.customName = nbttagcompound.getString("CustomName");
         }
 
     }
@@ -169,7 +169,7 @@ public class TileEntityDispenser extends TileEntityContainer implements IInvento
 
         nbttagcompound.set("Items", nbttaglist);
         if (this.hasCustomName()) {
-            nbttagcompound.setString("CustomName", this.a);
+            nbttagcompound.setString("CustomName", this.customName);
         }
 
     }

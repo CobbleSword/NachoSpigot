@@ -17,7 +17,7 @@ public class TileEntityBrewingStand extends TileEntityContainer implements IUpda
     public int brewTime;
     private boolean[] i;
     private Item j;
-    private String k;
+    private String customName;
     private int lastTick = MinecraftServer.currentTick; // CraftBukkit - add field
 
     public TileEntityBrewingStand() {}
@@ -48,15 +48,15 @@ public class TileEntityBrewingStand extends TileEntityContainer implements IUpda
     // CraftBukkit end
 
     public String getName() {
-        return this.hasCustomName() ? this.k : "container.brewing";
+        return this.hasCustomName() ? this.customName : "container.brewing";
     }
 
     public boolean hasCustomName() {
-        return this.k != null && this.k.length() > 0;
+        return this.customName != null && this.customName.length() > 0;
     }
 
-    public void a(String s) {
-        this.k = s;
+    public void setCustomName(String s) {
+        this.customName = s;
     }
 
     public int getSize() {
@@ -207,7 +207,7 @@ public class TileEntityBrewingStand extends TileEntityContainer implements IUpda
 
         this.brewTime = nbttagcompound.getShort("BrewTime");
         if (nbttagcompound.hasKeyOfType("CustomName", 8)) {
-            this.k = nbttagcompound.getString("CustomName");
+            this.customName = nbttagcompound.getString("CustomName");
         }
 
     }
@@ -229,7 +229,7 @@ public class TileEntityBrewingStand extends TileEntityContainer implements IUpda
 
         nbttagcompound.set("Items", nbttaglist);
         if (this.hasCustomName()) {
-            nbttagcompound.setString("CustomName", this.k);
+            nbttagcompound.setString("CustomName", this.customName);
         }
 
     }

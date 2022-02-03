@@ -7,6 +7,7 @@ import org.bukkit.block.BrewingStand;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.inventory.CraftInventoryBrewer;
 import org.bukkit.inventory.BrewerInventory;
+import org.jetbrains.annotations.Nullable;
 
 public class CraftBrewingStand extends CraftBlockState implements BrewingStand {
     private final TileEntityBrewingStand brewingStand;
@@ -48,5 +49,15 @@ public class CraftBrewingStand extends CraftBlockState implements BrewingStand {
     @Override
     public TileEntityBrewingStand getTileEntity() {
         return brewingStand;
+    }
+
+    @Override
+    public @Nullable String getCustomName() {
+        return brewingStand.hasCustomName() ? brewingStand.getName() : null;
+    }
+
+    @Override
+    public void setCustomName(@Nullable String name) {
+        brewingStand.setCustomName(name);
     }
 }

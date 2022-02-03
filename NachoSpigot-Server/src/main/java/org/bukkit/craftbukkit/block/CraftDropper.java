@@ -11,6 +11,7 @@ import org.bukkit.block.Dropper;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.inventory.CraftInventory;
 import org.bukkit.inventory.Inventory;
+import org.jetbrains.annotations.Nullable;
 
 public class CraftDropper extends CraftBlockState implements Dropper {
     private final CraftWorld world;
@@ -57,5 +58,15 @@ public class CraftDropper extends CraftBlockState implements Dropper {
     @Override
     public TileEntityDropper getTileEntity() {
         return dropper;
+    }
+
+    @Override
+    public @Nullable String getCustomName() {
+        return dropper.hasCustomName() ? dropper.getName() : null;
+    }
+
+    @Override
+    public void setCustomName(@Nullable String name) {
+        dropper.setCustomName(name);
     }
 }

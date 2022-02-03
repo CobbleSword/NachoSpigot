@@ -105,7 +105,7 @@ public class BlockChest extends BlockContainer {
             TileEntity tileentity = world.getTileEntity(blockposition);
 
             if (tileentity instanceof TileEntityChest) {
-                ((TileEntityChest) tileentity).a(itemstack.getName());
+                ((TileEntityChest) tileentity).setCustomName(itemstack.getName());
             }
         }
 

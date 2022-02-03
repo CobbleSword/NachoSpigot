@@ -13,6 +13,16 @@ net/minecraft/server/v1_8_R3/EnumProtocol getPacketIdForPacket (Lnet/minecraft/s
 net/minecraft/server/v1_8_R3/BlockPosition$MutableBlockPosition setValues (III)Lnet/minecraft/server/v1_8_R3/BlockPosition$MutableBlockPosition; c
 net/minecraft/server/v1_8_R3/BlockRedstoneTorch$RedstoneUpdateInfo time b
 net/minecraft/server/v1_8_R3/TileEntityHopper isCooledDown ()Z n
+net/minecraft/server/v1_8_R3/TileEntityBeacon setCustomName (Ljava/lang/String;)V a
+net/minecraft/server/v1_8_R3/TileEntityBeacon customName n
+net/minecraft/server/v1_8_R3/TileEntityBrewingStand customName k
+net/minecraft/server/v1_8_R3/TileEntityBrewingStand setCustomName (Ljava/lang/String;)V a
+net/minecraft/server/v1_8_R3/TileEntityDispenser customName a
+net/minecraft/server/v1_8_R3/TileEntityDispenser setCustomName (Ljava/lang/String;)V a
+net/minecraft/server/v1_8_R3/TileEntityFurnace customName m
+net/minecraft/server/v1_8_R3/TileEntityFurnace setCustomName (Ljava/lang/String;)V a
+net/minecraft/server/v1_8_R3/TileEntityChest customName p
+net/minecraft/server/v1_8_R3/TileEntityChest setCustomName (Ljava/lang/String;)V a
 
 # World
 net/minecraft/server/v1_8_R3/World shouldStayLoaded (II)Z c

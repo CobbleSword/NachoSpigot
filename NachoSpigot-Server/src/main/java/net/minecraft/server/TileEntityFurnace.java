@@ -20,7 +20,7 @@ public class TileEntityFurnace extends TileEntityContainer implements IUpdatePla
     private int ticksForCurrentFuel;
     public int cookTime;
     private int cookTimeTotal;
-    private String m;
+    private String customName;
 
     // CraftBukkit start - add fields and methods
     private int lastTick = MinecraftServer.currentTick;
@@ -107,15 +107,15 @@ public class TileEntityFurnace extends TileEntityContainer implements IUpdatePla
     }
 
     public String getName() {
-        return this.hasCustomName() ? this.m : "container.furnace";
+        return this.hasCustomName() ? this.customName : "container.furnace";
     }
 
     public boolean hasCustomName() {
-        return this.m != null && this.m.length() > 0;
+        return this.customName != null && this.customName.length() > 0;
     }
 
-    public void a(String s) {
-        this.m = s;
+    public void setCustomName(String s) {
+        this.customName = s;
     }
 
     public void a(NBTTagCompound nbttagcompound) {
@@ -138,7 +138,7 @@ public class TileEntityFurnace extends TileEntityContainer implements IUpdatePla
         this.cookTimeTotal = nbttagcompound.getShort("CookTimeTotal");
         this.ticksForCurrentFuel = fuelTime(this.items[1]);
         if (nbttagcompound.hasKeyOfType("CustomName", 8)) {
-            this.m = nbttagcompound.getString("CustomName");
+            this.customName = nbttagcompound.getString("CustomName");
         }
 
     }
@@ -162,7 +162,7 @@ public class TileEntityFurnace extends TileEntityContainer implements IUpdatePla
 
         nbttagcompound.set("Items", nbttaglist);
         if (this.hasCustomName()) {
-            nbttagcompound.setString("CustomName", this.m);
+            nbttagcompound.setString("CustomName", this.customName);
         }
 
     }

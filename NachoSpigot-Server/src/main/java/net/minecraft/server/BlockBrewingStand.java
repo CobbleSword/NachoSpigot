@@ -63,7 +63,7 @@ public class BlockBrewingStand extends BlockContainer {
             TileEntity tileentity = world.getTileEntity(blockposition);
 
             if (tileentity instanceof TileEntityBrewingStand) {
-                ((TileEntityBrewingStand) tileentity).a(itemstack.getName());
+                ((TileEntityBrewingStand) tileentity).setCustomName(itemstack.getName());
             }
         }
 

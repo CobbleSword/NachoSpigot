@@ -1,11 +1,12 @@
 package org.bukkit.block;
 
+import org.bukkit.Nameable;
 import org.bukkit.projectiles.BlockProjectileSource;
 
 /**
  * Represents a dispenser.
  */
-public interface Dispenser extends BlockState, ContainerBlock {
+public interface Dispenser extends BlockState, ContainerBlock, Nameable {
 
     /**
      * Gets the BlockProjectileSource object for this dispenser.

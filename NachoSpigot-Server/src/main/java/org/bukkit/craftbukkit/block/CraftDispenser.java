@@ -73,4 +73,14 @@ public class CraftDispenser extends CraftBlockState implements Dispenser {
     public TileEntityDispenser getTileEntity() {
         return dispenser;
     }
+
+    @Override
+    public String getCustomName() {
+        return dispenser.hasCustomName() ? dispenser.getName() : null;
+    }
+
+    @Override
+    public void setCustomName(String name) {
+        dispenser.setCustomName(name);
+    }
 }

@@ -42,7 +42,7 @@ public class BlockBeacon extends BlockContainer {
         if (var5.hasName()) {
             TileEntity var6 = var1.getTileEntity(var2);
             if (var6 instanceof TileEntityBeacon) {
-                ((TileEntityBeacon)var6).a(var5.getName());
+                ((TileEntityBeacon)var6).setCustomName(var5.getName());
             }
         }
 

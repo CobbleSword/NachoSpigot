@@ -1,11 +1,12 @@
 package org.bukkit.block;
 
+import org.bukkit.Nameable;
 import org.bukkit.inventory.FurnaceInventory;
 
 /**
  * Represents a furnace.
  */
-public interface Furnace extends BlockState, ContainerBlock {
+public interface Furnace extends BlockState, ContainerBlock, Nameable {
 
     /**
      * Get burn time.
