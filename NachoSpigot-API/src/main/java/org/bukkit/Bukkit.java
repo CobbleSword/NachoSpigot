@@ -1024,7 +1024,6 @@ public final class Bukkit {
     public static Inventory createInventory(@Nullable InventoryHolder owner, @NotNull InventoryType type, @NotNull net.kyori.adventure.text.Component title) {
         return server.createInventory(owner, type, title);
     }
-    // Paper end
 
     /**
      * Creates an empty inventory with the specified type and title. If the type
@@ -1037,10 +1036,10 @@ public final class Bukkit {
      * @param type The type of inventory to create.
      * @param title The title of the inventory, to be displayed when it is viewed.
      * @return The new inventory.
-     // Paper
      * @deprecated in favour of {@link #createInventory(InventoryHolder, InventoryType, net.kyori.adventure.text.Component)}
      */
-    @Deprecated // Paper
+    @Deprecated
+    // Paper end
     public static Inventory createInventory(InventoryHolder owner, InventoryType type, String title) {
         return server.createInventory(owner, type, title);
     }
