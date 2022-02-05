@@ -1164,7 +1164,6 @@ public final class Bukkit {
      * Gets the message that is displayed on the server list.
      *
      * @return the servers MOTD
-     // Paper start
      * @deprecated in favour of {@link #motd()}
      */
     @NotNull
