@@ -1173,22 +1173,20 @@ public final class Bukkit {
         return server.getMotd();
     }
 
-    // Paper start
     /**
      * Gets the default message that is displayed when the server is stopped.
      *
      * @return the shutdown message
      */
+    // Paper start
     public static @Nullable net.kyori.adventure.text.Component shutdownMessage() {
         return server.shutdownMessage();
     }
-    // Paper end
 
     /**
      * Gets the default message that is displayed when the server is stopped.
      *
      * @return the shutdown message
-     // Paper start
      * @deprecated in favour of {@link #shutdownMessage()}
      */
     @Nullable
