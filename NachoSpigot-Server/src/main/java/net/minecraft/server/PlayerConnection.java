@@ -17,7 +17,6 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 
 import me.elier.nachospigot.config.NachoConfig; // Nacho
-import dev.cobblesword.nachospigot.hitdetection.LagCompensator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -621,7 +620,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 
 
         Location to = new Location(this.getPlayer().getWorld(), x, y, z, yaw, pitch);
-        Nacho.get().getLagCompensator().registerTeleport(player, to);
+        Nacho.get().getLagCompensator().registerMovement(player, to);
         PlayerTeleportEvent event = new PlayerTeleportEvent(player, from.clone(), to.clone(), PlayerTeleportEvent.TeleportCause.UNKNOWN);
         this.server.getPluginManager().callEvent(event);
 

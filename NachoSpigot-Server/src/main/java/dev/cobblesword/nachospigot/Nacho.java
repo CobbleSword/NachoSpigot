@@ -28,7 +28,7 @@ public class Nacho {
 
         AsyncExplosions.initExecutor(NachoConfig.useFixedPoolForTNT, NachoConfig.fixedPoolSize);
 
-        lagCompensator = new LagCompensator(35, 175, 30);
+        lagCompensator = new LagCompensator();
 
         if(NachoConfig.enableAntiCrash) {
             System.out.println("[NS-AntiCrash] Activating Anti Crash.");

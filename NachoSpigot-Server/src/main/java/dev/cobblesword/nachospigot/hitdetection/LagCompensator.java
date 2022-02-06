@@ -17,17 +17,10 @@ public class LagCompensator {
         Adjusts hit detection to be more fair for players with worse ping.
      */
 
-    private final ListMultimap<UUID, Pair<Location, Long>> locationTimes;
-    private final int historySize;
-    private final int pingOffset;
-    private final int timeResolution;
-
-    public LagCompensator(int historySize, int pingOffset, int timeResolution) {
-        this.locationTimes = ArrayListMultimap.create();
-        this.historySize = historySize;
-        this.pingOffset = pingOffset;
-        this.timeResolution = timeResolution;
-    }
+    private final ListMultimap<UUID, Pair<Location, Long>> locationTimes = ArrayListMultimap.create();
+    private final int historySize = 40;
+    private final int pingOffset = 92;
+    private final int timeResolution = 30;
 
     public Location getHistoryLocation(Player player) {
         if (!locationTimes.containsKey(player.getUniqueId()))
@@ -80,18 +73,6 @@ public class LagCompensator {
 
 
     public void registerMovement(Player player, Location to) {
-        processPosition(to, player);
-    }
-
-    public void registerRespawn(Player player, Location respawnLocation) {
-        processPosition(respawnLocation, player);
-    }
-
-    public void registerTeleport(Player player, Location to) {
-        processPosition(to, player);
-    }
-
-    public void registerWorldChange(Player player, Location to) {
         processPosition(to, player);
     }
 

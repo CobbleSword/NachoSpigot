@@ -13,7 +13,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import me.elier.nachospigot.config.NachoConfig;
-import dev.cobblesword.nachospigot.hitdetection.LagCompensator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -577,7 +576,7 @@ public abstract class PlayerList {
 
             Player respawnPlayer = cserver.getPlayer(entityplayer1);
 
-            Nacho.get().getLagCompensator().registerRespawn(respawnPlayer, location);
+            Nacho.get().getLagCompensator().registerMovement(respawnPlayer, location);
 
             PlayerRespawnEvent respawnEvent = new PlayerRespawnEvent(respawnPlayer, location, isBedSpawn);
             cserver.getPluginManager().callEvent(respawnEvent);
@@ -639,7 +638,7 @@ public abstract class PlayerList {
         // CraftBukkit start
         // Don't fire on respawn
         if (fromWorld != location.getWorld()) {
-            Nacho.get().getLagCompensator().registerWorldChange(entityplayer.getBukkitEntity(), entityplayer.getBukkitEntity().getLocation());
+            Nacho.get().getLagCompensator().registerMovement(entityplayer.getBukkitEntity(), entityplayer.getBukkitEntity().getLocation());
             PlayerChangedWorldEvent event = new PlayerChangedWorldEvent(entityplayer.getBukkitEntity(), fromWorld);
             server.server.getPluginManager().callEvent(event);
         }
@@ -698,7 +697,7 @@ public abstract class PlayerList {
         }
         exitWorld = ((CraftWorld) exit.getWorld()).getHandle();
 
-        Nacho.get().getLagCompensator().registerTeleport(entityplayer.getBukkitEntity(), exit);
+        Nacho.get().getLagCompensator().registerMovement(entityplayer.getBukkitEntity(), exit);
         org.bukkit.event.player.PlayerTeleportEvent tpEvent = new org.bukkit.event.player.PlayerTeleportEvent(entityplayer.getBukkitEntity(), enter, exit, cause);
         Bukkit.getServer().getPluginManager().callEvent(tpEvent);
         if (tpEvent.isCancelled() || tpEvent.getTo() == null) {
