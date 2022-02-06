@@ -1658,7 +1658,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    */
   @CanIgnoreReturnValue
   @Deprecated
-  @com.google.errorprone.annontations.DoNotCall
+  @com.google.errorprone.annotations.DoNotCall
   @Partially.GwtIncompatible("AVAILABLE but requires exceptionType to be Throwable.class")
   public static <V, X extends Throwable> ListenableFuture<V> catchingAsync(
       ListenableFuture<? extends V> input,
