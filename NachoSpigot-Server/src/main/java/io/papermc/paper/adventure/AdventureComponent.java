@@ -78,6 +78,7 @@ public class AdventureComponent implements IChatBaseComponent {
     public IChatBaseComponent setChatModifier(ChatModifier chatmodifier) {
         return this.deepConverted().setChatModifier(chatmodifier);
     }
+    // Nacho end
 
     public static class Serializer implements JsonSerializer<AdventureComponent> {
         @Override
