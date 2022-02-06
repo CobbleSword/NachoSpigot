@@ -899,7 +899,7 @@ public class CraftEventFactory {
                 }
             }
         }
-        List<IChatBaseComponent> ls = c.a();
+        List<IChatBaseComponent> ls = c.getSiblings();
         if (ls != null) {
             for (int i = 0; i < ls.size(); i++) {
                 ls.set(i, stripEvents(ls.get(i)));

@@ -709,7 +709,7 @@ public final class ItemStack {
             chatcomponenttext.getChatModifier().setItalic(Boolean.valueOf(true));
         }
 
-        IChatBaseComponent ichatbasecomponent = (new ChatComponentText("[")).addSibling(chatcomponenttext).a("]");
+        IChatBaseComponent ichatbasecomponent = (new ChatComponentText("[")).addSibling(chatcomponenttext).addSibling("]");
 
         if (this.item != null) {
             NBTTagCompound nbttagcompound = new NBTTagCompound();

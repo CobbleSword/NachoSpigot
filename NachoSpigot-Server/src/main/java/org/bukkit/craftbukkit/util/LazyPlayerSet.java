@@ -9,17 +9,27 @@ import org.bukkit.entity.Player;
 
 public class LazyPlayerSet extends LazyHashSet<Player> {
 
+    private final MinecraftServer server;
+
+    public LazyPlayerSet(MinecraftServer server) {
+        this.server = server;
+    }
+
     @Override
-    HashSet<Player> makeReference() {
+    protected HashSet<Player> makeReference() { // Paper - protected
         if (reference != null) {
             throw new IllegalStateException("Reference already created!");
         }
-        List<EntityPlayer> players = MinecraftServer.getServer().getPlayerList().players;
+        // Paper start
+        return makePlayerSet(this.server);
+    }
+    public static HashSet<Player> makePlayerSet(MinecraftServer server) {
+        // Paper end
+        List<EntityPlayer> players = server.getPlayerList().players;
         HashSet<Player> reference = new HashSet<Player>(players.size());
         for (EntityPlayer player : players) {
             reference.add(player.getBukkitEntity());
         }
         return reference;
     }
-
 }

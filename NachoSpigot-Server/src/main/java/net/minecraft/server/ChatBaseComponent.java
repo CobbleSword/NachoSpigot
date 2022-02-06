@@ -8,32 +8,29 @@ import java.util.List;
 
 public abstract class ChatBaseComponent implements IChatBaseComponent {
 
-    protected List<IChatBaseComponent> a = Lists.newArrayList();
-    private ChatModifier b;
+    protected List<IChatBaseComponent> siblings = Lists.newArrayList();
+    private ChatModifier style;
 
     public ChatBaseComponent() {}
 
     public IChatBaseComponent addSibling(IChatBaseComponent ichatbasecomponent) {
         ichatbasecomponent.getChatModifier().setChatModifier(this.getChatModifier());
-        this.a.add(ichatbasecomponent);
+        this.siblings.add(ichatbasecomponent);
         return this;
     }
 
-    public List<IChatBaseComponent> a() {
-        return this.a;
+    public List<IChatBaseComponent> getSiblings() {
+        return this.siblings;
     }
 
-    public IChatBaseComponent a(String s) {
+    public IChatBaseComponent addSibling(String s) {
         return this.addSibling(new ChatComponentText(s));
     }
 
     public IChatBaseComponent setChatModifier(ChatModifier chatmodifier) {
-        this.b = chatmodifier;
-        Iterator iterator = this.a.iterator();
+        this.style = chatmodifier;
 
-        while (iterator.hasNext()) {
-            IChatBaseComponent ichatbasecomponent = (IChatBaseComponent) iterator.next();
-
+        for (IChatBaseComponent ichatbasecomponent : this.siblings) {
             ichatbasecomponent.getChatModifier().setChatModifier(this.getChatModifier());
         }
 
@@ -41,22 +38,22 @@ public abstract class ChatBaseComponent implements IChatBaseComponent {
     }
 
     public ChatModifier getChatModifier() {
-        if (this.b == null) {
-            this.b = new ChatModifier();
+        if (this.style == null) {
+            this.style = new ChatModifier();
 
-            for (IChatBaseComponent ichatbasecomponent : this.a) {
-                ichatbasecomponent.getChatModifier().setChatModifier(this.b);
+            for (IChatBaseComponent ichatbasecomponent : this.siblings) {
+                ichatbasecomponent.getChatModifier().setChatModifier(this.style);
             }
         }
 
-        return this.b;
+        return this.style;
     }
 
     public Iterator<IChatBaseComponent> iterator() {
-        return Iterators.concat(Iterators.forArray(this), a(this.a));
+        return Iterators.concat(Iterators.forArray(this), a(this.siblings));
     }
 
-    public final String c() {
+    public final String getString() {
         StringBuilder stringbuilder = new StringBuilder();
 
         for (IChatBaseComponent ichatbasecomponent : this) {
@@ -79,7 +76,7 @@ public abstract class ChatBaseComponent implements IChatBaseComponent {
 
         iterator = Iterators.transform(iterator, new Function() {
             public IChatBaseComponent a(IChatBaseComponent ichatbasecomponent) {
-                IChatBaseComponent ichatbasecomponent1 = ichatbasecomponent.f();
+                IChatBaseComponent ichatbasecomponent1 = ichatbasecomponent.copy();
 
                 ichatbasecomponent1.setChatModifier(ichatbasecomponent1.getChatModifier().n());
                 return ichatbasecomponent1;
@@ -100,15 +97,15 @@ public abstract class ChatBaseComponent implements IChatBaseComponent {
         } else {
             ChatBaseComponent chatbasecomponent = (ChatBaseComponent) object;
 
-            return this.a.equals(chatbasecomponent.a) && this.getChatModifier().equals(chatbasecomponent.getChatModifier());
+            return this.siblings.equals(chatbasecomponent.siblings) && this.getChatModifier().equals(chatbasecomponent.getChatModifier());
         }
     }
 
     public int hashCode() {
-        return 31 * this.getChatModifier().hashCode() + this.a.hashCode(); // CraftBukkit - fix null pointer
+        return 31 * this.getChatModifier().hashCode() + this.siblings.hashCode(); // CraftBukkit - fix null pointer
     }
 
     public String toString() {
-        return "BaseComponent{style=" + this.b + ", siblings=" + this.a + '}';
+        return "BaseComponent{style=" + this.style + ", siblings=" + this.siblings + '}';
     }
 }

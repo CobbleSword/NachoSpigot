@@ -951,7 +951,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
             this.processedDisconnect = true;
         }
         // CraftBukkit end
-        PlayerConnection.c.info(this.player.getName() + " lost connection: " + ichatbasecomponent.c()); // CraftBukkit: Don't toString(). // PAIL: Rename
+        PlayerConnection.c.info(this.player.getName() + " lost connection: " + ichatbasecomponent.getString()); // CraftBukkit: Don't toString(). // PAIL: Rename
         // CraftBukkit start - Replace vanilla quit message handling with our own.
         /*
         this.minecraftServer.aH();
@@ -1205,7 +1205,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
             // Do nothing, this is coming from a plugin
         } else {
             Player player = this.getPlayer();
-            AsyncPlayerChatEvent event = new AsyncPlayerChatEvent(async, player, s, new LazyPlayerSet());
+            AsyncPlayerChatEvent event = new AsyncPlayerChatEvent(async, player, s, new LazyPlayerSet(minecraftServer));
             this.server.getPluginManager().callEvent(event);
 
             if (PlayerChatEvent.getHandlerList().getRegisteredListeners().length != 0) {
@@ -1275,7 +1275,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 
         CraftPlayer player = this.getPlayer();
 
-        PlayerCommandPreprocessEvent event = new PlayerCommandPreprocessEvent(player, s, new LazyPlayerSet());
+        PlayerCommandPreprocessEvent event = new PlayerCommandPreprocessEvent(player, s, new LazyPlayerSet(minecraftServer));
         this.server.getPluginManager().callEvent(event);
 
         if (event.isCancelled()) {
@@ -2015,7 +2015,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
             String[] lines = new String[4];
 
             for (int i = 0; i < aichatbasecomponent.length; ++i) {
-                lines[i] = EnumChatFormat.a(aichatbasecomponent[i].c());
+                lines[i] = EnumChatFormat.a(aichatbasecomponent[i].getString());
             }
             SignChangeEvent event = new SignChangeEvent((org.bukkit.craftbukkit.block.CraftBlock) player.getWorld().getBlockAt(x, y, z), this.server.getPlayer(this.player), lines);
             this.server.getPluginManager().callEvent(event);

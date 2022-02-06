@@ -52,6 +52,11 @@ net/minecraft/server/v1_8_R3/PacketDataSerializer readUUID ()Ljava/util/UUID; g
 net/minecraft/server/v1_8_R3/PacketDataSerializer readUtf (I)Ljava/lang/String; c
 net/minecraft/server/v1_8_R3/ServerConnection listeningChannels g
 net/minecraft/server/v1_8_R3/ServerConnection connectedChannels h
+net/minecraft/server/v1_8_R3/IChatBaseComponent getString ()Ljava/lang/String; c
+net/minecraft/server/v1_8_R3/IChatBaseComponent getSiblings ()Ljava/lang/List; a
+net/minecraft/server/v1_8_R3/IChatBaseComponent addSibling (Ljava/lang/String;)Lnet/minecraft/server/v1_8_R3/IChatBaseComponent; a
+net/minecraft/server/v1_8_R3/ChatBaseComponent siblings a
+net/minecraft/server/v1_8_R3/ChatBaseComponent style b
 
 # MinecraftServer
 net/minecraft/server/v1_8_R3/DedicatedServer getDedicatedPlayerList ()Lnet/minecraft/server/v1_8_R3/DedicatedPlayerList; aP

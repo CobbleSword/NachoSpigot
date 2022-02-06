@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Paper API-specific methods for working with {@link Component}s and related.
  */
+@SuppressWarnings({"unused", "deprecation"})
 public final class PaperComponents {
     private PaperComponents() {
         throw new RuntimeException("PaperComponents is not to be instantiated!");

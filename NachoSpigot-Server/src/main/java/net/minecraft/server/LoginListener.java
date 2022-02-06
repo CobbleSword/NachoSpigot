@@ -158,7 +158,7 @@ public class LoginListener implements PacketLoginInListener, IUpdatePlayerListBo
     }
 
     public void a(IChatBaseComponent ichatbasecomponent) {
-        LoginListener.c.info(this.d() + " lost connection: " + ichatbasecomponent.c());
+        LoginListener.c.info(this.d() + " lost connection: " + ichatbasecomponent.getString());
     }
 
     public String d() {

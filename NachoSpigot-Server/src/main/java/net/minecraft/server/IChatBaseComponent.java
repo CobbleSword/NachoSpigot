@@ -14,24 +14,38 @@ import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map.Entry;
+// CraftBukkit start
+import com.google.common.collect.Streams;
+import java.util.stream.Stream;
+// CraftBukkit end
 
 public interface IChatBaseComponent extends Iterable<IChatBaseComponent> {
 
+    // CraftBukkit start
+    default Stream<IChatBaseComponent> stream() {
+        return Streams.concat(Stream.of(this), this.getSiblings().stream().flatMap(IChatBaseComponent::stream));
+    }
+
+    @Override
+    default Iterator<IChatBaseComponent> iterator() {
+        return this.stream().iterator();
+    }
+    // CraftBukkit end
     IChatBaseComponent setChatModifier(ChatModifier chatmodifier);
 
     ChatModifier getChatModifier();
 
-    IChatBaseComponent a(String s);
+    IChatBaseComponent addSibling(String s);
 
     IChatBaseComponent addSibling(IChatBaseComponent ichatbasecomponent);
 
     String getText();
 
-    String c();
+    String getString();
 
-    List<IChatBaseComponent> a();
+    List<IChatBaseComponent> getSiblings();
 
-    IChatBaseComponent f();
+    IChatBaseComponent copy();
 
     class ChatSerializer implements JsonDeserializer<IChatBaseComponent>, JsonSerializer<IChatBaseComponent> {
 
@@ -81,7 +95,7 @@ public interface IChatBaseComponent extends Iterable<IChatBaseComponent> {
                             if (aobject[i] instanceof ChatComponentText) {
                                 ChatComponentText chatcomponenttext = (ChatComponentText) aobject[i];
 
-                                if (chatcomponenttext.getChatModifier().g() && chatcomponenttext.a().isEmpty()) {
+                                if (chatcomponenttext.getChatModifier().g() && chatcomponenttext.getSiblings().isEmpty()) {
                                     aobject[i] = chatcomponenttext.g();
                                 }
                             }
@@ -139,7 +153,7 @@ public interface IChatBaseComponent extends Iterable<IChatBaseComponent> {
         }
 
         public JsonElement a(IChatBaseComponent ichatbasecomponent, Type type, JsonSerializationContext jsonserializationcontext) {
-            if (ichatbasecomponent instanceof ChatComponentText && ichatbasecomponent.getChatModifier().g() && ichatbasecomponent.a().isEmpty()) {
+            if (ichatbasecomponent instanceof ChatComponentText && ichatbasecomponent.getChatModifier().g() && ichatbasecomponent.getSiblings().isEmpty()) {
                 return new JsonPrimitive(((ChatComponentText) ichatbasecomponent).g());
             } else {
                 JsonObject jsonobject = new JsonObject();
@@ -148,10 +162,10 @@ public interface IChatBaseComponent extends Iterable<IChatBaseComponent> {
                     this.a(ichatbasecomponent.getChatModifier(), jsonobject, jsonserializationcontext);
                 }
 
-                if (!ichatbasecomponent.a().isEmpty()) {
+                if (!ichatbasecomponent.getSiblings().isEmpty()) {
                     JsonArray jsonarray = new JsonArray();
 
-                    for (IChatBaseComponent ichatbasecomponent1 : ichatbasecomponent.a()) {
+                    for (IChatBaseComponent ichatbasecomponent1 : ichatbasecomponent.getSiblings()) {
                         jsonarray.add(this.a(ichatbasecomponent1, ichatbasecomponent1.getClass(), jsonserializationcontext));
                     }
 

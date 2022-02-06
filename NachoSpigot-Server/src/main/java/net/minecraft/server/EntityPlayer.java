@@ -465,7 +465,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
 
         IChatBaseComponent chatmessage = this.bs().b();
 
-        String deathmessage = chatmessage.c();
+        String deathmessage = chatmessage.getString();
         org.bukkit.event.entity.PlayerDeathEvent event = CraftEventFactory.callPlayerDeathEvent(this, loot, deathmessage, keepInventory);
 
         String deathMessage = event.getDeathMessage();

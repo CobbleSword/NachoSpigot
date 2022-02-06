@@ -34,7 +34,7 @@ public class RemoteControlCommandListener implements ICommandListener {
     // CraftBukkit end
 
     public void sendMessage(IChatBaseComponent ichatbasecomponent) {
-        this.b.append(ichatbasecomponent.c());
+        this.b.append(ichatbasecomponent.getString());
     }
 
     public boolean a(int i, String s) {

@@ -280,7 +280,7 @@ public class CommandScoreboard extends CommandAbstract {
             throw new ExceptionUsage("commands.scoreboard.objectives.add.usage", new Object[0]);
         } else {
             if (astring.length > i) {
-                String s2 = a(icommandlistener, astring, i).c();
+                String s2 = a(icommandlistener, astring, i).getString();
 
                 if (s2.length() > 32) {
                     throw new ExceptionInvalidSyntax("commands.scoreboard.objectives.add.displayTooLong", new Object[] { s2, Integer.valueOf(32)});
@@ -311,7 +311,7 @@ public class CommandScoreboard extends CommandAbstract {
             throw new ExceptionUsage("commands.scoreboard.teams.add.usage", new Object[0]);
         } else {
             if (astring.length > i) {
-                String s1 = a(icommandlistener, astring, i).c();
+                String s1 = a(icommandlistener, astring, i).getString();
 
                 if (s1.length() > 32) {
                     throw new ExceptionInvalidSyntax("commands.scoreboard.teams.add.displayTooLong", new Object[] { s1, Integer.valueOf(32)});

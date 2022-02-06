@@ -36,7 +36,7 @@ public class CommandGamerule extends CommandAbstract {
 
             String s2 = gamerules.get(s);
 
-            icommandlistener.sendMessage((new ChatComponentText(s)).a(" = ").a(s2));
+            icommandlistener.sendMessage((new ChatComponentText(s)).addSibling(" = ").addSibling(s2));
             icommandlistener.a(CommandObjectiveExecutor.EnumCommandResult.QUERY_RESULT, gamerules.c(s));
             break;
 

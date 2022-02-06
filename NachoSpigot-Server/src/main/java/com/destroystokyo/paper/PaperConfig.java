@@ -232,4 +232,9 @@ public class PaperConfig
             }
     }
     // Nacho end
+
+    public static boolean useDisplayNameInQuit = false;
+    private static void useDisplayNameInQuit() {
+        useDisplayNameInQuit = getBoolean("settings.use-display-name-in-quit-message", useDisplayNameInQuit);
+    }
 }

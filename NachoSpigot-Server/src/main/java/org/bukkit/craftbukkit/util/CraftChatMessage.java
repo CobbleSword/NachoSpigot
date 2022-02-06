@@ -196,7 +196,7 @@ public final class CraftChatMessage {
                 ChatModifier modifier = text.getChatModifier() != null ?
                         text.getChatModifier() : new ChatModifier();
                 List<IChatBaseComponent> extras = new ArrayList<IChatBaseComponent>();
-                List<IChatBaseComponent> extrasOld = new ArrayList<IChatBaseComponent>(text.a());
+                List<IChatBaseComponent> extrasOld = new ArrayList<IChatBaseComponent>(text.getSiblings());
                 component = text = new ChatComponentText("");
 
                 int pos = 0;
@@ -231,7 +231,7 @@ public final class CraftChatMessage {
             }
         }
 
-        List extras = component.a();
+        List extras = component.getSiblings();
         for (int i = 0; i < extras.size(); i++) {
             IChatBaseComponent comp = (IChatBaseComponent) extras.get(i);
             if (comp.getChatModifier() != null && comp.getChatModifier().h() == null) {
