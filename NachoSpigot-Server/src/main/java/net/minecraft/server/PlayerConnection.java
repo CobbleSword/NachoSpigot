@@ -7,8 +7,6 @@ import com.google.common.primitives.Floats;
 import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.events.PlayerIllegalBehaviourEvent;
 import io.netty.buffer.Unpooled;
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -379,6 +377,8 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                     this.lastYaw = to.getYaw();
                     this.lastPitch = to.getPitch();
 
+                    Nacho.get().getLagCompensator().registerMovement(player, to);
+
                     // Skip the first time we do this
                     if (NachoConfig.firePlayerMoveEvent) { // Spigot - don't skip any move events
                         Location oldTo = to.clone();
@@ -620,6 +620,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 
 
         Location to = new Location(this.getPlayer().getWorld(), x, y, z, yaw, pitch);
+        Nacho.get().getLagCompensator().registerMovement(player, to);
         PlayerTeleportEvent event = new PlayerTeleportEvent(player, from.clone(), to.clone(), PlayerTeleportEvent.TeleportCause.UNKNOWN);
         this.server.getPluginManager().callEvent(event);
 
@@ -1493,10 +1494,11 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
             double d0 = 36.0D;
 
             if (!flag) {
-                d0 = 9.0D;
+                // Increase the no player-player vision maximum reach
+                d0 = (NachoConfig.enableImprovedHitReg) ? 12.75D : 9.0D;
             }
 
-            if (this.player.h(entity) < d0) {
+            if (this.player.h(entity) <= d0) {
                 ItemStack itemInHand = this.player.inventory.getItemInHand(); // CraftBukkit
 
                 if (packetplayinuseentity.a() == PacketPlayInUseEntity.EnumEntityUseAction.INTERACT

@@ -2,6 +2,7 @@ package net.minecraft.server;
 
 // CraftBukkit start
 
+import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.commons.Constants;
 import me.elier.nachospigot.config.NachoConfig;
 import org.bukkit.Bukkit;
@@ -104,6 +105,9 @@ public class EntityEnderPearl extends EntityProjectile {
 
                     }
                     // Nacho end
+
+                    Nacho.get().getLagCompensator().registerMovement(player, location);
+
                     PlayerTeleportEvent teleEvent = new PlayerTeleportEvent(player, player.getLocation(), location, PlayerTeleportEvent.TeleportCause.ENDER_PEARL);
                     Bukkit.getPluginManager().callEvent(teleEvent);
 
