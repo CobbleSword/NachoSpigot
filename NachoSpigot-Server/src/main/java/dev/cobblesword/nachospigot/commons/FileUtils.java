@@ -2,7 +2,8 @@ package dev.cobblesword.nachospigot.commons;
 
 import java.io.*;
 
-public class FileUtils {
+public final class FileUtils {
+    private FileUtils() {}
 
     public static void toFile(Object object, File file) {
         final String jsonContent = GsonUtils.getGsonPretty().toJson(object);

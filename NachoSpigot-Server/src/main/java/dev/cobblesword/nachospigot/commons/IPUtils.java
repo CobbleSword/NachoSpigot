@@ -8,7 +8,8 @@ import java.net.URL;
 /**
  * @author Sculas
  */
-public class IPUtils {
+public final class IPUtils {
+    private IPUtils() {}
 
     public static String getExternalAddress() throws Exception {
         URL aws = new URL("http://checkip.amazonaws.com");

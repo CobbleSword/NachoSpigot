@@ -3,7 +3,8 @@ package dev.cobblesword.nachospigot.commons;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class GsonUtils {
+public final class GsonUtils {
+    private GsonUtils() {}
     private static final Gson GSON_PRETTY = new GsonBuilder().setPrettyPrinting().create();
     private static final Gson GSON = new GsonBuilder().create();
 

@@ -8,7 +8,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 /**
  * @author SaithTime
  */
-public class ClickableBuilder {
+public final class ClickableBuilder {
     private final TextComponent textComponent;
 
     public ClickableBuilder(String message) {

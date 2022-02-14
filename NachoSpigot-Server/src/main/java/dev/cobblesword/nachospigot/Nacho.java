@@ -16,7 +16,8 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.collect.Sets;
 import java.util.Set;
 
-public class Nacho {
+public final class Nacho {
+
     public static final Logger LOGGER = LogManager.getLogger(Nacho.class);
     private static Nacho INSTANCE;
 
@@ -25,7 +26,7 @@ public class Nacho {
 
     private final LagCompensator lagCompensator;
 
-    public Nacho() {
+    private Nacho() {
         INSTANCE = this;
 
         AsyncExplosions.initExecutor(NachoConfig.useFixedPoolForTNT, NachoConfig.fixedPoolSize);

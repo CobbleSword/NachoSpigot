@@ -7,7 +7,7 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 import me.elier.nachospigot.config.NachoConfig;
 import net.minecraft.server.*;
 
-public class MinecraftPipeline extends ChannelInitializer<SocketChannel>
+public final class MinecraftPipeline extends ChannelInitializer<SocketChannel>
 {
     private final ServerConnection serverConnection;
 

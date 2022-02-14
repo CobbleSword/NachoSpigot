@@ -1,6 +1,7 @@
 package dev.cobblesword.nachospigot.commons;
 
-public class StringUtils {
+public final class StringUtils {
+    private StringUtils() {}
     public static String repeat(String string, int count) {
         return new String(new char[count]).replace("\0", string);
     }

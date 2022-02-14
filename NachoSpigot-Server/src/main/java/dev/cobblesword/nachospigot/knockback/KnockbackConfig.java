@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class KnockbackConfig {
+public final class KnockbackConfig {
     private static final Logger LOGGER = LogManager.getLogger(KnockbackConfig.class);
     private static File CONFIG_FILE;
     //private static final YamlCommenter c = new YamlCommenter();

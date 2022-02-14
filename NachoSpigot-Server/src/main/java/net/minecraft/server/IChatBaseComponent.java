@@ -240,5 +240,15 @@ public interface IChatBaseComponent extends Iterable<IChatBaseComponent> {
             gsonbuilder.registerTypeAdapterFactory(new ChatTypeAdapterFactory());
             a = gsonbuilder.create();
         }
+
+        // Nacho start
+        public static JsonElement toJsonTree(IChatBaseComponent text) {
+            return a.toJsonTree(text);
+        }
+
+        public static IChatBaseComponent fromJson(JsonElement json) {
+            return (IChatBaseComponent) a.fromJson(json, IChatBaseComponent.class);
+        }
+        // Nacho end
     }
 }

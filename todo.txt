@@ -1,1 +1,1 @@
-NBTLegacyHoverEventSerializer
+FriendlyByteBuf

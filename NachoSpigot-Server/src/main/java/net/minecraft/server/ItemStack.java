@@ -781,4 +781,10 @@ public final class ItemStack {
                 return false;
         }
     }
+
+    // Nacho start
+    public NBTTagCompound getOrCreateTag() {
+        return tag == null ? tag = new NBTTagCompound() : tag;
+    }
+    // Nacho end
 }

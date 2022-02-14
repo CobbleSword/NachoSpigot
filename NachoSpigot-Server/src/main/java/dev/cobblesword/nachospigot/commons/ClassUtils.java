@@ -3,7 +3,8 @@ package dev.cobblesword.nachospigot.commons;
 /**
  * @author Sculas
  */
-public class ClassUtils {
+public final class ClassUtils {
+    private ClassUtils() {}
     public static boolean exists(String className, ClassLoader loader) {
         try {
             Class.forName(className, true, loader);
