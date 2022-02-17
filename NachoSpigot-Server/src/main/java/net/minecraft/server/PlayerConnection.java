@@ -623,7 +623,6 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 
 
         Location to = new Location(this.getPlayer().getWorld(), x, y, z, yaw, pitch);
-        // Nacho.get().getLagCompensator().registerMovement(player, to); // wuangg - teleport destination can be changed during the event call
         PlayerTeleportEvent event = new PlayerTeleportEvent(player, from.clone(), to.clone(), PlayerTeleportEvent.TeleportCause.UNKNOWN);
         this.server.getPluginManager().callEvent(event);
 
