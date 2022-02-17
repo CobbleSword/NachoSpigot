@@ -637,7 +637,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
             f1 = to.getPitch();
         }
 
-        Nacho.get().getLagCompensator().registerMovement(player, to); // wuangg - moved down
+        Nacho.get().getLagCompensator().registerMovement(player, to); // Nacho - register teleport
         this.internalTeleport(d0, d1, d2, f, f1, set);
     }
 
