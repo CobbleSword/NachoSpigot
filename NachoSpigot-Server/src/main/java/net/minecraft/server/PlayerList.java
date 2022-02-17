@@ -585,7 +585,7 @@ public abstract class PlayerList {
             }
             // Spigot End
 
-            Nacho.get().getLagCompensator().registerMovement(respawnPlayer, location); // wuangg - moved down
+            Nacho.get().getLagCompensator().registerMovement(respawnPlayer, location); // Nacho - register respawn
             location = respawnEvent.getRespawnLocation();
             entityplayer.reset();
         } else {
