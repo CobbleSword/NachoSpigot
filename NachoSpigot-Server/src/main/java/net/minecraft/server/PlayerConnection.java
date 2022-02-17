@@ -377,7 +377,6 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                     this.lastYaw = to.getYaw();
                     this.lastPitch = to.getPitch();
 
-                    // Nacho.get().getLagCompensator().registerMovement(player, to); // wuangg - don't register movement with destination if the event is cancelled
 
                     // Skip the first time we do this
                     if (NachoConfig.firePlayerMoveEvent) { // Spigot - don't skip any move events
