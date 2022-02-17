@@ -1200,7 +1200,7 @@ public abstract class Entity implements ICommandListener {
         	} else {
         		loc = player.getBukkitEntity().getLocation();
         	}
-        	// wuangg end
+                // Nacho end
 
             double d0 = this.locX - loc.getX();
             double d1 = this.locY - loc.getY();
