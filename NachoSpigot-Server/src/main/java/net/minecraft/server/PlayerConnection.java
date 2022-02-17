@@ -377,7 +377,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                     this.lastYaw = to.getYaw();
                     this.lastPitch = to.getPitch();
 
-                    Nacho.get().getLagCompensator().registerMovement(player, to);
+                    // Nacho.get().getLagCompensator().registerMovement(player, to); // wuangg - don't register movement with destination if the event is cancelled
 
                     // Skip the first time we do this
                     if (NachoConfig.firePlayerMoveEvent) { // Spigot - don't skip any move events
@@ -387,7 +387,8 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 
                         // If the event is cancelled we move the player back to their old location.
                         if (event.isCancelled())
-                        {
+                        {	
+                        	Nacho.get().getLagCompensator().registerMovement(player, from); // wuangg
                             this.player.playerConnection.sendPacket(new PacketPlayOutPosition(from.getX(), from.getY(), from.getZ(), from.getYaw(), from.getPitch(), Collections.<PacketPlayOutPosition.EnumPlayerTeleportFlags>emptySet()));
                             return;
                         }
@@ -408,6 +409,8 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                             return;
                         }
                     }
+                    
+                    Nacho.get().getLagCompensator().registerMovement(player, to); // wuangg - moved down
                 }
 
                 if (this.checkMovement && !this.player.dead)
@@ -620,7 +623,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 
 
         Location to = new Location(this.getPlayer().getWorld(), x, y, z, yaw, pitch);
-        Nacho.get().getLagCompensator().registerMovement(player, to);
+        // Nacho.get().getLagCompensator().registerMovement(player, to); // wuangg - teleport destination can be changed during the event call
         PlayerTeleportEvent event = new PlayerTeleportEvent(player, from.clone(), to.clone(), PlayerTeleportEvent.TeleportCause.UNKNOWN);
         this.server.getPluginManager().callEvent(event);
 
@@ -634,6 +637,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
             f1 = to.getPitch();
         }
 
+        Nacho.get().getLagCompensator().registerMovement(player, to); // wuangg - moved down
         this.internalTeleport(d0, d1, d2, f, f1, set);
     }
 

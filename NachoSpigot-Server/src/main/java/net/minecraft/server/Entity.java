@@ -1185,9 +1185,21 @@ public abstract class Entity implements ICommandListener {
 
     public double h(Entity entity) {
         if (NachoConfig.enableImprovedHitReg && entity instanceof EntityPlayer) {
-            Location loc = Nacho.get().getLagCompensator().getHistoryLocation(
+        	// wuangg start - fix npc can not be damaged properly
+            /* Location loc = Nacho.get().getLagCompensator().getHistoryLocation(
                     ((EntityPlayer) entity).getBukkitEntity()
-            );
+            );*/
+        	EntityPlayer player = (EntityPlayer) entity;
+        	
+        	Location loc;
+        	if (player.playerConnection.getClass().equals(PlayerConnection.class)) {
+                loc = Nacho.get().getLagCompensator().getHistoryLocation(
+                        player.getBukkitEntity()
+                );
+        	} else {
+        		loc = player.getBukkitEntity().getLocation();
+        	}
+        	// wuangg end
 
             double d0 = this.locX - loc.getX();
             double d1 = this.locY - loc.getY();

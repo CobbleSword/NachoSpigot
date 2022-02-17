@@ -106,7 +106,7 @@ public class EntityEnderPearl extends EntityProjectile {
                     }
                     // Nacho end
 
-                    Nacho.get().getLagCompensator().registerMovement(player, location);
+                    // Nacho.get().getLagCompensator().registerMovement(player, location); // wuangg - don't register movement if teleport event is cancelled
 
                     PlayerTeleportEvent teleEvent = new PlayerTeleportEvent(player, player.getLocation(), location, PlayerTeleportEvent.TeleportCause.ENDER_PEARL);
                     Bukkit.getPluginManager().callEvent(teleEvent);
@@ -125,6 +125,7 @@ public class EntityEnderPearl extends EntityProjectile {
                         }
 
                         entityplayer.playerConnection.teleport(teleEvent.getTo());
+                    	Nacho.get().getLagCompensator().registerMovement(player, teleEvent.getTo()); // wuangg - teleport destination can be changed during the event call
                         entityliving.fallDistance = 0.0F;
                         CraftEventFactory.entityDamage = this;
                         entityliving.damageEntity(DamageSource.FALL, 5.0F);

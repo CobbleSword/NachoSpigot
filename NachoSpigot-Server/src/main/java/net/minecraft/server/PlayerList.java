@@ -576,7 +576,7 @@ public abstract class PlayerList {
 
             Player respawnPlayer = cserver.getPlayer(entityplayer1);
 
-            Nacho.get().getLagCompensator().registerMovement(respawnPlayer, location);
+            // Nacho.get().getLagCompensator().registerMovement(respawnPlayer, location); // wuangg - don't register movement if player is already disconnected
 
             PlayerRespawnEvent respawnEvent = new PlayerRespawnEvent(respawnPlayer, location, isBedSpawn);
             cserver.getPluginManager().callEvent(respawnEvent);
@@ -586,6 +586,7 @@ public abstract class PlayerList {
             }
             // Spigot End
 
+            Nacho.get().getLagCompensator().registerMovement(respawnPlayer, location); // wuangg - moved down
             location = respawnEvent.getRespawnLocation();
             entityplayer.reset();
         } else {
