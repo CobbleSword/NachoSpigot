@@ -1186,7 +1186,6 @@ public abstract class Entity implements ICommandListener {
     public double h(Entity entity) {
         // Nacho start - improved hit reg
         if (NachoConfig.enableImprovedHitReg && entity instanceof EntityPlayer) {
-        	// wuangg start - fix npc can not be damaged properly
             /* Location loc = Nacho.get().getLagCompensator().getHistoryLocation(
                     ((EntityPlayer) entity).getBukkitEntity()
             );*/
