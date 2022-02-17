@@ -388,7 +388,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                         // If the event is cancelled we move the player back to their old location.
                         if (event.isCancelled())
                         {	
-                        	Nacho.get().getLagCompensator().registerMovement(player, from); // wuangg
+                        Nacho.get().getLagCompensator().registerMovement(player, from); // Nacho
                             this.player.playerConnection.sendPacket(new PacketPlayOutPosition(from.getX(), from.getY(), from.getZ(), from.getYaw(), from.getPitch(), Collections.<PacketPlayOutPosition.EnumPlayerTeleportFlags>emptySet()));
                             return;
                         }
