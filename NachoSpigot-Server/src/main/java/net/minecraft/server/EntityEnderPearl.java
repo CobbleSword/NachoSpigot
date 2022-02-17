@@ -124,7 +124,7 @@ public class EntityEnderPearl extends EntityProjectile {
                         }
 
                         entityplayer.playerConnection.teleport(teleEvent.getTo());
-                    	Nacho.get().getLagCompensator().registerMovement(player, teleEvent.getTo()); // wuangg - teleport destination can be changed during the event call
+                    	Nacho.get().getLagCompensator().registerMovement(player, teleEvent.getTo()); // Nacho - register teleport
                         entityliving.fallDistance = 0.0F;
                         CraftEventFactory.entityDamage = this;
                         entityliving.damageEntity(DamageSource.FALL, 5.0F);
