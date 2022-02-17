@@ -106,7 +106,6 @@ public class EntityEnderPearl extends EntityProjectile {
                     }
                     // Nacho end
 
-                    // Nacho.get().getLagCompensator().registerMovement(player, location); // wuangg - don't register movement if teleport event is cancelled
 
                     PlayerTeleportEvent teleEvent = new PlayerTeleportEvent(player, player.getLocation(), location, PlayerTeleportEvent.TeleportCause.ENDER_PEARL);
                     Bukkit.getPluginManager().callEvent(teleEvent);
