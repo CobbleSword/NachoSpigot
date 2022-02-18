@@ -576,7 +576,6 @@ public abstract class PlayerList {
 
             Player respawnPlayer = cserver.getPlayer(entityplayer1);
 
-            Nacho.get().getLagCompensator().registerMovement(respawnPlayer, location);
 
             PlayerRespawnEvent respawnEvent = new PlayerRespawnEvent(respawnPlayer, location, isBedSpawn);
             cserver.getPluginManager().callEvent(respawnEvent);
@@ -586,6 +585,7 @@ public abstract class PlayerList {
             }
             // Spigot End
 
+            Nacho.get().getLagCompensator().registerMovement(respawnPlayer, location); // Nacho - register respawn
             location = respawnEvent.getRespawnLocation();
             entityplayer.reset();
         } else {

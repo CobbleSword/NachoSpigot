@@ -534,7 +534,6 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         // To = Players new Location if Teleport is Successful
         Location to = location;
         // Create & Call the Teleport Event.
-        Nacho.get().getLagCompensator().registerMovement(this, to);
         PlayerTeleportEvent event = new PlayerTeleportEvent(this, from, to, cause);
         server.getPluginManager().callEvent(event);
 
@@ -542,6 +541,8 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         if (event.isCancelled()) {
             return false;
         }
+        
+        Nacho.get().getLagCompensator().registerMovement(this, event.getTo()); // Nacho - register teleport
 
         // If this player is riding another entity, we must dismount before teleporting.
         entity.mount(null);
