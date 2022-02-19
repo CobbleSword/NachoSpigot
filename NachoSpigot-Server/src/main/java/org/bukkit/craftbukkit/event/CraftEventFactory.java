@@ -533,7 +533,8 @@ public class CraftEventFactory {
         } else if (source == DamageSource.FALL) {
             cause = DamageCause.FALL;
         } else if (source == DamageSource.GENERIC) {
-            return new EntityDamageEvent(entity.getBukkitEntity(), null, modifiers, modifierFunctions);
+            //return new EntityDamageEvent(entity.getBukkitEntity(), null, modifiers, modifierFunctions);
+            cause = DamageCause.CUSTOM; // KigPaper
         }
 
         if (cause != null) {
