@@ -174,7 +174,7 @@ public final class PaperAdventure {
         if (component instanceof AdventureComponent) {
             return asJsonString(((AdventureComponent) component).adventure, locale);
         }
-        return IChatBaseComponent.ChatSerializer.a(component); // toJson
+        return IChatBaseComponent.ChatSerializer.toJson(component); // toJson
     }
 
     public static String asPlain(final Component component, final Locale locale) {

@@ -1,23 +1,13 @@
 package net.minecraft.server;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
+import com.google.common.collect.Streams; // CraftBukkit
+import com.google.gson.*;
+import io.papermc.paper.adventure.AdventureComponent; // Paper
+
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map.Entry;
-// CraftBukkit start
-import com.google.common.collect.Streams;
-import java.util.stream.Stream;
-// CraftBukkit end
+import java.util.stream.Stream; // CraftBukkit
 
 public interface IChatBaseComponent extends Iterable<IChatBaseComponent> {
 
@@ -47,6 +37,7 @@ public interface IChatBaseComponent extends Iterable<IChatBaseComponent> {
 
     IChatBaseComponent copy();
 
+    @SuppressWarnings("SpellCheckingInspection") // Nacho
     class ChatSerializer implements JsonDeserializer<IChatBaseComponent>, JsonSerializer<IChatBaseComponent> {
 
         private static final Gson a;
@@ -153,6 +144,7 @@ public interface IChatBaseComponent extends Iterable<IChatBaseComponent> {
         }
 
         public JsonElement a(IChatBaseComponent ichatbasecomponent, Type type, JsonSerializationContext jsonserializationcontext) {
+            if (ichatbasecomponent instanceof AdventureComponent) return jsonserializationcontext.serialize(ichatbasecomponent); // Paper
             if (ichatbasecomponent instanceof ChatComponentText && ichatbasecomponent.getChatModifier().g() && ichatbasecomponent.getSiblings().isEmpty()) {
                 return new JsonPrimitive(((ChatComponentText) ichatbasecomponent).g());
             } else {
@@ -181,7 +173,8 @@ public interface IChatBaseComponent extends Iterable<IChatBaseComponent> {
                     if (chatmessage.j() != null && chatmessage.j().length > 0) {
                         JsonArray jsonarray1 = new JsonArray();
                         Object[] aobject = chatmessage.j();
-                        int i = aobject.length;
+                        // Nacho - unused variable
+                        //int i = aobject.length;
 
                         for (Object object : aobject) {
                             if (object instanceof IChatBaseComponent) {
@@ -215,7 +208,7 @@ public interface IChatBaseComponent extends Iterable<IChatBaseComponent> {
             }
         }
 
-        public static String a(IChatBaseComponent ichatbasecomponent) {
+        public static String toJson(IChatBaseComponent ichatbasecomponent) {
             return IChatBaseComponent.ChatSerializer.a.toJson(ichatbasecomponent);
         }
 
@@ -235,6 +228,7 @@ public interface IChatBaseComponent extends Iterable<IChatBaseComponent> {
         static {
             GsonBuilder gsonbuilder = new GsonBuilder();
 
+            gsonbuilder.registerTypeAdapter(AdventureComponent.class, new AdventureComponent.Serializer()); // Paper
             gsonbuilder.registerTypeHierarchyAdapter(IChatBaseComponent.class, new IChatBaseComponent.ChatSerializer());
             gsonbuilder.registerTypeHierarchyAdapter(ChatModifier.class, new ChatModifier.ChatModifierSerializer());
             gsonbuilder.registerTypeAdapterFactory(new ChatTypeAdapterFactory());
@@ -247,7 +241,7 @@ public interface IChatBaseComponent extends Iterable<IChatBaseComponent> {
         }
 
         public static IChatBaseComponent fromJson(JsonElement json) {
-            return (IChatBaseComponent) a.fromJson(json, IChatBaseComponent.class);
+            return a.fromJson(json, IChatBaseComponent.class);
         }
         // Nacho end
     }

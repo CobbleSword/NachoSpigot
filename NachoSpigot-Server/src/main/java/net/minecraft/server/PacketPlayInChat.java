@@ -31,7 +31,7 @@ public class PacketPlayInChat implements Packet<PacketListenerPlayIn> {
     }
 
     public void b(PacketDataSerializer serializer) throws IOException {
-        serializer.a(this.a);
+        serializer.writeUtf(this.a);
     }
 
     // Spigot Start

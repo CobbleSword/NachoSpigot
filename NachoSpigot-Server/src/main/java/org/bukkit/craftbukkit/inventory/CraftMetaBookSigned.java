@@ -72,7 +72,7 @@ class CraftMetaBookSigned extends CraftMetaBook implements BookMeta {
             NBTTagList list = new NBTTagList();
             for (IChatBaseComponent page : pages) {
                 list.add(new NBTTagString(
-                    ChatSerializer.a(page)
+                    ChatSerializer.toJson(page)
                 ));
             }
             itemData.set(BOOK_PAGES.NBT, list);

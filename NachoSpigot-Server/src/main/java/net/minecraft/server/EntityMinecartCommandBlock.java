@@ -8,7 +8,7 @@ public class EntityMinecartCommandBlock extends EntityMinecartAbstract {
         }
         public void h() {
             EntityMinecartCommandBlock.this.getDataWatcher().watch(23, this.getCommand());
-            EntityMinecartCommandBlock.this.getDataWatcher().watch(24, IChatBaseComponent.ChatSerializer.a(this.k()));
+            EntityMinecartCommandBlock.this.getDataWatcher().watch(24, IChatBaseComponent.ChatSerializer.toJson(this.k()));
         }
 
         public BlockPosition getChunkCoordinates() {
@@ -47,7 +47,7 @@ public class EntityMinecartCommandBlock extends EntityMinecartAbstract {
         super.a(nbttagcompound);
         this.a.b(nbttagcompound);
         this.getDataWatcher().watch(23, this.getCommandBlock().getCommand());
-        this.getDataWatcher().watch(24, IChatBaseComponent.ChatSerializer.a(this.getCommandBlock().k()));
+        this.getDataWatcher().watch(24, IChatBaseComponent.ChatSerializer.toJson(this.getCommandBlock().k()));
     }
 
     protected void b(NBTTagCompound nbttagcompound) {

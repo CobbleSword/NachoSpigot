@@ -253,7 +253,7 @@ public class DataWatcher {
             break;
 
         case 4:
-            serializer.a((String) datawatcher_watchableobject.b());
+            serializer.writeUtf((String) datawatcher_watchableobject.b());
             break;
 
         case 5:

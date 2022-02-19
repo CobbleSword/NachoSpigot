@@ -59,9 +59,9 @@ public class PacketPlayOutTitle implements Packet<PacketListenerPlayOut> {
         if (this.a == EnumTitleAction.TITLE || this.a == EnumTitleAction.SUBTITLE) {
             // Paper start
             if (this.components != null) {
-                serializer.a(net.md_5.bungee.chat.ComponentSerializer.toString(components));
+                serializer.writeUtf(net.md_5.bungee.chat.ComponentSerializer.toString(components));
             } else {
-                serializer.a(this.b);
+                serializer.writeComponent(this.b);
             }
             // Paper end
         }

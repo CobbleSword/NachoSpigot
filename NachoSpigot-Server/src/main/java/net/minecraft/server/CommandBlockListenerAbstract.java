@@ -38,7 +38,7 @@ public abstract class CommandBlockListenerAbstract implements ICommandListener {
         nbttagcompound.setString("CustomName", this.f);
         nbttagcompound.setBoolean("TrackOutput", this.c);
         if (this.d != null && this.c) {
-            nbttagcompound.setString("LastOutput", IChatBaseComponent.ChatSerializer.a(this.d));
+            nbttagcompound.setString("LastOutput", IChatBaseComponent.ChatSerializer.toJson(this.d));
         }
 
         this.g.b(nbttagcompound);

@@ -16,7 +16,7 @@ public class PacketPlayInCustomPayload implements Packet<PacketListenerPlayIn> {
     }
 
     public void b(PacketDataSerializer paramPacketDataSerializer) throws IOException {
-        paramPacketDataSerializer.a(this.a);
+        paramPacketDataSerializer.writeUtf(this.a);
         paramPacketDataSerializer.writeBytes(this.b);
     }
 

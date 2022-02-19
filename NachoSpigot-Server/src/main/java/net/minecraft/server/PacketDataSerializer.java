@@ -10,7 +10,6 @@ import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.EncoderException;
 import io.netty.util.ByteProcessor;
 
-import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,14 +23,15 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
+import io.papermc.paper.adventure.PaperAdventure; // Paper
 import org.bukkit.craftbukkit.inventory.CraftItemStack; // CraftBukkit
-// TacoSpigot start
-import net.techcable.tacospigot.CompatHacks;
-// TacoSpigot end
+import net.techcable.tacospigot.CompatHacks; // TacoSpigot
 
+@SuppressWarnings({"unused", "deprecation", "SpellCheckingInspection"}) // Nacho
 public class PacketDataSerializer extends ByteBuf {
 
     private final ByteBuf a;
+    public java.util.Locale adventure$locale; // Paper
 
     // TacoSpigot start
     private final boolean allowLargePackets;
@@ -60,7 +60,7 @@ public class PacketDataSerializer extends ByteBuf {
     }
 
     public void a(byte[] abyte) {
-        this.writeVarInt(abyte.length); // Nacho - deobfuscate writeVarInt
+        this.writeVarInt(abyte.length);
         this.writeBytes(abyte);
     }
 
@@ -68,7 +68,6 @@ public class PacketDataSerializer extends ByteBuf {
     private static final int DEFAULT_LIMIT = Short.MAX_VALUE;
     private static final int LARGE_PACKET_LIMIT = Short.MAX_VALUE * 1024;
     public byte[] a() {
-        // TacoSpigot start
         int limit = allowLargePackets ? LARGE_PACKET_LIMIT : DEFAULT_LIMIT;
         return readByteArray(limit);
     }
@@ -91,11 +90,18 @@ public class PacketDataSerializer extends ByteBuf {
     }
 
     public IChatBaseComponent d() throws IOException {
-        return IChatBaseComponent.ChatSerializer.a(this.readUtf(32767)); // Nacho - deobfuscate readUtf
+        return IChatBaseComponent.ChatSerializer.a(this.readUtf(32767));
     }
 
-    public void a(IChatBaseComponent ichatbasecomponent) throws IOException {
-        this.a(IChatBaseComponent.ChatSerializer.a(ichatbasecomponent));
+    // Paper start
+    public PacketDataSerializer writeComponent(final net.kyori.adventure.text.Component component) {
+        return this.writeUtf(PaperAdventure.asJsonString(component, this.adventure$locale));
+    }
+    // Paper end
+
+    public void writeComponent(IChatBaseComponent ichatbasecomponent) throws IOException {
+        //this.writeUtf(IChatBaseComponent.ChatSerializer.toJson(ichatbasecomponent)); // Paper - comment
+        this.writeUtf(PaperAdventure.asJsonString(ichatbasecomponent, this.adventure$locale)); // Paper
     }
 
     public <T extends Enum<T>> T a(Class<T> oclass) {
@@ -103,10 +109,10 @@ public class PacketDataSerializer extends ByteBuf {
     }
 
     public void a(Enum<?> oenum) {
-        this.writeVarInt(oenum.ordinal()); // Nacho - deobfuscate writeVarInt
+        this.writeVarInt(oenum.ordinal());
     }
 
-    public int readVarInt() { // Nacho - deobfuscate
+    public int readVarInt() {
         byte b0;
         int i = 0;
         int j = 0;
@@ -137,11 +143,11 @@ public class PacketDataSerializer extends ByteBuf {
         this.writeLong(uuid.getLeastSignificantBits());
     }
 
-    public UUID readUUID() { // Nacho - deobfuscate
+    public UUID readUUID() {
         return new UUID(this.readLong(), this.readLong());
     }
 
-    public void writeVarInt(int i) { // Nacho - deobfuscate
+    public void writeVarInt(int i) {
         while ((i & -128) != 0) {
             this.writeByte(i & 127 | 128);
             i >>>= 7;
@@ -183,7 +189,7 @@ public class PacketDataSerializer extends ByteBuf {
         } else {
             this.readerIndex(i);
             try {
-                return NBTCompressedStreamTools.a((DataInput) (new ByteBufInputStream(this)), new NBTReadLimiter(50000L));
+                return NBTCompressedStreamTools.a(new ByteBufInputStream(this), new NBTReadLimiter(50000L));
             } catch (IOException ioexception) {
                 throw new EncoderException(ioexception);
             }
@@ -239,7 +245,7 @@ public class PacketDataSerializer extends ByteBuf {
         return itemstack;
     }
 
-    public String readUtf(int i) { // Nacho - deobfuscate
+    public String readUtf(int i) {
         int j = this.readVarInt();
         if (j > i * 4)
             throw new DecoderException("The received encoded string buffer length is longer than maximum allowed (" + j + " > " + (i * 4) + ")");
@@ -249,17 +255,16 @@ public class PacketDataSerializer extends ByteBuf {
         readerIndex(readerIndex() + j);
         if (s.length() > i)
             throw new DecoderException("The received string length is longer than maximum allowed (" + j + " > " + i + ")");
-        // Nacho end
         return s;
     }
 
-    public PacketDataSerializer a(String s) {
+    public PacketDataSerializer writeUtf(String s) {
         byte[] abyte = s.getBytes(Charsets.UTF_8);
 
         if (abyte.length > 32767) {
             throw new EncoderException("String too big (was " + s.length() + " bytes encoded, max " + 32767 + ")");
         } else {
-            this.writeVarInt(abyte.length); // Nacho - deobfuscate writeVarInt
+            this.writeVarInt(abyte.length);
             this.writeBytes(abyte);
             return this;
         }
@@ -1001,7 +1006,7 @@ public class PacketDataSerializer extends ByteBuf {
     }
 
     public boolean equals(Object object) {
-        return this.a.equals(object);
+        return this.a.equals(object) || (object instanceof PacketDataSerializer && ((PacketDataSerializer) object).a.equals(this.a));
     }
 
     public int compareTo(ByteBuf bytebuf) {

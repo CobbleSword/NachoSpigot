@@ -48,8 +48,8 @@ public class PacketPlayOutOpenWindow implements Packet<PacketListenerPlayOut> {
 
     public void b(PacketDataSerializer serializer) throws IOException {
         serializer.writeByte(this.a);
-        serializer.a(this.b);
-        serializer.a(this.c);
+        serializer.writeUtf(this.b);
+        serializer.writeComponent(this.c);
         serializer.writeByte(this.d);
         if (this.b.equals("EntityHorse")) {
             serializer.writeInt(this.e);

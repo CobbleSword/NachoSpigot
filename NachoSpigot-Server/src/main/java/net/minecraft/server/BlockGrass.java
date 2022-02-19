@@ -10,13 +10,14 @@ import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.block.BlockFadeEvent;
 // CraftBukkit end
 
+@SuppressWarnings("SpellCheckingInspection") // Nacho
 public class BlockGrass extends Block implements IBlockFragilePlantElement {
 
     public static final BlockStateBoolean SNOWY = BlockStateBoolean.of("snowy");
 
     protected BlockGrass() {
         super(Material.GRASS);
-        this.j(this.blockStateList.getBlockData().set(BlockGrass.SNOWY, Boolean.valueOf(false)));
+        this.j(this.blockStateList.getBlockData().set(BlockGrass.SNOWY, false));
         this.a(true);
         this.a(CreativeModeTab.b);
     }
@@ -24,7 +25,7 @@ public class BlockGrass extends Block implements IBlockFragilePlantElement {
     public IBlockData updateState(IBlockData iblockdata, IBlockAccess iblockaccess, BlockPosition blockposition) {
         Block block = iblockaccess.getType(blockposition.up()).getBlock();
 
-        return iblockdata.set(BlockGrass.SNOWY, Boolean.valueOf(block == Blocks.SNOW || block == Blocks.SNOW_LAYER));
+        return iblockdata.set(BlockGrass.SNOWY, block == Blocks.SNOW || block == Blocks.SNOW_LAYER);
     }
 
     public void b(World world, BlockPosition blockposition, IBlockData iblockdata, Random random) {
@@ -139,6 +140,6 @@ public class BlockGrass extends Block implements IBlockFragilePlantElement {
     }
 
     protected BlockStateList getStateList() {
-        return new BlockStateList(this, new IBlockState[] { BlockGrass.SNOWY});
+        return new BlockStateList(this, BlockGrass.SNOWY);
     }
 }

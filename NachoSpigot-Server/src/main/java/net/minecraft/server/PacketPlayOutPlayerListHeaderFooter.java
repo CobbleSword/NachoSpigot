@@ -23,15 +23,15 @@ public class PacketPlayOutPlayerListHeaderFooter implements Packet<PacketListene
     public void b(PacketDataSerializer serializer) throws IOException {
         // Paper start
         if (this.header != null) {
-            serializer.a(net.md_5.bungee.chat.ComponentSerializer.toString(this.header));
+            serializer.writeUtf(net.md_5.bungee.chat.ComponentSerializer.toString(this.header));
         } else {
-            serializer.a(this.a);
+            serializer.writeComponent(this.a);
         }
 
         if (this.footer != null) {
-            serializer.a(net.md_5.bungee.chat.ComponentSerializer.toString(this.footer));
+            serializer.writeUtf(net.md_5.bungee.chat.ComponentSerializer.toString(this.footer));
         } else {
-            serializer.a(this.b);
+            serializer.writeComponent(this.b);
         }
         // Paper end
     }

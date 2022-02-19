@@ -40,13 +40,13 @@ public class PacketPlayOutChat implements Packet<PacketListenerPlayOut> {
             //serializer.a(net.md_5.bungee.chat.ComponentSerializer.toString(components)); // Paper - comment, replaced with below
             // Paper start - don't nest if we don't need to so that we can preserve formatting
             if (this.components.length == 1) {
-                serializer.a(net.md_5.bungee.chat.ComponentSerializer.toString(this.components[0]));
+                serializer.writeUtf(net.md_5.bungee.chat.ComponentSerializer.toString(this.components[0]));
             } else {
-                serializer.a(net.md_5.bungee.chat.ComponentSerializer.toString(this.components));
+                serializer.writeUtf(net.md_5.bungee.chat.ComponentSerializer.toString(this.components));
             }
             // Paper end
         } else {
-            serializer.a(this.a);
+            serializer.writeComponent(this.a);
         }
         // Spigot end
         serializer.writeByte(this.b);

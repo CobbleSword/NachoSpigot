@@ -17,7 +17,7 @@ public class PacketLoginOutDisconnect implements Packet<PacketLoginOutListener> 
     }
 
     public void b(PacketDataSerializer var1) throws IOException {
-        var1.a(this.a);
+        var1.writeComponent(this.a);
     }
 
     public void a(PacketLoginOutListener var1) {

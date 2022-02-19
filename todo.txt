@@ -1,1 +1,1 @@
-FriendlyByteBuf
+ClientboundChatPacket

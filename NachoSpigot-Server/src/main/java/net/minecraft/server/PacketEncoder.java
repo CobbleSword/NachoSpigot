@@ -5,6 +5,8 @@ import dev.cobblesword.nachospigot.exception.ExploitException;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
+import io.papermc.paper.adventure.PaperAdventure;
+
 import java.io.IOException;
 
 public class PacketEncoder extends MessageToByteEncoder<Packet<?>> {
@@ -28,7 +30,8 @@ public class PacketEncoder extends MessageToByteEncoder<Packet<?>> {
             throw new IOException("Can't serialize unregistered packet");
         } else {
             PacketDataSerializer serializer = new PacketDataSerializer(bytebuf);
-            serializer.writeVarInt(packetId); // Nacho - deobfuscate writeVarInt
+            serializer.writeVarInt(packetId);
+            serializer.adventure$locale = ctx.channel().attr(PaperAdventure.LOCALE_ATTRIBUTE).get();
 
             try {
                 packet.b(serializer);

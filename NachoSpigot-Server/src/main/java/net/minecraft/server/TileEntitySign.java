@@ -16,7 +16,7 @@ public class TileEntitySign extends TileEntity {
         super.b(nbttagcompound);
 
         for (int i = 0; i < 4; ++i) {
-            String s = IChatBaseComponent.ChatSerializer.a(this.lines[i]);
+            String s = IChatBaseComponent.ChatSerializer.toJson(this.lines[i]);
 
             nbttagcompound.setString("Text" + (i + 1), s);
         }

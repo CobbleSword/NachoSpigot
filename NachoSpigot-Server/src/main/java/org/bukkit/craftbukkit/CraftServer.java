@@ -312,18 +312,16 @@ public final class CraftServer implements Server {
                     // Nacho end
 
                     // Nacho start - Add notice for older Citizens versions
-                    else if(plugin.getDescription().getFullName().equals("Citizens")) {
-                        if(PluginUtils.getCitizensBuild(plugin) < 2396) {
-                            logger.warning(
-                                    "Please update to Citizens 2.0.28 #7 or higher!\n" +
-                                         "Previously, there was a fix for older versions, but that has been removed.\n" +
-                                         "So, if you want Citizens to work, please update!\n" +
-                                         "You can download the latest version with this link: " +
-                                         "https://ci.citizensnpcs.co/job/Citizens2/\n" +
-                                         "Sleeping for 10s so this message can be read."
-                            );
-                            Thread.sleep(10000);
-                        }
+                    else if(plugin.getDescription().getName().equals("Citizens") && PluginUtils.getCitizensBuild(plugin) < 2396) {
+                        logger.warning(
+                                "Please update to Citizens 2.0.28 #7 or higher!\n" +
+                                        "Previously, there was a fix for older versions, but that has been removed.\n" +
+                                        "So, if you want Citizens to work, please update!\n" +
+                                        "You can download the latest version with this link: " +
+                                        "https://ci.citizensnpcs.co/job/Citizens2/\n" +
+                                        "Sleeping for 10s so this message can be read."
+                        );
+                        Thread.sleep(10000);
                     }
                     // Nacho end
 

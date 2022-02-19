@@ -20,7 +20,7 @@ public class PacketHandshakingInSetProtocol implements Packet<PacketHandshakingI
 
     public void b(PacketDataSerializer serializer) throws IOException {
         serializer.writeVarInt(this.a); // Nacho - deobfuscate writeVarInt
-        serializer.a(this.hostname);
+        serializer.writeUtf(this.hostname);
         serializer.writeShort(this.port);
         serializer.writeVarInt(this.d.getStateId()); // Nacho - deobfuscate writeVarInt
     }

@@ -120,17 +120,17 @@ public class PacketPlayOutPlayerInfo implements Packet<PacketListenerPlayOut> {
                 switch(this.a) {
                 case ADD_PLAYER:
                     var1.a(var3.a().getId());
-                    var1.a(var3.a().getName());
+                    var1.writeUtf(var3.a().getName());
                     var1.writeVarInt(var3.a().getProperties().size()); // Nacho - deobfuscate writeVarInt
                     Iterator var4 = var3.a().getProperties().values().iterator();
 
                     while(var4.hasNext()) {
                         Property var5 = (Property)var4.next();
-                        var1.a(var5.getName());
-                        var1.a(var5.getValue());
+                        var1.writeUtf(var5.getName());
+                        var1.writeUtf(var5.getValue());
                         if (var5.hasSignature()) {
                             var1.writeBoolean(true);
-                            var1.a(var5.getSignature());
+                            var1.writeUtf(var5.getSignature());
                         } else {
                             var1.writeBoolean(false);
                         }
@@ -142,7 +142,7 @@ public class PacketPlayOutPlayerInfo implements Packet<PacketListenerPlayOut> {
                         var1.writeBoolean(false);
                     } else {
                         var1.writeBoolean(true);
-                        var1.a(var3.d());
+                        var1.writeComponent(var3.d());
                     }
                     break;
                 case UPDATE_GAME_MODE:
@@ -159,7 +159,7 @@ public class PacketPlayOutPlayerInfo implements Packet<PacketListenerPlayOut> {
                         var1.writeBoolean(false);
                     } else {
                         var1.writeBoolean(true);
-                        var1.a(var3.d());
+                        var1.writeComponent(var3.d());
                     }
                     break;
                 case REMOVE_PLAYER:
@@ -209,7 +209,7 @@ public class PacketPlayOutPlayerInfo implements Packet<PacketListenerPlayOut> {
         }
 
         public String toString() {
-            return MoreObjects.toStringHelper(this).add("latency", this.b).add("gameMode", this.c).add("profile", this.d).add("displayName", this.e == null ? null : ChatSerializer.a(this.e)).toString();
+            return MoreObjects.toStringHelper(this).add("latency", this.b).add("gameMode", this.c).add("profile", this.d).add("displayName", this.e == null ? null : ChatSerializer.toJson(this.e)).toString();
         }
     }
 
