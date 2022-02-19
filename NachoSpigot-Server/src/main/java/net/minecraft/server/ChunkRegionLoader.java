@@ -296,10 +296,6 @@ public class ChunkRegionLoader implements IChunkLoader, IAsyncChunkSaver {
             nbttagcompound1 = new NBTTagCompound();
             tileentity.b(nbttagcompound1);
             nbttaglist2.add(nbttagcompound1);
-            
-            if(tileentity instanceof TileEntityHopper) {
-            	Arrays.fill(((TileEntityHopper) tileentity).items, null);
-            }
         }
 
         nbttagcompound.set("TileEntities", nbttaglist2);
