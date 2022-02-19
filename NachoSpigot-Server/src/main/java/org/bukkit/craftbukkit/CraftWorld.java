@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import dev.cobblesword.nachospigot.commons.Constants;
+import dev.cobblesword.nachospigot.commons.Dictionary;
 import me.elier.nachospigot.config.NachoConfig;
 import net.minecraft.server.*;
 
@@ -60,7 +61,6 @@ import org.bukkit.plugin.messaging.StandardMessenger;
 import org.bukkit.util.Vector;
 
 import net.jafama.FastMath;
-import me.elier.nachospigot.config.NachoConfig;
 
 public class CraftWorld implements World {
     public static final int CUSTOM_DIMENSION_OFFSET = 10;
@@ -1465,25 +1465,17 @@ public class CraftWorld implements World {
             } else
             {
                 net.minecraft.server.EnumParticle particle = null;
-                int[] extra = null;
-                for ( net.minecraft.server.EnumParticle p : net.minecraft.server.EnumParticle.values() )
-                {
-                    if ( effect.getName().startsWith( p.b().replace("_", "") ) )
-                    {
-                        particle = p;
-                        if ( effect.getData() != null ) 
-                        {
-                            if ( effect.getData().equals( org.bukkit.Material.class ) )
-                            {
-                                extra = new int[]{ id };
-                            } else 
-                            {
-                                extra = new int[]{ (data << 12) | (id & 0xFFF) };
-                            }
-                        }
-                        break;
-                    }
+				int[] extra = null;
+                if ((particle = Dictionary.EFFECT_TO_PARTICLE.get(effect)) != null) {
+                    if ( effect.getData() != null ) {
+						if ( effect.getData().equals( org.bukkit.Material.class ) ) {
+							extra = new int[]{ id };
+						} else {
+							extra = new int[]{ (data << 12) | (id & 0xFFF) };
+						}
+					}
                 }
+				
                 if ( extra == null )
                 {
                     extra = Constants.EMPTY_ARRAY;

@@ -150,11 +150,7 @@ public class Explosion {
                             // PaperSpigot end
 
                             if (entity instanceof EntityHuman && !((EntityHuman) entity).abilities.isInvulnerable && !world.paperSpigotConfig.disableExplosionKnockback) { // PaperSpigot
-                                this.k.put((EntityHuman) entity, new Vec3D(x / d14 * d13, y / d14 * d13, z / d14 * d13)); // SportPaper
-								double vecX = d14 == 0 ? x : x / d14;
-								double vecY = d14 == 0 ? y : y / d14;
-								double vecZ = d14 == 0 ? z : z / d14;
-								this.k.put((EntityHuman) entity, new Vec3D(vecX * d13, vecY * d13, vecZ * d13)); // SportPaper
+                                this.k.put((EntityHuman) entity, new Vec3D(finalD * d13, finalD1 * d13, finalD11 * d13));
                             }
                         }));
                     }
