@@ -22,28 +22,34 @@ public class LagCompensator {
     private final int pingOffset = 92;
     private final int timeResolution = 30;
 
-    public Location getHistoryLocation(Player player) {
+    // Gets an estimate location of the player at "rewindMillisecs" ago
+    public Location getHistoryLocation(Player player, int rewindMillisecs) {
         if (!locationTimes.containsKey(player.getUniqueId()))
             return player.getLocation();
 
-        int rewindMillisecs = player.spigot().getPing();
-
-        List<Pair<Location, Long>> times = locationTimes.get(player.getUniqueId());
+        List<Pair<Location, Long>> previousLocations = locationTimes.get(player.getUniqueId());
         long currentTime = System.currentTimeMillis();
 
         int rewindTime = rewindMillisecs + pingOffset;
-        int timesSize = times.size() - 1;
+        int timesSize = previousLocations.size() - 1;
 
         for (int i = timesSize; i >= 0; i--) {
-            int elapsedTime = (int) (currentTime - times.get(i).getValue());
+            Pair<Location, Long> locationPair = previousLocations.get(i);
+            int elapsedTime = (int) (currentTime - locationPair.getValue());
 
             if (elapsedTime >= rewindTime) {
                 if (i == timesSize)
-                    return times.get(i).getKey();
+                    return locationPair.getKey();
 
-                double nextMoveWeight = (elapsedTime - rewindTime) / (double) (elapsedTime - (currentTime - times.get(i + 1).getValue()));
-                Location before = times.get(i).getKey().clone();
-                Location after = times.get(i + 1).getKey();
+                int maxRewindMilli = rewindMillisecs + pingOffset;
+                int millisSinceLoc = (int) (currentTime - locationPair.getValue());
+
+                double movementRelAge = millisSinceLoc - maxRewindMilli;
+                double millisSinceLastLoc = currentTime - previousLocations.get(i + 1).getValue();
+
+                double nextMoveWeight = movementRelAge / (millisSinceLoc - millisSinceLastLoc);
+                Location before = locationPair.getKey().clone();
+                Location after = previousLocations.get(i + 1).getKey();
                 Vector interpolate = after.toVector().subtract(before.toVector());
 
                 interpolate.multiply(nextMoveWeight);
