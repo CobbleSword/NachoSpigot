@@ -76,4 +76,8 @@ public class LagCompensator {
         processPosition(to, player);
     }
 
+    public void clearCache(Player player) {
+        locationTimes.removeAll(player.getUniqueId());
+    }
+
 }
