@@ -400,6 +400,8 @@ public abstract class PlayerList {
         if (lastView != null && lastView.getHandle() instanceof ContainerPlayer && lastView.getPlayer() == bukkit) craftingManager.lastCraftView = null;
         // KigPaper end
 
+        Nacho.get().getLagCompensator().clearCache(bukkit);
+
         return playerQuitEvent.getQuitMessage(); // CraftBukkit
     }
 
