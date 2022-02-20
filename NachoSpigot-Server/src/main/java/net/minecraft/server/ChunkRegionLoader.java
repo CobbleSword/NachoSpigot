@@ -195,6 +195,7 @@ public class ChunkRegionLoader implements IChunkLoader, IAsyncChunkSaver {
                 if (this.c()) {
                     continue;
                 }
+				break; // Paper - fix infinite loop when saving chunks
             }
         } finally {
             this.e = false;
