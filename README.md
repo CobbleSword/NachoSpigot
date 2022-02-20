@@ -1,6 +1,6 @@
 # NachoSpigot [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/CobbleSword/NachoSpigot/NachoSpigot%20Build)](https://nightly.link/CobbleSword/NachoSpigot/workflows/build-nachospigot/master/NachoSpigot-server.zip)
 
-NachoSpigot offers a number of enhancements to performance as well as bug fixes and being able to perform well with a large number of players.
+NachoSpigot offers a number of enhancements to performance as well as bug fixes and being able to perform well with a large number of players. (T)
 
 While NachoSpigot hasn't been benchmarked properly yet, a server running NachoSpigot was successfully able to run a Minecraft event with 300 players and 20 TPS continuously.
 
