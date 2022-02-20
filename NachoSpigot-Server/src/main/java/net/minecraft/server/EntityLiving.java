@@ -1790,6 +1790,8 @@ public abstract class EntityLiving extends Entity {
     }
 
     public boolean hasLineOfSight(Entity entity) {
+        Vec3D vec = new Vec3D(this.locX, this.locY + (double) this.getHeadHeight(), this.locZ);
+
         if (entity instanceof EntityPlayer && NachoConfig.enableImprovedHitReg) {
             // Head height is 1,5725
             // Split it into three to get a more accurate line of sight -> 0.52416667
@@ -1797,18 +1799,18 @@ public abstract class EntityLiving extends Entity {
             double parts = entity.getHeadHeight() / 3;
 
             return this.world.rayTrace(
-                    new Vec3D(this.locX, this.locY + (double) this.getHeadHeight(), this.locZ),
+                    vec,
                     new Vec3D(entity.locX, entity.locY + (parts * 3), entity.locZ)
             ) == null || this.world.rayTrace(
-                    new Vec3D(this.locX, this.locY + (double) this.getHeadHeight(), this.locZ),
+                    vec,
                     new Vec3D(entity.locX, entity.locY + (parts * 2), entity.locZ)
             ) == null || this.world.rayTrace(
-                    new Vec3D(this.locX, this.locY + (double) this.getHeadHeight(), this.locZ),
+                    vec,
                     new Vec3D(entity.locX, entity.locY + (parts * 1), entity.locZ)
             ) == null;
         } else {
             return this.world.rayTrace(
-                    new Vec3D(this.locX, this.locY + (double) this.getHeadHeight(), this.locZ),
+                    vec,
                     new Vec3D(entity.locX, entity.locY + (double) this.getHeadHeight(), entity.locZ)
             ) == null;
         }
