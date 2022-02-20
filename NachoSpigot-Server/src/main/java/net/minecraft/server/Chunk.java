@@ -285,6 +285,8 @@ public class Chunk {
         this.g[i + j * 16] = true;
         this.k = true;
     }
+	
+	private void recheckGaps(boolean flag) { h(flag); } // Paper
 
     private void h(boolean flag) {
         this.world.methodProfiler.a("recheckGaps");
@@ -1280,10 +1282,20 @@ public class Chunk {
 
         return new BlockPosition(blockposition.getX(), this.f[k], blockposition.getZ());
     }
+	
+	// Paper start
+    private boolean shouldRecheckGaps = false;
+    public void doGapCheck() {
+        if (shouldRecheckGaps) {
+            this.recheckGaps(false);
+            shouldRecheckGaps = false;
+        }
+    }
+    // Paper end
 
     public void b(boolean flag) {
         if (this.k && !this.world.worldProvider.o() && !flag) {
-            this.recheckGaps(this.world.isClientSide); // PaperSpigot - Asynchronous lighting updates
+            shouldRecheckGaps = true; // Paper
         }
 
         this.p = true;
@@ -1302,23 +1314,6 @@ public class Chunk {
             }
         }
 
-    }
-
-    /**
-     * PaperSpigot - Recheck gaps asynchronously.
-     */
-    public void recheckGaps(final boolean isClientSide) {
-        if (!world.paperSpigotConfig.useAsyncLighting) {
-            this.h(isClientSide);
-            return;
-        }
-
-        world.lightingExecutor.submit(new Runnable() {
-            @Override
-            public void run() {
-                Chunk.this.h(isClientSide);
-            }
-        });
     }
 
     public boolean isReady() {
