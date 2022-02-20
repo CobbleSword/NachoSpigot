@@ -1160,7 +1160,7 @@ public class Chunk {
 
         // PaperSpigot start
         int[] counts;
-        if (ItemStack.class.isAssignableFrom(oclass)) {
+        if (EntityItem.class.isAssignableFrom(oclass)) {
             counts = itemCounts;
         } else if (IInventory.class.isAssignableFrom(oclass)) {
             counts = inventoryEntityCounts;
