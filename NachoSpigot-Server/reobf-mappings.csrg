@@ -60,6 +60,9 @@ net/minecraft/server/v1_8_R3/IChatBaseComponent addSibling (Ljava/lang/String;)L
 net/minecraft/server/v1_8_R3/IChatBaseComponent$Serializer toJson (Lnet/minecraft/server/v1_8_R3/IChatBaseComponent;)Ljava/lang/String; a
 net/minecraft/server/v1_8_R3/ChatBaseComponent siblings a
 net/minecraft/server/v1_8_R3/ChatBaseComponent style b
+net/minecraft/server/v1_8_R3/PacketPlayOutChat message a
+met/minecraft/server/v1_8_R3/PacketPlayOutPlayerListHeaderFooter header a
+met/minecraft/server/v1_8_R3/PacketPlayOutPlayerListHeaderFooter footer b
 
 # MinecraftServer
 net/minecraft/server/v1_8_R3/DedicatedServer getDedicatedPlayerList ()Lnet/minecraft/server/v1_8_R3/DedicatedPlayerList; aP

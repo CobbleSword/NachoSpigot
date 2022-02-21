@@ -4,7 +4,8 @@ import java.io.IOException;
 
 public class PacketPlayOutChat implements Packet<PacketListenerPlayOut> {
 
-    private IChatBaseComponent a;
+    private IChatBaseComponent message;
+    public net.kyori.adventure.text.Component adventure$message; // Paper
     public net.md_5.bungee.api.chat.BaseComponent[] components; // Spigot
     private byte b;
 
@@ -15,13 +16,13 @@ public class PacketPlayOutChat implements Packet<PacketListenerPlayOut> {
     }
 
     public PacketPlayOutChat(IChatBaseComponent ichatbasecomponent, byte b0) {
-        this.a = ichatbasecomponent;
+        this.message = ichatbasecomponent;
         this.b = b0;
     }
 
     public IChatBaseComponent getChatComponent()
     {
-        return this.a;
+        return this.message;
     }
 
     public byte getChatType()
@@ -30,11 +31,16 @@ public class PacketPlayOutChat implements Packet<PacketListenerPlayOut> {
     }
 
     public void a(PacketDataSerializer serializer) throws IOException {
-        this.a = serializer.d();
+        this.message = serializer.d();
         this.b = serializer.readByte();
     }
 
     public void b(PacketDataSerializer serializer) throws IOException {
+        // Paper start
+        if (this.adventure$message != null) {
+            serializer.writeComponent(this.adventure$message);
+        } else
+        // Paper end
         // Spigot start
         if (components != null) {
             //serializer.a(net.md_5.bungee.chat.ComponentSerializer.toString(components)); // Paper - comment, replaced with below
@@ -46,7 +52,7 @@ public class PacketPlayOutChat implements Packet<PacketListenerPlayOut> {
             }
             // Paper end
         } else {
-            serializer.writeComponent(this.a);
+            serializer.writeComponent(this.message);
         }
         // Spigot end
         serializer.writeByte(this.b);

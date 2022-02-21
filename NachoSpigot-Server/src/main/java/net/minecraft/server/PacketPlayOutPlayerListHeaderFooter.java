@@ -4,47 +4,37 @@ import java.io.IOException;
 
 public class PacketPlayOutPlayerListHeaderFooter implements Packet<PacketListenerPlayOut> {
 
-    public net.md_5.bungee.api.chat.BaseComponent[] header, footer; // Paper
-
-    private IChatBaseComponent a;
-    private IChatBaseComponent b;
+    private IChatBaseComponent header;
+    private IChatBaseComponent footer;
+    // Paper start
+    public net.kyori.adventure.text.Component adventure$header;
+    public net.kyori.adventure.text.Component adventure$footer;
+    // Paper end
 
     public PacketPlayOutPlayerListHeaderFooter() {}
 
     public PacketPlayOutPlayerListHeaderFooter(IChatBaseComponent ichatbasecomponent) {
-        this.a = ichatbasecomponent;
+        this.header = ichatbasecomponent;
     }
 
     public void a(PacketDataSerializer serializer) throws IOException {
-        this.a = serializer.d();
-        this.b = serializer.d();
+        this.header = serializer.d();
+        this.footer = serializer.d();
     }
 
     public void b(PacketDataSerializer serializer) throws IOException {
         // Paper start
-        if (this.header != null) {
-            serializer.writeUtf(net.md_5.bungee.chat.ComponentSerializer.toString(this.header));
-        } else {
-            serializer.writeComponent(this.a);
-        }
-
-        if (this.footer != null) {
-            serializer.writeUtf(net.md_5.bungee.chat.ComponentSerializer.toString(this.footer));
-        } else {
-            serializer.writeComponent(this.b);
+        if (this.adventure$header != null && this.adventure$footer != null) {
+            serializer.writeComponent(this.adventure$header);
+            serializer.writeComponent(this.adventure$footer);
+            return;
         }
         // Paper end
+        serializer.writeComponent(this.header);
+        serializer.writeComponent(this.footer);
     }
 
     public void a(PacketListenerPlayOut packetlistenerplayout) {
         packetlistenerplayout.a(this);
     }
-
-    // PaperSpigot start - fix compile error
-    /*
-    public void a(PacketListener packetlistener) {
-        this.a((PacketListenerPlayOut) packetlistener);
-    }
-    */
-    // PaperSpigot end
 }

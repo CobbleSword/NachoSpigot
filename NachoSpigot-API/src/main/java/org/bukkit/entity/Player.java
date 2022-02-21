@@ -2,6 +2,7 @@ package org.bukkit.entity;
 
 import java.net.InetSocketAddress;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Achievement;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
@@ -432,14 +433,17 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * Sends the component to the player
      *
      * @param component the components to send
+     * @deprecated in favor of {@link #sendMessage(Component)}
      */
     @Override
+    @Deprecated
     public void sendMessage(net.md_5.bungee.api.chat.BaseComponent component);
 
     /**
      * Sends an array of components as a single message to the player
      *
      * @param components the components to send
+     * @deprecated in favor of {@link #sendMessage(Component)}
      */
     @Override
     public void sendMessage(net.md_5.bungee.api.chat.BaseComponent... components);
@@ -449,16 +453,20 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      *
      * @param header content for the top of the player list
      * @param footer content for the bottom of the player list
+     * @deprecated in favour of {@link #sendPlayerListHeaderAndFooter(net.kyori.adventure.text.Component, net.kyori.adventure.text.Component)}
      */
-    public void setPlayerListHeaderFooter(net.md_5.bungee.api.chat.BaseComponent[] header, net.md_5.bungee.api.chat.BaseComponent[] footer);
+    @Deprecated
+    public void setPlayerListHeaderFooter(@Nullable net.md_5.bungee.api.chat.BaseComponent[] header, @Nullable net.md_5.bungee.api.chat.BaseComponent[] footer);
 
     /**
      * Set the text displayed in the player list header and footer for this player
      *
      * @param header content for the top of the player list
      * @param footer content for the bottom of the player list
+     * @deprecated in favour of {@link #sendPlayerListHeaderAndFooter(net.kyori.adventure.text.Component, net.kyori.adventure.text.Component)}
      */
-    public void setPlayerListHeaderFooter(net.md_5.bungee.api.chat.BaseComponent header, net.md_5.bungee.api.chat.BaseComponent footer);
+    @Deprecated
+    public void setPlayerListHeaderFooter(@Nullable net.md_5.bungee.api.chat.BaseComponent header, @Nullable net.md_5.bungee.api.chat.BaseComponent footer);
 
     /**
      * Update the times for titles displayed to the player
@@ -466,38 +474,46 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @param fadeInTicks  ticks to fade-in
      * @param stayTicks    ticks to stay visible
      * @param fadeOutTicks ticks to fade-out
-     * @deprecated Use {@link #updateTitle(Title)}
+     * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
      */
     @Deprecated
     public void setTitleTimes(int fadeInTicks, int stayTicks, int fadeOutTicks);
 
     /**
      * Update the subtitle of titles displayed to the player
-     * @deprecated Use {@link #updateTitle(Title)}
+     *
+     * @param subtitle Subtitle to set
+     * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
      */
     @Deprecated
     public void setSubtitle(net.md_5.bungee.api.chat.BaseComponent[] subtitle);
 
     /**
      * Update the subtitle of titles displayed to the player
-     * @deprecated Use {@link #updateTitle(Title)}
+     *
+     * @param subtitle Subtitle to set
+     * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
      */
     @Deprecated
     public void setSubtitle(net.md_5.bungee.api.chat.BaseComponent subtitle);
 
     /**
      * Show the given title to the player, along with the last subtitle set, using the last set times
-     * @deprecated Use {@link #sendTitle(Title)} or {@link #updateTitle(Title)}
+     *
+     * @param title Title to set
+     * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
      */
     @Deprecated
-    public void showTitle(net.md_5.bungee.api.chat.BaseComponent[] title);
+    public void showTitle(@Nullable net.md_5.bungee.api.chat.BaseComponent[] title);
 
     /**
      * Show the given title to the player, along with the last subtitle set, using the last set times
-     * @deprecated Use {@link #sendTitle(Title)} or {@link #updateTitle(Title)}
+     *
+     * @param title Title to set
+     * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
      */
     @Deprecated
-    public void showTitle(net.md_5.bungee.api.chat.BaseComponent title);
+    public void showTitle(@Nullable net.md_5.bungee.api.chat.BaseComponent title);
 
     /**
      * Show the given title and subtitle to the player using the given times
@@ -507,10 +523,10 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @param fadeInTicks  ticks to fade-in
      * @param stayTicks    ticks to stay visible
      * @param fadeOutTicks ticks to fade-out
-     * @deprecated Use {@link #sendTitle(Title)} or {@link #updateTitle(Title)}
+     * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
      */
     @Deprecated
-    public void showTitle(net.md_5.bungee.api.chat.BaseComponent[] title, net.md_5.bungee.api.chat.BaseComponent[] subtitle, int fadeInTicks, int stayTicks, int fadeOutTicks);
+    public void showTitle(@Nullable net.md_5.bungee.api.chat.BaseComponent[] title, @Nullable net.md_5.bungee.api.chat.BaseComponent[] subtitle, int fadeInTicks, int stayTicks, int fadeOutTicks);
 
     /**
      * Show the given title and subtitle to the player using the given times
@@ -520,10 +536,10 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      * @param fadeInTicks  ticks to fade-in
      * @param stayTicks    ticks to stay visible
      * @param fadeOutTicks ticks to fade-out
-     * @deprecated Use {@link #sendTitle(Title)} or {@link #updateTitle(Title)}
+     * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
      */
     @Deprecated
-    public void showTitle(net.md_5.bungee.api.chat.BaseComponent title, net.md_5.bungee.api.chat.BaseComponent subtitle, int fadeInTicks, int stayTicks, int fadeOutTicks);
+    public void showTitle(@Nullable net.md_5.bungee.api.chat.BaseComponent title, @Nullable net.md_5.bungee.api.chat.BaseComponent subtitle, int fadeInTicks, int stayTicks, int fadeOutTicks);
 
     /**
      * Show the title to the player, overriding any previously displayed title.
@@ -532,8 +548,10 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      *
      * @param title the title to send
      * @throws NullPointerException if the title is null
+     * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
      */
-    void sendTitle(Title title);
+    @Deprecated
+    void sendTitle(@NotNull Title title);
 
     /**
      * Show the title to the player, overriding any previously displayed title.
@@ -542,12 +560,17 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
      *
      * @param title the title to send
      * @throws NullPointerException if title is null
+     * @deprecated Use {@link #showTitle(net.kyori.adventure.title.Title)} or {@link #sendTitlePart(net.kyori.adventure.title.TitlePart, Object)}
      */
-    void updateTitle(Title title);
+    @Deprecated
+    void updateTitle(@NotNull Title title);
 
     /**
      * Hide any title that is currently visible to the player
+     *
+     * @deprecated use {@link #clearTitle()}
      */
+    @Deprecated
     public void hideTitle();
     // Paper end
 

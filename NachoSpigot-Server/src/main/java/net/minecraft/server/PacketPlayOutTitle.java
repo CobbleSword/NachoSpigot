@@ -2,6 +2,7 @@ package net.minecraft.server;
 
 import java.io.IOException;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class PacketPlayOutTitle implements Packet<PacketListenerPlayOut> {
 
     private EnumTitleAction a;
@@ -10,18 +11,6 @@ public class PacketPlayOutTitle implements Packet<PacketListenerPlayOut> {
     private int d;
     private int e;
 
-    // Paper start
-    public net.md_5.bungee.api.chat.BaseComponent[] components;
-
-    public PacketPlayOutTitle(EnumTitleAction action, net.md_5.bungee.api.chat.BaseComponent[] components, int fadeIn, int stay, int fadeOut) {
-        this.a = action;
-        this.components = components;
-        this.c = fadeIn;
-        this.d = stay;
-        this.e = fadeOut;
-    }
-    // Paper end
-
     public PacketPlayOutTitle() {}
 
     public PacketPlayOutTitle(EnumTitleAction packetplayouttitle_enumtitleaction, IChatBaseComponent ichatbasecomponent) {
@@ -29,7 +18,7 @@ public class PacketPlayOutTitle implements Packet<PacketListenerPlayOut> {
     }
 
     public PacketPlayOutTitle(int i, int j, int k) {
-        this(EnumTitleAction.TIMES, (IChatBaseComponent) null, i, j, k);
+        this(EnumTitleAction.TIMES, null, i, j, k);
     }
 
     public PacketPlayOutTitle(EnumTitleAction packetplayouttitle_enumtitleaction, IChatBaseComponent ichatbasecomponent, int i, int j, int k) {
@@ -41,7 +30,7 @@ public class PacketPlayOutTitle implements Packet<PacketListenerPlayOut> {
     }
 
     public void a(PacketDataSerializer serializer) throws IOException {
-        this.a = (EnumTitleAction) serializer.a(EnumTitleAction.class);
+        this.a = serializer.a(EnumTitleAction.class);
         if (this.a == EnumTitleAction.TITLE || this.a == EnumTitleAction.SUBTITLE) {
             this.b = serializer.d();
         }
@@ -55,15 +44,9 @@ public class PacketPlayOutTitle implements Packet<PacketListenerPlayOut> {
     }
 
     public void b(PacketDataSerializer serializer) throws IOException {
-        serializer.a((Enum) this.a);
+        serializer.a(this.a);
         if (this.a == EnumTitleAction.TITLE || this.a == EnumTitleAction.SUBTITLE) {
-            // Paper start
-            if (this.components != null) {
-                serializer.writeUtf(net.md_5.bungee.chat.ComponentSerializer.toString(components));
-            } else {
-                serializer.writeComponent(this.b);
-            }
-            // Paper end
+            serializer.writeComponent(this.b);
         }
 
         if (this.a == EnumTitleAction.TIMES) {
@@ -71,34 +54,24 @@ public class PacketPlayOutTitle implements Packet<PacketListenerPlayOut> {
             serializer.writeInt(this.d);
             serializer.writeInt(this.e);
         }
-
     }
 
     public void a(PacketListenerPlayOut packetlistenerplayout) {
         packetlistenerplayout.a(this);
     }
 
-    // PaperSpigot start - fix compile error
-    /*
-    public void a(PacketListener packetlistener) {
-        this.a((PacketListenerPlayOut) packetlistener);
-    }
-    */
-    // PaperSpigot end
-
-    public static enum EnumTitleAction {
+    public enum EnumTitleAction {
 
         TITLE, SUBTITLE, TIMES, CLEAR, RESET;
 
-        private EnumTitleAction() {}
+        EnumTitleAction() {}
 
         public static EnumTitleAction a(String s) {
             EnumTitleAction[] apacketplayouttitle_enumtitleaction = values();
-            int i = apacketplayouttitle_enumtitleaction.length;
+            // Nacho - unused
+            //int i = apacketplayouttitle_enumtitleaction.length;
 
-            for (int j = 0; j < i; ++j) {
-                EnumTitleAction packetplayouttitle_enumtitleaction = apacketplayouttitle_enumtitleaction[j];
-
+            for (EnumTitleAction packetplayouttitle_enumtitleaction : apacketplayouttitle_enumtitleaction) {
                 if (packetplayouttitle_enumtitleaction.name().equalsIgnoreCase(s)) {
                     return packetplayouttitle_enumtitleaction;
                 }
@@ -111,11 +84,10 @@ public class PacketPlayOutTitle implements Packet<PacketListenerPlayOut> {
             String[] astring = new String[values().length];
             int i = 0;
             EnumTitleAction[] apacketplayouttitle_enumtitleaction = values();
-            int j = apacketplayouttitle_enumtitleaction.length;
+            // Nacho - unused
+            //int j = apacketplayouttitle_enumtitleaction.length;
 
-            for (int k = 0; k < j; ++k) {
-                EnumTitleAction packetplayouttitle_enumtitleaction = apacketplayouttitle_enumtitleaction[k];
-
+            for (EnumTitleAction packetplayouttitle_enumtitleaction : apacketplayouttitle_enumtitleaction) {
                 astring[i++] = packetplayouttitle_enumtitleaction.name().toLowerCase();
             }
 

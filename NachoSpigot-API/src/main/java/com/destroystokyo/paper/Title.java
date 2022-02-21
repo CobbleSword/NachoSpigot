@@ -3,7 +3,15 @@ package com.destroystokyo.paper;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -11,9 +19,12 @@ import static com.google.common.base.Preconditions.checkState;
 
 /**
  * Represents a title to may be sent to a {@link Player}.
- * <p>
+ *
  * <p>A title can be sent without subtitle text.</p>
+ *
+ * @deprecated use {@link net.kyori.adventure.title.Title}
  */
+@Deprecated
 public final class Title {
 
     /**
@@ -37,73 +48,73 @@ public final class Title {
 
     /**
      * Create a title with the default time values and no subtitle.
-     * <p>
+     *
      * <p>Times use default values.</p>
      *
      * @param title the main text of the title
      * @throws NullPointerException if the title is null
      */
-    public Title(BaseComponent title) {
+    public Title(@NotNull BaseComponent title) {
         this(title, null);
     }
 
     /**
      * Create a title with the default time values and no subtitle.
-     * <p>
+     *
      * <p>Times use default values.</p>
      *
      * @param title the main text of the title
      * @throws NullPointerException if the title is null
      */
-    public Title(BaseComponent[] title) {
+    public Title(@NotNull BaseComponent[] title) {
         this(title, null);
     }
 
     /**
      * Create a title with the default time values and no subtitle.
-     * <p>
+     *
      * <p>Times use default values.</p>
      *
      * @param title the main text of the title
      * @throws NullPointerException if the title is null
      */
-    public Title(String title) {
+    public Title(@NotNull String title) {
         this(title, null);
     }
 
     /**
      * Create a title with the default time values.
-     * <p>
+     *
      * <p>Times use default values.</p>
      *
      * @param title    the main text of the title
      * @param subtitle the secondary text of the title
      */
-    public Title(BaseComponent title, BaseComponent subtitle) {
+    public Title(@NotNull BaseComponent title, @Nullable BaseComponent subtitle) {
         this(title, subtitle, DEFAULT_FADE_IN, DEFAULT_STAY, DEFAULT_FADE_OUT);
     }
 
     /**
      * Create a title with the default time values.
-     * <p>
+     *
      * <p>Times use default values.</p>
      *
      * @param title    the main text of the title
      * @param subtitle the secondary text of the title
      */
-    public Title(BaseComponent[] title, BaseComponent[] subtitle) {
+    public Title(@NotNull BaseComponent[] title, @Nullable BaseComponent[] subtitle) {
         this(title, subtitle, DEFAULT_FADE_IN, DEFAULT_STAY, DEFAULT_FADE_OUT);
     }
 
     /**
      * Create a title with the default time values.
-     * <p>
+     *
      * <p>Times use default values.</p>
      *
      * @param title    the main text of the title
      * @param subtitle the secondary text of the title
      */
-    public Title(String title, String subtitle) {
+    public Title(@NotNull String title, @Nullable String subtitle) {
         this(title, subtitle, DEFAULT_FADE_IN, DEFAULT_STAY, DEFAULT_FADE_OUT);
     }
 
@@ -117,7 +128,7 @@ public final class Title {
      * @param fadeOut  the number of ticks for the title to fade out
      * @throws IllegalArgumentException if any of the times are negative
      */
-    public Title(BaseComponent title, BaseComponent subtitle, int fadeIn, int stay, int fadeOut) {
+    public Title(@NotNull BaseComponent title, @Nullable BaseComponent subtitle, int fadeIn, int stay, int fadeOut) {
         this(
                 new BaseComponent[]{checkNotNull(title, "title")},
                 subtitle == null ? null : new BaseComponent[]{subtitle},
@@ -137,7 +148,7 @@ public final class Title {
      * @param fadeOut  the number of ticks for the title to fade out
      * @throws IllegalArgumentException if any of the times are negative
      */
-    public Title(BaseComponent[] title, BaseComponent[] subtitle, int fadeIn, int stay, int fadeOut) {
+    public Title(@Nullable BaseComponent[] title, @NotNull BaseComponent[] subtitle, int fadeIn, int stay, int fadeOut) {
         checkArgument(fadeIn >= 0, "Negative fadeIn: %s", fadeIn);
         checkArgument(stay >= 0, "Negative stay: %s", stay);
         checkArgument(fadeOut >= 0, "Negative fadeOut: %s", fadeOut);
@@ -150,7 +161,7 @@ public final class Title {
 
     /**
      * Creates a new title.
-     * <p>
+     *
      * <p>It is recommended to the {@link BaseComponent} constrctors.</p>
      *
      * @param title    the main text of the title
@@ -159,7 +170,7 @@ public final class Title {
      * @param stay     the number of ticks for the title to stay on screen
      * @param fadeOut  the number of ticks for the title to fade out
      */
-    public Title(String title, String subtitle, int fadeIn, int stay, int fadeOut) {
+    public Title(@NotNull String title, @Nullable String subtitle, int fadeIn, int stay, int fadeOut) {
         this(
                 TextComponent.fromLegacyText(checkNotNull(title, "title")),
                 subtitle == null ? null : TextComponent.fromLegacyText(subtitle),
@@ -174,6 +185,7 @@ public final class Title {
      *
      * @return the text
      */
+    @NotNull
     public BaseComponent[] getTitle() {
         return this.title;
     }
@@ -183,13 +195,14 @@ public final class Title {
      *
      * @return the text
      */
+    @Nullable
     public BaseComponent[] getSubtitle() {
         return this.subtitle;
     }
 
     /**
      * Gets the number of ticks to fade in.
-     * <p>
+     *
      * <p>The returned value is never negative.</p>
      *
      * @return the number of ticks to fade in
@@ -200,7 +213,7 @@ public final class Title {
 
     /**
      * Gets the number of ticks to stay.
-     * <p>
+     *
      * <p>The returned value is never negative.</p>
      *
      * @return the number of ticks to stay
@@ -211,7 +224,7 @@ public final class Title {
 
     /**
      * Gets the number of ticks to fade out.
-     * <p>
+     *
      * <p>The returned value is never negative.</p>
      *
      * @return the number of ticks to fade out
@@ -220,6 +233,45 @@ public final class Title {
         return this.fadeOut;
     }
 
+    /**
+     * Sends the title directly to an player
+     *
+     * @param player the receiver of the title
+     */
+    public void send(@NotNull Player player) {
+        player.sendTitle(this);
+    }
+
+    /**
+     * Sends the title directly to the defined players
+     *
+     * @param players the receivers of the title
+     */
+    public void send(@NotNull Collection<? extends Player> players) {
+        for (Player player : players) {
+            player.sendTitle(this);
+        }
+    }
+
+    /**
+     * Sends the title directly to the defined players
+     *
+     * @param players the receivers of the title
+     */
+    public void send(@NotNull Player[] players) {
+        for (Player player : players) {
+            player.sendTitle(this);
+        }
+    }
+
+    /**
+     * Sends the title directly to all online players
+     */
+    public void broadcast() {
+        send(Bukkit.getOnlinePlayers());
+    }
+
+    @NotNull
     public static Builder builder() {
         return new Builder();
     }
@@ -242,7 +294,8 @@ public final class Title {
          * @return this builder instance
          * @throws NullPointerException if the title is null
          */
-        public Builder title(BaseComponent title) {
+        @NotNull
+        public Builder title(@NotNull BaseComponent title) {
             return this.title(new BaseComponent[]{checkNotNull(title, "title")});
         }
 
@@ -253,21 +306,23 @@ public final class Title {
          * @return this builder instance
          * @throws NullPointerException if the title is null
          */
-        public Builder title(BaseComponent[] title) {
+        @NotNull
+        public Builder title(@NotNull BaseComponent[] title) {
             this.title = checkNotNull(title, "title");
             return this;
         }
 
         /**
          * Sets the title to the given text.
-         * <p>
+         *
          * <p>It is recommended to the {@link BaseComponent} methods.</p>
          *
          * @param title the title text
          * @return this builder instance
          * @throws NullPointerException if the title is null
          */
-        public Builder title(String title) {
+        @NotNull
+        public Builder title(@NotNull String title) {
             return this.title(TextComponent.fromLegacyText(checkNotNull(title, "title")));
         }
 
@@ -277,7 +332,8 @@ public final class Title {
          * @param subtitle the title text
          * @return this builder instance
          */
-        public Builder subtitle(BaseComponent subtitle) {
+        @NotNull
+        public Builder subtitle(@Nullable BaseComponent subtitle) {
             return this.subtitle(subtitle == null ? null : new BaseComponent[]{subtitle});
         }
 
@@ -287,20 +343,22 @@ public final class Title {
          * @param subtitle the title text
          * @return this builder instance
          */
-        public Builder subtitle(BaseComponent[] subtitle) {
+        @NotNull
+        public Builder subtitle(@Nullable BaseComponent[] subtitle) {
             this.subtitle = subtitle;
             return this;
         }
 
         /**
          * Sets the subtitle to the given text.
-         * <p>
+         *
          * <p>It is recommended to the {@link BaseComponent} methods.</p>
          *
          * @param subtitle the title text
          * @return this builder instance
          */
-        public Builder subtitle(String subtitle) {
+        @NotNull
+        public Builder subtitle(@Nullable String subtitle) {
             return this.subtitle(subtitle == null ? null : TextComponent.fromLegacyText(subtitle));
         }
 
@@ -311,6 +369,7 @@ public final class Title {
          * @return this builder instance
          * @throws IllegalArgumentException if it is negative
          */
+        @NotNull
         public Builder fadeIn(int fadeIn) {
             checkArgument(fadeIn >= 0, "Negative fadeIn: %s", fadeIn);
             this.fadeIn = fadeIn;
@@ -325,6 +384,7 @@ public final class Title {
          * @return this builder instance
          * @throws IllegalArgumentException if it is negative
          */
+        @NotNull
         public Builder stay(int stay) {
             checkArgument(stay >= 0, "Negative stay: %s", stay);
             this.stay = stay;
@@ -338,6 +398,7 @@ public final class Title {
          * @return this builder instance
          * @throws IllegalArgumentException if it is negative
          */
+        @NotNull
         public Builder fadeOut(int fadeOut) {
             checkArgument(fadeOut >= 0, "Negative fadeOut: %s", fadeOut);
             this.fadeOut = fadeOut;
@@ -350,6 +411,7 @@ public final class Title {
          * @return a title from the values in this builder
          * @throws IllegalStateException if title isn't specified
          */
+        @NotNull
         public Title build() {
             checkState(title != null, "Title not specified");
             return new Title(this.title, this.subtitle, this.fadeIn, this.stay, this.fadeOut);
