@@ -69,8 +69,6 @@ body:
           required: true
         - label: You have confirmed that there aren’t any issues open regarding this bug.
           required: true
-        - label: You have confirmed that you are NOT using a fork of NachoSpigot in any way. **YOUR changes are not OUR faults.**
-          required: true
 
   - type: markdown
     attributes:
