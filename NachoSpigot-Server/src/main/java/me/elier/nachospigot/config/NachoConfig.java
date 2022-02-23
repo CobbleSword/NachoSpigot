@@ -408,6 +408,7 @@ public class NachoConfig {
                 .equalsIgnoreCase("ashcon");
         texturesMojangPriority = getString("settings.authenticator.textures-priority", "mojang")
                 .equalsIgnoreCase("ashcon");
+    }
 
     public static boolean enableImprovedHitReg;
 
