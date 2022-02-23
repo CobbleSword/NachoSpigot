@@ -7,8 +7,6 @@ import com.google.common.primitives.Floats;
 import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.events.PlayerIllegalBehaviourEvent;
 import io.netty.buffer.Unpooled;
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -379,6 +377,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                     this.lastYaw = to.getYaw();
                     this.lastPitch = to.getPitch();
 
+
                     // Skip the first time we do this
                     if (NachoConfig.firePlayerMoveEvent) { // Spigot - don't skip any move events
                         Location oldTo = to.clone();
@@ -387,7 +386,8 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 
                         // If the event is cancelled we move the player back to their old location.
                         if (event.isCancelled())
-                        {
+                        {	
+                        Nacho.get().getLagCompensator().registerMovement(player, from); // Nacho
                             this.player.playerConnection.sendPacket(new PacketPlayOutPosition(from.getX(), from.getY(), from.getZ(), from.getYaw(), from.getPitch(), Collections.<PacketPlayOutPosition.EnumPlayerTeleportFlags>emptySet()));
                             return;
                         }
@@ -408,6 +408,8 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                             return;
                         }
                     }
+                    
+                    Nacho.get().getLagCompensator().registerMovement(player, to); // Nacho - register movement
                 }
 
                 if (this.checkMovement && !this.player.dead)
@@ -633,6 +635,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
             f1 = to.getPitch();
         }
 
+        Nacho.get().getLagCompensator().registerMovement(player, to); // Nacho - register teleport
         this.internalTeleport(d0, d1, d2, f, f1, set);
     }
 
@@ -1493,10 +1496,11 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
             double d0 = 36.0D;
 
             if (!flag) {
-                d0 = 9.0D;
+                // Increase the no player-player vision maximum reach
+                d0 = (NachoConfig.enableImprovedHitReg) ? 12.75D : 9.0D;
             }
 
-            if (this.player.h(entity) < d0) {
+            if (this.player.h(entity) <= d0) {
                 ItemStack itemInHand = this.player.inventory.getItemInHand(); // CraftBukkit
 
                 if (packetplayinuseentity.a() == PacketPlayInUseEntity.EnumEntityUseAction.INTERACT
@@ -1552,6 +1556,11 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                     }
 
                     this.player.attack(entity);
+                    // wuangg start - fix sword blocking desync
+                    if (this.player.isBlocking()) {
+                    	this.player.bU();
+                    }
+                    // wuangg end
 
                     // CraftBukkit start
                     if (itemInHand != null && itemInHand.count <= -1) {

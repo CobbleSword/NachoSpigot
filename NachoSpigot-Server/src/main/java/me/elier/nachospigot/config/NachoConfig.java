@@ -145,6 +145,7 @@ public class NachoConfig {
         c.addComment("settings.authenticator.backups", "Should backup calls be enabled (recommended)");
         c.addComment("settings.authenticator.uuid-priority", "What api should be used first in uuid fetching stage (ashcon, mojang)");
         c.addComment("settings.authenticator.textures-priority", "What api should be used first in textures downloading stage (ashcon, mojang)");
+        c.addComment("settings.use-improved-hitreg", "Enables the usage of an improved hitreg based on lag compensation and small other details.");
         NachoWorldConfig.loadComments();
     }
 
@@ -407,6 +408,12 @@ public class NachoConfig {
                 .equalsIgnoreCase("ashcon");
         texturesMojangPriority = getString("settings.authenticator.textures-priority", "mojang")
                 .equalsIgnoreCase("ashcon");
+
+    public static boolean enableImprovedHitReg;
+
+    private static void enableImprovedHitReg() {
+        enableImprovedHitReg = getBoolean("settings.use-improved-hitreg", false);
+
     }
 
 }

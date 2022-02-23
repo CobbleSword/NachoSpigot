@@ -8,8 +8,11 @@ import java.util.concurrent.Callable;
 
 // CraftBukkit start
 import com.eatthepath.uuid.FastUUID;
+import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.commons.Constants;
 import dev.cobblesword.nachospigot.knockback.KnockbackProfile;
+import dev.cobblesword.nachospigot.hitdetection.LagCompensator;
+import me.elier.nachospigot.config.NachoConfig;
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -1181,11 +1184,39 @@ public abstract class Entity implements ICommandListener {
     }
 
     public double h(Entity entity) {
-        double d0 = this.locX - entity.locX;
-        double d1 = this.locY - entity.locY;
-        double d2 = this.locZ - entity.locZ;
+        // Nacho start - improved hit reg
+        if (NachoConfig.enableImprovedHitReg && entity instanceof EntityPlayer && this instanceof EntityPlayer) {
+            /* Location loc = Nacho.get().getLagCompensator().getHistoryLocation(
+                    ((EntityPlayer) entity).getBukkitEntity()
+            );*/
 
-        return d0 * d0 + d1 * d1 + d2 * d2;
+        	EntityPlayer entityPlayer = (EntityPlayer) entity;
+            EntityPlayer player = (EntityPlayer) this;
+        	
+        	Location loc;
+        	if (entityPlayer.playerConnection.getClass().equals(PlayerConnection.class)
+                    && player.playerConnection.getClass().equals(PlayerConnection.class)) {
+                loc = Nacho.get().getLagCompensator().getHistoryLocation(
+                        entityPlayer.getBukkitEntity(),
+                        player.ping
+                );
+        	} else {
+        		loc = entityPlayer.getBukkitEntity().getLocation();
+        	}
+                // Nacho end
+
+            double d0 = this.locX - loc.getX();
+            double d1 = this.locY - loc.getY();
+            double d2 = this.locZ - loc.getZ();
+
+            return d0 * d0 + d1 * d1 + d2 * d2;
+        } else {
+            double d0 = this.locX - entity.locX;
+            double d1 = this.locY - entity.locY;
+            double d2 = this.locZ - entity.locZ;
+
+            return d0 * d0 + d1 * d1 + d2 * d2;
+        }
     }
 
     public void d(EntityHuman entityhuman) {}

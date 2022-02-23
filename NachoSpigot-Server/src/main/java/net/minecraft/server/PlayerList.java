@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
+import dev.cobblesword.nachospigot.Nacho;
 import io.netty.buffer.Unpooled;
 import java.io.File;
 import java.net.SocketAddress;
@@ -399,6 +400,8 @@ public abstract class PlayerList {
         if (lastView != null && lastView.getHandle() instanceof ContainerPlayer && lastView.getPlayer() == bukkit) craftingManager.lastCraftView = null;
         // KigPaper end
 
+        Nacho.get().getLagCompensator().clearCache(bukkit);
+
         return playerQuitEvent.getQuitMessage(); // CraftBukkit
     }
 
@@ -574,6 +577,8 @@ public abstract class PlayerList {
             }
 
             Player respawnPlayer = cserver.getPlayer(entityplayer1);
+
+
             PlayerRespawnEvent respawnEvent = new PlayerRespawnEvent(respawnPlayer, location, isBedSpawn);
             cserver.getPluginManager().callEvent(respawnEvent);
             // Spigot Start
@@ -582,6 +587,7 @@ public abstract class PlayerList {
             }
             // Spigot End
 
+            Nacho.get().getLagCompensator().clearCache(respawnPlayer); // Nacho - register respawn
             location = respawnEvent.getRespawnLocation();
             entityplayer.reset();
         } else {
@@ -634,6 +640,7 @@ public abstract class PlayerList {
         // CraftBukkit start
         // Don't fire on respawn
         if (fromWorld != location.getWorld()) {
+            Nacho.get().getLagCompensator().registerMovement(entityplayer.getBukkitEntity(), entityplayer.getBukkitEntity().getLocation());
             PlayerChangedWorldEvent event = new PlayerChangedWorldEvent(entityplayer.getBukkitEntity(), fromWorld);
             server.server.getPluginManager().callEvent(event);
         }
@@ -692,6 +699,7 @@ public abstract class PlayerList {
         }
         exitWorld = ((CraftWorld) exit.getWorld()).getHandle();
 
+        Nacho.get().getLagCompensator().registerMovement(entityplayer.getBukkitEntity(), exit);
         org.bukkit.event.player.PlayerTeleportEvent tpEvent = new org.bukkit.event.player.PlayerTeleportEvent(entityplayer.getBukkitEntity(), enter, exit, cause);
         Bukkit.getServer().getPluginManager().callEvent(tpEvent);
         if (tpEvent.isCancelled() || tpEvent.getTo() == null) {

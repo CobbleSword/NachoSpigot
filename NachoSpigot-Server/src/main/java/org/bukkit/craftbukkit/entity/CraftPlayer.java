@@ -3,6 +3,7 @@ package org.bukkit.craftbukkit.entity;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.authlib.GameProfile;
+import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.commons.Constants;
 import io.netty.buffer.Unpooled;
 
@@ -540,6 +541,8 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         if (event.isCancelled()) {
             return false;
         }
+        
+        Nacho.get().getLagCompensator().registerMovement(this, event.getTo()); // Nacho - register teleport
 
         // If this player is riding another entity, we must dismount before teleporting.
         entity.mount(null);
