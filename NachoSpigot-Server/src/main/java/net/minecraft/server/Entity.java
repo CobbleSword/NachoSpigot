@@ -166,8 +166,8 @@ public abstract class Entity implements ICommandListener {
     public boolean fromMobSpawner;
     public void inactiveTick() { }
     // Spigot end
-	
-	// Migot start
+
+    // Migot start
     private boolean isInLava;
     private int lastLavaCheck = Integer.MIN_VALUE;
     // Migot end
