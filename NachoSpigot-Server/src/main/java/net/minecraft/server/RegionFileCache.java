@@ -41,7 +41,7 @@ public class RegionFileCache {
         }
     }
 
-    public static /*synchronized*/ void a() {// Paper 1.13 Backport - remove synchronization
+    public static /*synchronized*/ void a() { // Paper - remove synchronization
         Iterator iterator = RegionFileCache.a.values().iterator();
 
         while (iterator.hasNext()) {
