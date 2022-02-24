@@ -178,7 +178,6 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [KigPaper-0039] Fix Entity and Command Block memory leaks
 [KigPaper-0128] Fix Entity and Command Block memory leaks
 [KigPaper-0129] Fix more EnchantmentManager leaks
-[KigPaper-0130] Fix CraftLivingEntity#damage not calling EntityDamageEvent
 [KigPaper-0138] Fix some more memory leaks
 [KigPaper-0161] Fix CraftingManager memory leak
 [KigPaper-0167] Add setType without lighting update API
