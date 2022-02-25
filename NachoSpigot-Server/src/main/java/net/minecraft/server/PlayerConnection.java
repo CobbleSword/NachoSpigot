@@ -2130,7 +2130,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 	
 	
     public void a(PacketPlayInTabComplete packetplayintabcomplete) {
-        if (NachoConfig.disableDisconnectSpam == false) {
+        if (!NachoConfig.disableDisconnectSpam) {
             PlayerConnectionUtils.ensureMainThread(packetplayintabcomplete, this, this.player.u());
             // CraftBukkit start
             if (chatSpamField.addAndGet(this, 10) > 500 && !this.minecraftServer.getPlayerList().isOp(this.player.getProfile())) {
