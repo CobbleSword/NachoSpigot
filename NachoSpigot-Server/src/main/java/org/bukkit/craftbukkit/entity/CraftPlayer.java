@@ -1541,7 +1541,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
                             extra = new int[]{ id };
                         } else
                         {
-                            extra = new int[]{ (data << 12) | (id & 0xFFF) };
+                            extra = new int[]{(data << 12) | (id & 0xFFF)};
                         }
                     }
                 }
