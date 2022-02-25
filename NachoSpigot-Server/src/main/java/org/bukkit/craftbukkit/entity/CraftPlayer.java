@@ -1536,9 +1536,9 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
                 if ((particle = Dictionary.EFFECT_TO_PARTICLE.get(effect)) != null) {
                     if (effect.getData() != null)
                     {
-                        if ( effect.getData().equals( Material.class ) )
+                        if (effect.getData().equals(Material.class))
                         {
-                            extra = new int[]{ id };
+                            extra = new int[]{id};
                         } else
                         {
                             extra = new int[]{(data << 12) | (id & 0xFFF)};
