@@ -962,15 +962,13 @@ public class WorldServer extends World implements IAsyncTaskHandler {
 
             this.chunkProvider.saveChunks(flag, iprogressupdate);
             // CraftBukkit - ArrayList -> Collection
-            /* //Paper start Collection<Chunk> arraylist = this.chunkProviderServer.a();
-
+            /*Collection<Chunk> arraylist = this.chunkProviderServer.a(); // Paper start
             for (Chunk value : arraylist) {
                 if (value != null && !this.manager.a(value.locX, value.locZ)) {
                     this.chunkProviderServer.queueUnload(value.locX, value.locZ);
                 }
             }
-			*/
-            // Paper end
+            */ // Paper end
 
         }
     }
