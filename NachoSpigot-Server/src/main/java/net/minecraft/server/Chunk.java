@@ -286,7 +286,7 @@ public class Chunk {
         this.k = true;
     }
 	
-	private void recheckGaps(boolean flag) { h(flag); } // Paper
+    private void recheckGaps(boolean flag) { h(flag); } // Paper
 
     private void h(boolean flag) {
         this.world.methodProfiler.a("recheckGaps");
