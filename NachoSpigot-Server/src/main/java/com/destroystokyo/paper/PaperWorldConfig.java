@@ -396,5 +396,4 @@ public class PaperWorldConfig
     {
         portalSearchRadius = getInt("portal-search-radius", 128);
     }
-	public boolean queueLightUpdates = true;
 }
