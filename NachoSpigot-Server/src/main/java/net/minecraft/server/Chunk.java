@@ -1283,7 +1283,7 @@ public class Chunk {
         return new BlockPosition(blockposition.getX(), this.f[k], blockposition.getZ());
     }
 	
-	// Paper start
+    // Paper start
     private boolean shouldRecheckGaps = false;
     public void doGapCheck() {
         if (shouldRecheckGaps) {
