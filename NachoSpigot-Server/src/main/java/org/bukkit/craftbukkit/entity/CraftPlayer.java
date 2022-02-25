@@ -1534,7 +1534,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
                 net.minecraft.server.EnumParticle particle = null;
                 int[] extra = null;
                 if ((particle = Dictionary.EFFECT_TO_PARTICLE.get(effect)) != null) {
-                    if ( effect.getData() != null )
+                    if (effect.getData() != null)
                     {
                         if ( effect.getData().equals( Material.class ) )
                         {
