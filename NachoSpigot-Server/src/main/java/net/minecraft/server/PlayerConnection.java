@@ -2130,24 +2130,24 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
 	
 	
     public void a(PacketPlayInTabComplete packetplayintabcomplete) {
+        PlayerConnectionUtils.ensureMainThread(packetplayintabcomplete, this, this.player.u());
+        // CraftBukkit start // Nacho start
         if (!NachoConfig.disableDisconnectSpam) {
-            PlayerConnectionUtils.ensureMainThread(packetplayintabcomplete, this, this.player.u());
-            // CraftBukkit start
             if (chatSpamField.addAndGet(this, 10) > 500 && !this.minecraftServer.getPlayerList().isOp(this.player.getProfile())) {
                 this.disconnect("disconnect.spam");
                 return;
             }
-            // CraftBukkit end
-            ArrayList arraylist = Lists.newArrayList();
-            Iterator iterator = this.minecraftServer.tabCompleteCommand(this.player, packetplayintabcomplete.a(), packetplayintabcomplete.b()).iterator();
-
-            while (iterator.hasNext()) {
-                String s = (String) iterator.next();
-                arraylist.add(s);
-            }
-
-            this.player.playerConnection.sendPacket(new PacketPlayOutTabComplete((String[]) arraylist.toArray(new String[arraylist.size()])));
         }
+        // Nacho end // CraftBukkit end
+        ArrayList arraylist = Lists.newArrayList();
+        Iterator iterator = this.minecraftServer.tabCompleteCommand(this.player, packetplayintabcomplete.a(), packetplayintabcomplete.b()).iterator();
+
+        while (iterator.hasNext()) {
+            String s = (String) iterator.next();
+            arraylist.add(s);
+        }
+
+        this.player.playerConnection.sendPacket(new PacketPlayOutTabComplete((String[]) arraylist.toArray(new String[arraylist.size()])));
     }
 
     public void a(PacketPlayInSettings packetplayinsettings) {
