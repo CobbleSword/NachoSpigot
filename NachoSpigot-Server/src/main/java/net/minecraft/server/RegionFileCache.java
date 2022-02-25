@@ -13,7 +13,7 @@ public class RegionFileCache {
     public static final Map<File, RegionFile> a = Maps.newHashMap(); // Spigot - private -> public
 
     // PaperSpigot start
-    public static /*synchronized*/ RegionFile a(File file, int i, int j) {// Paper 1.13 Backport - remove synchronization
+    public static /*synchronized*/ RegionFile a(File file, int i, int j) { // Paper - remove synchronization
         return a(file, i, j, true);
     }
     public static /*synchronized*/ RegionFile a(File file, int i, int j, boolean create) {// Paper 1.13 Backport - remove synchronization
