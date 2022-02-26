@@ -197,6 +197,10 @@ public class UserCache {
                     this.a(usercache_usercacheentry.a(), usercache_usercacheentry.b());
                 }
             }
+        } catch (FileNotFoundException filenotfoundexception) {
+            ;
+        } catch (JsonParseException jsonparseexception) {
+            ;
         } catch (Exception ex) {
             // SportPaper - Catch all UserCache exceptions in one and always delete
             JsonList.a.warn( "Usercache.json is corrupted or has bad formatting. Deleting it to prevent further issues." );
