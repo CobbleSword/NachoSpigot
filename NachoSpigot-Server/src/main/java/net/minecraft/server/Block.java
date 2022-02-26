@@ -161,11 +161,7 @@ public class Block {
     }
 
     public int toLegacyData(IBlockData iblockdata) {
-        if (iblockdata != null && !iblockdata.a().isEmpty()) {
-            throw new IllegalArgumentException("Don\'t know how to convert " + iblockdata + " back into data...");
-        } else {
-            return 0;
-        }
+        return 0; // Sportpaper - optimize toLegacyData removing unneeded sanity checks
     }
 
     public IBlockData updateState(IBlockData iblockdata, IBlockAccess iblockaccess, BlockPosition blockposition) {

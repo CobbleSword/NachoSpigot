@@ -130,7 +130,8 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
                 this.playerInteractManager.setGameMode(WorldSettings.EnumGamemode.getById(nbttagcompound.getInt("playerGameType")));
             }
         }
-
+		
+        if (this.locY > 300) this.locY = 200;
         this.getBukkitEntity().readExtraData(nbttagcompound); // CraftBukkit
     }
 

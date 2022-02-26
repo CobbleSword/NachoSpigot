@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 
 import me.elier.nachospigot.config.NachoConfig;
 import net.md_5.bungee.api.chat.BaseComponent;
+import dev.cobblesword.nachospigot.commons.Dictionary;
 
 import net.minecraft.server.*;
 import net.minecraft.server.PacketPlayOutTitle.EnumTitleAction;
@@ -1532,22 +1533,16 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
             {
                 net.minecraft.server.EnumParticle particle = null;
                 int[] extra = null;
-                for ( net.minecraft.server.EnumParticle p : net.minecraft.server.EnumParticle.values() )
-                {
-                    if ( effect.getName().startsWith( p.b().replace("_", "") ) )
+                if ((particle = Dictionary.EFFECT_TO_PARTICLE.get(effect)) != null) {
+                    if (effect.getData() != null)
                     {
-                        particle = p;
-                        if ( effect.getData() != null )
+                        if (effect.getData().equals(Material.class))
                         {
-                            if ( effect.getData().equals( org.bukkit.Material.class ) )
-                            {
-                                extra = new int[]{ id };
-                            } else
-                            {
-                                extra = new int[]{ (data << 12) | (id & 0xFFF) };
-                            }
+                            extra = new int[]{id};
+                        } else
+                        {
+                            extra = new int[]{(data << 12) | (id & 0xFFF)};
                         }
-                        break;
                     }
                 }
                 if ( extra == null )

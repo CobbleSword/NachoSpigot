@@ -71,6 +71,7 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [Paper-0249] Improve BlockPosition inlining by Techcable
 [Paper-0254] Don't blindly send unlit chunks when lighting updates are allowed by Shane Freeder
 [Paper-0266] [MC-99321] Dont check for blocked double chest for hoppers
+[Paper-0301] Optimize Region File Cache
 [Paper-0302] Don't load chunks for villager door checks by Aikar
 [Paper-0313] Optimize World Time Updates by Aikar
 [Paper-0321] Server Tick Events
@@ -170,7 +171,9 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [SportPaper-0171] Fix NPE in CraftChunk#getBlocks
 [SportPaper-0197] Optimize head rotation patch
 [SportPaper-0201] Cache block break animation packet
+[SportPaper-0204] Optimize toLegacyData removing unneeded sanity checks
 [SportPaper-0203] Fix Teleport Invisibility
+[SportPaper-0206] Remove the world before nullifying chunkLoader & chunkProvider
 
 [PaperBin-????] WorldServer#everyoneDeeplySleeping optimization
 
@@ -182,6 +185,7 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [KigPaper-0167] Add setType without lighting update API
 [KigPaper-0172] NBT no-op for block place packet
 [KigPaper-0191] Don't calculate initial light if not requested
+[KigPaper-0220] Entity: Use EnumMap in CraftPlayer#playEffect()
 
 [FlamePaper-0102] Fixed chunk memory leak
 [FlamePaper-0103] Limit CraftChatMessage iterations
@@ -198,6 +202,7 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [MineTick-0017] Fix Insane Nether Portal Lag
 
 [Migot-0009] Prevent Creature Spawning in Unloaded Chunks
+[Migot-0036] Check for lava only once per tick
 
 [Sugarcane-0022] Add YAML comments
 ```
