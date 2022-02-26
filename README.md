@@ -167,6 +167,7 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [SportPaper-0027] Fix head rotation packet spam
 [SportPaper-0043] Get blocks in Chunk API
 [SportPaper-0162] Fix PlayerInteractEvent not cancelling properly
+[SportPaper-0171] Fix NPE in CraftChunk#getBlocks
 [SportPaper-0197] Optimize head rotation patch
 [SportPaper-0201] Cache block break animation packet
 [SportPaper-0203] Fix Teleport Invisibility
