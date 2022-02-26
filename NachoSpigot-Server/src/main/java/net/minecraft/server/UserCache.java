@@ -197,9 +197,7 @@ public class UserCache {
                     this.a(usercache_usercacheentry.a(), usercache_usercacheentry.b());
                 }
             }
-        } catch (FileNotFoundException filenotfoundexception) {
-            ;
-        } catch (JsonParseException jsonparseexception) {
+        } catch (FileNotFoundException | JsonParseException ignored) {
             ;
         } catch (Exception ex) {
             // SportPaper - Catch all UserCache exceptions in one and always delete
