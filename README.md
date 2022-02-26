@@ -122,6 +122,7 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [Nacho-0033] Faster Operator search method
 [Nacho-0048] Don't allocate empty int arrays for particles
 [Nacho-0049] Option to disable Enchantment table ticking
+[Nacho-0052] Add config to disable disconnect.spam
 
 <--> by Sculas
 [Nacho-0034] Remove Java 8 message from TacoSpigot which made it so you couldn't run Java 8 or higher

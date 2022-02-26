@@ -2127,21 +2127,23 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
         }
         // CraftBukkit end
     }
-
+	
+	
     public void a(PacketPlayInTabComplete packetplayintabcomplete) {
         PlayerConnectionUtils.ensureMainThread(packetplayintabcomplete, this, this.player.u());
-        // CraftBukkit start
-        if (chatSpamField.addAndGet(this, 10) > 500 && !this.minecraftServer.getPlayerList().isOp(this.player.getProfile())) {
-            this.disconnect("disconnect.spam");
-            return;
+        // CraftBukkit/Nacho start
+        if (!NachoConfig.disableDisconnectSpam) {
+            if (chatSpamField.addAndGet(this, 10) > 500 && !this.minecraftServer.getPlayerList().isOp(this.player.getProfile())) {
+                this.disconnect("disconnect.spam");
+                return;
+            }
         }
-        // CraftBukkit end
+        // CraftBukkit/Nacho end
         ArrayList arraylist = Lists.newArrayList();
         Iterator iterator = this.minecraftServer.tabCompleteCommand(this.player, packetplayintabcomplete.a(), packetplayintabcomplete.b()).iterator();
 
         while (iterator.hasNext()) {
             String s = (String) iterator.next();
-
             arraylist.add(s);
         }
 
