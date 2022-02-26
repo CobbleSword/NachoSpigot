@@ -15,6 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import javax.crypto.SecretKey;
 
+import io.papermc.paper.adventure.PaperAdventure; // Paper
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -81,17 +82,16 @@ public class LoginListener implements PacketLoginInListener, IUpdatePlayerListBo
     }
 
     public void disconnect(String s) {
-        if (s == null) {
-            new AuthorNagException("Kick message was set to null, causing an exception!").printStackTrace();
-            s = "Kicked by plugin";
-        }
+        // Nacho start
+        this.disconnect(PaperAdventure.asVanilla(PaperAdventure.LEGACY_SECTION_UXRC.deserialize(s)));
+    }
 
+    public void disconnect(IChatBaseComponent component) {
         try {
-            LoginListener.c.info("Disconnecting " + this.d() + ": " + s);
-            ChatComponentText chatcomponenttext = new ChatComponentText(s);
+            LoginListener.c.info("Disconnecting {}: {}", this.d(), component.getString());
 
-            this.networkManager.handle(new PacketLoginOutDisconnect(chatcomponenttext));
-            this.networkManager.close(chatcomponenttext);
+            this.networkManager.handle(new PacketLoginOutDisconnect(component));
+            this.networkManager.close(component);
         } catch (Exception exception) {
             LoginListener.c.error("Error whilst disconnecting player", exception);
         }
@@ -257,7 +257,7 @@ public class LoginListener implements PacketLoginInListener, IUpdatePlayerListBo
             if (PlayerPreLoginEvent.getHandlerList().getRegisteredListeners().length != 0) {
                 final PlayerPreLoginEvent event = new PlayerPreLoginEvent(playerName, address, uniqueId);
                 if (asyncEvent.getResult() != PlayerPreLoginEvent.Result.ALLOWED) {
-                    event.disallow(asyncEvent.getResult(), asyncEvent.getKickMessage());
+                    event.disallow(asyncEvent.getResult(), asyncEvent.kickMessage()); // Paper - Adventure
                 }
                 Waitable<PlayerPreLoginEvent.Result> waitable = new Waitable<PlayerPreLoginEvent.Result>() {
                     @Override
@@ -269,12 +269,12 @@ public class LoginListener implements PacketLoginInListener, IUpdatePlayerListBo
 
                 LoginListener.this.server.processQueue.add(waitable);
                 if (waitable.get() != PlayerPreLoginEvent.Result.ALLOWED) {
-                    disconnect(event.getKickMessage());
+                    disconnect(PaperAdventure.asVanilla(event.kickMessage())); // Paper - Adventure
                     return;
                 }
             } else {
                 if (asyncEvent.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED) {
-                    disconnect(asyncEvent.getKickMessage());
+                    disconnect(PaperAdventure.asVanilla(asyncEvent.kickMessage()));
                     return;
                 }
             }

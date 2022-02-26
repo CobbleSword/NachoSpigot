@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import io.papermc.paper.adventure.PaperAdventure; // Paper
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,6 +31,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
 
     private static final Logger bH = LogManager.getLogger();
     public String locale = "en_US"; // Spigot
+    public java.util.Locale adventure$locale = java.util.Locale.US; // Paper
     public PlayerConnection playerConnection;
     public final MinecraftServer server;
     public final PlayerInteractManager playerInteractManager;
@@ -56,6 +58,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
     // CraftBukkit start
     public String displayName;
     public IChatBaseComponent listName;
+    public net.kyori.adventure.text.Component adventure$displayName; // Paper
     public org.bukkit.Location compassTarget;
     public int newExp = 0;
     public int newLevel = 0;
@@ -116,6 +119,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
 
         // CraftBukkit start
         this.displayName = this.getName();
+        this.adventure$displayName = net.kyori.adventure.text.Component.text(this.getName()); // Paper
         // this.canPickUpLoot = true; TODO
         this.maxHealthCache = this.getMaxHealth();
         // CraftBukkit end
@@ -466,11 +470,11 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
         IChatBaseComponent chatmessage = this.bs().b();
 
         String deathmessage = chatmessage.getString();
-        org.bukkit.event.entity.PlayerDeathEvent event = CraftEventFactory.callPlayerDeathEvent(this, loot, deathmessage, keepInventory);
+        org.bukkit.event.entity.PlayerDeathEvent event = CraftEventFactory.callPlayerDeathEvent(this, loot, PaperAdventure.asAdventure(chatmessage), chatmessage.getString(), keepInventory); // Paper - Adventure
 
-        String deathMessage = event.getDeathMessage();
+        net.kyori.adventure.text.Component deathMessage = event.deathMessage() != null ? event.deathMessage() : net.kyori.adventure.text.Component.empty(); // Paper - Adventure
 
-        if (deathMessage != null && deathMessage.length() > 0 && this.world.getGameRules().getBoolean("showDeathMessages")) { // TODO: allow plugins to override?
+        if (deathMessage != null && deathMessage != net.kyori.adventure.text.Component.empty() && this.world.getGameRules().getBoolean("showDeathMessages")) { // Paper - Adventure // TODO: allow plugins to override?
             if (deathMessage.equals(deathmessage)) {
                 this.server.getPlayerList().sendMessage(chatmessage);
             } else {
@@ -1047,6 +1051,10 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
         // PaperSpigot start - Add PlayerLocaleChangeEvent
         String oldLocale = this.locale;
         this.locale = packetplayinsettings.a();
+        // Paper start
+        this.adventure$locale = net.kyori.adventure.translation.Translator.parseLocale(this.locale);
+        this.playerConnection.networkManager.channel.attr(PaperAdventure.LOCALE_ATTRIBUTE).set(this.adventure$locale);
+        // Paper end
         if (!this.locale.equals(oldLocale)) {
             CraftEventFactory.callPlayerLocaleChangeEvent(this, this.locale); // Nacho - use new Bukkit API
         }

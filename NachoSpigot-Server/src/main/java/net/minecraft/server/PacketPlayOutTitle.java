@@ -7,6 +7,7 @@ public class PacketPlayOutTitle implements Packet<PacketListenerPlayOut> {
 
     private EnumTitleAction a;
     private IChatBaseComponent b;
+    public net.kyori.adventure.text.Component adventure$text; // Paper
     private int c;
     private int d;
     private int e;
@@ -46,6 +47,11 @@ public class PacketPlayOutTitle implements Packet<PacketListenerPlayOut> {
     public void b(PacketDataSerializer serializer) throws IOException {
         serializer.a(this.a);
         if (this.a == EnumTitleAction.TITLE || this.a == EnumTitleAction.SUBTITLE) {
+            // Paper start
+            if (this.adventure$text != null) {
+                serializer.writeComponent(this.adventure$text);
+            } else
+            // Paper end
             serializer.writeComponent(this.b);
         }
 

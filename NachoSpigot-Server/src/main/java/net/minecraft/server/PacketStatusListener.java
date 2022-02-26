@@ -38,7 +38,7 @@ public class PacketStatusListener implements PacketStatusInListener {
             CraftIconCache icon = minecraftServer.server.getServerIcon();
 
             ServerListPingEvent() {
-                super(((InetSocketAddress) networkManager.getSocketAddress()).getAddress(), minecraftServer.getMotd(), minecraftServer.getPlayerList().getMaxPlayers());
+                super(((InetSocketAddress) networkManager.getSocketAddress()).getAddress(), minecraftServer.server.getMotd(), minecraftServer.getPlayerList().getMaxPlayers()); // Paper - use CraftServer's getMotd method instead of MinecraftServer's
             }
 
             @Override
@@ -111,7 +111,7 @@ public class PacketStatusListener implements PacketStatusInListener {
         // Spigot Start
         if ( !profiles.isEmpty() )
         {
-            java.util.Collections.shuffle( profiles ); // This sucks, its inefficient but we have no simple way of doing it differently
+            java.util.Collections.shuffle( profiles ); // This sucks, its inefficient, but we have no simple way of doing it differently
             profiles = profiles.subList( 0, Math.min( profiles.size(), org.spigotmc.SpigotConfig.playerSample ) ); // Cap the sample to n (or less) displayed players, ie: Vanilla behaviour
         }
         // Spigot End
