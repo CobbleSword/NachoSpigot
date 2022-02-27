@@ -1,5 +1,6 @@
 package net.minecraft.server;
 
+import com.destroystokyo.paper.PaperConfig;
 import com.eatthepath.uuid.FastUUID;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -12,7 +13,10 @@ import java.net.SocketAddress;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import me.elier.nachospigot.config.NachoConfig;
+import io.papermc.paper.adventure.PaperAdventure; // Paper
+import me.elier.nachospigot.config.NachoConfig; // Nacho
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -176,7 +180,7 @@ public abstract class PlayerList {
 
         // chatmessage.getChatModifier().setColor(EnumChatFormat.YELLOW);
         // this.sendMessage(chatmessage);
-        this.onPlayerJoin(entityplayer, joinMessage);
+        this.onPlayerJoin(entityplayer, PaperAdventure.LEGACY_SECTION_UXRC.deserialize(joinMessage)); // Nacho - Adventure
         // CraftBukkit end
         worldserver = server.getWorldServer(entityplayer.dimension);  // CraftBukkit - Update in case join event changed it
         playerconnection.a(entityplayer.locX, entityplayer.locY, entityplayer.locZ, entityplayer.yaw, entityplayer.pitch);
@@ -293,7 +297,14 @@ public abstract class PlayerList {
 
     }
 
+    @Deprecated // Nacho
     public void onPlayerJoin(EntityPlayer entityplayer, String joinMessage) { // CraftBukkit added param
+        // Nacho start
+        this.onPlayerJoin(entityplayer, PaperAdventure.LEGACY_SECTION_UXRC.deserialize(joinMessage));
+    }
+
+    public void onPlayerJoin(EntityPlayer entityplayer, final net.kyori.adventure.text.Component joinMessage) {
+        // Nacho end
         this.players.add(entityplayer);
         this.playersByName.put(entityplayer.getName(), entityplayer); // Spigot
         this.j.put(entityplayer.getUniqueID(), entityplayer);
@@ -304,12 +315,8 @@ public abstract class PlayerList {
         PlayerJoinEvent playerJoinEvent = new PlayerJoinEvent(cserver.getPlayer(entityplayer), joinMessage);
         cserver.getPluginManager().callEvent(playerJoinEvent);
 
-        joinMessage = playerJoinEvent.getJoinMessage();
-
-        if (joinMessage != null && joinMessage.length() > 0) {
-            for (IChatBaseComponent line : org.bukkit.craftbukkit.util.CraftChatMessage.fromString(joinMessage)) {
-                server.getPlayerList().sendAll(new PacketPlayOutChat(line));
-            }
+        if (joinMessage != null && !joinMessage.equals(net.kyori.adventure.text.Component.empty())) { // Paper - Adventure
+            this.server.getPlayerList().sendAll(new PacketPlayOutChat(PaperAdventure.asVanilla(joinMessage))); // Paper - Adventure
         }
 
         ChunkIOExecutor.adjustPoolSize(getPlayerCount());
@@ -345,14 +352,35 @@ public abstract class PlayerList {
         entityplayer.u().getPlayerChunkMap().movePlayer(entityplayer);
     }
 
-    public String disconnect(EntityPlayer entityplayer) { // CraftBukkit - return string
+    // Nacho start
+    @Deprecated
+    public String _INVALID_disconnect(EntityPlayer entityPlayer) { // CraftBukkit - return string
+        return this.disconnect0(entityPlayer).getQuitMessage();
+    }
+
+    public net.kyori.adventure.text.Component disconnect(EntityPlayer entityPlayer) {
+        return this.disconnect0(entityPlayer).quitMessage();
+    }
+
+    private PlayerQuitEvent disconnect0(EntityPlayer entityplayer) {
+        // Nacho end
         entityplayer.b(StatisticList.f);
 
         // CraftBukkit start - Quitting must be before we do final save of data, in case plugins need to modify it
         org.bukkit.craftbukkit.event.CraftEventFactory.handleInventoryCloseEvent(entityplayer);
 
         Player bukkit = cserver.getPlayer(entityplayer); // KigPaper
-        PlayerQuitEvent playerQuitEvent = new PlayerQuitEvent(bukkit, "\u00A7e" + entityplayer.getName() + " left the game.");cserver.getPluginManager().callEvent(playerQuitEvent);
+        // Paper - Adventure
+        PlayerQuitEvent playerQuitEvent = new PlayerQuitEvent(bukkit,
+                Component.text("", NamedTextColor.YELLOW).append(
+                    (PaperConfig.useDisplayNameInQuit ? entityplayer.getBukkitEntity().displayName() : Component.text(entityplayer.getName()))
+                    .append(
+                            Component.text("left the game.")
+                    )
+                )
+        );
+        // Paper end
+        cserver.getPluginManager().callEvent(playerQuitEvent);
         entityplayer.getBukkitEntity().disconnect(playerQuitEvent.getQuitMessage());
         // CraftBukkit end
         
@@ -400,9 +428,9 @@ public abstract class PlayerList {
         if (lastView != null && lastView.getHandle() instanceof ContainerPlayer && lastView.getPlayer() == bukkit) craftingManager.lastCraftView = null;
         // KigPaper end
 
-        Nacho.get().getLagCompensator().clearCache(bukkit);
+        Nacho.get().getLagCompensator().clearCache(bukkit); // Nacho
 
-        return playerQuitEvent.getQuitMessage(); // CraftBukkit
+        return playerQuitEvent; // CraftBukkit // Nacho - return event
     }
 
     // CraftBukkit start - Whole method, SocketAddress to LoginListener, added hostname to signature, return EntityPlayer
@@ -445,10 +473,10 @@ public abstract class PlayerList {
             }
 
             // return s;
-            if (!gameprofilebanentry.hasExpired()) event.disallow(PlayerLoginEvent.Result.KICK_BANNED, s); // Spigot
+            if (!gameprofilebanentry.hasExpired()) event.disallow(PlayerLoginEvent.Result.KICK_BANNED, PaperAdventure.LEGACY_SECTION_UXRC.deserialize(s)); // Spigot // Paper - Adventure
         } else if (!this.isWhitelisted(gameprofile)) {
             // return "You are not white-listed on this server!";
-            event.disallow(PlayerLoginEvent.Result.KICK_WHITELIST, org.spigotmc.SpigotConfig.whitelistMessage); // Spigot
+            event.disallow(PlayerLoginEvent.Result.KICK_WHITELIST, PaperAdventure.LEGACY_SECTION_UXRC.deserialize(org.spigotmc.SpigotConfig.whitelistMessage)); // Spigot // Paper - Adventure
         } else if (getIPBans().isBanned(socketaddress) && !getIPBans().get(socketaddress).hasExpired()) {
             IpBanEntry ipbanentry = this.l.get(socketaddress);
 
@@ -458,17 +486,17 @@ public abstract class PlayerList {
             }
 
             // return s;
-            event.disallow(PlayerLoginEvent.Result.KICK_BANNED, s);
+            event.disallow(PlayerLoginEvent.Result.KICK_BANNED, PaperAdventure.LEGACY_SECTION_UXRC.deserialize(s)); // Paper - Adventure
         } else {
             // return this.players.size() >= this.maxPlayers && !this.f(gameprofile) ? "The server is full!" : null;
             if (this.players.size() >= this.maxPlayers && !this.f(gameprofile)) {
-                event.disallow(PlayerLoginEvent.Result.KICK_FULL, org.spigotmc.SpigotConfig.serverFullMessage); // Spigot
+                event.disallow(PlayerLoginEvent.Result.KICK_FULL, PaperAdventure.LEGACY_SECTION_UXRC.deserialize(org.spigotmc.SpigotConfig.serverFullMessage)); // Spigot // Paper - Adventure
             }
         }
 
         cserver.getPluginManager().callEvent(event);
         if (event.getResult() != PlayerLoginEvent.Result.ALLOWED) {
-            loginlistener.disconnect(event.getKickMessage());
+            loginlistener.disconnect(PaperAdventure.asVanilla(event.kickMessage()));
             return null;
         }
         return entity;
@@ -1239,8 +1267,8 @@ public abstract class PlayerList {
     }
 
     public void u() {
-        for (int i = 0; i < this.players.size(); ++i) {
-            ((EntityPlayer) this.players.get(i)).playerConnection.disconnect(this.server.server.getShutdownMessage()); // CraftBukkit - add custom shutdown message
+        for (EntityPlayer player : this.players) { // Nacho - enhanced for
+            player.playerConnection.disconnect(this.server.server.shutdownMessage()); // CraftBukkit - add custom shutdown message // Paper - Adventure
         }
 
     }

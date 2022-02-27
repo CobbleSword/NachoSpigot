@@ -71,7 +71,7 @@ net/minecraft/server/v1_8_R3/MinecraftServer port u
 net/minecraft/server/v1_8_R3/MinecraftServer getPort ()I R
 net/minecraft/server/v1_8_R3/MinecraftServer playerList v
 
-# CraftBukkit's deprecation mappings
+# Deprecation mappings
 org/bukkit/Bukkit _INVALID_getOnlinePlayers ()[Lorg/bukkit/entity/Player; getOnlinePlayers
 org/bukkit/Server _INVALID_getOnlinePlayers ()[Lorg/bukkit/entity/Player; getOnlinePlayers
 org/bukkit/entity/Damageable _INVALID_damage (I)V damage
@@ -92,3 +92,4 @@ org/bukkit/event/entity/EntityRegainHealthEvent _INVALID_getAmount ()I getAmount
 org/bukkit/event/entity/EntityRegainHealthEvent _INVALID_setAmount (I)V setAmount
 org/bukkit/event/vehicle/VehicleDamageEvent _INVALID_getDamage ()I getDamage
 org/bukkit/event/vehicle/VehicleDamageEvent _INVALID_setDamage (I)V setDamage
+net/minecraft/server/v1_8_R3/PlayerList _INVALID_disconnect (Lnet/minecraft/server/v1_8_R3/EntityPlayer;)Ljava/lang/String; disconnect
