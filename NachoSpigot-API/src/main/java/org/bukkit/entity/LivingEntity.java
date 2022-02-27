@@ -434,13 +434,13 @@ public interface LivingEntity extends Entity, Damageable, ProjectileSource {
     public void setPullWhileLeashed(boolean pullWhileLeashed);
 
     /**
-     * Heals the entity for the specified amount, with {@link RegainReason#CUSTOM}. Only functions if {@code amount} is greater than 0 and less than the entity's max health. Will call {@link EntityRegainHealthEvent}.
+     * Heals the entity for the specified amount, with {@link RegainReason#CUSTOM}. If {@code amount} is less than 0, the code will not run. If, after event processing, the amount to heal will make the entity exceed their max health, then their health will be rounded to their max health. Will call {@link EntityRegainHealthEvent}.
      * @param amount Amount to heal the entity.
      */
     public void heal(float amount);
 
     /**
-     * Heals the entity for the specified amount, with the specified reason. Only functions if {@code amount} is greater than 0 and less than the entity's max health. Will call {@link EntityRegainHealthEvent}.
+     * Heals the entity for the specified amount, with the specified reason. If {@code amount} is less than 0, the code will not run. If, after event processing, the amount to heal will make the entity exceed their max health, then their health will be rounded to their max health. Will call {@link EntityRegainHealthEvent}.
      * @param amount Amount to heal the entity.
      * @param reason Regain reason, included in event call.
      */
