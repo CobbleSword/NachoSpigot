@@ -25,9 +25,9 @@ public class ItemBoat extends Item {
         float f8 = f3 * f5;
         double d3 = 5.0D;
         Vec3D vec3d1 = vec3d.add((double) f7 * d3, (double) f6 * d3, (double) f8 * d3);
-        MovingObjectPosition movingobjectposition = world.rayTrace(vec3d, vec3d1, true);
+        MovingObjectPosition movingobjectpositionblock = world.rayTrace(vec3d, vec3d1, true);
 
-        if (movingobjectposition == null) {
+        if (movingobjectpositionblock == null) {
             return itemstack;
         } else {
             Vec3D vec3d2 = entityhuman.d(f);
@@ -51,9 +51,10 @@ public class ItemBoat extends Item {
             if (flag) {
                 return itemstack;
             } else {
-                if (movingobjectposition.type == MovingObjectPosition.EnumMovingObjectType.BLOCK) {
-                    BlockPosition blockposition = movingobjectposition.a();
+                if (movingobjectpositionblock.type == MovingObjectPosition.EnumMovingObjectType.BLOCK) {
 
+                    BlockPosition blockposition = movingobjectpositionblock.a();
+                    /* Paper - Remove unneeded interaction event trigger
                     // CraftBukkit start - Boat placement
                     org.bukkit.event.player.PlayerInteractEvent event = org.bukkit.craftbukkit.event.CraftEventFactory.callPlayerInteractEvent(entityhuman, org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK, blockposition, movingobjectposition.direction, itemstack);
 
@@ -61,13 +62,13 @@ public class ItemBoat extends Item {
                         return itemstack;
                     }
                     // CraftBukkit end
+                    */ // Paper - Remove unneeded interaction event trigger
 
                     if (world.getType(blockposition).getBlock() == Blocks.SNOW_LAYER) {
                         blockposition = blockposition.down();
                     }
 
                     EntityBoat entityboat = new EntityBoat(world, (double) ((float) blockposition.getX() + 0.5F), (double) ((float) blockposition.getY() + 1.0F), (double) ((float) blockposition.getZ() + 0.5F));
-
                     entityboat.yaw = (float) (((MathHelper.floor((double) (entityhuman.yaw * 4.0F / 360.0F) + 0.5D) & 3) - 1) * 90);
                     if (!world.getCubes(entityboat, entityboat.getBoundingBox().grow(-0.1D, -0.1D, -0.1D)).isEmpty()) {
                         return itemstack;
