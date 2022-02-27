@@ -1700,18 +1700,6 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
     public NachoPlayer nacho() {
         return nacho;
     }
-
-    public float getAbsorption(){
-        return getHandle().getAbsorptionHearts();
-    }
-
-    public void setAbsorption(float amount){
-        getHandle().setAbsorptionHearts(amount);
-    }
-
-    public void addAbsorption(float amount){
-        setAbsorption(getAbsorption() + amount);
-    }
     // Nacho end
 
     private final Unsafe unsafe = new Unsafe() {

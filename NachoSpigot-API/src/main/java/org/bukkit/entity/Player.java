@@ -1332,7 +1332,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
         }
 
         /**
-         * Gets all players hidden with {@link hidePlayer(org.bukkit.entity.Player)}.
+         * Gets all players hidden with {@link Player#hidePlayer(Player)}.
          *
          * @return a Set with all hidden players
          */
@@ -1429,24 +1429,6 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
     }
 
     NachoPlayer nacho();
-
-    /**
-     *
-     * @return The player's current amount of absorption hearts.
-     */
-    float getAbsorption();
-
-    /**
-     * Sets the player's current amount of absorption hearts.
-     * @param amount Amount of absorption the player should have.
-     */
-    void setAbsorption(float amount);
-
-    /**
-     * Adds the specified amount of absorption to the player.
-     * @param amount Amount of absorption to add.
-     */
-    void addAbsorption(float amount);
     // Nacho end
 
     class Unsafe {
