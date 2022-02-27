@@ -174,4 +174,26 @@ public interface HumanEntity extends LivingEntity, AnimalTamer, Permissible, Inv
      * @return Experience required to level up
      */
     public int getExpToLevel();
+
+    // Nacho start
+    /**
+     *
+     * @return The player's current amount of absorption hearts.
+     */
+    float getAbsorption();
+
+    /**
+     * Sets the player's current amount of absorption hearts.
+     * @param amount Amount of absorption the player should have.
+     */
+    void setAbsorption(float amount);
+
+    /**
+     * Adds the specified amount of absorption to the player.
+     * @param amount Amount of absorption to add.
+     */
+    default void addAbsorption(float amount){
+        setAbsorption(getAbsorption() + amount);
+    }
+    // Nacho end
 }

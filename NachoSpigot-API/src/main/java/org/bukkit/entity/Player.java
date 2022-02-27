@@ -1332,7 +1332,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
         }
 
         /**
-         * Gets all players hidden with {@link hidePlayer(org.bukkit.entity.Player)}.
+         * Gets all players hidden with {@link Player#hidePlayer(Player)}.
          *
          * @return a Set with all hidden players
          */
@@ -1410,6 +1410,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
     Spigot spigot();
     // Spigot end
 
+    // Nacho start
     class NachoPlayer {
         /**
          * Sends an actionbar message to the player
@@ -1428,6 +1429,7 @@ public interface Player extends HumanEntity, Conversable, CommandSender, Offline
     }
 
     NachoPlayer nacho();
+    // Nacho end
 
     class Unsafe {
         /**

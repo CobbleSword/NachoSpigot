@@ -54,6 +54,7 @@ import org.bukkit.entity.Snowball;
 import org.bukkit.entity.ThrownExpBottle;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.entity.WitherSkull;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
@@ -540,6 +541,17 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
             ((EntityInsentient) getHandle()).setPullWhileLeashed(pullWhileLeashed);
     }
     // TacoSpigot end
+
+    // Nacho start
+    public void heal(float amount){
+        if(getHealth() + amount <= getMaxHealth()) getHandle().heal(amount);
+    }
+
+    public void heal(float amount, EntityRegainHealthEvent.RegainReason reason){
+        if(getHealth() + amount <= getMaxHealth())
+            getHandle().heal(amount, reason);
+    }
+    // Nacho end
 
     @Override
     public KnockbackProfile getKnockbackProfile() {
