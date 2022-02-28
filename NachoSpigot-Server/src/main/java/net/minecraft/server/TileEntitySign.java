@@ -9,7 +9,7 @@ public class TileEntitySign extends TileEntity {
     public boolean isEditable = true;
     private EntityHuman h;
     private final CommandObjectiveExecutor i = new CommandObjectiveExecutor();
-	public java.util.UUID signEditor;
+    public java.util.UUID signEditor;
 
     public TileEntitySign() {}
 

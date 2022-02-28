@@ -25,7 +25,7 @@ public class CraftBlockState implements BlockState {
     protected int type;
     protected MaterialData data;
     protected int flag;
-    protected final byte light;
+    //protected final byte light; // CraftBukkit - SPIGOT-2286
 
     public CraftBlockState(final Block block) {
         this.world = (CraftWorld) block.getWorld();
@@ -33,7 +33,7 @@ public class CraftBlockState implements BlockState {
         this.y = block.getY();
         this.z = block.getZ();
         this.type = block.getTypeId();
-        this.light = block.getLightLevel();
+        //this.light = block.getLightLevel(); // CraftBukkit - SPIGOT-2286
         this.chunk = (CraftChunk) block.getChunk();
         this.flag = 3;
 
@@ -48,7 +48,7 @@ public class CraftBlockState implements BlockState {
     public CraftBlockState(Material material) {
         world = null;
         type = material.getId();
-        light = 0;
+        // light = 0; // CraftBukkit - SPIGOT-2286
         chunk = null;
         x = y = z = 0;
     }
@@ -132,7 +132,8 @@ public class CraftBlockState implements BlockState {
     }
 
     public byte getLightLevel() {
-        return light;
+        //return light; // CraftBukkit - SPIGOT-2286
+        return getBlock().getLightLevel(); // CraftBukkit - SPIGOT-2286
     }
 
     public Block getBlock() {

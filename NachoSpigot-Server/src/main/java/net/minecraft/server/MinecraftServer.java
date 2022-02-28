@@ -811,6 +811,8 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
         // Paper start - optimize time updates
         int i;
 
+        // Paper start - optimize time updates
+        /*
         if ((this.ticks % 20) == 0)
         {
             for (i = 0; i < this.worlds.size(); ++i) {
@@ -834,7 +836,26 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
                     }
                 }
             }
+        } */
+        for (i = 0; i < this.worlds.size(); ++i) { // Nacho
+            final WorldServer world = this.worlds.get(i); // Nacho
+            final boolean doDaylight = world.getGameRules().getBoolean("doDaylightCycle");
+            final long dayTime = world.getDayTime();
+            long worldTime = world.getTime();
+            final PacketPlayOutUpdateTime worldPacket = new PacketPlayOutUpdateTime(worldTime, dayTime, doDaylight);
+            for (EntityHuman entityhuman : world.players) {
+                if (!(entityhuman instanceof EntityPlayer) || (ticks + entityhuman.getId()) % 20 != 0) {
+                    continue;
+                }
+                EntityPlayer entityplayer = (EntityPlayer) entityhuman;
+                long playerTime = entityplayer.getPlayerTime();
+                PacketPlayOutUpdateTime packet = (playerTime == dayTime) ? worldPacket :
+                    new PacketPlayOutUpdateTime(worldTime, playerTime, doDaylight);
+                entityplayer.playerConnection.sendPacket(packet); // Add support for per player time
+            }
         }
+        // Paper end
+
         SpigotTimings.timeUpdateTimer.stopTiming(); // Spigot
 
         for (i = 0; i < this.worlds.size(); ++i) {
