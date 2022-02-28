@@ -32,7 +32,6 @@ public class CraftBlockState implements BlockState {
         this.y = block.getY();
         this.z = block.getZ();
         this.type = block.getTypeId();
-        //this.light = block.getLightLevel(); // CraftBukkit - SPIGOT-2286
         this.chunk = (CraftChunk) block.getChunk();
         this.flag = 3;
 
