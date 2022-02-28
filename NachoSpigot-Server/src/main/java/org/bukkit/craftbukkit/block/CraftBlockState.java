@@ -130,8 +130,7 @@ public class CraftBlockState implements BlockState {
     }
 
     public byte getLightLevel() {
-        //return light; // CraftBukkit - SPIGOT-2286
-        return getBlock().getLightLevel(); // CraftBukkit - SPIGOT-2286
+        return getBlock().getLightLevel();
     }
 
     public Block getBlock() {
