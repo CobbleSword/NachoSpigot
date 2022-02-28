@@ -808,7 +808,6 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
 
         SpigotTimings.timeUpdateTimer.startTiming(); // Spigot
         // Send time updates to everyone, it will get the right time from the world the player is in.
-        // Paper start - optimize time updates
         int i;
 
         // Paper start - optimize time updates
