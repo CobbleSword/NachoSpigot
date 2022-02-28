@@ -25,7 +25,6 @@ public class CraftBlockState implements BlockState {
     protected int type;
     protected MaterialData data;
     protected int flag;
-    //protected final byte light; // CraftBukkit - SPIGOT-2286
 
     public CraftBlockState(final Block block) {
         this.world = (CraftWorld) block.getWorld();
