@@ -39,6 +39,10 @@ public class ChunkProviderServer implements IChunkProvider {
         this.chunkProvider = ichunkprovider;
     }
 
+    final Long2ObjectOpenHashMap<Chunk> loadedChunkMap = new Long2ObjectOpenHashMap<>(8192, 0.5f);
+
+    private final Chunk[] lastLoadedChunks = new Chunk[4 * 4];
+
     public boolean isChunkLoaded(int i, int j) {
         return this.chunks.containsKey(LongHash.toLong(i, j)); // CraftBukkit
     }

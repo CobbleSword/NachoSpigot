@@ -42,8 +42,7 @@ public class BlockStateEnum<T extends Enum<T> & INamable> extends BlockState<T> 
 
     // TacoSpigot start
     @Override
-    public int
-getValueId(T value) {
+    public int getValueId(T value) {
         return value.ordinal();
     }
 
