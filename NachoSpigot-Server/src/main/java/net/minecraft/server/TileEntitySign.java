@@ -7,9 +7,9 @@ public class TileEntitySign extends TileEntity {
     public final IChatBaseComponent[] lines = new IChatBaseComponent[] { new ChatComponentText(""), new ChatComponentText(""), new ChatComponentText(""), new ChatComponentText("")};
     public int f = -1;
     public boolean isEditable = true;
-    private EntityHuman h;
+    //private EntityHuman h; // Paper
     private final CommandObjectiveExecutor i = new CommandObjectiveExecutor();
-    public java.util.UUID signEditor;
+    public java.util.UUID signEditor; // Paper
 
     public TileEntitySign() {}
 
