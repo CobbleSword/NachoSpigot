@@ -7,7 +7,6 @@ public class TileEntitySign extends TileEntity {
     public final IChatBaseComponent[] lines = new IChatBaseComponent[] { new ChatComponentText(""), new ChatComponentText(""), new ChatComponentText(""), new ChatComponentText("")};
     public int f = -1;
     public boolean isEditable = true;
-    //private EntityHuman h; // Paper
     private final CommandObjectiveExecutor i = new CommandObjectiveExecutor();
     public java.util.UUID signEditor; // Paper
 
@@ -122,14 +121,7 @@ public class TileEntitySign extends TileEntity {
     }
 
     public void a(EntityHuman entityhuman) {
-        // Paper start
-        //this.h = entityhuman;
-        signEditor = entityhuman != null ? entityhuman.getUniqueID() : null;
-        // Paper end
-    }
-
-    public EntityHuman c() {
-        return this.h;
+        signEditor = entityhuman != null ? entityhuman.getUniqueID() : null; // Paper
     }
 
     public boolean b(final EntityHuman entityhuman) {
