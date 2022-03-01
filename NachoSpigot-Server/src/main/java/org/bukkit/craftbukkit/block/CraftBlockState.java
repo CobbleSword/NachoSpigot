@@ -46,7 +46,6 @@ public class CraftBlockState implements BlockState {
     public CraftBlockState(Material material) {
         world = null;
         type = material.getId();
-        // light = 0; // CraftBukkit - SPIGOT-2286
         chunk = null;
         x = y = z = 0;
     }
