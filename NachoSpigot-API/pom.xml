@@ -107,6 +107,13 @@
         </dependency>
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>spigotmc-public</id>
+            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+
     <build>
         <finalName>NachoSpigot-API</finalName>
         <plugins>
