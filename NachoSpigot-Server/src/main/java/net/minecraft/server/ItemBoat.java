@@ -52,7 +52,7 @@ public class ItemBoat extends Item {
                 return itemstack;
             } else {
                 if (movingobjectpositionblock.type == MovingObjectPosition.EnumMovingObjectType.BLOCK) {
-                    BlockPosition blockpositionblock = movingobjectpositionblock.a();
+                    BlockPosition blockposition = movingobjectpositionblock.a();
 
                     /* Paper - Remove unneeded interaction event trigger
                     // CraftBukkit start - Boat placement
