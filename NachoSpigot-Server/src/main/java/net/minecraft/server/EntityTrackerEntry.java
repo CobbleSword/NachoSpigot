@@ -459,8 +459,8 @@ public class EntityTrackerEntry {
     public void scanPlayers(List<EntityHuman> list) {
         for (EntityHuman entityHuman : list) {
             // Don't update if player cannot see entity
-            if (!((EntityPlayer) entityHuman).getBukkitEntity().canSee((this.tracker).getBukkitEntity())) {
-                return;
+            if (entityHuman instanceof EntityPlayer && entityHuman.hasBukkitEntity() && !((EntityPlayer) entityHuman).getBukkitEntity().canSee((this.tracker).getBukkitEntity())) {
+                continue;
             }
             this.updatePlayer((EntityPlayer) entityHuman);
         }
