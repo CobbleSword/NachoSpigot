@@ -86,7 +86,6 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [Paper-0404] Optimize World Time Updates
 [Paper-0451] Reduce memory footprint of NBTTagCompound by spottedleaf
 [Paper-0539] Optimize NetworkManager Exception Handling by Andrew Steinborn
-[Paper-0730] Remove interact event from boat
 [Paper-0797] Use Velocity compression and cipher natives
 [Paper-????] Cleanup allocated favicon ByteBuf by Shane Freeder
 
