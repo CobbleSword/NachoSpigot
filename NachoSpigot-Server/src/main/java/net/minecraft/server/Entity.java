@@ -1701,6 +1701,8 @@ public abstract class Entity implements ICommandListener {
     // CraftBukkit start
     protected CraftEntity bukkitEntity;
 
+    public boolean hasBukkitEntity() { return bukkitEntity != null; }
+
     public CraftEntity getBukkitEntity() {
         if (bukkitEntity == null) {
             bukkitEntity = CraftEntity.getEntity(world.getServer(), this);
