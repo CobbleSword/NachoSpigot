@@ -1669,6 +1669,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         return spigot;
     }
 
+    // Nacho start
     private final NachoPlayer nacho = new NachoPlayer() {
         @Override
         public void sendActionBar(String message) {
@@ -1699,6 +1700,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
     public NachoPlayer nacho() {
         return nacho;
     }
+    // Nacho end
 
     private final Unsafe unsafe = new Unsafe() {
         @Override

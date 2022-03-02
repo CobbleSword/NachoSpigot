@@ -362,4 +362,12 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
     public int getExpToLevel() {
         return getHandle().getExpToLevel();
     }
+
+    public float getAbsorption(){
+        return getHandle().getAbsorptionHearts();
+    }
+
+    public void setAbsorption(float amount){
+        getHandle().setAbsorptionHearts(amount);
+    }
 }
