@@ -211,4 +211,9 @@ public enum EnumProtocol {
             }
         }
     }
+    
+    // Method for plugins to use
+    public Integer getPacketIdForPacket(EnumProtocolDirection dir, Packet<?> packet) {
+        return this.getPacketIdForPacket(packet);
+    }
 }

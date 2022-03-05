@@ -312,7 +312,7 @@ public final class CraftServer implements Server {
                     // Nacho end
 
                     // Nacho start - Add notice for older Citizens versions
-                    else if(plugin.getDescription().getFullName().contains("Citizens")) {
+                    else if(plugin.getDescription().getFullName().equals("Citizens")) {
                         if(PluginUtils.getCitizensBuild(plugin) < 2396) {
                             logger.warning(
                                     "Please update to Citizens 2.0.28 #7 or higher!\n" +
@@ -1038,7 +1038,10 @@ public final class CraftServer implements Server {
         if (e.isCancelled()) {
             return false;
         }
-
+		
+	worlds.remove(world.getName().toLowerCase());
+        console.worlds.remove(handle);
+		
         if (save) {
             try {
                 handle.save(true, null);
@@ -1063,9 +1066,6 @@ public final class CraftServer implements Server {
             chunkProviderServer.chunkProvider = null;
             chunkProviderServer.chunks.clear();
         }
-
-        worlds.remove(world.getName().toLowerCase());
-        console.worlds.remove(handle);
 
         // KigPaper start - fix memory leak
         CraftingManager craftingManager = CraftingManager.getInstance();

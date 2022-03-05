@@ -141,6 +141,8 @@ public class NachoConfig {
         c.addComment("settings.commands.permissions.version", "Enables a required permission to use /version");
         c.addComment("settings.commands.permissions.plugins", "Enables a required permission to use /plugins");
         c.addComment("settings.commands.enable-help-command", "Toggles the /help command");
+        c.addComment("settings.use-improved-hitreg", "Enables the usage of an improved hitreg based on lag compensation and small other details.");
+        c.addComment("settings.disable-disconnect-spam", "Disables that players can be kicked because of disconnect.spam.");
         NachoWorldConfig.loadComments();
     }
 
@@ -389,5 +391,17 @@ public class NachoConfig {
 
     private static void instantPlayInUseEntity() {
         instantPlayInUseEntity = getBoolean("settings.instant-interaction", false);
+    }
+
+    public static boolean enableImprovedHitReg;
+
+    private static void enableImprovedHitReg() {
+        enableImprovedHitReg = getBoolean("settings.use-improved-hitreg", false);
+    }
+
+    public static boolean disableDisconnectSpam;
+
+    private static void disableDisconnectSpam() {
+        disableDisconnectSpam = getBoolean("settings.disable-disconnect-spam", false);
     }
 }

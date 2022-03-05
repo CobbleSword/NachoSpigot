@@ -3,6 +3,7 @@ package org.bukkit.craftbukkit.entity;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.authlib.GameProfile;
+import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.commons.Constants;
 import io.netty.buffer.Unpooled;
 
@@ -17,6 +18,7 @@ import java.util.logging.Logger;
 
 import me.elier.nachospigot.config.NachoConfig;
 import net.md_5.bungee.api.chat.BaseComponent;
+import dev.cobblesword.nachospigot.commons.Dictionary;
 
 import net.minecraft.server.*;
 import net.minecraft.server.PacketPlayOutTitle.EnumTitleAction;
@@ -540,6 +542,8 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         if (event.isCancelled()) {
             return false;
         }
+        
+        Nacho.get().getLagCompensator().registerMovement(this, event.getTo()); // Nacho - register teleport
 
         // If this player is riding another entity, we must dismount before teleporting.
         entity.mount(null);
@@ -1529,22 +1533,16 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
             {
                 net.minecraft.server.EnumParticle particle = null;
                 int[] extra = null;
-                for ( net.minecraft.server.EnumParticle p : net.minecraft.server.EnumParticle.values() )
-                {
-                    if ( effect.getName().startsWith( p.b().replace("_", "") ) )
+                if ((particle = Dictionary.EFFECT_TO_PARTICLE.get(effect)) != null) {
+                    if (effect.getData() != null)
                     {
-                        particle = p;
-                        if ( effect.getData() != null )
+                        if (effect.getData().equals(Material.class))
                         {
-                            if ( effect.getData().equals( org.bukkit.Material.class ) )
-                            {
-                                extra = new int[]{ id };
-                            } else
-                            {
-                                extra = new int[]{ (data << 12) | (id & 0xFFF) };
-                            }
+                            extra = new int[]{id};
+                        } else
+                        {
+                            extra = new int[]{(data << 12) | (id & 0xFFF)};
                         }
-                        break;
                     }
                 }
                 if ( extra == null )
@@ -1671,6 +1669,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         return spigot;
     }
 
+    // Nacho start
     private final NachoPlayer nacho = new NachoPlayer() {
         @Override
         public void sendActionBar(String message) {
@@ -1701,6 +1700,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
     public NachoPlayer nacho() {
         return nacho;
     }
+    // Nacho end
 
     private final Unsafe unsafe = new Unsafe() {
         @Override

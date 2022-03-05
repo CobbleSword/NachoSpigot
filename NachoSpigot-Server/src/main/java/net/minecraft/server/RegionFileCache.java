@@ -13,10 +13,10 @@ public class RegionFileCache {
     public static final Map<File, RegionFile> a = Maps.newHashMap(); // Spigot - private -> public
 
     // PaperSpigot start
-    public static synchronized RegionFile a(File file, int i, int j) {
+    public static /*synchronized*/ RegionFile a(File file, int i, int j) { // Paper - remove synchronization
         return a(file, i, j, true);
     }
-    public static synchronized RegionFile a(File file, int i, int j, boolean create) {
+    public static /*synchronized*/ RegionFile a(File file, int i, int j, boolean create) { // Paper - remove synchronization
         // PaperSpigot end
         File file1 = new File(file, "region");
         File file2 = new File(file1, "r." + (i >> 5) + "." + (j >> 5) + ".mca");
@@ -41,7 +41,7 @@ public class RegionFileCache {
         }
     }
 
-    public static synchronized void a() {
+    public static /*synchronized*/ void a() { // Paper - remove synchronization
         Iterator iterator = RegionFileCache.a.values().iterator();
 
         while (iterator.hasNext()) {

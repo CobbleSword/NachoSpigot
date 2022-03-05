@@ -150,7 +150,7 @@ public class CraftChunk implements Chunk {
             {
                 // This does a lookup in the block registry, but does not create any objects, so should be pretty efficient
                 IBlockData blockData = (IBlockData) net.minecraft.server.Block.d.a(blockIds[i]);
-                if(blockData.getBlock() == nmsBlock) {
+                if(blockData != null && blockData.getBlock() == nmsBlock) { // SportPaper - fix NPE
                     blocks.add(getBlock(i & 0xf, section.getYPosition() | (i >> 8), (i >> 4) & 0xf));
                 }
             }

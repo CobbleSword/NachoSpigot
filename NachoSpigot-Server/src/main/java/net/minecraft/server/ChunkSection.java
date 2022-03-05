@@ -72,7 +72,10 @@ public class ChunkSection {
     }
 
     public boolean a() {
-        return this.nonEmptyBlockCount == 0;
+        //return this.nonEmptyBlockCount == 0;
+        // Paper - MC-80966
+        // Even if there are no blocks, there may be other information associated with the chunk, always send it.
+        return false;
     }
 
     public boolean shouldTick() {

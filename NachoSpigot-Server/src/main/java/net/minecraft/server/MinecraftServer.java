@@ -9,6 +9,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.GameProfileRepository;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
+import dev.cobblesword.nachospigot.hitdetection.LagCompensator;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
@@ -735,10 +736,11 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
             this.r.b().a(agameprofile);
         }
 
-        if (autosavePeriod > 0 && this.ticks % autosavePeriod == 0) { // CraftBukkit
+        if (autosavePeriod > 0 /*&& this.ticks % autosavePeriod == 0*/) { // CraftBukkit // Paper - Incremental Auto Saving
             SpigotTimings.worldSaveTimer.startTiming(); // Spigot
             this.methodProfiler.a("save");
-            this.playerList.savePlayers(); // Nacho - deobfuscate playerList
+            //this.playerList.savePlayers();
+            if (this.ticks % autosavePeriod == 0) this.playerList.savePlayers(); // Paper - Incremental Auto Saving
             // Spigot Start
             // We replace this with saving each individual world as this.saveChunks(...) is broken,
             // and causes the main thread to sleep for random amounts of time depending on chunk activity

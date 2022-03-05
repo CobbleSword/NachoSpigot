@@ -252,6 +252,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
         // entity.world = ((CraftWorld) location.getWorld()).getHandle();
         // Spigot end
         entity.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+	entity.f(location.getYaw()); // KigPaper - update head yaw to keep consistency with /tp
         entity.world.entityJoinedWorld(entity, false); // PaperSpigot - Fix issues with entities not being switched to their new chunk
         // entity.setLocation() throws no event, and so cannot be cancelled
         return true;
