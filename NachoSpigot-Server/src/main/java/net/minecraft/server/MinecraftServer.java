@@ -577,15 +577,9 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
                 // PaperSpigot end
                 // Nacho start
                 if (NachoConfig.threadAffinity) {
-                    MinecraftServer.LOGGER.info(" ");
-                    MinecraftServer.LOGGER.info("Enabling Thread Affinity...");
                     lock = AffinityLock.acquireLock();
                     if (lock.cpuId() != -1) {
                         MinecraftServer.LOGGER.info("Nacho: CPU " + lock.cpuId() + " locked for server usage.");
-                        MinecraftServer.LOGGER.info("This will boost the server's performance, but will use more cpu.");
-                        MinecraftServer.LOGGER.info("This is most effective on linux with JNA installed.");
-                        MinecraftServer.LOGGER.info("See https://github.com/OpenHFT/Java-Thread-Affinity");
-                        MinecraftServer.LOGGER.info(" ");
                     } else {
                         MinecraftServer.LOGGER.error("An error occured whilst enabling thread affinity!");
                     }
