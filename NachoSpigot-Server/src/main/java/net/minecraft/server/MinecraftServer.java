@@ -576,27 +576,22 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
                 //long lastTick = System.nanoTime(), catchupTime = 0, curTime, wait, tickSection = lastTick;
                 long start = System.nanoTime(), lastTick = start - TICK_TIME, catchupTime = 0, curTime, wait, tickSection = start;
                 // PaperSpigot end
-                
-             // Enable thread affinity
-        		if (NachoConfig.threadAffinity)
-        		{
-        			System.out.println(" ");
-        			System.out.println("Enabling Thread Affinity...");
-        			lock = AffinityLock.acquireLock();
-        			if (lock.cpuId() != -1)
-        			{
-        				System.out.println("CPU " + lock.cpuId() + " locked for server usage.");
-        				System.out.println("This will boost the server's performance, but will use more cpu.");
-        				System.out.println("This is most effective on linux with JNA installed.");
-        				System.out.println("See https://github.com/OpenHFT/Java-Thread-Affinity");
-        				System.out.println(" ");
-        			} else
-        			{
-        				System.out.println("An error occured whilst enabling thread affinity!");
-        				System.out.println(" ");
-        			}
-
-        		}
+                // Enable thread affinity
+                if (NachoConfig.threadAffinity) {
+                    MinecraftServer.LOGGER.info(" ");
+                    MinecraftServer.LOGGER.info("Enabling Thread Affinity...");
+                    lock = AffinityLock.acquireLock();
+                    if (lock.cpuId() != -1) {
+                        MinecraftServer.LOGGER.info("CPU " + lock.cpuId() + " locked for server usage.");
+                        MinecraftServer.LOGGER.info("This will boost the server's performance, but will use more cpu.");
+                        MinecraftServer.LOGGER.info("This is most effective on linux with JNA installed.");
+                        MinecraftServer.LOGGER.info("See https://github.com/OpenHFT/Java-Thread-Affinity");
+                        MinecraftServer.LOGGER.info(" ");
+                    } else {
+                        MinecraftServer.LOGGER.error("An error occured whilst enabling thread affinity!");
+                        MinecraftServer.LOGGER.error(" ");
+                    }
+                }
                 while (this.isRunning) {
                     curTime = System.nanoTime();
                     // PaperSpigot start - Further improve tick loop
