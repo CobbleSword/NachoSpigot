@@ -36,6 +36,8 @@ import javax.imageio.ImageIO;
 
 import io.netty.util.ResourceLeakDetector;
 import me.elier.nachospigot.config.NachoConfig;
+import net.openhft.affinity.AffinityLock;
+
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -555,7 +557,28 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     }
     // PaperSpigot End
  
+    AffinityLock lock = null;
+    
     public void run() {
+		if (NachoConfig.threadAffinity)
+		{
+			System.out.println(" ");
+			System.out.println("Enabling Thread Affinity...");
+			lock = AffinityLock.acquireLock();
+			if (lock.cpuId() != -1)
+			{
+				System.out.println("CPU " + lock.cpuId() + " locked for server usage.");
+				System.out.println("This will boost the server's performance, but will use more cpu.");
+				System.out.println("This is most effective on linux with JNA installed.");
+				System.out.println("See https://github.com/OpenHFT/Java-Thread-Affinity");
+				System.out.println(" ");
+			} else
+			{
+				System.out.println("An error occured whilst enabling thread affinity!");
+				System.out.println(" ");
+			}
+
+		}
         try {
             if (this.init()) {
                 this.ab = az();

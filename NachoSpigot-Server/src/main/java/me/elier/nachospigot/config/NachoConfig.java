@@ -143,6 +143,7 @@ public class NachoConfig {
         c.addComment("settings.commands.enable-help-command", "Toggles the /help command");
         c.addComment("settings.use-improved-hitreg", "Enables the usage of an improved hitreg based on lag compensation and small other details.");
         c.addComment("settings.disable-disconnect-spam", "Disables that players can be kicked because of disconnect.spam.");
+        c.addComment("settings.thread-affinity", "Allocates a cpu to the server, increases performance but uses a whole cpu.");
         NachoWorldConfig.loadComments();
     }
 
@@ -403,5 +404,11 @@ public class NachoConfig {
 
     private static void disableDisconnectSpam() {
         disableDisconnectSpam = getBoolean("settings.disable-disconnect-spam", false);
+    }
+    
+    public static boolean threadAffinity;
+
+    private static void threadAffinity() {
+        threadAffinity = getBoolean("settings.thread-affinity", false);
     }
 }
