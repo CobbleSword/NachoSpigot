@@ -557,10 +557,9 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     }
     // PaperSpigot End
  
-    // Thread affinity - lock
-    AffinityLock lock = null;
     
     public void run() {
+        AffinityLock lock = null; // Nacho
         try {
             if (this.init()) {
                 this.ab = az();
@@ -576,22 +575,22 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
                 //long lastTick = System.nanoTime(), catchupTime = 0, curTime, wait, tickSection = lastTick;
                 long start = System.nanoTime(), lastTick = start - TICK_TIME, catchupTime = 0, curTime, wait, tickSection = start;
                 // PaperSpigot end
-                // Enable thread affinity
+                // Nacho start
                 if (NachoConfig.threadAffinity) {
                     MinecraftServer.LOGGER.info(" ");
                     MinecraftServer.LOGGER.info("Enabling Thread Affinity...");
                     lock = AffinityLock.acquireLock();
                     if (lock.cpuId() != -1) {
-                        MinecraftServer.LOGGER.info("CPU " + lock.cpuId() + " locked for server usage.");
+                        MinecraftServer.LOGGER.info("Nacho: CPU " + lock.cpuId() + " locked for server usage.");
                         MinecraftServer.LOGGER.info("This will boost the server's performance, but will use more cpu.");
                         MinecraftServer.LOGGER.info("This is most effective on linux with JNA installed.");
                         MinecraftServer.LOGGER.info("See https://github.com/OpenHFT/Java-Thread-Affinity");
                         MinecraftServer.LOGGER.info(" ");
                     } else {
                         MinecraftServer.LOGGER.error("An error occured whilst enabling thread affinity!");
-                        MinecraftServer.LOGGER.error(" ");
                     }
                 }
+                // Nacho end
                 while (this.isRunning) {
                     curTime = System.nanoTime();
                     // PaperSpigot start - Further improve tick loop
@@ -672,10 +671,11 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
 
             this.a(crashreport);
         } finally {
-            // Release thread affinity lock
+            // Nacho start
             if (lock != null)  {
                 lock.release();
             }
+            // Nacho end
             try {
                 org.spigotmc.WatchdogThread.doStop();
                 this.isStopped = true;
