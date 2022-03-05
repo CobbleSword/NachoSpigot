@@ -557,7 +557,7 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     }
     // PaperSpigot End
  
-	// Thread affinity - lock
+    // Thread affinity - lock
     AffinityLock lock = null;
     
     public void run() {
