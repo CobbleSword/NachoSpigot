@@ -557,9 +557,12 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
     }
     // PaperSpigot End
  
+	// Thread affinity - lock
     AffinityLock lock = null;
     
     public void run() {
+    	
+    	// Enable thread affinity
 		if (NachoConfig.threadAffinity)
 		{
 			System.out.println(" ");
@@ -674,6 +677,11 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
 
             this.a(crashreport);
         } finally {
+        	// Release thread affinity lock
+        	if (lock != null)
+        	{
+        		lock.release();
+        	}
             try {
                 org.spigotmc.WatchdogThread.doStop();
                 this.isStopped = true;
