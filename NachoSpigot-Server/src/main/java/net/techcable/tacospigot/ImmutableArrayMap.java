@@ -51,11 +51,11 @@ public class ImmutableArrayMap<K, V> extends AbstractMap<K, V> implements Map<K,
         int maxIndex = largestRangeOfSequentialValues == null ? -1 : largestRangeOfSequentialValues[1];
         int sequentalRangeSize = largestRangeOfSequentialValues == null ? 0 : largestRangeOfSequentialValues[2];
         if (sequentalRangeSize < size / 2) {
-            Nacho.LOGGER.error("Less than 50% of values are sequential");
-            Nacho.LOGGER.error(sequentalRangeSize);
-            Nacho.LOGGER.error(" out of ");
-            Nacho.LOGGER.error(size);
-            Nacho.LOGGER.error("Expect reduced performance");
+            Nacho.LOGGER.warn("Less than 50% of values are sequential");
+            Nacho.LOGGER.warn(sequentalRangeSize);
+            Nacho.LOGGER.warn(" out of ");
+            Nacho.LOGGER.warn(size);
+            Nacho.LOGGER.warn("Expect reduced performance");
         }
         this.data = new Object[sequentalRangeSize];
         this.outlyingIds = new int[size - sequentalRangeSize];
