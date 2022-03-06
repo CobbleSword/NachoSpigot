@@ -1,5 +1,6 @@
 package org.spigotmc;
 
+import dev.cobblesword.nachospigot.commons.NachoLogger;
 import java.io.File;
 import java.util.List;
 import net.minecraft.server.EntityPlayer;
@@ -47,7 +48,7 @@ public class RestartCommand extends Command
         {
             if ( script.isFile() )
             {
-                System.out.println( "Attempting to restart with " + SpigotConfig.restartScript );
+                NachoLogger.LOGGER.info( "Attempting to restart with " + SpigotConfig.restartScript );
 
                 // Disable Watchdog
                 WatchdogThread.doStop();
@@ -113,7 +114,7 @@ public class RestartCommand extends Command
                 Runtime.getRuntime().addShutdownHook( shutdownHook );
             } else
             {
-                System.out.println( "Startup script '" + SpigotConfig.restartScript + "' does not exist! Stopping server." );
+                NachoLogger.LOGGER.error( "Startup script '" + SpigotConfig.restartScript + "' does not exist! Stopping server." );
             }
             System.exit( 0 );
         } catch ( Exception ex )

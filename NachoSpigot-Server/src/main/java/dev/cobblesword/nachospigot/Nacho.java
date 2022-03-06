@@ -1,6 +1,7 @@
 package dev.cobblesword.nachospigot;
 
 import dev.cobblesword.nachospigot.commands.KnockbackCommand;
+import dev.cobblesword.nachospigot.commons.NachoLogger;
 import dev.cobblesword.nachospigot.hitdetection.LagCompensator;
 import dev.cobblesword.nachospigot.protocol.MovementListener;
 import me.elier.nachospigot.config.NachoConfig;
@@ -31,9 +32,9 @@ public class Nacho {
         lagCompensator = new LagCompensator();
 
         if(NachoConfig.enableAntiCrash) {
-            System.out.println("[NS-AntiCrash] Activating Anti Crash.");
+            NachoLogger.LOGGER.info("[NS-AntiCrash] Activating Anti Crash.");
             this.packetListeners.add(new AntiCrash());
-            System.out.println("[NS-AntiCrash] Activated Anti Crash.");
+            NachoLogger.LOGGER.info("[NS-AntiCrash] Activated Anti Crash.");
         }
     }
 

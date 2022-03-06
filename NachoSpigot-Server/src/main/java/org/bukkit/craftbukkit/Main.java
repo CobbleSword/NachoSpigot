@@ -1,5 +1,7 @@
 package org.bukkit.craftbukkit;
 
+import dev.cobblesword.nachospigot.commons.NachoLogger;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -23,12 +25,12 @@ public class Main {
         System.setProperty("log4j2.formatMsgNoLookups", "true");
 
         try {
-            if(!SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_15)) {
-                System.err.println("It seems like you are not using Java 15!");
-                System.out.println("The use of Java 15 is strongly recommended.");
+            if(!SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_17)) {
+                NachoLogger.LOGGER.info("It seems like you are not using Java 17!");
+                NachoLogger.LOGGER.info("The use of Java 17 is strongly recommended.");
             }
         } catch (Exception ignored) {
-            System.err.println("Failed to get Java version! Continuing either way..");
+            NachoLogger.LOGGER.error("Failed to get Java version! Continuing either way..");
         }
         OptionParser parser = new OptionParser() {
             {
@@ -180,12 +182,12 @@ public class Main {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (options.has("v")) {
-            System.out.println(CraftServer.class.getPackage().getImplementationVersion());
+             NachoLogger.LOGGER.info(CraftServer.class.getPackage().getImplementationVersion());
         } else {
             // Do you love Java using + and ! as string based identifiers? I sure do!
             String path = new File(".").getAbsolutePath();
             if (path.contains("!") || path.contains("+")) {
-                System.err.println("Cannot run server in a directory with ! or + in the pathname. Please rename the affected folders and try again.");
+                NachoLogger.LOGGER.error("Cannot run server in a directory with ! or + in the pathname. Please rename the affected folders and try again.");
                 return;
             }
 
@@ -226,12 +228,12 @@ public class Main {
                 }
                 if ( Float.parseFloat( System.getProperty( "java.class.version" ) ) < 52 && maxPermGen < ( 128 << 10 ) ) // 128mb
                 {
-                    System.out.println( "Warning, your max perm gen size is not set or less than 128mb. It is recommended you restart Java with the following argument: -XX:MaxPermSize=128M" );
-                    System.out.println( "Please see http://www.spigotmc.org/wiki/changing-permgen-size/ for more details and more in-depth instructions." );
+                    NachoLogger.LOGGER.error( "Warning, your max perm gen size is not set or less than 128mb. It is recommended you restart Java with the following argument: -XX:MaxPermSize=128M" );
+                    NachoLogger.LOGGER.error( "Please see http://www.spigotmc.org/wiki/changing-permgen-size/ for more details and more in-depth instructions." );
                 }
                 // Spigot End
                 net.techcable.tacospigot.TacoSpigotConfig.init((File) options.valueOf("taco-settings")); // TacoSpigot - load config before we load libraries to allow access while loading
-                System.out.println("Loading libraries, please wait...");
+                NachoLogger.LOGGER.info("Loading libraries, please wait...");
                 MinecraftServer.main(options);
             } catch (Throwable t) {
                 t.printStackTrace();

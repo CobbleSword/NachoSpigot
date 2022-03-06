@@ -1,5 +1,7 @@
 package org.bukkit.craftbukkit.command;
 
+import dev.cobblesword.nachospigot.commons.NachoLogger;
+
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -57,7 +59,7 @@ public class ColouredConsoleSender extends CraftConsoleCommandSender {
                         result = result.replaceAll("(?i)" + color.toString(), "");
                     }
                 }
-                System.out.println(result + Ansi.ansi().reset().toString());
+                NachoLogger.LOGGER.info(result + Ansi.ansi().reset().toString());
             }
         } else {
             super.sendMessage(message);

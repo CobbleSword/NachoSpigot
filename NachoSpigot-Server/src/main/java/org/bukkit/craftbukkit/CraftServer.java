@@ -25,7 +25,7 @@ import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.knockback.KnockbackConfig;
 import me.elier.nachospigot.config.NachoConfig;
 import dev.cobblesword.nachospigot.commons.minecraft.PluginUtils;
-import xyz.sculas.nacho.malware.AntiMalware; // Nacho
+import xyz.sculas.nacho.malware.AntiMalware;
 // Nacho end
 
 import com.destroystokyo.paper.PaperConfig; // Paper
@@ -977,7 +977,7 @@ public final class CraftServer implements Server {
         }
 
         pluginManager.callEvent(new WorldInitEvent(internal.getWorld()));
-        System.out.print("Preparing start region for level " + (console.worlds.size() - 1) + " (Seed: " + internal.getSeed() + ")");
+        logger.info("Preparing start region for level " + (console.worlds.size() - 1) + " (Seed: " + internal.getSeed() + ")");
 
         if (internal.getWorld().getKeepSpawnInMemory()) {
             short short1 = 196;
@@ -994,7 +994,7 @@ public final class CraftServer implements Server {
                         int i1 = (short1 * 2 + 1) * (short1 * 2 + 1);
                         int j1 = (j + short1) * (short1 * 2 + 1) + k + 1;
 
-                        System.out.println("Preparing spawn area for " + name + ", " + (j1 * 100 / i1) + "%");
+                        logger.info("Preparing spawn area for " + name + ", " + (j1 * 100 / i1) + "%");
                         i = l;
                     }
 
@@ -1125,7 +1125,7 @@ public final class CraftServer implements Server {
     public void addWorld(World world) {
         // Check if a World already exists with the UID.
         if (getWorld(world.getUID()) != null) {
-            System.out.println("World " + world.getName() + " is a duplicate of another world and has been prevented from loading. Please delete the uid.dat file from " + world.getName() + "'s world directory if you want to be able to load the duplicate world.");
+            logger.warning("World " + world.getName() + " is a duplicate of another world and has been prevented from loading. Please delete the uid.dat file from " + world.getName() + "'s world directory if you want to be able to load the duplicate world.");
             return;
         }
         worlds.put(world.getName().toLowerCase(), world);

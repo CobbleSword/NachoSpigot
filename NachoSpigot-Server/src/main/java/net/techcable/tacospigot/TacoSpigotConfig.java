@@ -1,5 +1,7 @@
 package net.techcable.tacospigot;
 
+import dev.cobblesword.nachospigot.commons.NachoLogger;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -32,7 +34,7 @@ public class TacoSpigotConfig {
         CONFIG_FILE = configFile;
         config = new YamlConfiguration();
         try {
-            System.out.println("Loading TacoSpigot config from " + configFile.getName());
+            NachoLogger.LOGGER.info("Loading TacoSpigot config from " + configFile.getName());
             config.load(CONFIG_FILE);
         } catch (IOException ignored) {
         } catch (InvalidConfigurationException ex) {

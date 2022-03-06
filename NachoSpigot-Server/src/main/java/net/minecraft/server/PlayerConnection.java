@@ -2175,7 +2175,7 @@ public class PlayerConnection implements PacketListenerPlayIn, IUpdatePlayerList
                 }
             } catch (Throwable ex) {
                 this.isExploiter = true;
-                System.out.println(this.player.getName() + " has tried to crash the server...");
+                PlayerConnection.c.info(this.player.getName() + " has tried to crash the server...");
                 this.disconnect("Chill man, dam!");
                 return;
             }

@@ -958,9 +958,9 @@ public class Chunk {
             this.tileEntities.remove(blockposition);
             // PaperSpigot end
         } else {
-            System.out.println("Attempted to place a tile entity (" + tileentity + ") at " + tileentity.position.getX() + "," + tileentity.position.getY() + "," + tileentity.position.getZ()
+            Chunk.c.error("Attempted to place a tile entity (" + tileentity + ") at " + tileentity.position.getX() + "," + tileentity.position.getY() + "," + tileentity.position.getZ()
                 + " (" + org.bukkit.craftbukkit.util.CraftMagicNumbers.getMaterial(getType(blockposition)) + ") where there was no entity tile!");
-            System.out.println("Chunk coordinates: " + (this.locX * 16) + "," + (this.locZ * 16));
+            Chunk.c.error("Chunk coordinates: " + (this.locX * 16) + "," + (this.locZ * 16));
             new Exception().printStackTrace();
             // CraftBukkit end
         }

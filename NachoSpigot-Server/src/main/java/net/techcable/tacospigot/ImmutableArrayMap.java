@@ -1,5 +1,6 @@
 package net.techcable.tacospigot;
 
+import dev.cobblesword.nachospigot.commons.NachoLogger;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.Arrays;
@@ -50,11 +51,11 @@ public class ImmutableArrayMap<K, V> extends AbstractMap<K, V> implements Map<K,
         int maxIndex = largestRangeOfSequentialValues == null ? -1 : largestRangeOfSequentialValues[1];
         int sequentalRangeSize = largestRangeOfSequentialValues == null ? 0 : largestRangeOfSequentialValues[2];
         if (sequentalRangeSize < size / 2) {
-            System.err.println("Less than 50% of values are sequential");
-            System.err.print(sequentalRangeSize);
-            System.err.print(" out of ");
-            System.err.println(size);
-            System.err.println("Expect reduced performance");
+            NachoLogger.LOGGER.error("Less than 50% of values are sequential");
+            NachoLogger.LOGGER.error(sequentalRangeSize);
+            NachoLogger.LOGGER.error(" out of ");
+            NachoLogger.LOGGER.error(size);
+            NachoLogger.LOGGER.error("Expect reduced performance");
         }
         this.data = new Object[sequentalRangeSize];
         this.outlyingIds = new int[size - sequentalRangeSize];

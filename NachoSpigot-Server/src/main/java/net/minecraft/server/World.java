@@ -5,6 +5,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import dev.cobblesword.nachospigot.commons.NachoLogger;
 import me.elier.nachospigot.config.NachoConfig;
 import me.elier.nachospigot.config.NachoWorldConfig;
 import me.suicidalkids.ion.movement.MovementCache;
@@ -31,9 +32,6 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 // PaperSpigot end
 
 import net.jafama.FastMath;
-
-// CraftBukkit start
-// CraftBukkit end
 
 public abstract class World implements IBlockAccess {
 
@@ -1680,7 +1678,7 @@ public abstract class World implements IBlockAccess {
                 } catch (Throwable throwable1) {
                     // PaperSpigot start - Prevent tile entity and entity crashes
                     entity.tickTimer.stopTiming();
-                    System.err.println("Entity threw exception at " + entity.world.getWorld().getName() + ":" + entity.locX + "," + entity.locY + "," + entity.locZ);
+                    NachoLogger.LOGGER.info("Entity threw exception at " + entity.world.getWorld().getName() + ":" + entity.locX + "," + entity.locY + "," + entity.locZ);
                     throwable1.printStackTrace();
                     entity.dead = true;
                     continue;
@@ -1756,7 +1754,7 @@ public abstract class World implements IBlockAccess {
                     } catch (Throwable throwable2) {
                         // PaperSpigot start - Prevent tile entity and entity crashes
                         tileentity.tickTimer.stopTiming();
-                        System.err.println("TileEntity threw exception at " + tileentity.world.getWorld().getName() + ":" + tileentity.position.getX() + "," + tileentity.position.getY() + "," + tileentity.position.getZ());
+                        NachoLogger.LOGGER.error("TileEntity threw exception at " + tileentity.world.getWorld().getName() + ":" + tileentity.position.getX() + "," + tileentity.position.getY() + "," + tileentity.position.getZ());
                         throwable2.printStackTrace();
                         tilesThisCycle--;
                         tileIterator.remove();
