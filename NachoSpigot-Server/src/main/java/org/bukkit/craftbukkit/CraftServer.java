@@ -297,10 +297,10 @@ public final class CraftServer implements Server {
                     // Nacho start - Add notice for older ProtocolLib versions
                     if(plugin.getDescription().getFullName().contains("ProtocolLib")) {
                         String[] tmp = plugin.getDescription().getVersion().split("\\.");
-                        if (Integer.parseInt(tmp[0]) <= 4 && Integer.parseInt(tmp[1]) <= 6) {
+                        if (Integer.parseInt(tmp[0]) <= 4 && Integer.parseInt(tmp[1]) <= 7) {
                             logger.warning(
-                                    "Please update to ProtocolLib version 4.7.0 or higher!\n" +
-                                            "In version 4.6.0 and lower, ProtocolLib does not work as expected due to a netty update.\n" +
+                                    "Please update to ProtocolLib version 4.8.0 or higher!\n" +
+                                            "In version 4.7.0 and lower, ProtocolLib does not work as expected due to a netty update.\n" +
                                             "So.. once again, please update!\n" +
                                             "You can download the latest version with this link: " +
                                             "https://github.com/dmulloy2/ProtocolLib/releases/latest\n" +
