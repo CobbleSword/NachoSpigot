@@ -27,7 +27,6 @@ package co.aikar.util;
 import com.google.common.base.Function;
 import org.bukkit.Material;
 import co.aikar.timings.TimingHistory;
-import org.w3c.dom.css.Counter;
 
 import java.lang.reflect.Constructor;
 import java.util.AbstractMap;

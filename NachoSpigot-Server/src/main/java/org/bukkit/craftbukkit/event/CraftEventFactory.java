@@ -9,8 +9,7 @@ import java.util.Map;
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
 
-import dev.cobblesword.nachospigot.commons.NachoLogger;
-
+import dev.cobblesword.nachospigot.Nacho;
 import net.minecraft.server.*;
 
 import org.bukkit.Bukkit;
@@ -932,7 +931,7 @@ public class CraftEventFactory {
         } else {
             org.bukkit.Statistic stat = CraftStatistic.getBukkitStatistic(statistic);
             if (stat == null) {
-                NachoLogger.LOGGER.error("Unhandled statistic: " + statistic);
+                Nacho.LOGGER.warn("Unhandled statistic: " + statistic);
                 return null;
             }
             switch (stat) {

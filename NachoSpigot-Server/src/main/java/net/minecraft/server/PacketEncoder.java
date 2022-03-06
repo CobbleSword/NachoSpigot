@@ -1,6 +1,6 @@
 package net.minecraft.server;
 
-import dev.cobblesword.nachospigot.commons.NachoLogger;
+import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.exception.ExploitException;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -33,7 +33,7 @@ public class PacketEncoder extends MessageToByteEncoder<Packet<?>> {
             try {
                 packet.b(serializer);
             } catch (ExploitException ex) {
-                NachoLogger.LOGGER.error("Exploit exception: " + ctx.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get());
+                Nacho.LOGGER.error("Exploit exception: " + ctx.channel().attr(NetworkManager.ATTRIBUTE_PROTOCOL).get());
             }
 
         }

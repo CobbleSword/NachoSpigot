@@ -1,21 +1,15 @@
 package net.techcable.tacospigot;
 
-import dev.cobblesword.nachospigot.commons.NachoLogger;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 
-import net.minecraft.server.MinecraftServer;
-
+import dev.cobblesword.nachospigot.Nacho;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -34,7 +28,7 @@ public class TacoSpigotConfig {
         CONFIG_FILE = configFile;
         config = new YamlConfiguration();
         try {
-            NachoLogger.LOGGER.info("Loading TacoSpigot config from " + configFile.getName());
+            Nacho.LOGGER.info("Loading TacoSpigot config from " + configFile.getName());
             config.load(CONFIG_FILE);
         } catch (IOException ignored) {
         } catch (InvalidConfigurationException ex) {

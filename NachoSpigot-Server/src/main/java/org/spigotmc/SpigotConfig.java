@@ -215,7 +215,7 @@ public class SpigotConfig
         if ( version < 4 )
         {
             set( "settings.bungeecord", false );
-            MinecraftServer.LOGGER.info("Oudated config, disabling BungeeCord support!");
+            MinecraftServer.LOGGER.warn("Oudated config, disabling BungeeCord support!");
         }
         bungee = getBoolean( "settings.bungeecord", false );
     }
