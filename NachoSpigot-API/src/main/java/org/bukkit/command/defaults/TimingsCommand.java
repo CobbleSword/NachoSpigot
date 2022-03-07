@@ -19,10 +19,6 @@ import org.bukkit.util.StringUtil;
 
 import com.google.common.collect.ImmutableList;
 
-// Spigot start
-
-// Spigot end
-
 public class TimingsCommand extends BukkitCommand {
     public static final List<String> TIMINGS_SUBCOMMANDS = ImmutableList.of("merged", "reset", "separate");
 

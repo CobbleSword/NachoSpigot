@@ -3,7 +3,6 @@ package net.minecraft.server;
 import com.google.common.base.MoreObjects;
 
 // TacoSpigot start
-
 import net.techcable.tacospigot.BlockStateRegistry;
 // TacoSpigot end
 
