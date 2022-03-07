@@ -138,6 +138,7 @@ public class PluginManagerTest {
         this.testRemovePermissionByName("CaMeL");
     }
 
+    @Test
     public void testRemovePermissionByPermissionLower() {
         this.testRemovePermissionByPermission("lower");
     }

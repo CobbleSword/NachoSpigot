@@ -1,6 +1,5 @@
 package org.bukkit.craftbukkit.inventory;
 
-import net.minecraft.server.ITileEntityContainer;
 import net.minecraft.server.ITileInventory;
 import org.bukkit.block.DoubleChest;
 import org.bukkit.inventory.DoubleChestInventory;

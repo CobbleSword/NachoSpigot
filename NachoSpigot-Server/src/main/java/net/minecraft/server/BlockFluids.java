@@ -2,9 +2,6 @@ package net.minecraft.server;
 
 import dev.cobblesword.nachospigot.commons.Constants;
 
-import dev.cobblesword.nachospigot.Nacho;
-import me.elier.nachospigot.config.NachoConfig;
-
 import java.util.Iterator;
 import java.util.Random;
 

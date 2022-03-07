@@ -6,7 +6,6 @@ import java.util.Map;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.util.NumberConversions;
-import static org.bukkit.util.NumberConversions.checkFinite;
 import org.bukkit.util.Vector;
 
 /**

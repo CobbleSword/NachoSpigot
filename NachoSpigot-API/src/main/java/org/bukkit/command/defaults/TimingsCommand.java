@@ -20,16 +20,7 @@ import org.bukkit.util.StringUtil;
 import com.google.common.collect.ImmutableList;
 
 // Spigot start
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.logging.Level;
 
-import org.bukkit.command.RemoteConsoleCommandSender;
-import org.bukkit.plugin.SimplePluginManager;
-import org.spigotmc.CustomTimingsHandler;
 // Spigot end
 
 public class TimingsCommand extends BukkitCommand {

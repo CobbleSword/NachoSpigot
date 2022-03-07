@@ -2,7 +2,6 @@ package org.sugarcanemc.sugarcane.util.yaml;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class YamlUtils {
     public static int findKey(List<String> lines, String key) {

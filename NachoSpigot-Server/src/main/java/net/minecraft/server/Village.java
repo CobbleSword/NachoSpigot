@@ -6,7 +6,6 @@ import com.mojang.authlib.GameProfile;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
-import java.util.UUID;
 
 public class Village {
 

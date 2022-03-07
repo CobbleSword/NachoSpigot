@@ -10,10 +10,6 @@ import org.bukkit.craftbukkit.util.AsynchronousExecutor;
 import org.bukkit.craftbukkit.util.LongHash;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import net.minecraft.server.Entity;
-import net.minecraft.server.EntitySlice;
 
 class ChunkIOProvider implements AsynchronousExecutor.CallBackProvider<QueuedChunk, Chunk, Runnable, RuntimeException> {
     private final AtomicInteger threadNumber = new AtomicInteger(1);
