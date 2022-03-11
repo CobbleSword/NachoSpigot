@@ -5,9 +5,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import org.bukkit.craftbukkit.scheduler.CraftTask;
-import org.spigotmc.CustomTimingsHandler;
-
-import java.util.HashMap;
 
 public final class SpigotTimings {
 

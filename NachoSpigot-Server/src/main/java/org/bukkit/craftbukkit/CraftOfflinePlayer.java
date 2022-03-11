@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.WorldNBTStorage;
 

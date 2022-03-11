@@ -1,7 +1,5 @@
 package org.bukkit.craftbukkit.inventory;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import net.minecraft.server.NBTTagCompound;
@@ -16,7 +14,6 @@ import com.google.common.collect.ImmutableMap.Builder;
 import net.minecraft.server.IChatBaseComponent.ChatSerializer;
 import net.minecraft.server.IChatBaseComponent;
 import net.minecraft.server.NBTTagString;
-import org.bukkit.craftbukkit.util.CraftChatMessage;
 
 @DelegateDeserialization(SerializableMeta.class)
 class CraftMetaBookSigned extends CraftMetaBook implements BookMeta {

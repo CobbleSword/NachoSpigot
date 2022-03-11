@@ -5,7 +5,6 @@ import com.google.common.base.Predicate;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import org.jetbrains.annotations.NotNull;
 
 public class ShapeDetector {
    private final Predicate<ShapeDetectorBlock>[][][] a;

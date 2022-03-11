@@ -5,7 +5,6 @@ import dev.cobblesword.nachospigot.commons.Constants;
 import me.elier.nachospigot.config.NachoConfig;
 
 import java.util.List;
-import java.util.UUID;
 
 public abstract class EntityProjectile extends Entity implements IProjectile {
 

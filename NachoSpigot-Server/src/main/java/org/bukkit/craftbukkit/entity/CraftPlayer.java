@@ -27,7 +27,6 @@ import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.*;
 import org.bukkit.Achievement;
-import org.bukkit.BanList;
 import org.bukkit.Statistic;
 import org.bukkit.Material;
 import org.bukkit.Statistic.Type;

@@ -1,7 +1,6 @@
 package net.minecraft.server;
 
 import dev.cobblesword.nachospigot.commons.Constants;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 import java.io.DataInput;
 import java.io.DataOutput;

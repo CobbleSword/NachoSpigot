@@ -126,6 +126,7 @@ public class ItemMetaTest extends AbstractTestingBase {
     }
 
 
+    @Test
     public void testEachExtraData() {
         final List<StackProvider> providers = Arrays.asList(
             new StackProvider(Material.BOOK_AND_QUILL) {

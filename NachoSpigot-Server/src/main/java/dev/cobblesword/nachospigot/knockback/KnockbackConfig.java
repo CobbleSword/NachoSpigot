@@ -1,13 +1,11 @@
 package dev.cobblesword.nachospigot.knockback;
 
 import com.google.common.base.Throwables;
-import me.elier.nachospigot.config.NachoConfig;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.sugarcanemc.sugarcane.util.yaml.YamlCommenter;
 
 import java.io.File;
 import java.io.IOException;

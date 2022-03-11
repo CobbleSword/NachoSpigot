@@ -1,6 +1,5 @@
 package net.minecraft.server;
 
-import java.util.Iterator;
 import java.util.Random;
 
 // CraftBukkit start
