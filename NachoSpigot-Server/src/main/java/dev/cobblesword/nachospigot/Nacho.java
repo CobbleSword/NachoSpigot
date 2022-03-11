@@ -17,7 +17,7 @@ import com.google.common.collect.Sets;
 import java.util.Set;
 
 public class Nacho {
-
+    public static final Logger LOGGER = LogManager.getLogger(Nacho.class);
     private static Nacho INSTANCE;
 
     private final Set<PacketListener> packetListeners = Sets.newConcurrentHashSet();
@@ -73,6 +73,4 @@ public class Nacho {
     public LagCompensator getLagCompensator() {
         return lagCompensator;
     }
-
-    public static final Logger LOGGER = LogManager.getLogger(Nacho.class);
 }
