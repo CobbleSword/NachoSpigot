@@ -26,8 +26,8 @@ public class Main {
 
         try {
             if(!SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_17)) {
-                Nacho.LOGGER.info("It seems like you are not using Java 17!");
-                Nacho.LOGGER.info("The use of Java 17 is strongly recommended.");
+                Nacho.LOGGER.warn("It seems like you are not using Java 17!");
+                Nacho.LOGGER.warn("The use of Java 17 is strongly recommended.");
             }
         } catch (Exception ignored) {
             Nacho.LOGGER.error("Failed to get Java version! Continuing either way..");
