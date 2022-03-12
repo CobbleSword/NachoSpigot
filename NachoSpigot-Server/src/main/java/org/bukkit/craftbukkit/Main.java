@@ -232,9 +232,9 @@ public class Main {
                     Nacho.LOGGER.warn( "Please see http://www.spigotmc.org/wiki/changing-permgen-size/ for more details and more in-depth instructions." );
                 }
                 // Spigot End
-                MinecraftServer.main(options);
                 Nacho.LOGGER.info("Loading libraries, please wait...");
                 net.techcable.tacospigot.TacoSpigotConfig.init((File) options.valueOf("taco-settings")); // TacoSpigot - load config before we load libraries to allow access while loading
+                MinecraftServer.main(options);
             } catch (Throwable t) {
                 t.printStackTrace();
             }
