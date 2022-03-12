@@ -23,11 +23,6 @@ import java.util.Map;
 
 // TacoSpigot start
 import com.google.common.collect.Table;
-
-import net.techcable.tacospigot.BlockStateRegistry;
-import net.techcable.tacospigot.ImmutableArrayMap;
-import net.techcable.tacospigot.ImmutableArrayTable;
-import net.techcable.tacospigot.TacoSpigotConfig;
 // TacoSpigot end
 
 public class BlockStateList {

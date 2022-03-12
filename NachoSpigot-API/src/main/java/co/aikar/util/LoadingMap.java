@@ -25,13 +25,10 @@ package co.aikar.util;
 
 
 import com.google.common.base.Function;
-import org.bukkit.Material;
-import co.aikar.timings.TimingHistory;
 
 import java.lang.reflect.Constructor;
 import java.util.AbstractMap;
 import java.util.Collection;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;

@@ -1,7 +1,5 @@
 package net.minecraft.server;
 
-import me.elier.nachospigot.config.NachoConfig;
-
 import java.util.Random;
 
 public class TileEntityEnchantTable extends TileEntity implements IUpdatePlayerListBox, ITileEntityContainer {

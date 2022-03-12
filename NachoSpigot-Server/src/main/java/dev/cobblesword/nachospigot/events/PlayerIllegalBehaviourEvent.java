@@ -2,9 +2,7 @@ package dev.cobblesword.nachospigot.events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.event.player.PlayerEvent;
 
 public class PlayerIllegalBehaviourEvent extends PlayerEvent implements Cancellable {

@@ -2,7 +2,6 @@ package org.bukkit.craftbukkit.inventory;
 
 import net.minecraft.server.RecipesFurnace;
 
-import org.bukkit.craftbukkit.util.CraftMagicNumbers;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 

@@ -1,10 +1,8 @@
 package net.minecraft.server;
 
-import com.google.common.collect.Sets;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 // CraftBukkit start
 import it.unimi.dsi.fastutil.objects.ObjectIterator;

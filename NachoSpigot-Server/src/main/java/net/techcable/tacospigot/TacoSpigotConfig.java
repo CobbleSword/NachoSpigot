@@ -8,7 +8,6 @@ import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.logging.Level;
 
-import dev.cobblesword.nachospigot.Nacho;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
