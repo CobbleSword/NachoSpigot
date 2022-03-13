@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.commons.StringUtils;
 
 public class YamlCommenter {
@@ -61,7 +62,7 @@ public class YamlCommenter {
             boolean noNewline = StringUtils.getIndentation(lines.get(line)) > StringUtils.getIndentation(lines.get(line - 1));
             if (line >= 0)
                 lines.add(line, (noNewline ?"":"\n") + prefix + _comment.getValue().replace("\n", "\n" + prefix));
-            else System.out.printf("Failed to find key %s in %s!", _comment.getKey(), file);
+            else Nacho.LOGGER.warn("Failed to find key %s in %s!", _comment.getKey(), file);
         }
         String text = String.join("\n", lines);
         FileWriter fw = new FileWriter(file);

@@ -39,7 +39,7 @@ public class NachoConfig {
         CONFIG_FILE = configFile;
         config = new YamlConfiguration();
         try {
-            System.out.println("Loading NachoSpigot config from " + configFile.getName());
+            NachoConfig.LOGGER.info("Loading NachoSpigot config from " + configFile.getName());
             config.load(CONFIG_FILE);
         } catch (IOException ignored) {
         } catch (InvalidConfigurationException ex) {

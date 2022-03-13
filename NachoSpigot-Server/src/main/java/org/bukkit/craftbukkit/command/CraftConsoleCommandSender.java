@@ -1,5 +1,6 @@
 package org.bukkit.craftbukkit.command;
 
+import dev.cobblesword.nachospigot.Nacho;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.conversations.Conversation;
@@ -23,7 +24,7 @@ public class CraftConsoleCommandSender extends ServerCommandSender implements Co
     }
 
     public void sendRawMessage(String message) {
-        System.out.println(ChatColor.stripColor(message));
+        Nacho.LOGGER.info(ChatColor.stripColor(message));
     }
 
     public void sendMessage(String[] messages) {
