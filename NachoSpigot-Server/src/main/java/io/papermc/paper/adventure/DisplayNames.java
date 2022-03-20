@@ -15,6 +15,7 @@ public final class DisplayNames {
     public static String getLegacy(final EntityPlayer player) {
         final String legacy = player.displayName;
         if (legacy != null) {
+            // thank you for being worse than wet socks, Bukkit
             return PaperAdventure.LEGACY_SECTION_UXRC.serialize(player.adventure$displayName) + ChatColor.getLastColors(player.displayName);
         }
         return PaperAdventure.LEGACY_SECTION_UXRC.serialize(player.adventure$displayName);

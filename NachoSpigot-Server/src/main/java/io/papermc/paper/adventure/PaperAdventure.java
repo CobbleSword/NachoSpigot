@@ -18,6 +18,7 @@ import net.kyori.adventure.util.Codec;
 import net.minecraft.server.*;
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.inventory.CraftMetaBook;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -72,6 +73,9 @@ public final class PaperAdventure {
             })
             .build();
     public static final LegacyComponentSerializer LEGACY_SECTION_UXRC = LegacyComponentSerializer.builder().flattener(FLATTENER).hexColors().useUnusualXRepeatedCharacterHexFormat().build();
+    @SuppressWarnings("UnstableApiUsage")
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     public static final PlainComponentSerializer PLAIN_COMPONENT = PlainComponentSerializer.builder().flattener(FLATTENER).build();
     public static final PlainTextComponentSerializer PLAIN = PlainTextComponentSerializer.builder().flattener(FLATTENER).build();
     public static final GsonComponentSerializer GSON = GsonComponentSerializer.builder()
@@ -111,7 +115,7 @@ public final class PaperAdventure {
         if (key == null) {
             return null;
         }
-        return MCUtils.newKey(key.namespace(), key.value());
+        return asVanilla(key);
     }
 
     // Component
@@ -159,15 +163,7 @@ public final class PaperAdventure {
     }
 
     public static String asJsonString(final Component component, final Locale locale) {
-        return GSON.serialize(
-                GlobalTranslator.render(
-                        component,
-                        // play it safe
-                        locale != null
-                                ? locale
-                                : Locale.US
-                )
-        );
+        return GSON.serialize(translated(component, locale));
     }
 
     public static String asJsonString(final IChatBaseComponent component, final Locale locale) {
@@ -178,20 +174,17 @@ public final class PaperAdventure {
     }
 
     public static String asPlain(final Component component, final Locale locale) {
-        return PLAIN.serialize(
-                GlobalTranslator.render(
-                        component,
-                        // play it safe
-                        locale != null
-                                ? locale
-                                : Locale.US
-                )
-        );
+        return PLAIN.serialize(translated(component, locale));
     }
 
-    // thank you for being worse than wet socks, Bukkit
-    public static String superHackyLegacyRepresentationOfComponent(final Component component, final String string) {
-        return LEGACY_SECTION_UXRC.serialize(component) + ChatColor.getLastColors(string);
+    private static Component translated(final Component component, final Locale locale) {
+        return GlobalTranslator.render(
+            component,
+            // play it safe
+            locale != null
+                ? locale
+                : Locale.US
+        );
     }
 
     // BossBar
@@ -282,28 +275,18 @@ public final class PaperAdventure {
     /* Sounds
 
     public static SoundSource asVanilla(final Sound.Source source) {
-        if (source == Sound.Source.MASTER) {
-            return SoundSource.MASTER;
-        } else if (source == Sound.Source.MUSIC) {
-            return SoundSource.MUSIC;
-        } else if (source == Sound.Source.RECORD) {
-            return SoundSource.RECORDS;
-        } else if (source == Sound.Source.WEATHER) {
-            return SoundSource.WEATHER;
-        } else if (source == Sound.Source.BLOCK) {
-            return SoundSource.BLOCKS;
-        } else if (source == Sound.Source.HOSTILE) {
-            return SoundSource.HOSTILE;
-        } else if (source == Sound.Source.NEUTRAL) {
-            return SoundSource.NEUTRAL;
-        } else if (source == Sound.Source.PLAYER) {
-            return SoundSource.PLAYERS;
-        } else if (source == Sound.Source.AMBIENT) {
-            return SoundSource.AMBIENT;
-        } else if (source == Sound.Source.VOICE) {
-            return SoundSource.VOICE;
-        }
-        throw new IllegalArgumentException(source.name());
+        return switch (source) {
+            case MASTER -> SoundSource.MASTER;
+            case MUSIC -> SoundSource.MUSIC;
+            case RECORD -> SoundSource.RECORDS;
+            case WEATHER -> SoundSource.WEATHER;
+            case BLOCK -> SoundSource.BLOCKS;
+            case HOSTILE -> SoundSource.HOSTILE;
+            case NEUTRAL -> SoundSource.NEUTRAL;
+            case PLAYER -> SoundSource.PLAYERS;
+            case AMBIENT -> SoundSource.AMBIENT;
+            case VOICE -> SoundSource.VOICE;
+        };
     }
 
     public static @Nullable SoundSource asVanillaNullable(final Sound.@Nullable Source source) {

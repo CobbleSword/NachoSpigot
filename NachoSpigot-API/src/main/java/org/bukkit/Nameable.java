@@ -1,5 +1,6 @@
 package org.bukkit;
 
+import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.Nullable;
 
 public interface Nameable {
@@ -35,8 +36,10 @@ public interface Nameable {
      * This value has no effect on players, they will always use their real
      * name.
      *
+     * @deprecated in favour of {@link #customName()}
      * @return name of the mob/block or null
      */
+    @Deprecated // Paper
     @Nullable
     public String getCustomName();
 
@@ -49,7 +52,9 @@ public interface Nameable {
      * This value has no effect on players, they will always use their real
      * name.
      *
+     * @deprecated in favour of {@link #customName(Component)}
      * @param name the name to set
      */
+    @Deprecated // Paper
     public void setCustomName(@Nullable String name);
 }

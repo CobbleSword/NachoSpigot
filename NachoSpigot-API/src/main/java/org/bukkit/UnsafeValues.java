@@ -3,6 +3,7 @@ package org.bukkit;
 import java.util.List;
 
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 
 /**
  * This interface provides value conversions that may be specific to a
@@ -20,7 +21,9 @@ import org.bukkit.inventory.ItemStack;
 public interface UnsafeValues {
     // Paper start
     net.kyori.adventure.text.flattener.ComponentFlattener componentFlattener();
-    net.kyori.adventure.text.serializer.plain.PlainComponentSerializer plainComponentSerializer();
+    @SuppressWarnings("UnstableApiUsage")
+    @ApiStatus.ScheduledForRemoval
+    @Deprecated net.kyori.adventure.text.serializer.plain.PlainComponentSerializer plainComponentSerializer();
     net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer plainTextSerializer();
     net.kyori.adventure.text.serializer.gson.GsonComponentSerializer gsonComponentSerializer();
     net.kyori.adventure.text.serializer.gson.GsonComponentSerializer colorDownsamplingGsonComponentSerializer();

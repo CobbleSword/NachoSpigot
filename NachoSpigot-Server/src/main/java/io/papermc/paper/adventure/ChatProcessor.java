@@ -56,60 +56,14 @@ public class ChatProcessor {
         this.originalMessage = Component.text(message);
     }
 
-    @SuppressWarnings({"CodeBlock2Expr", "deprecated"})
+    @SuppressWarnings("deprecated")
     public void process() {
-        this.processingLegacyFirst(
-            // continuing from AsyncPlayerChatEvent (without PlayerChatEvent)
-            event -> {
-                this.processModern(
-                    legacyRenderer(event.getFormat()),
-                    this.viewersFromLegacy(event.getRecipients()),
-                    PaperAdventure.LEGACY_SECTION_UXRC.deserialize(event.getMessage()),
-                    event.isCancelled()
-                );
-            },
-            // continuing from AsyncPlayerChatEvent and PlayerChatEvent
-            event -> {
-                this.processModern(
-                    legacyRenderer(event.getFormat()),
-                    this.viewersFromLegacy(event.getRecipients()),
-                    PaperAdventure.LEGACY_SECTION_UXRC.deserialize(event.getMessage()),
-                    event.isCancelled()
-                );
-            },
-            // no legacy events called, all nice and fresh!
-            () -> {
-                this.processModern(
-                    ChatRenderer.defaultRenderer(),
-                    new LazyChatAudienceSet(this.server),
-                    Component.text(this.message).replaceText(URL_REPLACEMENT_CONFIG),
-                    false
-                );
-            }
-        );
-    }
-
-    private Set<Audience> viewersFromLegacy(final Set<Player> recipients) {
-        if (recipients instanceof LazyPlayerSet && ((LazyPlayerSet) recipients).isLazy()) {
-            return new LazyChatAudienceSet(this.server);
-        }
-        final HashSet<Audience> viewers = new HashSet<>(recipients);
-        viewers.add(this.server.console);
-        return viewers;
-    }
-
-    @SuppressWarnings("deprecation")
-    private void processingLegacyFirst(
-        final Consumer<AsyncPlayerChatEvent> continueAfterAsync,
-        final Consumer<PlayerChatEvent> continueAfterAsyncAndSync,
-        final Runnable modernOnly
-    ) {
-        final boolean listenersOnAsyncEvent = anyListeners(AsyncPlayerChatEvent.getHandlerList());
-        final boolean listenersOnSyncEvent = anyListeners(PlayerChatEvent.getHandlerList());
+        final boolean listenersOnAsyncEvent = canYouHearMe(AsyncPlayerChatEvent.getHandlerList());
+        final boolean listenersOnSyncEvent = canYouHearMe(PlayerChatEvent.getHandlerList());
         if (listenersOnAsyncEvent || listenersOnSyncEvent) {
             final CraftPlayer player = this.player.getBukkitEntity();
             final AsyncPlayerChatEvent ae = new AsyncPlayerChatEvent(this.async, player, this.message, new LazyPlayerSet(this.server));
-            post(ae);
+            this.post(ae);
             if (listenersOnSyncEvent) {
                 final PlayerChatEvent se = new PlayerChatEvent(player, ae.getMessage(), ae.getFormat(), ae.getRecipients());
                 se.setCancelled(ae.isCancelled()); // propagate cancelled state
@@ -120,38 +74,50 @@ public class ChatProcessor {
                         return null;
                     }
                 });
-                continueAfterAsyncAndSync.accept(se);
+                this.processModern(
+                    legacyRenderer(se.getFormat()),
+                    this.viewersFromLegacy(se.getRecipients()),
+                    PaperAdventure.LEGACY_SECTION_UXRC.deserialize(se.getMessage()),
+                    se.isCancelled()
+                );
             } else {
-                continueAfterAsync.accept(ae);
+                this.processModern(
+                    legacyRenderer(ae.getFormat()),
+                    this.viewersFromLegacy(ae.getRecipients()),
+                    PaperAdventure.LEGACY_SECTION_UXRC.deserialize(ae.getMessage()),
+                    ae.isCancelled()
+                );
             }
         } else {
-            modernOnly.run();
+            this.processModern(
+                ChatRenderer.defaultRenderer(),
+                new LazyChatAudienceSet(this.server),
+                Component.text(this.message).replaceText(URL_REPLACEMENT_CONFIG),
+                false
+            );
         }
     }
 
     private void processModern(final ChatRenderer renderer, final Set<Audience> viewers, final Component message, final boolean cancelled) {
-        final AsyncChatEvent ae = this.createAsync(renderer, viewers, message);
+        final CraftPlayer player = this.player.getBukkitEntity();
+        final AsyncChatEvent ae = new AsyncChatEvent(this.async, player, viewers, renderer, message, this.originalMessage);
         ae.setCancelled(cancelled); // propagate cancelled state
-        post(ae);
-        final boolean listenersOnSyncEvent = anyListeners(ChatEvent.getHandlerList());
+        this.post(ae);
+        final boolean listenersOnSyncEvent = canYouHearMe(ChatEvent.getHandlerList());
         if (listenersOnSyncEvent) {
-            this.continueWithSyncFromWhereAsyncLeftOff(ae);
+            this.queueIfAsyncOrRunImmediately(new Waitable<Void>() {
+                @Override
+                protected Void evaluate() {
+                    final ChatEvent se = new ChatEvent(player, ae.viewers(), ae.renderer(), ae.message(), ChatProcessor.this.originalMessage);
+                    se.setCancelled(ae.isCancelled()); // propagate cancelled state
+                    ChatProcessor.this.post(se);
+                    ChatProcessor.this.complete(se);
+                    return null;
+                }
+            });
         } else {
             this.complete(ae);
         }
-    }
-
-    private void continueWithSyncFromWhereAsyncLeftOff(final AsyncChatEvent ae) {
-        this.queueIfAsyncOrRunImmediately(new Waitable<Void>() {
-            @Override
-            protected Void evaluate() {
-                final ChatEvent se = ChatProcessor.this.createSync(ae.renderer(), ae.viewers(), ae.message());
-                se.setCancelled(ae.isCancelled()); // propagate cancelled state
-                post(se);
-                ChatProcessor.this.complete(se);
-                return null;
-            }
-        });
     }
 
     private void complete(final AbstractChatEvent event) {
@@ -179,12 +145,13 @@ public class ChatProcessor {
         }
     }
 
-    private AsyncChatEvent createAsync(final ChatRenderer renderer, final Set<Audience> viewers, final Component message) {
-        return new AsyncChatEvent(this.async, this.player.getBukkitEntity(), viewers, renderer, message, this.originalMessage);
-    }
-
-    private ChatEvent createSync(final ChatRenderer renderer, final Set<Audience> viewers, final Component message) {
-        return new ChatEvent(this.player.getBukkitEntity(), viewers, renderer, message, this.originalMessage);
+    private Set<Audience> viewersFromLegacy(final Set<Player> recipients) {
+        if (recipients instanceof LazyPlayerSet && ((LazyPlayerSet) recipients).isLazy()) {
+            return new LazyChatAudienceSet(this.server);
+        }
+        final HashSet<Audience> viewers = new HashSet<>(recipients);
+        viewers.add(this.server.console);
+        return viewers;
     }
 
     private static String legacyDisplayName(final CraftPlayer player) {
@@ -217,11 +184,11 @@ public class ChatProcessor {
         }
     }
 
-    private static void post(final Event event) {
-        Bukkit.getPluginManager().callEvent(event);
+    private void post(final Event event) {
+        this.server.server.getPluginManager().callEvent(event);
     }
 
-    private static boolean anyListeners(final HandlerList handlers) {
+    private static boolean canYouHearMe(final HandlerList handlers) {
         return handlers.getRegisteredListeners().length > 0;
     }
 }
