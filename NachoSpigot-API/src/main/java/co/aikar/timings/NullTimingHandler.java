@@ -24,9 +24,11 @@
 package co.aikar.timings;
 
 public final class NullTimingHandler implements Timing {
-    @Override
-    public void startTiming() {
+    public static final Timing NULL = new NullTimingHandler();
 
+    @Override
+    public Timing startTiming() {
+        return this;
     }
 
     @Override
@@ -35,8 +37,8 @@ public final class NullTimingHandler implements Timing {
     }
 
     @Override
-    public void startTimingIfSync() {
-
+    public Timing startTimingIfSync() {
+        return this;
     }
 
     @Override
@@ -52,6 +54,11 @@ public final class NullTimingHandler implements Timing {
     @Override
     public TimingHandler getTimingHandler() {
         return null;
+    }
+
+    @Override
+    public double getAverage() {
+        return 0;
     }
 
     @Override

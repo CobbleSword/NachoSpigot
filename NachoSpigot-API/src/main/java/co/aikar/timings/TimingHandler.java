@@ -23,9 +23,9 @@
  */
 package co.aikar.timings;
 
+import co.aikar.util.LoadingIntMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import org.bukkit.Bukkit;
-import co.aikar.util.LoadingIntMap;
 
 import java.util.logging.Level;
 
@@ -42,6 +42,8 @@ class TimingHandler implements Timing {
     final TimingData record;
     final TimingHandler groupHandler;
 
+    public int count;
+    public int total;
     long start = 0;
     int timingDepth = 0;
     boolean added;
@@ -83,10 +85,11 @@ class TimingHandler implements Timing {
     }
 
     @Override
-    public void startTimingIfSync() {
+    public Timing startTimingIfSync() {
         if (Bukkit.isPrimaryThread()) {
             startTiming();
         }
+        return this;
     }
 
     @Override
@@ -96,12 +99,13 @@ class TimingHandler implements Timing {
         }
     }
 
-    public void startTiming() {
+    public Timing startTiming() {
         if (enabled && ++timingDepth == 1) {
             start = System.nanoTime();
             parent = TimingsManager.CURRENT;
             TimingsManager.CURRENT = this;
         }
+        return this;
     }
 
     public void stopTiming() {
@@ -112,12 +116,9 @@ class TimingHandler implements Timing {
                 start = 0;
                 return;
             }
-            try
-            {
+            try {
                 addDiff(System.nanoTime() - start);
-            }
-            catch (ArrayIndexOutOfBoundsException ex)
-            {
+            } catch (ArrayIndexOutOfBoundsException ex) {
                 ex.printStackTrace();
             }
             start = 0;
@@ -132,6 +133,12 @@ class TimingHandler implements Timing {
     }
 
     void addDiff(long diff) {
+        total += diff;
+        count++;
+        if (count > 20) {
+            count--;
+            total -= ((double) total / (double) count);
+        }
         if (TimingsManager.CURRENT == this) {
             TimingsManager.CURRENT = parent;
             if (parent != null) {
@@ -170,6 +177,12 @@ class TimingHandler implements Timing {
     @Override
     public TimingHandler getTimingHandler() {
         return this;
+    }
+
+    @Override
+    public double getAverage() {
+        if (count < 20) return 0;
+        return total / count;
     }
 
     @Override

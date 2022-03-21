@@ -32,7 +32,6 @@ public class LoadingIntMap<V> extends TIntObjectHashMap<V> {
      * @param loader The loader
      */
     public LoadingIntMap(Function<Integer, V> loader) {
-        super(200);
         this.loader = loader;
     }
 
