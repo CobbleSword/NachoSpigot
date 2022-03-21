@@ -3,6 +3,7 @@ package org.bukkit.craftbukkit.command;
 import java.util.EnumMap;
 import java.util.Map;
 
+import dev.cobblesword.nachospigot.Nacho;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Attribute;
 import jline.Terminal;
@@ -57,7 +58,7 @@ public class ColouredConsoleSender extends CraftConsoleCommandSender {
                         result = result.replaceAll("(?i)" + color.toString(), "");
                     }
                 }
-                System.out.println(result + Ansi.ansi().reset().toString());
+                Nacho.LOGGER.info(result + Ansi.ansi().reset().toString());
             }
         } else {
             super.sendMessage(message);

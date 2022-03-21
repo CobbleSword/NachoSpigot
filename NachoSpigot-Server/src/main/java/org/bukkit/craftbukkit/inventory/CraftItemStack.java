@@ -4,7 +4,6 @@ import static org.bukkit.craftbukkit.inventory.CraftMetaItem.ENCHANTMENTS;
 import static org.bukkit.craftbukkit.inventory.CraftMetaItem.ENCHANTMENTS_ID;
 import static org.bukkit.craftbukkit.inventory.CraftMetaItem.ENCHANTMENTS_LVL;
 
-import java.sql.SQLOutput;
 import java.util.Map;
 
 import net.minecraft.server.EnchantmentManager;
@@ -21,10 +20,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.server.IChatBaseComponent.ChatSerializer;
-import net.minecraft.server.Items;
-import net.minecraft.server.NBTTagString;
-import org.bukkit.craftbukkit.util.CraftChatMessage;
 
 @DelegateDeserialization(ItemStack.class)
 public final class CraftItemStack extends ItemStack {

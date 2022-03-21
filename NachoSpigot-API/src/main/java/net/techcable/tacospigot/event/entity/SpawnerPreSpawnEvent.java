@@ -1,7 +1,5 @@
 package net.techcable.tacospigot.event.entity;
 
-import com.google.common.base.Preconditions;
-
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.Cancellable;

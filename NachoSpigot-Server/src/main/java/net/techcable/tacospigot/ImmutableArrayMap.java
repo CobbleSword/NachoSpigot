@@ -11,6 +11,7 @@ import java.util.function.BiConsumer;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
+import dev.cobblesword.nachospigot.Nacho;
 
 public class ImmutableArrayMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
     private final Indexer<K> indexer;
@@ -50,11 +51,8 @@ public class ImmutableArrayMap<K, V> extends AbstractMap<K, V> implements Map<K,
         int maxIndex = largestRangeOfSequentialValues == null ? -1 : largestRangeOfSequentialValues[1];
         int sequentalRangeSize = largestRangeOfSequentialValues == null ? 0 : largestRangeOfSequentialValues[2];
         if (sequentalRangeSize < size / 2) {
-            System.err.println("Less than 50% of values are sequential");
-            System.err.print(sequentalRangeSize);
-            System.err.print(" out of ");
-            System.err.println(size);
-            System.err.println("Expect reduced performance");
+            Nacho.LOGGER.warn("Less than 50% of values are sequential; " + sequentalRangeSize + " out of " + size);
+            Nacho.LOGGER.warn("Expect reduced performance");
         }
         this.data = new Object[sequentalRangeSize];
         this.outlyingIds = new int[size - sequentalRangeSize];

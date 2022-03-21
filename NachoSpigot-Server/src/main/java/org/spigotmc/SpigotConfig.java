@@ -215,7 +215,7 @@ public class SpigotConfig
         if ( version < 4 )
         {
             set( "settings.bungeecord", false );
-            System.out.println( "Oudated config, disabling BungeeCord support!" );
+            MinecraftServer.LOGGER.warn("Oudated config, disabling BungeeCord support!");
         }
         bungee = getBoolean( "settings.bungeecord", false );
     }
@@ -301,7 +301,7 @@ public class SpigotConfig
     private static void playerSample()
     {
         playerSample = getInt( "settings.sample-count", 12 );
-        System.out.println( "Server Ping Player Sample Count: " + playerSample );
+        MinecraftServer.LOGGER.info("Server Ping Player Sample Count: " + playerSample);
     }
 
     public static int playerShuffle;

@@ -6,7 +6,6 @@ import java.util.Random;
 import java.util.Set;
 
 // CraftBukkit start
-import me.elier.nachospigot.config.NachoConfig;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.block.BlockFromToEvent;
 // CraftBukkit end

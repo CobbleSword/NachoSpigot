@@ -11,7 +11,6 @@ import com.eatthepath.uuid.FastUUID;
 import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.commons.Constants;
 import dev.cobblesword.nachospigot.knockback.KnockbackProfile;
-import dev.cobblesword.nachospigot.hitdetection.LagCompensator;
 import me.elier.nachospigot.config.NachoConfig;
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.Bukkit;

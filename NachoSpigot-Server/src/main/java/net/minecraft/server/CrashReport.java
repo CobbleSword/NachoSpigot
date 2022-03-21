@@ -266,7 +266,7 @@ public class CrashReport {
             int k = astacktraceelement.length - j;
 
             if (k < 0) {
-                System.out.println("Negative index in crash report handler (" + astacktraceelement.length + "/" + j + ")");
+                CrashReport.a.warn("Negative index in crash report handler (" + astacktraceelement.length + "/" + j + ")");
             }
 
             if (astacktraceelement != null && 0 <= k && k < astacktraceelement.length) {

@@ -7,7 +7,6 @@ import java.util.Set;
 
 import net.minecraft.server.IpBanEntry;
 import net.minecraft.server.IpBanList;
-import net.minecraft.server.MinecraftServer;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 

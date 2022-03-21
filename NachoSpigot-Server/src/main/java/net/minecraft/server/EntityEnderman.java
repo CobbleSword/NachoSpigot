@@ -11,7 +11,6 @@ import java.util.UUID;
 // CraftBukkit start
 import dev.cobblesword.nachospigot.commons.Constants;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.event.entity.EntityTeleportEvent;
 // CraftBukkit end
 

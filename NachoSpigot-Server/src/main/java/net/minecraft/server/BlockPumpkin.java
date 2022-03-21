@@ -5,7 +5,6 @@ import com.google.common.base.Predicate;
 // CraftBukkit start
 import dev.cobblesword.nachospigot.commons.Constants;
 import org.bukkit.craftbukkit.util.BlockStateListPopulator;
-import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 // CraftBukkit end
 
