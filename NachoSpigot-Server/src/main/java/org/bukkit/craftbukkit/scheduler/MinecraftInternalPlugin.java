@@ -1,6 +1,6 @@
 package org.bukkit.craftbukkit.scheduler;
 
-
+import com.avaje.ebean.EbeanServer;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

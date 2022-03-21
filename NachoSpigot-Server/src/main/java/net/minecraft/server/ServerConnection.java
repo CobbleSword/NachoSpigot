@@ -53,6 +53,7 @@ public class ServerConnection {
         NetworkManager manager;
         while ((manager = pending.poll()) != null) {
             this.connectedChannels.add(manager); // Nacho - deobfuscate connectedChannels
+            manager.isPending = false;
         }
     }
     // Paper end

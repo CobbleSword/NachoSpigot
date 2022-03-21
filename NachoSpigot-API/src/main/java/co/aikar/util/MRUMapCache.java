@@ -85,7 +85,7 @@ public class MRUMapCache<K, V> extends AbstractMap<K, V> {
 
     public Collection<V> values() {return backingMap.values();}
 
-    public Set<Map.Entry<K, V>> entrySet() {return backingMap.entrySet();}
+    public Set<Entry<K, V>> entrySet() {return backingMap.entrySet();}
 
     /**
      * Wraps the specified map with a most recently used cache

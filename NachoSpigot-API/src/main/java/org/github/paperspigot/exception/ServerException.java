@@ -1,4 +1,4 @@
-package org.paperspigot.exception;
+package org.github.paperspigot.exception;
 /**
  * Wrapper exception for all exceptions that are thrown by the server.
  */

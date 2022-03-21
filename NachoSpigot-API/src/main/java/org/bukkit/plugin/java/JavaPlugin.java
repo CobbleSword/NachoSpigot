@@ -53,7 +53,6 @@ public abstract class JavaPlugin extends PluginBase {
     private File dataFolder = null;
     private ClassLoader classLoader = null;
     private boolean naggable = true;
-    private EbeanServer ebean = null;
     private FileConfiguration newConfig = null;
     private File configFile = null;
     private PluginLogger logger = null;
@@ -353,26 +352,6 @@ public abstract class JavaPlugin extends PluginBase {
         this.configFile = new File(dataFolder, "config.yml");
         this.logger = new PluginLogger(this);
 
-        if (description.isDatabaseEnabled()) {
-            ServerConfig db = new ServerConfig();
-
-            db.setDefaultServer(false);
-            db.setRegister(false);
-            db.setClasses(getDatabaseClasses());
-            db.setName(description.getName());
-            server.configureDbConfig(db);
-
-            DataSourceConfig ds = db.getDataSourceConfig();
-
-            ds.setUrl(replaceDatabaseString(ds.getUrl()));
-            dataFolder.mkdirs();
-
-            ClassLoader previous = Thread.currentThread().getContextClassLoader();
-
-            Thread.currentThread().setContextClassLoader(classLoader);
-            ebean = EbeanServerFactory.create(db);
-            Thread.currentThread().setContextClassLoader(previous);
-        }
     }
 
     /**
@@ -463,25 +442,6 @@ public abstract class JavaPlugin extends PluginBase {
     @Override
     public final void setNaggable(boolean canNag) {
         this.naggable = canNag;
-    }
-
-    @Override
-    public EbeanServer getDatabase() {
-        return ebean;
-    }
-
-    protected void installDDL() {
-        SpiEbeanServer serv = (SpiEbeanServer) getDatabase();
-        DdlGenerator gen = serv.getDdlGenerator();
-
-        gen.runScript(false, gen.generateCreateDdl());
-    }
-
-    protected void removeDDL() {
-        SpiEbeanServer serv = (SpiEbeanServer) getDatabase();
-        DdlGenerator gen = serv.getDdlGenerator();
-
-        gen.runScript(true, gen.generateDropDdl());
     }
 
     @Override

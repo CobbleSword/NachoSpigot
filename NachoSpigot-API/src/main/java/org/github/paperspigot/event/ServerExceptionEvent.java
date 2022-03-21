@@ -1,4 +1,4 @@
-package org.paperspigot.event;
+package org.github.paperspigot.event;
 
 import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;

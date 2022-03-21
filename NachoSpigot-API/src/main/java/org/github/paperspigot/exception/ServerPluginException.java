@@ -1,4 +1,4 @@
-package org.paperspigot.exception;
+package org.github.paperspigot.exception;
 
 import org.bukkit.plugin.Plugin;
 

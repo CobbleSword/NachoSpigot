@@ -166,10 +166,11 @@ class TimingsExport extends Thread {
         // Information on the users Config
 
         parent.put("config", createObject(
-                pair("spigot", mapAsJSON(Bukkit.spigot().getSpigotConfig(), null)),
-                pair("bukkit", mapAsJSON(Bukkit.spigot().getBukkitConfig(), null)),
-                pair("paperspigot", mapAsJSON(Bukkit.spigot().getPaperSpigotConfig(), null)),
-                pair("swiftpaper", mapAsJSON(Bukkit.spigot().getSiliconPaperConfig(), null)) // SwiftPaper - Fill in for tacospigot
+            pair("spigot", mapAsJSON(Bukkit.spigot().getSpigotConfig(), null)),
+            pair("bukkit", mapAsJSON(Bukkit.spigot().getBukkitConfig(), null)),
+            pair("paper", mapAsJSON(Bukkit.spigot().getPaperSpigotConfig(), null)),
+            pair("tacospigot", mapAsJSON(Bukkit.spigot().getTacoSpigotConfig(), null)),
+            pair("nachospigot", mapAsJSON(Bukkit.spigot().getNachoSpigotConfig(), null))
         ));
 
         new TimingsExport(sender, parent, history).start();
