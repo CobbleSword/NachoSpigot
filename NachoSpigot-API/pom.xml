@@ -21,7 +21,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <adventure.version>4.10.0</adventure.version>
+        <adventure.version>4.10.1</adventure.version>
     </properties>
 
     <dependencyManagement>
@@ -35,6 +35,14 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 
     <dependencies>
          <dependency>
@@ -102,10 +110,9 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-chat</artifactId>
-            <version>1.8-SNAPSHOT</version>
-            <type>jar</type>
+            <groupId>com.github.Elierrr</groupId>
+            <artifactId>deprecated-bungeechat</artifactId>
+            <version>a561dfd121</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -116,14 +123,7 @@
         <dependency>
             <groupId>org.checkerframework</groupId>
             <artifactId>checker-qual</artifactId>
-            <version>3.21.0</version>
-        </dependency>
-        <!-- Kyori api -->
-        <!-- https://mvnrepository.com/artifact/net.kyori/adventure-api -->
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-key</artifactId>
-            <version>4.9.3</version>
+            <version>3.21.3</version>
         </dependency>
 
         <!-- testing -->
@@ -164,7 +164,7 @@
                 <configuration>
                     <!-- utterly useless artifact from shade 2.x -->
                     <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <!-- when downloading via Maven we can pull depends individually -->
+                    <!-- when downloading via Maven we can pull dependencies individually -->
                     <shadedArtifactAttached>true</shadedArtifactAttached>
                 </configuration>
             </plugin>
