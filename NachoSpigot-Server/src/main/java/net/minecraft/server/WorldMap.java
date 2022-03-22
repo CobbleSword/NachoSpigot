@@ -3,17 +3,15 @@ package net.minecraft.server;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
-import java.util.*;
-
 // CraftBukkit start
-
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.map.CraftMapView;
 import org.bukkit.entity.Player;
 // CraftBukkit end
+
+import java.util.*;
 
 public class WorldMap extends PersistentBase {
 
@@ -25,11 +23,11 @@ public class WorldMap extends PersistentBase {
     public List<WorldMap.WorldMapHumanTracker> g = Lists.newArrayList();
     public Map<EntityHuman, WorldMap.WorldMapHumanTracker> i = Maps.newHashMap(); // Spigot
     public Map<UUID, MapIcon> decorations = Maps.newLinkedHashMap(); // Spigot
-    private org.bukkit.craftbukkit.map.RenderData vanillaRender = new org.bukkit.craftbukkit.map.RenderData(); // Paper
+    private final org.bukkit.craftbukkit.map.RenderData vanillaRender = new org.bukkit.craftbukkit.map.RenderData(); // Paper
 
     // CraftBukkit start
     public final CraftMapView mapView;
-    private CraftServer server;
+    private final CraftServer server;
     private UUID uniqueId = null;
     // CraftBukkit end
 
@@ -95,14 +93,10 @@ public class WorldMap extends PersistentBase {
             for (int k = 0; k < short1; ++k) {
                 int l = k + j;
 
-                if (l >= 0 || l < 128) {
-                    for (int i1 = 0; i1 < short0; ++i1) {
-                        int j1 = i1 + i;
+                for (int i1 = 0; i1 < short0; ++i1) {
+                    int j1 = i1 + i;
 
-                        if (j1 >= 0 || j1 < 128) {
-                            this.colors[j1 + l * 128] = abyte[i1 + k * short0];
-                        }
-                    }
+                    this.colors[j1 + l * 128] = abyte[i1 + k * short0];
                 }
             }
         }
@@ -156,11 +150,11 @@ public class WorldMap extends PersistentBase {
         }
 
         for (int i = 0; i < this.g.size(); ++i) {
-            WorldMap.WorldMapHumanTracker worldmap_worldmaphumantracker1 = (WorldMap.WorldMapHumanTracker) this.g.get(i);
+            WorldMap.WorldMapHumanTracker worldmap_worldmaphumantracker1 = this.g.get(i);
 
             if (!worldmap_worldmaphumantracker1.trackee.dead && (worldmap_worldmaphumantracker1.trackee.inventory.c(itemstack) || itemstack.y())) {
                 if (!itemstack.y() && worldmap_worldmaphumantracker1.trackee.dimension == this.map) {
-                    this.a(0, worldmap_worldmaphumantracker1.trackee.world, worldmap_worldmaphumantracker1.trackee.getUniqueID(), worldmap_worldmaphumantracker1.trackee.locX, worldmap_worldmaphumantracker1.trackee.locZ, (double) worldmap_worldmaphumantracker1.trackee.yaw); // Spigot
+                    this.a(0, worldmap_worldmaphumantracker1.trackee.world, worldmap_worldmaphumantracker1.trackee.getUniqueID(), worldmap_worldmaphumantracker1.trackee.locX, worldmap_worldmaphumantracker1.trackee.locZ, worldmap_worldmaphumantracker1.trackee.yaw); // Spigot
                 }
             } else {
                 this.i.remove(worldmap_worldmaphumantracker1.trackee);
@@ -172,7 +166,7 @@ public class WorldMap extends PersistentBase {
             EntityItemFrame entityitemframe = itemstack.z();
             BlockPosition blockposition = entityitemframe.getBlockPosition();
 
-            this.a(1, entityhuman.world, UUID.nameUUIDFromBytes(("frame-" + entityitemframe.getId()).getBytes(Charsets.US_ASCII)), (double) blockposition.getX(), (double) blockposition.getZ(), (double) (entityitemframe.direction.b() * 90)); // Spigot
+            this.a(1, entityhuman.world, UUID.nameUUIDFromBytes(("frame-" + entityitemframe.getId()).getBytes(Charsets.US_ASCII)), blockposition.getX(), blockposition.getZ(), entityitemframe.direction.b() * 90); // Spigot
         }
 
         if (itemstack.hasTag() && itemstack.getTag().hasKeyOfType("Decorations", 9)) {
@@ -237,19 +231,16 @@ public class WorldMap extends PersistentBase {
         this.decorations.put(s, new MapIcon((byte) i, b0, b1, b3));
     }
 
-    public Packet a(ItemStack itemstack, World world, EntityHuman entityhuman) {
-        WorldMap.WorldMapHumanTracker worldmap_worldmaphumantracker = (WorldMap.WorldMapHumanTracker) this.i.get(entityhuman);
+    public Packet<?> a(ItemStack itemstack, World world, EntityHuman entityhuman) {
+        WorldMap.WorldMapHumanTracker worldmap_worldmaphumantracker = this.i.get(entityhuman);
 
         return worldmap_worldmaphumantracker == null ? null : worldmap_worldmaphumantracker.a(itemstack);
     }
 
     public void flagDirty(int i, int j) {
         super.c();
-        Iterator iterator = this.g.iterator();
 
-        while (iterator.hasNext()) {
-            WorldMap.WorldMapHumanTracker worldmap_worldmaphumantracker = (WorldMap.WorldMapHumanTracker) iterator.next();
-
+        for (WorldMapHumanTracker worldmap_worldmaphumantracker : this.g) {
             worldmap_worldmaphumantracker.a(i, j);
         }
 
@@ -289,7 +280,7 @@ public class WorldMap extends PersistentBase {
             boolean vanillaMaps = shouldUseVanillaMap(); // Paper
             org.bukkit.craftbukkit.map.RenderData render = !vanillaMaps ? WorldMap.this.mapView.render((org.bukkit.craftbukkit.entity.CraftPlayer) this.trackee.getBukkitEntity()) : WorldMap.this.vanillaRender; // CraftBukkit // Paper
 
-            java.util.Collection<MapIcon> icons = new java.util.ArrayList<MapIcon>();
+            java.util.Collection<MapIcon> icons = new java.util.ArrayList<>();
             if (vanillaMaps) addSeenPlayers(icons); // Paper
 
             for ( org.bukkit.map.MapCursor cursor : render.cursors) {

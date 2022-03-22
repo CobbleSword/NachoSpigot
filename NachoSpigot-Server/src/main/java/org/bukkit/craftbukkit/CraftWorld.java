@@ -58,6 +58,7 @@ import org.bukkit.plugin.messaging.StandardMessenger;
 import org.bukkit.util.Vector;
 
 import net.jafama.FastMath;
+import org.jetbrains.annotations.NotNull;
 
 public class CraftWorld implements World {
     public static final int CUSTOM_DIMENSION_OFFSET = 10;
@@ -75,6 +76,7 @@ public class CraftWorld implements World {
     private int ambientSpawn = -1;
     private int chunkLoadCount = 0;
     private int chunkGCTickCount;
+    private net.kyori.adventure.pointer.Pointers adventure$pointers; // Paper - implement pointers
 
     private static final Random rand = new Random();
 
@@ -1522,9 +1524,22 @@ public class CraftWorld implements World {
         }
     };
 
-    public Spigot spigot()
-    {
+    public Spigot spigot() {
         return spigot;
     }
     // Spigot end
+
+    // Paper start - implement pointers
+    @Override
+    public net.kyori.adventure.pointer.@NotNull Pointers pointers() {
+        if (this.adventure$pointers == null) {
+            this.adventure$pointers = net.kyori.adventure.pointer.Pointers.builder()
+                .withDynamic(net.kyori.adventure.identity.Identity.NAME, this::getName)
+                .withDynamic(net.kyori.adventure.identity.Identity.UUID, this::getUID)
+                .build();
+        }
+
+        return this.adventure$pointers;
+    }
+    // Paper end
 }

@@ -1,5 +1,7 @@
 package org.bukkit.craftbukkit.block;
 
+import io.papermc.paper.adventure.PaperAdventure;
+import net.minecraft.server.ChatComponentText;
 import net.minecraft.server.TileEntityBeacon;
 import org.bukkit.Material;
 
@@ -46,6 +48,18 @@ public class CraftBeacon extends CraftBlockState implements Beacon {
     public TileEntityBeacon getTileEntity() {
         return beacon;
     }
+
+    // Paper start
+    @Override
+    public net.kyori.adventure.text.Component customName() {
+        return beacon.hasCustomName() ? io.papermc.paper.adventure.PaperAdventure.asAdventure(new ChatComponentText(beacon.getName())) : null;
+    }
+
+    @Override
+    public void customName(final net.kyori.adventure.text.Component customName) {
+        this.beacon.setCustomName(customName != null ? PaperAdventure.LEGACY_SECTION_UXRC.serialize(customName) : null);
+    }
+    // Paper end
 
     @Override
     public @Nullable String getCustomName() {

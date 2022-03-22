@@ -23,8 +23,10 @@ import javax.imageio.ImageIO;
 import com.eatthepath.uuid.FastUUID;
 import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.knockback.KnockbackConfig;
+import io.papermc.paper.adventure.PaperAdventure; // Paper
 import me.elier.nachospigot.config.NachoConfig;
 import dev.cobblesword.nachospigot.commons.minecraft.PluginUtils;
+import org.jetbrains.annotations.NotNull;
 import xyz.sculas.nacho.malware.AntiMalware;
 // Nacho end
 
@@ -135,8 +137,8 @@ public final class CraftServer implements Server {
     private final SimpleHelpMap helpMap = new SimpleHelpMap(this);
     private final StandardMessenger messenger = new StandardMessenger();
     private final PluginManager pluginManager = new SimplePluginManager(this, commandMap);
-    protected final MinecraftServer console;
-    protected final DedicatedPlayerList playerList;
+    final MinecraftServer console;
+    final DedicatedPlayerList playerList;
     private final Map<String, World> worlds = new LinkedHashMap<>();
     private YamlConfiguration configuration;
     private YamlConfiguration commandsConfiguration;
@@ -477,7 +479,8 @@ public final class CraftServer implements Server {
     }
 
     @Override
-    public int broadcastMessage(String message) {
+    @Deprecated // Paper
+    public int broadcastMessage(@NotNull String message) {
         return broadcast(message, BROADCAST_CHANNEL_USERS);
     }
 
@@ -490,7 +493,7 @@ public final class CraftServer implements Server {
     public List<Player> matchPlayer(String partialName) {
         Validate.notNull(partialName, "PartialName cannot be null");
 
-        List<Player> matchedPlayers = new ArrayList<Player>();
+        List<Player> matchedPlayers = new ArrayList<>();
 
         for (Player iterPlayer : this.getOnlinePlayers()) {
             String iterPlayerName = iterPlayer.getName();
@@ -1265,6 +1268,15 @@ public final class CraftServer implements Server {
     }
 
     @Override
+    // Paper start
+    public net.kyori.adventure.text.Component shutdownMessage() {
+        String msg = getShutdownMessage();
+        return msg != null ? PaperAdventure.LEGACY_SECTION_UXRC.deserialize(msg) : null;
+    }
+
+    @Override
+    @Deprecated
+    // Paper end
     public String getShutdownMessage() {
         return configuration.getString("settings.shutdown-message");
     }
@@ -1362,7 +1374,20 @@ public final class CraftServer implements Server {
     }
 
     @Override
-    public int broadcast(String message, String permission) {
+    @Deprecated // Paper
+    public int broadcast(@NotNull String message, @NotNull String permission) {
+        // Paper start - Adventure
+        return this.broadcast(PaperAdventure.LEGACY_SECTION_UXRC.deserialize(message), permission);
+    }
+
+    @Override
+    public int broadcast(net.kyori.adventure.text.@NotNull Component message) {
+        return this.broadcast(message, BROADCAST_CHANNEL_USERS);
+    }
+
+    @Override
+    public int broadcast(net.kyori.adventure.text.@NotNull Component message, @NotNull String permission) {
+        // Paper end
         int count = 0;
         Set<Permissible> permissibles = getPluginManager().getPermissionSubscriptions(permission);
 
@@ -1647,6 +1672,13 @@ public final class CraftServer implements Server {
         return new CraftInventoryCustom(owner, type);
     }
 
+    // Paper start
+    @Override
+    public Inventory createInventory(InventoryHolder owner, InventoryType type, net.kyori.adventure.text.Component title) {
+        return new CraftInventoryCustom(owner, type, title);
+    }
+    // Paper end
+
     @Override
     public Inventory createInventory(InventoryHolder owner, InventoryType type, String title) {
         return new CraftInventoryCustom(owner, type, title);
@@ -1657,6 +1689,14 @@ public final class CraftServer implements Server {
         Validate.isTrue(size % 9 == 0, "Chests must have a size that is a multiple of 9!");
         return new CraftInventoryCustom(owner, size);
     }
+
+    // Paper start
+    @Override
+    public Inventory createInventory(InventoryHolder owner, int size, net.kyori.adventure.text.Component title) throws IllegalArgumentException {
+        Validate.isTrue(9 <= size && size <= 54 && size % 9 == 0, "Size for custom inventory must be a multiple of 9 between 9 and 54 slots (got " + size + ")");
+        return new CraftInventoryCustom(owner, size, title);
+    }
+    // Paper end
 
     @Override
     public Inventory createInventory(InventoryHolder owner, int size, String title) throws IllegalArgumentException {
@@ -1698,6 +1738,13 @@ public final class CraftServer implements Server {
     public boolean isPrimaryThread() {
         return Thread.currentThread().equals(console.primaryThread);
     }
+
+    // Paper start
+    @Override
+    public net.kyori.adventure.text.Component motd() {
+        return PaperAdventure.asAdventure(new net.minecraft.server.ChatComponentText(console.getMotd()));
+    }
+    // Paper end
 
     @Override
     public String getMotd() {
@@ -1932,5 +1979,16 @@ public final class CraftServer implements Server {
     public Spigot spigot()
     {
         return spigot;
+    }
+
+    // Paper start
+    private Iterable<? extends net.kyori.adventure.audience.Audience> adventure$audiences;
+
+    @Override
+    public @NotNull Iterable<? extends net.kyori.adventure.audience.Audience> audiences() {
+        if (this.adventure$audiences == null) {
+            this.adventure$audiences = com.google.common.collect.Iterables.concat(java.util.Collections.singleton(this.getConsoleSender()), this.getOnlinePlayers());
+        }
+        return this.adventure$audiences;
     }
 }
