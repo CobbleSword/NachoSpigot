@@ -25,9 +25,9 @@ public class ItemBoat extends Item {
         float f8 = f3 * f5;
         double d3 = 5.0D;
         Vec3D vec3d1 = vec3d.add((double) f7 * d3, (double) f6 * d3, (double) f8 * d3);
-        MovingObjectPosition movingobjectpositionblock = world.rayTrace(vec3d, vec3d1, true);
+        MovingObjectPosition movingobjectposition = world.rayTrace(vec3d, vec3d1, true);
 
-        if (movingobjectpositionblock == null) {
+        if (movingobjectposition == null) {
             return itemstack;
         } else {
             Vec3D vec3d2 = entityhuman.d(f);
@@ -51,8 +51,8 @@ public class ItemBoat extends Item {
             if (flag) {
                 return itemstack;
             } else {
-                if (movingobjectpositionblock.type == MovingObjectPosition.EnumMovingObjectType.BLOCK) {
-                    BlockPosition blockposition = movingobjectpositionblock.a();
+                if (movingobjectposition.type == MovingObjectPosition.EnumMovingObjectType.BLOCK) {
+                    BlockPosition blockposition = movingobjectposition.a();
 
                     /* Paper - Remove unneeded interaction event trigger
                     // CraftBukkit start - Boat placement
