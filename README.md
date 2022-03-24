@@ -196,6 +196,7 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [FlamePaper-0113] Remove unused code from beacons
 [FlamePaper-0115] Patch Book Exploits
 [FlamePaper-0117] Pearl through blocks
+[FlamePaper-0025] Disable Nether Roof Interaction
 
 [MineTick-0006] Fix Occasional Client Side Unloading of Chunk 0 0
 [MineTick-0011] Optimize Idle Furnaces
