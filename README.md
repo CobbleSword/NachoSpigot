@@ -187,6 +187,7 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [KigPaper-0191] Don't calculate initial light if not requested
 [KigPaper-0220] Entity: Use EnumMap in CraftPlayer#playEffect()
 
+[FlamePaper-0008] Do not load chunks for light checks
 [FlamePaper-0102] Fixed chunk memory leak
 [FlamePaper-0103] Limit CraftChatMessage iterations
 [FlamePaper-0104] Return last slot by default
