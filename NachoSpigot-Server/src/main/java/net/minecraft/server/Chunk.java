@@ -824,6 +824,7 @@ public class Chunk {
         // PaperSpigot start - update counts
         if (entity instanceof EntityItem) {
             itemCounts[k]++;
+            itemCount++; // FlamePaper - Hopper item lookup optimization
         } else if (entity instanceof IInventory) {
             inventoryEntityCounts[k]++;
         }
@@ -863,6 +864,7 @@ public class Chunk {
         // PaperSpigot start - update counts
         if (entity instanceof EntityItem) {
             itemCounts[i]--;
+            itemCount++; // FlamePaper - Hopper item lookup optimization
         } else if (entity instanceof IInventory) {
             inventoryEntityCounts[i]--;
         }
@@ -1630,4 +1632,13 @@ public class Chunk {
 
         private EnumTileEntityState() {}
     }
+
+    // FlamePaper start - Hopper item lookup optimization
+    private int itemCount = 0;
+
+    public int getItemCount() {
+        return itemCount;
+    }
+    // FlamePaper end - Hopper item lookup optimization
+
 }
