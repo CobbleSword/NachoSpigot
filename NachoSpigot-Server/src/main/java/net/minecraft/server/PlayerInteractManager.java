@@ -1,6 +1,7 @@
 package net.minecraft.server;
 
 // CraftBukkit start
+import me.elier.nachospigot.config.NachoConfig;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.event.Event;
@@ -298,6 +299,17 @@ public class PlayerInteractManager {
                 }
                 return false;
             }
+
+            if (NachoConfig.disableNetherroofDestroying) {
+                // FlamePaper start - Disable Nether Roof Interaction
+                if (world.getWorld().getEnvironment() == org.bukkit.World.Environment.NETHER && blockposition.getY() >= 127) {
+                    this.player.getBukkitEntity().sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', "&cCan't build on nether roof"));
+                    ((EntityPlayer) this.player).playerConnection.sendPacket(new PacketPlayOutBlockChange(this.world, blockposition));
+                    return false;
+                }
+                // FlamePaper end - Disable Nether Roof Interaction
+            }
+
         }
         if (false && this.gamemode.d() && this.player.bA() != null && this.player.bA().getItem() instanceof ItemSword) {
             return false;

@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.List;
 import java.util.Map;
 
+import me.elier.nachospigot.config.NachoConfig;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
@@ -155,6 +156,20 @@ public final class ItemStack {
             org.bukkit.event.block.BlockPlaceEvent placeEvent = null;
             List<BlockState> blocks = (List<BlockState>) world.capturedBlockStates.clone();
             world.capturedBlockStates.clear();
+
+            if (NachoConfig.disableNetherroofDestroying) {
+                // FlamePaper start - Disable Nether Roof Interaction
+                if (world.getWorld().getEnvironment() == org.bukkit.World.Environment.NETHER) {
+                    for (BlockState block : blocks) {
+                        if (block.getY() >= 127) {
+                            entityhuman.getBukkitEntity().sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', "&cCan't build on nether roof"));
+                            return false;
+                        }
+                    }
+                }
+                // FlamePaper end - Disable Nether Roof Interaction
+            }
+
             if (blocks.size() > 1) {
                 placeEvent = org.bukkit.craftbukkit.event.CraftEventFactory.callBlockMultiPlaceEvent(world, entityhuman, blocks, blockposition.getX(), blockposition.getY(), blockposition.getZ());
             } else if (blocks.size() == 1) {
