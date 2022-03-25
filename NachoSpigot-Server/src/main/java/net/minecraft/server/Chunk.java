@@ -824,7 +824,6 @@ public class Chunk {
         // PaperSpigot start - update counts
         if (entity instanceof EntityItem) {
             itemCounts[k]++;
-            itemCount++; // FlamePaper - Hopper item lookup optimization
         } else if (entity instanceof IInventory) {
             inventoryEntityCounts[k]++;
         }
@@ -864,7 +863,6 @@ public class Chunk {
         // PaperSpigot start - update counts
         if (entity instanceof EntityItem) {
             itemCounts[i]--;
-            itemCount++; // FlamePaper - Hopper item lookup optimization
         } else if (entity instanceof IInventory) {
             inventoryEntityCounts[i]--;
         }
@@ -1634,10 +1632,13 @@ public class Chunk {
     }
 
     // FlamePaper start - Hopper item lookup optimization
-    private int itemCount = 0;
+    public int getItemCount(BlockPosition blockPosition) {
+        int k = MathHelper.floor(blockPosition.getY() / 16.0D);
 
-    public int getItemCount() {
-        return itemCount;
+        k = Math.max(0, k);
+        k = Math.min(this.entitySlices.length - 1, k);
+
+        return itemCounts[k];
     }
     // FlamePaper end - Hopper item lookup optimization
 
