@@ -300,7 +300,7 @@ public class PlayerInteractManager {
                 return false;
             }
 
-            if (NachoConfig.enableNetherroofDestroying) {
+            if (NachoConfig.disableNetherroofInteraction) {
                 // FlamePaper start - Disable Nether Roof Interaction
                 if (world.getWorld().getEnvironment() == org.bukkit.World.Environment.NETHER && blockposition.getY() >= 127) {
                     this.player.getBukkitEntity().sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', "&cCan't build on nether roof"));

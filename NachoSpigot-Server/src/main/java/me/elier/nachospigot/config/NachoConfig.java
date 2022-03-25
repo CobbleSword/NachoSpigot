@@ -143,7 +143,7 @@ public class NachoConfig {
         c.addComment("settings.commands.enable-help-command", "Toggles the /help command");
         c.addComment("settings.use-improved-hitreg", "Enables the usage of an improved hitreg based on lag compensation and small other details.");
         c.addComment("settings.disable-disconnect-spam", "Disables that players can be kicked because of disconnect.spam.");
-        c.addComment("settings.enable-nether-roof-destroying", "Enables a bigger protection for the nether roof.");
+        c.addComment("settings.disable-nether-roof-interaction", "Disables the interaction with the nether roof.");
         NachoWorldConfig.loadComments();
     }
 
@@ -406,9 +406,9 @@ public class NachoConfig {
         disableDisconnectSpam = getBoolean("settings.disable-disconnect-spam", false);
     }
 
-    public static boolean enableNetherroofDestroying;
+    public static boolean disableNetherroofInteraction;
 
-    private static void enableNetherroofDestroying() {
-        enableNetherroofDestroying = getBoolean("settings.enable-nether-roof-destroying", false);
+    private static void disableNetherroofInteraction() {
+        disableNetherroofInteraction = getBoolean("settings.disable-nether-roof-interaction", false);
     }
 }
