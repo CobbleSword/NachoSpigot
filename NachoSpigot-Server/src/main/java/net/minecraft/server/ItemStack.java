@@ -157,7 +157,7 @@ public final class ItemStack {
             List<BlockState> blocks = (List<BlockState>) world.capturedBlockStates.clone();
             world.capturedBlockStates.clear();
 
-            if (NachoConfig.disableNetherroofDestroying) {
+            if (NachoConfig.enableNetherroofDestroying) {
                 // FlamePaper start - Disable Nether Roof Interaction
                 if (world.getWorld().getEnvironment() == org.bukkit.World.Environment.NETHER) {
                     for (BlockState block : blocks) {
