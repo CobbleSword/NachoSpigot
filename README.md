@@ -192,6 +192,7 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [FlamePaper-0005] Fix memory leaks by Minetick
 [FlamePaper-0006] Fix sending irrelevant block updates to the client
 [FlamePaper-0010] Fix NullPointerException exploits for invalid logins
+[FlamePaper-0013] Check channel before reading
 [FlamePaper-0014] Remove unused code from beacons
 [FlamePaper-0015] Patch Book Exploits
 [FlamePaper-0016] Limit CraftChatMessage iterations
