@@ -9,7 +9,7 @@ import org.bukkit.event.HandlerList;
 public class PlayerLocaleChangeEvent extends PlayerEvent {
 
     private static final HandlerList handlers = new HandlerList();
-    //
+
     private final String locale;
 
     public PlayerLocaleChangeEvent(Player who, String locale) {
