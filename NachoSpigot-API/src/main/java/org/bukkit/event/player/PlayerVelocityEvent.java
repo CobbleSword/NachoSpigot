@@ -63,7 +63,7 @@ public class PlayerVelocityEvent extends PlayerEvent implements Cancellable {
      *
      * @return Whether this velocity change was triggered due to the player being attacked by another player.
      */
-    public boolean fromPlayerBeingAttacked(){
+    public boolean fromAttack(){
         return fromAttack;
     }
 }
