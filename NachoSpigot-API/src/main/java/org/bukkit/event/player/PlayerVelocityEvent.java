@@ -12,10 +12,16 @@ public class PlayerVelocityEvent extends PlayerEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancel = false;
     private Vector velocity;
+    private final boolean fromAttack;
 
-    public PlayerVelocityEvent(final Player player, final Vector velocity) {
+    public PlayerVelocityEvent(final Player player, final Vector velocity, final boolean fromPlayerBeingAttacked) {
         super(player);
         this.velocity = velocity;
+        this.fromAttack = fromPlayerBeingAttacked;
+    }
+
+    public PlayerVelocityEvent(final Player player, final Vector velocity) {
+        this(player, velocity, false);
     }
 
     public boolean isCancelled() {
@@ -51,5 +57,13 @@ public class PlayerVelocityEvent extends PlayerEvent implements Cancellable {
 
     public static HandlerList getHandlerList() {
         return handlers;
+    }
+
+    /**
+     *
+     * @return Whether this velocity change was triggered due to the player being attacked by another player.
+     */
+    public boolean fromPlayerBeingAttacked(){
+        return fromAttack;
     }
 }
