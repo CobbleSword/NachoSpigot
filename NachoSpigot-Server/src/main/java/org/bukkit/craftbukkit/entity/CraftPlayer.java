@@ -1485,6 +1485,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         getHandle().playerConnection.sendPacket(packetReset);
     }
 
+    @Override
+    public String getLocale() {
+        return getHandle().locale;
+    }
+
     // Spigot start
     private final Player.Spigot spigot = new Player.Spigot()
     {
