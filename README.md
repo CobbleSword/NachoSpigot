@@ -187,6 +187,7 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [KigPaper-0191] Don't calculate initial light if not requested
 [KigPaper-0220] Entity: Use EnumMap in CraftPlayer#playEffect()
 
+[FlamePaper-0008] Do not load chunks for light checks
 [FlamePaper-0032] Dont load chunks for chests
 [FlamePaper-0033] Dont check occluding hoppers
 [FlamePaper-0034] Hopper item lookup optimization
