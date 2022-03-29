@@ -23,6 +23,8 @@
  */
 package co.aikar.timings;
 
+import co.aikar.util.LoadingMap;
+import co.aikar.util.MRUMapCache;
 import com.google.common.base.Function;
 import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
@@ -33,15 +35,9 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import co.aikar.util.LoadingMap;
-import co.aikar.util.MRUMapCache;
 
 import java.lang.management.ManagementFactory;
-import java.util.Collection;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static co.aikar.timings.TimingsManager.FULL_SERVER_TICK;
 import static co.aikar.timings.TimingsManager.MINUTE_REPORTS;
@@ -202,10 +198,10 @@ public class TimingHistory {
 
         final TicksRecord ticksRecord = new TicksRecord();
         final PingRecord pingRecord = new PingRecord();
-        final TimingData fst = TimingsManager.FULL_SERVER_TICK.minuteData.clone();
+        final TimingData fst = FULL_SERVER_TICK.minuteData.clone();
         final double tps = 1E9 / ( System.nanoTime() - lastMinuteTime ) * ticksRecord.timed;
-        final double usedMemory = TimingsManager.FULL_SERVER_TICK.avgUsedMemory;
-        final double freeMemory = TimingsManager.FULL_SERVER_TICK.avgFreeMemory;
+        final double usedMemory = FULL_SERVER_TICK.avgUsedMemory;
+        final double freeMemory = FULL_SERVER_TICK.avgFreeMemory;
         final double loadAvg = ManagementFactory.getOperatingSystemMXBean().getSystemLoadAverage();
 
         public List export() {
@@ -235,7 +231,7 @@ public class TimingHistory {
         final long activatedEntity;
 
         TicksRecord() {
-            timed = timedTicks - (TimingsManager.MINUTE_REPORTS.size() * 1200);
+            timed = timedTicks - (MINUTE_REPORTS.size() * 1200);
             player = playerTicks;
             entity = entityTicks;
             tileEntity = tileEntityTicks;

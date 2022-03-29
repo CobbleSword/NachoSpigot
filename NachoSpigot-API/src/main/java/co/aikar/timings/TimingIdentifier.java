@@ -23,9 +23,9 @@
  */
 package co.aikar.timings;
 
-import com.google.common.base.Function;
 import co.aikar.util.LoadingMap;
 import co.aikar.util.MRUMapCache;
+import com.google.common.base.Function;
 
 import java.util.ArrayDeque;
 import java.util.Map;

@@ -18,6 +18,8 @@ import org.apache.logging.log4j.Logger;
 
 // CraftBukkit start
 import java.io.PrintStream;
+import java.util.function.BooleanSupplier;
+
 import org.apache.logging.log4j.Level;
 
 import org.bukkit.craftbukkit.LoggerOutputStream;
@@ -40,8 +42,8 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
     private boolean s;
 
     // CraftBukkit start - Signature changed
-    public DedicatedServer(joptsimple.OptionSet options) {
-        super(options, Proxy.NO_PROXY, DedicatedServer.a);
+    public DedicatedServer(joptsimple.OptionSet options, Thread thread1) {
+        super(options, Proxy.NO_PROXY, DedicatedServer.a, thread1);
         // CraftBukkit end
         if (!NachoConfig.disableInfiniSleeperThreadUsage) {
             Thread thread = new Thread("Server Infinisleeper") {
@@ -296,7 +298,6 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
                 long i1 = System.nanoTime() - j;
                 String s3 = String.format("%.3fs", (double) i1 / 1.0E9D);
 
-                DedicatedServer.LOGGER.info("Done (" + s3 + ")! For help, type \"help\" or \"?\"");
                 if (this.propertyManager.getBoolean("enable-query", false)) {
                     DedicatedServer.LOGGER.info("Starting GS4 status listener");
                     this.m = new RemoteStatusListener(this);
@@ -394,8 +395,8 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
         System.exit(0);
     }
 
-    public void B() { // CraftBukkit - fix decompile error
-        super.B();
+    public void B(BooleanSupplier shouldKeepTicking) { // CraftBukkit - fix decompile error
+        super.B(shouldKeepTicking);
         this.aO();
     }
 

@@ -1,20 +1,20 @@
 package org.bukkit.craftbukkit.scheduler;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
-
 import org.apache.commons.lang.UnhandledException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitWorker;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
+
 
 class CraftAsyncTask extends CraftTask {
 
-    private final LinkedList<BukkitWorker> workers = new LinkedList<BukkitWorker>();
+    private final LinkedList<BukkitWorker> workers = new LinkedList<>();
     private final Map<Integer, CraftTask> runners;
 
-    CraftAsyncTask(final Map<Integer, CraftTask> runners, final Plugin plugin, final Runnable task, final int id, final long delay) {
+    CraftAsyncTask(final Map<Integer, CraftTask> runners, final Plugin plugin, final Object task, final int id, final long delay) {
         super(plugin, task, id, delay);
         this.runners = runners;
     }
@@ -28,7 +28,7 @@ class CraftAsyncTask extends CraftTask {
     public void run() {
         final Thread thread = Thread.currentThread();
         synchronized(workers) {
-            if (getPeriod() == -2) {
+            if (getPeriod() == CraftTask.CANCEL) {
                 // Never continue running after cancelled.
                 // Checking this with the lock is important!
                 return;
@@ -99,7 +99,7 @@ class CraftAsyncTask extends CraftTask {
     boolean cancel0() {
         synchronized (workers) {
             // Synchronizing here prevents race condition for a completing task
-            setPeriod(-2l);
+            setPeriod(CraftTask.CANCEL);
             if (workers.isEmpty()) {
                 runners.remove(getTaskId());
             }

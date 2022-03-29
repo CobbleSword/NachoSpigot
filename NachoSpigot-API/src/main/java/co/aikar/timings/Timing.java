@@ -30,7 +30,7 @@ public interface Timing extends AutoCloseable {
     /**
      * Starts timing the execution until {@link #stopTiming()} is called.
      */
-    public void startTiming();
+    public Timing startTiming();
 
     /**
      * <p>Stops timing and records the data. Propagates the data up to group handlers.</p>
@@ -44,7 +44,7 @@ public interface Timing extends AutoCloseable {
      *
      * But only if we are on the primary thread.
      */
-    public void startTimingIfSync();
+    public Timing startTimingIfSync();
 
     /**
      * <p>Stops timing and records the data. Propagates the data up to group handlers.</p>
@@ -66,6 +66,8 @@ public interface Timing extends AutoCloseable {
      * @return TimingHandler
      */
     TimingHandler getTimingHandler();
+
+    double getAverage();
 
     @Override
     void close();

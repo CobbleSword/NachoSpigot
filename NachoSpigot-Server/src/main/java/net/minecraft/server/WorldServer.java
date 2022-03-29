@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 // CraftBukkit start
 import java.util.*;
+import java.util.function.BooleanSupplier;
 import java.util.logging.Level;
 
 import org.bukkit.WeatherType;
@@ -195,7 +196,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
     }
     // CraftBukkit end
 
-    public void doTick() {
+    public void doTick(BooleanSupplier booleanSupplier) {
         super.doTick();
         if (this.getWorldData().isHardcore() && this.getDifficulty() != EnumDifficulty.HARD) {
             this.getWorldData().setDifficulty(EnumDifficulty.HARD);
