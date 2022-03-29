@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import dev.cobblesword.nachospigot.events.ChunkPreLoadEvent;
+import it.unimi.dsi.fastutil.longs.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 // CraftBukkit start
@@ -13,17 +14,11 @@ import org.bukkit.craftbukkit.chunkio.ChunkIOExecutor;
 import org.bukkit.craftbukkit.util.LongHash;
 import org.bukkit.event.world.ChunkUnloadEvent;
 // CraftBukkit end
-// TacoSpigot start
-import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
-import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.longs.LongArraySet;
-import it.unimi.dsi.fastutil.longs.LongIterator;
-import it.unimi.dsi.fastutil.longs.LongSet;
-// TacoSpigot end
+
 public class ChunkProviderServer implements IChunkProvider {
 
     private static final Logger b = LogManager.getLogger();
-    public LongSet unloadQueue = new LongArraySet(); // CraftBukkit - LongHashSet // TacoSpigot - LongHashSet -> HashArraySet
+    public LongOpenHashSet unloadQueue = new LongOpenHashSet(); // CraftBukkit - LongHashSet // TacoSpigot - LongHashSet -> HashArraySet // Nacho - LongHashSet -> LongOpenHashSet
     public Chunk emptyChunk;
     public IChunkProvider chunkProvider;
     // FlamePaper - Make chunkLoader public

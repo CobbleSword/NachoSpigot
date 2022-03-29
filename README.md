@@ -191,6 +191,7 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [FlamePaper-0004] Return last slot by default
 [FlamePaper-0005] Fix memory leaks by Minetick
 [FlamePaper-0006] Fix sending irrelevant block updates to the client
+[FlamePaper-0008] Do not load chunks for light checks
 [FlamePaper-0010] Fix NullPointerException exploits for invalid logins
 [FlamePaper-0013] Check channel before reading
 [FlamePaper-0014] Remove unused code from beacons
@@ -198,6 +199,9 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [FlamePaper-0016] Limit CraftChatMessage iterations
 [FlamePaper-0017] Pearl through blocks
 [FlamePaper-0029] Fast Versioning
+[FlamePaper-0032] Dont load chunks for chests
+[FlamePaper-0033] Dont check occluding hoppers
+[FlamePaper-0034] Hopper item lookup optimization
 
 [MineTick-0006] Fix Occasional Client Side Unloading of Chunk 0 0
 [MineTick-0011] Optimize Idle Furnaces
