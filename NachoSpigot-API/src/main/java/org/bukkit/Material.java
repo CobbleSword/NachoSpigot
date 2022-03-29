@@ -1245,14 +1245,12 @@ public enum Material {
     public Material getCraftingRemainingItem() {
         Validate.isTrue(isItem(), "The Material is not an item!");
         switch (this) {
-            // <editor-fold defaultstate="collapsed" desc="getCraftingRemainingItem">
             case WATER_BUCKET:
             case LAVA_BUCKET:
             case MILK_BUCKET:
                 return BUCKET;
             default:
                 return null;
-            // </editor-fold>
         }
     }
 
@@ -1352,7 +1350,6 @@ public enum Material {
             case WATER:
             case WOODEN_DOOR:
             case WOOD_DOUBLE_STEP:
-                //</editor-fold>
                 return false;
             default:
                 return true;
