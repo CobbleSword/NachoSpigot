@@ -6,7 +6,7 @@ import org.bukkit.inventory.BrewerInventory;
 /**
  * Represents a brewing stand.
  */
-public interface BrewingStand extends BlockState, ContainerBlock, Nameable {
+public interface BrewingStand extends BlockState, ContainerBlock, Nameable, Lockable {
 
     /**
      * How much time is left in the brewing cycle

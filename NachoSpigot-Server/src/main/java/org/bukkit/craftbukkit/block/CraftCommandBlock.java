@@ -44,6 +44,18 @@ public class CraftCommandBlock extends CraftBlockState implements CommandBlock {
         this.name = name != null ? name : "@";
     }
 
+    // Paper start
+    @Override
+    public net.kyori.adventure.text.Component name() {
+        return io.papermc.paper.adventure.PaperAdventure.LEGACY_SECTION_UXRC.deserialize(getTileEntity().getCommandBlock().getName());
+    }
+
+    @Override
+    public void name(net.kyori.adventure.text.Component name) {
+        getTileEntity().getCommandBlock().setName(name == null ? "@" : io.papermc.paper.adventure.PaperAdventure.LEGACY_SECTION_UXRC.serialize(name));
+    }
+    // Paper end
+
     public boolean update(boolean force, boolean applyPhysics) {
         boolean result = super.update(force, applyPhysics);
 

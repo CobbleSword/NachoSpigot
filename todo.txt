@@ -1,1 +1,1 @@
-CraftCommandBlock
+CraftConsoleCommandSender

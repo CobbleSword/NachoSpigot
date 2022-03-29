@@ -12,7 +12,7 @@ import org.bukkit.craftbukkit.inventory.CraftInventoryBeacon;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.Nullable;
 
-public class CraftBeacon extends CraftBlockState implements Beacon {
+public class CraftBeacon extends CraftContainer implements Beacon {
     private final CraftWorld world;
     private final TileEntityBeacon beacon;
 
@@ -24,7 +24,7 @@ public class CraftBeacon extends CraftBlockState implements Beacon {
     }
 
     public CraftBeacon(final Material material, final TileEntityBeacon te) {
-        super(material);
+        super(material, te);
         world = null;
         beacon = te;
     }

@@ -6,7 +6,7 @@ import org.bukkit.inventory.InventoryHolder;
 /**
  * Represents a dropper.
  */
-public interface Dropper extends BlockState, InventoryHolder, Nameable {
+public interface Dropper extends BlockState, InventoryHolder, Nameable, Lockable {
     /**
      * Tries to drop a randomly selected item from the Dropper's inventory,
      * following the normal behavior of a Dropper.

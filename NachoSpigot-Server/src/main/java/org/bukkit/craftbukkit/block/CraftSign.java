@@ -12,13 +12,14 @@ import org.jetbrains.annotations.NotNull;
 
 public class CraftSign extends CraftBlockState implements Sign {
     private final TileEntitySign sign;
-    private final String[] lines;
+    private java.util.ArrayList<net.kyori.adventure.text.Component> lines; // Paper - ArrayList for RandomAccess
 
     public CraftSign(final Block block) {
         super(block);
 
         CraftWorld world = (CraftWorld) block.getWorld();
         sign = (TileEntitySign) world.getTileEntityAt(getX(), getY(), getZ());
+        /* Nacho - lazy init
         // Spigot start
         if (sign == null) {
             lines = new String[]{"", "", "", ""};
@@ -27,25 +28,57 @@ public class CraftSign extends CraftBlockState implements Sign {
         // Spigot end
         lines = new String[sign.lines.length];
         System.arraycopy(revertComponents(sign.lines), 0, lines, 0, lines.length);
+        */ // Nacho
     }
 
     public CraftSign(final Material material, final TileEntitySign te) {
         super(material);
         sign = te;
-        lines = new String[sign.lines.length];
-        System.arraycopy(revertComponents(sign.lines), 0, lines, 0, lines.length);
+        /*lines = new String[sign.lines.length]; // Nacho - lazy init
+        System.arraycopy(revertComponents(sign.lines), 0, lines, 0, lines.length);*/ // Nacho - lazy init
     }
 
+    // Paper start
+    public java.util.@NotNull List<net.kyori.adventure.text.Component> lines() {
+        this.loadLines();
+        return this.lines;
+    }
+
+    @Override
+    public net.kyori.adventure.text.@NotNull Component line(int index) {
+        this.loadLines();
+        return this.lines.get(index);
+    }
+
+    @Override
+    public void line(int index, net.kyori.adventure.text.@NotNull Component line) {
+        this.loadLines();
+        this.lines.set(index, line);
+    }
+
+    private void loadLines() {
+        if (lines != null) {
+            return;
+        }
+
+        // Lazy initialization:
+        lines = io.papermc.paper.adventure.PaperAdventure.asAdventure(com.google.common.collect.Lists.newArrayList(sign.lines));
+    }
+    // Paper end
+
     public String[] getLines() {
-        return lines;
+        this.loadLines(); // Paper
+        return this.lines.stream().map(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection()::serialize).toArray(String[]::new); // Paper
     }
 
     public String getLine(int index) throws IndexOutOfBoundsException {
-        return lines[index];
+        this.loadLines(); // Paper
+        return net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().serialize(this.lines.get(index)); // Paper
     }
 
     public void setLine(int index, @NotNull String line) throws IndexOutOfBoundsException {
-        lines[index] = line;
+        this.loadLines(); // Paper
+        this.lines.set(index, net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(line)); // Paper
     }
 
     @Override
@@ -60,6 +93,20 @@ public class CraftSign extends CraftBlockState implements Sign {
 
         return result;
     }
+
+    // Paper start
+    public static IChatBaseComponent[] sanitizeLines(java.util.List<net.kyori.adventure.text.Component> lines) {
+        IChatBaseComponent[] components = new IChatBaseComponent[4];
+        for (int i = 0; i < 4; i++) {
+            if (i < lines.size() && lines.get(i) != null) {
+                components[i] = io.papermc.paper.adventure.PaperAdventure.asVanilla(lines.get(i));
+            } else {
+                components[i] = new ChatComponentText("");
+            }
+        }
+        return components;
+    }
+    // Paper end
 
     public static IChatBaseComponent[] sanitizeLines(String[] lines) {
         IChatBaseComponent[] components = new IChatBaseComponent[4];
