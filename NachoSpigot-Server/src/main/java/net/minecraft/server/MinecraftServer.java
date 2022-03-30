@@ -735,11 +735,10 @@ public abstract class MinecraftServer implements Runnable, ICommandListener, IAs
             this.r.b().a(agameprofile);
         }
 
-        if (autosavePeriod > 0 /*&& this.ticks % autosavePeriod == 0*/) { // CraftBukkit // Paper - Incremental Auto Saving
+        if (autosavePeriod > 0 && this.ticks % autosavePeriod == 0) { // CraftBukkit
             SpigotTimings.worldSaveTimer.startTiming(); // Spigot
             this.methodProfiler.a("save");
-            //this.playerList.savePlayers();
-            if (this.ticks % autosavePeriod == 0) this.playerList.savePlayers(); // Paper - Incremental Auto Saving
+            this.playerList.savePlayers();
             // Spigot Start
             // We replace this with saving each individual world as this.saveChunks(...) is broken,
             // and causes the main thread to sleep for random amounts of time depending on chunk activity
