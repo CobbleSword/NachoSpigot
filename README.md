@@ -1,4 +1,4 @@
-# NachoSpigot [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/CobbleSword/NachoSpigot/NachoSpigot%20Build)](https://nightly.link/CobbleSword/NachoSpigot/workflows/build-nachospigot/master/NachoSpigot-server.zip)
+# NachoSpigot [![GitHub Workflow Status](https://github.com/CobbleSword/NachoSpigot/actions/workflows/build-nachospigot.yml/badge.svg)](https://nightly.link/CobbleSword/NachoSpigot/workflows/build-nachospigot/master/NachoSpigot-server.zip)
 
 NachoSpigot offers a number of enhancements to performance as well as bug fixes and being able to perform well with a large number of players.
 
@@ -15,7 +15,7 @@ If this ever causes issues, we can disable this and hope none of this ever happe
 ## Current State
 Java 17 (LTS) is the recommended version to use, otherwise Java 11 is fine. Java 8 works, but is not recommended due to security issues.
 
-**NachoSpigot supports Java 8 to Java 17!**
+**NachoSpigot supports Java 8 to Java 18!**
 
 Nacho can be used in production environments with a good degree of stability.
 
@@ -187,19 +187,21 @@ See: [Contributors Page](https://github.com/CobbleSword/NachoSpigot/graphs/contr
 [KigPaper-0191] Don't calculate initial light if not requested
 [KigPaper-0220] Entity: Use EnumMap in CraftPlayer#playEffect()
 
+[FlamePaper-0003] Fixed chunk memory leak
+[FlamePaper-0004] Return last slot by default
+[FlamePaper-0005] Fix memory leaks by Minetick
+[FlamePaper-0006] Fix sending irrelevant block updates to the client
 [FlamePaper-0008] Do not load chunks for light checks
+[FlamePaper-0010] Fix NullPointerException exploits for invalid logins
+[FlamePaper-0013] Check channel before reading
+[FlamePaper-0014] Remove unused code from beacons
+[FlamePaper-0015] Patch Book Exploits
+[FlamePaper-0016] Limit CraftChatMessage iterations
+[FlamePaper-0017] Pearl through blocks
+[FlamePaper-0029] Fast Versioning
 [FlamePaper-0032] Dont load chunks for chests
 [FlamePaper-0033] Dont check occluding hoppers
 [FlamePaper-0034] Hopper item lookup optimization
-[FlamePaper-0102] Fixed chunk memory leak
-[FlamePaper-0103] Limit CraftChatMessage iterations
-[FlamePaper-0104] Return last slot by default
-[FlamePaper-0105] Fix memory leaks by Minetick
-[FlamePaper-0106] Fix sending irrelevant block updates to the client
-[FlamePaper-0110] Fix NullPointerException exploits for invalid logins
-[FlamePaper-0113] Remove unused code from beacons
-[FlamePaper-0115] Patch Book Exploits
-[FlamePaper-0117] Pearl through blocks
 
 [MineTick-0006] Fix Occasional Client Side Unloading of Chunk 0 0
 [MineTick-0011] Optimize Idle Furnaces
