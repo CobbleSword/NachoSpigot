@@ -974,9 +974,9 @@ public class CraftEventFactory {
     }
 
     // PaperSpigot start - Add PlayerLocaleChangeEvent
-    public static PlayerLocaleChangeEvent callPlayerLocaleChangeEvent(EntityHuman who, String oldLocale, String newLocale) {
+    public static PlayerLocaleChangeEvent callPlayerLocaleChangeEvent(EntityHuman who, String locale) {
         Player player = (Player) who.getBukkitEntity();
-        PlayerLocaleChangeEvent event = new PlayerLocaleChangeEvent(player, oldLocale, newLocale);
+        PlayerLocaleChangeEvent event = new PlayerLocaleChangeEvent(player, locale); // Nacho - use new Bukkit API
         Bukkit.getPluginManager().callEvent(event);
         return event;
     }
