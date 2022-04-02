@@ -360,7 +360,10 @@ public class NachoConfig {
 
     private static void tileEntityTickingTime() {
         int i = getInt("settings.tile-entity-ticking-time", 1);
-        if(version < 7 && i == 20) i = 1;
+        if(version < 7 && i == 20) {
+            i = 1;
+            set("settings.tile-entity-ticking-time", 1);
+        }
         tileEntityTickingTime = i;
     }
 
