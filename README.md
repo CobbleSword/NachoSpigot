@@ -1,4 +1,4 @@
-# NachoSpigot [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/CobbleSword/NachoSpigot/NachoSpigot%20Build)](https://nightly.link/CobbleSword/NachoSpigot/workflows/build-nachospigot/master/NachoSpigot-server.zip)
+# NachoSpigot [![GitHub Workflow Status](https://github.com/CobbleSword/NachoSpigot/actions/workflows/build-nachospigot.yml/badge.svg)](https://nightly.link/CobbleSword/NachoSpigot/workflows/build-nachospigot/master/NachoSpigot-server.zip)
 
 NachoSpigot offers a number of enhancements to performance as well as bug fixes and being able to perform well with a large number of players.
 
@@ -15,7 +15,7 @@ If this ever causes issues, we can disable this and hope none of this ever happe
 ## Current State
 Java 17 (LTS) is the recommended version to use, otherwise Java 11 is fine. Java 8 works, but is not recommended due to security issues.
 
-**NachoSpigot supports Java 8 to Java 17!**
+**NachoSpigot supports Java 8 to Java 18!**
 
 Nacho can be used in production environments with a good degree of stability.
 
