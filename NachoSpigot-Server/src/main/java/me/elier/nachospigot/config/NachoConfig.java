@@ -50,7 +50,7 @@ public class NachoConfig {
         File old_config = new File("nacho.json");
         if(old_config.exists()) migrate(old_config);
 
-        int configVersion = 6; // Update this every new configuration update
+        int configVersion = 7; // Update this every new configuration update
         version = getInt("config-version", configVersion);
         set("config-version", configVersion);
         c.setHeader(HEADER);
@@ -356,10 +356,15 @@ public class NachoConfig {
         enableFastMath = getBoolean("settings.enable-fastmath", false);
     }
 
-    public static int tileEntityTickingTime = 20;
+    public static int tileEntityTickingTime = 1;
 
     private static void tileEntityTickingTime() {
-        tileEntityTickingTime = getInt("settings.tile-entity-ticking-time", 20);
+        int i = getInt("settings.tile-entity-ticking-time", 1);
+        if(version < 7 && i == 20) {
+            i = 1;
+            set("settings.tile-entity-ticking-time", 1);
+        }
+        tileEntityTickingTime = i;
     }
 
     public static int itemDirtyTicks;
