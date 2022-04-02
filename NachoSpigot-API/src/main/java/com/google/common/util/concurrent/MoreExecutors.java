@@ -436,7 +436,7 @@ public final class MoreExecutors {
      * Executor#execute execute}, as in {@code ThreadPoolExecutor.CallerRunsPolicy}.
      *
      * <p>This executor is appropriate for tasks that are lightweight and not deeply chained.
-     * Inappropriate {@code directExecutor} usage can cause problems, and these problems can bef
+     * Inappropriate {@code directExecutor} usage can cause problems, and these problems can be
      * difficult to reproduce because they depend on timing. For example:
      *
      * <ul>
