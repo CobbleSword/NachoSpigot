@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.util.Map;
 
 import org.apache.commons.lang.Validate;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.map.MapView;
 import org.bukkit.material.Bed;
 import org.bukkit.material.Button;
@@ -58,10 +59,13 @@ import org.bukkit.util.Java15Compat;
 
 import com.google.common.collect.Maps;
 import org.bukkit.material.Banner;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * An enum of all material IDs accepted by the official server and client
  */
+@SuppressWarnings("unused") // Nacho
 public enum Material {
     AIR(0, 0),
     STONE(1),
@@ -464,36 +468,34 @@ public enum Material {
     private final int maxStack;
     private final short durability;
 
-    private Material(final int id) {
+    Material(final int id) {
         this(id, 64);
     }
 
-    private Material(final int id, final int stack) {
+    Material(final int id, final int stack) {
         this(id, stack, MaterialData.class);
     }
 
-    private Material(final int id, final int stack, final int durability) {
+    Material(final int id, final int stack, final int durability) {
         this(id, stack, durability, MaterialData.class);
     }
 
-    private Material(final int id, final Class<? extends MaterialData> data) {
+    Material(final int id, final Class<? extends MaterialData> data) {
         this(id, 64, data);
     }
 
-    private Material(final int id, final int stack, final Class<? extends MaterialData> data) {
+    Material(final int id, final int stack, final Class<? extends MaterialData> data) {
         this(id, stack, 0, data);
     }
 
-    private Material(final int id, final int stack, final int durability, final Class<? extends MaterialData> data) {
+    Material(final int id, final int stack, final int durability, final Class<? extends MaterialData> data) {
         this.id = id;
         this.durability = (short) durability;
         this.maxStack = stack;
         // try to cache the constructor for this material
         try {
             this.ctor = data.getConstructor(int.class, byte.class);
-        } catch (NoSuchMethodException ex) {
-            throw new AssertionError(ex);
-        } catch (SecurityException ex) {
+        } catch (NoSuchMethodException | SecurityException ex) {
             throw new AssertionError(ex);
         }
     }
@@ -544,7 +546,9 @@ public enum Material {
      * @return New MaterialData with the given data
      * @deprecated Magic value
      */
+    @SuppressWarnings("DeprecatedIsStillUsed")
     @Deprecated
+    @NotNull
     public MaterialData getNewData(final byte raw) {
         try {
             return ctor.newInstance(id, raw);
@@ -659,7 +663,7 @@ public enum Material {
 
         try {
             result = getMaterial(Integer.parseInt(name));
-        } catch (NumberFormatException ex) {}
+        } catch (NumberFormatException ignored) {}
 
         if (result == null) {
             String filtered = name.toUpperCase();
@@ -673,12 +677,10 @@ public enum Material {
 
     static {
         for (Material material : values()) {
-            if (byId.length > material.id) {
-                byId[material.id] = material;
-            } else {
+            if (byId.length <= material.id) {
                 byId = Java15Compat.Arrays_copyOfRange(byId, 0, material.id + 2);
-                byId[material.id] = material;
             }
+            byId[material.id] = material;
             BY_NAME.put(material.name(), material);
         }
     }
@@ -1140,4 +1142,218 @@ public enum Material {
                 return false;
         }
     }
+
+    // Nacho start - backport some methods and fields
+    @Deprecated
+    public static final String LEGACY_PREFIX = "LEGACY_";
+
+    /**
+     * Returns legacy status
+     *
+     * @return legacy status
+     * @deprecated Always returns true
+     */
+    public boolean isLegacy() {
+        return true;
+    }
+
+    /**
+     * Attempts to get the Material with the given name.
+     * <p>
+     * This is a normal lookup, names must be the precise name they are given in
+     * the enum (but optionally including the LEGACY_PREFIX if legacyName is
+     * true).
+     * <p>
+     * If legacyName is true, then the lookup will be against legacy materials,
+     * but the returned Material will be a modern material (ie this method is
+     * useful for updating stored data).
+     *
+     * @param name Name of the material to get
+     * @param legacyName whether this is a legacy name lookup
+     * @return Material if found, or null
+     * @deprecated No materials are legacy in 1.8
+     * @see #getMaterial(String)
+     */
+    @Nullable
+    public static Material getMaterial(@NotNull String name, boolean legacyName) {
+        if(legacyName && name.startsWith(LEGACY_PREFIX)) return getMaterial(name.replace(LEGACY_PREFIX, ""));
+        return getMaterial(name);
+    }
+
+    /**
+     * Check if the material is an air block.
+     *
+     * @return True if this material is an air block.
+     * @deprecated Can be replaced by {@code return this == Material.AIR} as there aren't multiple types of air in 1.8
+     */
+    public boolean isAir() {
+        return this == AIR;
+    }
+
+    /**
+     * Attempts to match the Material with the given name.
+     * <p>
+     * This is a match lookup; names will be stripped of the "minecraft:"
+     * namespace, converted to uppercase, then stripped of special characters in
+     * an attempt to format it like the enum.
+     *
+     * @param name Name of the material to get
+     * @param legacyName whether this is a legacy name (see
+     * {@link #getMaterial(java.lang.String, boolean)}
+     * @return Material if found, or null
+     * @deprecated No materials are legacy in 1.8
+     */
+    @Nullable
+    public static Material matchMaterial(@NotNull final String name, @SuppressWarnings("unused") boolean legacyName) {
+        return matchMaterial(name);
+    }
+
+    /**
+     * Returns a value that represents how 'slippery' the block is.
+     *
+     * Blocks with higher slipperiness, like {@link Material#ICE} can be slid on
+     * further by the player and other entities.
+     *
+     * Most blocks have a default slipperiness of {@code 0.6f}.
+     *
+     * Only available when {@link #isBlock()} is true.
+     *
+     * @return the slipperiness of this block
+     */
+    public float getSlipperiness() {
+        Validate.isTrue(isBlock(), "The Material is not a block!");
+        switch (this) {
+            default:
+                return 0.6F;
+            case SLIME_BLOCK:
+                return 0.8F;
+            case ICE:
+            case PACKED_ICE:
+                return 0.98F;
+        }
+    }
+
+    /**
+     * Determines the remaining item in a crafting grid after crafting with this
+     * ingredient.
+     * <br>
+     * Only available when {@link #isItem()} is true.
+     *
+     * @return the item left behind when crafting, or null if nothing is.
+     */
+    @Nullable
+    public Material getCraftingRemainingItem() {
+        Validate.isTrue(isItem(), "The Material is not an item!");
+        switch (this) {
+            case WATER_BUCKET:
+            case LAVA_BUCKET:
+            case MILK_BUCKET:
+                return BUCKET;
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * Get the best suitable slot for this Material.
+     *
+     * For most items this will be {@link EquipmentSlot#HAND}.
+     *
+     * @return the best EquipmentSlot for this Material
+     */
+    @NotNull
+    public EquipmentSlot getEquipmentSlot() {
+        Validate.isTrue(isItem(), "The Material is not an item!");
+        switch (this) {
+            case CHAINMAIL_HELMET:
+            case SKULL_ITEM:
+            case DIAMOND_HELMET:
+            case GOLD_HELMET:
+            case IRON_HELMET:
+            case LEATHER_HELMET:
+                return EquipmentSlot.HEAD;
+            case CHAINMAIL_CHESTPLATE:
+            case DIAMOND_CHESTPLATE:
+            case GOLD_CHESTPLATE:
+            case IRON_CHESTPLATE:
+            case LEATHER_CHESTPLATE:
+                return EquipmentSlot.CHEST;
+            case CHAINMAIL_LEGGINGS:
+            case DIAMOND_LEGGINGS:
+            case GOLD_LEGGINGS:
+            case IRON_LEGGINGS:
+            case LEATHER_LEGGINGS:
+                return EquipmentSlot.LEGS;
+            case CHAINMAIL_BOOTS:
+            case DIAMOND_BOOTS:
+            case GOLD_BOOTS:
+            case IRON_BOOTS:
+            case LEATHER_BOOTS:
+                return EquipmentSlot.FEET;
+            default:
+                return EquipmentSlot.HAND;
+        }
+    }
+
+    /**
+     * Checks if this Material is an obtainable item.
+     *
+     * @return true if this material is an item
+     */
+    public boolean isItem() {
+        switch (this) {
+            case ACACIA_DOOR:
+            case BED_BLOCK:
+            case BIRCH_DOOR:
+            case BREWING_STAND:
+            case BURNING_FURNACE:
+            case CAKE_BLOCK:
+            case CARROT:
+            case CAULDRON:
+            case COCOA:
+            case CROPS:
+            case DARK_OAK_DOOR:
+            case DAYLIGHT_DETECTOR_INVERTED:
+            case DIODE_BLOCK_OFF:
+            case DIODE_BLOCK_ON:
+            case DOUBLE_STEP:
+            case DOUBLE_STONE_SLAB2:
+            case ENDER_PORTAL:
+            case FIRE:
+            case FLOWER_POT:
+            case GLOWING_REDSTONE_ORE:
+            case IRON_DOOR_BLOCK:
+            case JUNGLE_DOOR:
+            case LAVA:
+            case MELON_STEM:
+            case NETHER_WARTS:
+            case PISTON_EXTENSION:
+            case PISTON_MOVING_PIECE:
+            case PORTAL:
+            case POTATO:
+            case PUMPKIN_STEM:
+            case REDSTONE_COMPARATOR_OFF:
+            case REDSTONE_COMPARATOR_ON:
+            case REDSTONE_LAMP_ON:
+            case REDSTONE_TORCH_OFF:
+            case REDSTONE_WIRE:
+            case SIGN_POST:
+            case SKULL:
+            case SPRUCE_DOOR:
+            case STANDING_BANNER:
+            case STATIONARY_LAVA:
+            case STATIONARY_WATER:
+            case SUGAR_CANE_BLOCK:
+            case TRIPWIRE:
+            case WALL_BANNER:
+            case WALL_SIGN:
+            case WATER:
+            case WOODEN_DOOR:
+            case WOOD_DOUBLE_STEP:
+                return false;
+            default:
+                return true;
+        }
+    }
+    // Nacho end
 }
