@@ -9,8 +9,9 @@ public class ChunkPreLoadEvent extends Event implements Cancellable
 {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
-    private World world;
-    private int x, z;
+    private final World world;
+    private final int x;
+    private final int z;
 
     public ChunkPreLoadEvent(World world, int x, int z)
     {

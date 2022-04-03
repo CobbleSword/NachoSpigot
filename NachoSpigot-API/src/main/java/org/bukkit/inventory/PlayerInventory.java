@@ -12,35 +12,35 @@ public interface PlayerInventory extends Inventory {
      *
      * @return All the ItemStacks from the armor slots
      */
-    public ItemStack[] getArmorContents();
+    ItemStack[] getArmorContents();
 
     /**
      * Return the ItemStack from the helmet slot
      *
      * @return The ItemStack in the helmet slot
      */
-    public ItemStack getHelmet();
+    ItemStack getHelmet();
 
     /**
      * Return the ItemStack from the chestplate slot
      *
      * @return The ItemStack in the chestplate slot
      */
-    public ItemStack getChestplate();
+    ItemStack getChestplate();
 
     /**
      * Return the ItemStack from the leg slot
      *
      * @return The ItemStack in the leg slot
      */
-    public ItemStack getLeggings();
+    ItemStack getLeggings();
 
     /**
      * Return the ItemStack from the boots slot
      *
      * @return The ItemStack in the boots slot
      */
-    public ItemStack getBoots();
+    ItemStack getBoots();
 
     /**
      * Stores the ItemStack at the given index of the inventory.
@@ -64,14 +64,14 @@ public interface PlayerInventory extends Inventory {
      * @see #setLeggings(ItemStack)
      */
     @Override
-    public void setItem(int index, ItemStack item);
+    void setItem(int index, ItemStack item);
 
     /**
      * Put the given ItemStacks into the armor slots
      *
      * @param items The ItemStacks to use as armour
      */
-    public void setArmorContents(ItemStack[] items);
+    void setArmorContents(ItemStack[] items);
 
     /**
      * Put the given ItemStack into the helmet slot. This does not check if
@@ -79,7 +79,7 @@ public interface PlayerInventory extends Inventory {
      *
      * @param helmet The ItemStack to use as helmet
      */
-    public void setHelmet(ItemStack helmet);
+    void setHelmet(ItemStack helmet);
 
     /**
      * Put the given ItemStack into the chestplate slot. This does not check
@@ -87,7 +87,7 @@ public interface PlayerInventory extends Inventory {
      *
      * @param chestplate The ItemStack to use as chestplate
      */
-    public void setChestplate(ItemStack chestplate);
+    void setChestplate(ItemStack chestplate);
 
     /**
      * Put the given ItemStack into the leg slot. This does not check if the
@@ -95,7 +95,7 @@ public interface PlayerInventory extends Inventory {
      *
      * @param leggings The ItemStack to use as leggings
      */
-    public void setLeggings(ItemStack leggings);
+    void setLeggings(ItemStack leggings);
 
     /**
      * Put the given ItemStack into the boots slot. This does not check if the
@@ -103,28 +103,28 @@ public interface PlayerInventory extends Inventory {
      *
      * @param boots The ItemStack to use as boots
      */
-    public void setBoots(ItemStack boots);
+    void setBoots(ItemStack boots);
 
     /**
      * Returns the ItemStack currently hold
      *
      * @return The currently held ItemStack
      */
-    public ItemStack getItemInHand();
+    ItemStack getItemInHand();
 
     /**
      * Sets the item in hand
      *
      * @param stack Stack to set
      */
-    public void setItemInHand(ItemStack stack);
+    void setItemInHand(ItemStack stack);
 
     /**
      * Get the slot number of the currently held item
      *
      * @return Held item slot number
      */
-    public int getHeldItemSlot();
+    int getHeldItemSlot();
 
     /**
      * Set the slot number of the currently held item.
@@ -135,7 +135,7 @@ public interface PlayerInventory extends Inventory {
      * @throws IllegalArgumentException Thrown if slot is not between 0 and 8
      *     inclusive
      */
-    public void setHeldItemSlot(int slot);
+    void setHeldItemSlot(int slot);
 
     /**
      * Clears all matching items from the inventory. Setting either value to
@@ -148,7 +148,7 @@ public interface PlayerInventory extends Inventory {
      * @deprecated Magic value
      */
     @Deprecated
-    public int clear(int id, int data);
+    int clear(int id, int data);
 
-    public HumanEntity getHolder();
+    HumanEntity getHolder();
 }

@@ -11,7 +11,7 @@ import org.bukkit.event.HandlerList;
  */
 public class BlockPistonRetractEvent extends BlockPistonEvent {
     private static final HandlerList handlers = new HandlerList();
-    private List<Block> blocks;
+    private final List<Block> blocks;
     
     public BlockPistonRetractEvent(final Block block, final List<Block> blocks, final BlockFace direction) {
         super(block, direction);

@@ -94,7 +94,7 @@ public class TimingsCommand extends BukkitCommand {
                 }
                 sender.sendMessage("Timings written to " + timings.getPath());
                 if (separate) sender.sendMessage("Names written to " + names.getPath());
-            } catch (IOException e) {
+            } catch (IOException ignored) {
             } finally {
                 if (fileTimings != null) {
                     fileTimings.close();
@@ -117,7 +117,7 @@ public class TimingsCommand extends BukkitCommand {
         Validate.notNull(alias, "Alias cannot be null");
 
         if (args.length == 1) {
-            return StringUtil.copyPartialMatches(args[0], TIMINGS_SUBCOMMANDS, new ArrayList<String>(TIMINGS_SUBCOMMANDS.size()));
+            return StringUtil.copyPartialMatches(args[0], TIMINGS_SUBCOMMANDS, new ArrayList<>(TIMINGS_SUBCOMMANDS.size()));
         }
         return ImmutableList.of();
     }

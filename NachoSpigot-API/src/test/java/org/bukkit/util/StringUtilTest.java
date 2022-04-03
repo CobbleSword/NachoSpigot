@@ -25,17 +25,17 @@ public class StringUtilTest {
 
     @Test(expected=IllegalArgumentException.class)
     public void nullCollectionTest() {
-        StringUtil.copyPartialMatches("Token", ImmutableList.<String>of(), null);
+        StringUtil.copyPartialMatches("Token", ImmutableList.of(), null);
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void nullIterableTest() {
-        StringUtil.copyPartialMatches("Token", null, new ArrayList<String>());
+        StringUtil.copyPartialMatches("Token", null, new ArrayList<>());
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void nullTokenTest() {
-        StringUtil.copyPartialMatches(null, ImmutableList.<String>of(), new ArrayList<String>());
+        StringUtil.copyPartialMatches(null, ImmutableList.of(), new ArrayList<>());
     }
 
     @Test
@@ -43,7 +43,7 @@ public class StringUtilTest {
         String token = "ab";
         Iterable<String> original = ImmutableList.of("ab12", "aC561", "AB5195", "Ab76", "", "a");
         List<String> expected =     ImmutableList.of("ab12",          "AB5195", "Ab76"         );
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         assertThat(StringUtil.copyPartialMatches(token, original, list), is(expected));
         assertThat(StringUtil.copyPartialMatches(token, original, list), is(sameInstance(list)));
         assertThat(list.size(), is(expected.size() * 2));
@@ -56,6 +56,6 @@ public class StringUtilTest {
 
     @Test(expected=IllegalArgumentException.class)
     public void copyNullTest() {
-        StringUtil.copyPartialMatches("token", Arrays.asList("token1", "token2", null), new ArrayList<String>());
+        StringUtil.copyPartialMatches("token", Arrays.asList("token1", "token2", null), new ArrayList<>());
     }
 }

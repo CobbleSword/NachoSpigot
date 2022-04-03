@@ -65,7 +65,7 @@ public class BanListCommand extends VanillaCommand {
         Validate.notNull(alias, "Alias cannot be null");
 
         if (args.length == 1) {
-            return StringUtil.copyPartialMatches(args[0], BANLIST_TYPES, new ArrayList<String>(BANLIST_TYPES.size()));
+            return StringUtil.copyPartialMatches(args[0], BANLIST_TYPES, new ArrayList<>(BANLIST_TYPES.size()));
         }
         return ImmutableList.of();
     }

@@ -54,7 +54,7 @@ public class PlayerCommandPreprocessEvent extends PlayerEvent implements Cancell
 
     public PlayerCommandPreprocessEvent(final Player player, final String message) {
         super(player);
-        this.recipients = new HashSet<Player>(player.getServer().getOnlinePlayers());
+        this.recipients = new HashSet<>(player.getServer().getOnlinePlayers());
         this.message = message;
     }
 

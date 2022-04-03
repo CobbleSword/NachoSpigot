@@ -36,7 +36,7 @@ public class DefaultGameModeCommand extends VanillaCommand {
 
         try {
             value = Integer.parseInt(modeArg);
-        } catch (NumberFormatException ex) {}
+        } catch (NumberFormatException ignored) {}
 
         GameMode mode = GameMode.getByValue(value);
 
@@ -63,7 +63,7 @@ public class DefaultGameModeCommand extends VanillaCommand {
         Validate.notNull(alias, "Alias cannot be null");
 
         if (args.length == 1) {
-            return StringUtil.copyPartialMatches(args[0], GAMEMODE_NAMES, new ArrayList<String>(GAMEMODE_NAMES.size()));
+            return StringUtil.copyPartialMatches(args[0], GAMEMODE_NAMES, new ArrayList<>(GAMEMODE_NAMES.size()));
         }
 
         return ImmutableList.of();

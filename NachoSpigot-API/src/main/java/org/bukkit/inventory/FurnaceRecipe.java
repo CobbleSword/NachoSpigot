@@ -7,7 +7,7 @@ import org.bukkit.material.MaterialData;
  * Represents a smelting recipe.
  */
 public class FurnaceRecipe implements Recipe {
-    private ItemStack output;
+    private final ItemStack output;
     private ItemStack ingredient;
 
     /**

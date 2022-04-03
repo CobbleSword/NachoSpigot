@@ -45,7 +45,7 @@ public enum CropState {
     private final byte data;
     private final static Map<Byte, CropState> BY_DATA = Maps.newHashMap();
 
-    private CropState(final int data) {
+    CropState(final int data) {
         this.data = (byte) data;
     }
 

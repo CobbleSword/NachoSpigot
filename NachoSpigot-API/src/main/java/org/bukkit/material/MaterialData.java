@@ -8,7 +8,7 @@ import org.bukkit.Material;
  */
 public class MaterialData implements Cloneable {
     private final int type;
-    private byte data = 0;
+    private byte data;
 
     /**
      * @param type the raw type id

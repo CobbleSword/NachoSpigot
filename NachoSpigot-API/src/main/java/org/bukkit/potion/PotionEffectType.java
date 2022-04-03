@@ -186,10 +186,7 @@ public abstract class PotionEffectType {
             return false;
         }
         final PotionEffectType other = (PotionEffectType) obj;
-        if (this.id != other.id) {
-            return false;
-        }
-        return true;
+        return this.id == other.id;
     }
 
     @Override
@@ -203,7 +200,7 @@ public abstract class PotionEffectType {
     }
 
     private static final PotionEffectType[] byId = new PotionEffectType[24];
-    private static final Map<String, PotionEffectType> byName = new HashMap<String, PotionEffectType>();
+    private static final Map<String, PotionEffectType> byName = new HashMap<>();
     // will break on updates.
     private static boolean acceptingNew = true;
 

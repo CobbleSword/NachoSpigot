@@ -18,9 +18,7 @@ public class TimedRegisteredListenerTest {
     @Test
     public void testEventClass() throws EventException {
         Listener listener = new Listener() {};
-        EventExecutor executor = new EventExecutor() {
-            public void execute(Listener listener, Event event) {}
-        };
+        EventExecutor executor = (listener1, event) -> {};
         TestPlugin plugin = new TestPlugin("Test");
 
         PlayerInteractEvent interactEvent = new PlayerInteractEvent(null, null, null, null, null);

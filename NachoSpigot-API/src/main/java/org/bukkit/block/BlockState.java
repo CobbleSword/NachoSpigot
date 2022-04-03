@@ -184,14 +184,14 @@ public interface BlockState extends Metadatable {
      * @deprecated Magic value
      */
     @Deprecated
-    public byte getRawData();
+    byte getRawData();
 
     /**
      * @param data The new data value for the block.
      * @deprecated Magic value
      */
     @Deprecated
-    public void setRawData(byte data);
+    void setRawData(byte data);
 
     /**
      * Returns whether this state is placed in the world.

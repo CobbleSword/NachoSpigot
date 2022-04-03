@@ -30,7 +30,7 @@ public class BukkitObjectStreamTest {
 
     @Parameters(name= "{index}: {0}")
     public static List<Object[]> data() {
-        return ImmutableList.<Object[]>of(
+        return ImmutableList.of(
             new Object[] {
                 Color.class.getName(),
                 "rO0ABXNyADZjb20uZ29vZ2xlLmNvbW1vbi5jb2xsZWN0LkltbXV0YWJsZUxpc3QkU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAVsACGVsZW1lbnRzdAATW0xqYXZhL2xhbmcvT2JqZWN0O3hwdXIAE1tMamF2YS5sYW5nLk9iamVjdDuQzlifEHMpbAIAAHhwAAAABXNyABpvcmcuYnVra2l0LnV0aWwuaW8uV3JhcHBlcvJQR+zxEm8FAgABTAADbWFwdAAPTGphdmEvdXRpbC9NYXA7eHBzcgA1Y29tLmdvb2dsZS5jb21tb24uY29sbGVjdC5JbW11dGFibGVNYXAkU2VyaWFsaXplZEZvcm0AAAAAAAAAAAIAAlsABGtleXNxAH4AAVsABnZhbHVlc3EAfgABeHB1cQB+AAMAAAAEdAACPT10AANSRUR0AARCTFVFdAAFR1JFRU51cQB+AAMAAAAEdAAFQ29sb3JzcgARamF2YS5sYW5nLkludGVnZXIS4qCk94GHOAIAAUkABXZhbHVleHIAEGphdmEubGFuZy5OdW1iZXKGrJUdC5TgiwIAAHhwAAAA/3NxAH4AEQAAAP9zcQB+ABEAAAD/c3EAfgAFc3EAfgAIdXEAfgADAAAABHEAfgALcQB+AAxxAH4ADXEAfgAOdXEAfgADAAAABHEAfgAQc3EAfgARAAAAAHNxAH4AEQAAAIBzcQB+ABEAAACAc3EAfgAFc3EAfgAIdXEAfgADAAAABHEAfgALcQB+AAxxAH4ADXEAfgAOdXEAfgADAAAABHEAfgAQc3EAfgARAAAAgHNxAH4AEQAAAIBxAH4AGnNxAH4ABXNxAH4ACHVxAH4AAwAAAARxAH4AC3EAfgAMcQB+AA1xAH4ADnVxAH4AAwAAAARxAH4AEHNxAH4AEQAAAP9xAH4AGnEAfgAac3EAfgAFc3EAfgAIdXEAfgADAAAABHEAfgALcQB+AAxxAH4ADXEAfgAOdXEAfgADAAAABHEAfgAQc3EAfgARAAAA/3EAfgAac3EAfgARAAAApQ==",
@@ -89,17 +89,8 @@ public class BukkitObjectStreamTest {
         // If this test fails, you may start your trek to debug by commenting the '@Ignore' on the next method
         // (and of course, you would read those comments too)
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ObjectOutputStream oos = null;
-        try {
-            oos = new BukkitObjectOutputStream(out);
+        try (ObjectOutputStream oos = new BukkitObjectOutputStream(out)) {
             oos.writeObject(object);
-        } finally {
-            if (oos != null) {
-                try {
-                    oos.close();
-                } catch (IOException e) {
-                }
-            }
         }
 
         final byte[] preEncodedArray = Base64Coder.decode(preEncoded);
@@ -121,13 +112,13 @@ public class BukkitObjectStreamTest {
             if (ois != null) {
                 try {
                     ois.close();
-                } catch (IOException ex) {
+                } catch (IOException ignored) {
                 }
             }
             if (preois != null) {
                 try {
                     preois.close();
-                } catch (IOException ex) {
+                } catch (IOException ignored) {
                 }
             }
         }
@@ -148,18 +139,9 @@ public class BukkitObjectStreamTest {
         // The entire reason the pre-encoded string was added is to make a build (test) fail if someone accidentally makes it not backward-compatible
 
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ObjectOutputStream oos = null;
-        try {
-            oos = new BukkitObjectOutputStream(out);
+        try (ObjectOutputStream oos = new BukkitObjectOutputStream(out)) {
             oos.writeObject(object);
             oos.flush();
-        } finally {
-            if (oos != null) {
-                try {
-                    oos.close();
-                } catch (IOException e) {
-                }
-            }
         }
 
         final String string = new String(Base64Coder.encode(out.toByteArray()));

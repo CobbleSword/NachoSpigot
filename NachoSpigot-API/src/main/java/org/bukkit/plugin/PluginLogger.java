@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  * @see Logger
  */
 public class PluginLogger extends Logger {
-    private String pluginName;
+    private final String pluginName;
 
     /**
      * Creates a new PluginLogger that extracts the name from a plugin.
@@ -22,7 +22,7 @@ public class PluginLogger extends Logger {
     public PluginLogger(Plugin context) {
         super(context.getClass().getCanonicalName(), null);
         String prefix = context.getDescription().getPrefix();
-        pluginName = prefix != null ? new StringBuilder().append("[").append(prefix).append("] ").toString() : "[" + context.getDescription().getName() + "] ";
+        pluginName = prefix != null ? "[" + prefix + "] " : "[" + context.getDescription().getName() + "] ";
         setParent(context.getServer().getLogger());
         setLevel(Level.ALL);
     }

@@ -30,21 +30,21 @@ public interface Timing extends AutoCloseable {
     /**
      * Starts timing the execution until {@link #stopTiming()} is called.
      */
-    public void startTiming();
+    void startTiming();
 
     /**
      * <p>Stops timing and records the data. Propagates the data up to group handlers.</p>
      *
      * Will automatically be called when this Timing is used with try-with-resources
      */
-    public void stopTiming();
+    void stopTiming();
 
     /**
      * Starts timing the execution until {@link #stopTiming()} is called.
      *
      * But only if we are on the primary thread.
      */
-    public void startTimingIfSync();
+    void startTimingIfSync();
 
     /**
      * <p>Stops timing and records the data. Propagates the data up to group handlers.</p>
@@ -53,12 +53,12 @@ public interface Timing extends AutoCloseable {
      *
      * But only if we are on the primary thread.
      */
-    public void stopTimingIfSync();
+    void stopTimingIfSync();
 
     /**
      * Stops timing and disregards current timing data.
      */
-    public void abort();
+    void abort();
 
     /**
      * Used internally to get the actual backing Handler in the case of delegated Handlers

@@ -64,7 +64,7 @@ public class PlayerTeleportEvent extends PlayerMoveEvent {
          * Indicates the teleportation was caused by an event not covered by
          * this enum
          */
-        UNKNOWN;
+        UNKNOWN
     }
 
     @Override

@@ -167,8 +167,7 @@ public class SimpleCommandMap implements CommandMap {
     }
 
     public Command getCommand(String name) {
-        Command target = knownCommands.get(name.toLowerCase());
-        return target;
+        return knownCommands.get(name.toLowerCase());
     }
 
     public List<String> tabComplete(CommandSender sender, String cmdLine) {
@@ -186,7 +185,7 @@ public class SimpleCommandMap implements CommandMap {
         int spaceIndex = cmdLine.indexOf(' ');
 
         if (spaceIndex == -1) {
-            ArrayList<String> completions = new ArrayList<String>();
+            ArrayList<String> completions = new ArrayList<>();
             Map<String, Command> knownCommands = this.knownCommands;
 
             final String prefix = (sender instanceof Player ? "/" : "");
@@ -205,7 +204,7 @@ public class SimpleCommandMap implements CommandMap {
                 }
             }
 
-            Collections.sort(completions, String.CASE_INSENSITIVE_ORDER);
+            completions.sort(String.CASE_INSENSITIVE_ORDER);
             return completions;
         }
 
@@ -220,7 +219,7 @@ public class SimpleCommandMap implements CommandMap {
             return null;
         }
 
-        String argLine = cmdLine.substring(spaceIndex + 1, cmdLine.length());
+        String argLine = cmdLine.substring(spaceIndex + 1);
         String[] args = PATTERN_ON_SPACE.split(argLine, -1);
 
         try {
@@ -247,7 +246,7 @@ public class SimpleCommandMap implements CommandMap {
             }
 
             String[] commandStrings = values.get(alias);
-            List<String> targets = new ArrayList<String>();
+            List<String> targets = new ArrayList<>();
             StringBuilder bad = new StringBuilder();
 
             for (String commandString : commandStrings) {

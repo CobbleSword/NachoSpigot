@@ -11,7 +11,7 @@ import org.bukkit.plugin.Plugin;
 public class PluginCommandYamlParser {
 
     public static List<Command> parse(Plugin plugin) {
-        List<Command> pluginCmds = new ArrayList<Command>();
+        List<Command> pluginCmds = new ArrayList<>();
 
         Map<String, Map<String, Object>> map = plugin.getDescription().getCommands();
 
@@ -40,19 +40,19 @@ public class PluginCommandYamlParser {
             }
 
             if (aliases != null) {
-                List<String> aliasList = new ArrayList<String>();
+                List<String> aliasList = new ArrayList<>();
 
                 if (aliases instanceof List) {
                     for (Object o : (List<?>) aliases) {
                         if (o.toString().contains(":")) {
-                            Bukkit.getServer().getLogger().severe("Could not load alias " + o.toString() + " for plugin " + plugin.getName() + ": Illegal Characters");
+                            Bukkit.getServer().getLogger().severe("Could not load alias " + o + " for plugin " + plugin.getName() + ": Illegal Characters");
                             continue;
                         }
                         aliasList.add(o.toString());
                     }
                 } else {
                     if (aliases.toString().contains(":")) {
-                        Bukkit.getServer().getLogger().severe("Could not load alias " + aliases.toString() + " for plugin " + plugin.getName() + ": Illegal Characters");
+                        Bukkit.getServer().getLogger().severe("Could not load alias " + aliases + " for plugin " + plugin.getName() + ": Illegal Characters");
                     } else {
                         aliasList.add(aliases.toString());
                     }

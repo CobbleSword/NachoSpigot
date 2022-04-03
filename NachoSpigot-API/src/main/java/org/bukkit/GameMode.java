@@ -37,7 +37,7 @@ public enum GameMode {
     private final int value;
     private final static Map<Integer, GameMode> BY_ID = Maps.newHashMap();
 
-    private GameMode(final int value) {
+    GameMode(final int value) {
         this.value = value;
     }
 

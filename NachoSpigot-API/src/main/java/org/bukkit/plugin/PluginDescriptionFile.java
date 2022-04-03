@@ -175,39 +175,34 @@ import com.google.common.collect.ImmutableSet;
  *</pre></blockquote>
  */
 public final class PluginDescriptionFile {
-    private static final ThreadLocal<Yaml> YAML = new ThreadLocal<Yaml>() {
-        @Override
-        protected Yaml initialValue() {
-            return new Yaml(new SafeConstructor() {
-                {
-                    yamlConstructors.put(null, new AbstractConstruct() {
-                        @Override
-                        public Object construct(final Node node) {
-                            if (!node.getTag().startsWith("!@")) {
-                                // Unknown tag - will fail
-                                return SafeConstructor.undefinedConstructor.construct(node);
-                            }
-                            // Unknown awareness - provide a graceful substitution
-                            return new PluginAwareness() {
-                                @Override
-                                public String toString() {
-                                    return node.toString();
-                                }
-                            };
-                        }
-                    });
-                    for (final PluginAwareness.Flags flag : PluginAwareness.Flags.values()) {
-                        yamlConstructors.put(new Tag("!@" + flag.name()), new AbstractConstruct() {
-                            @Override
-                            public PluginAwareness.Flags construct(final Node node) {
-                                return flag;
-                            }
-                        });
+    private static final ThreadLocal<Yaml> YAML = ThreadLocal.withInitial(() -> new Yaml(new SafeConstructor() {
+        {
+            yamlConstructors.put(null, new AbstractConstruct() {
+                @Override
+                public Object construct(final Node node) {
+                    if (!node.getTag().startsWith("!@")) {
+                        // Unknown tag - will fail
+                        return SafeConstructor.undefinedConstructor.construct(node);
                     }
+                    // Unknown awareness - provide a graceful substitution
+                    return new PluginAwareness() {
+                        @Override
+                        public String toString() {
+                            return node.toString();
+                        }
+                    };
                 }
             });
+            for (final PluginAwareness.Flags flag : PluginAwareness.Flags.values()) {
+                yamlConstructors.put(new Tag("!@" + flag.name()), new AbstractConstruct() {
+                    @Override
+                    public PluginAwareness.Flags construct(final Node node) {
+                        return flag;
+                    }
+                });
+            }
         }
-    };
+    }));
     String rawName = null;
     private String name = null;
     private String main = null;
@@ -784,7 +779,7 @@ public final class PluginDescriptionFile {
     public List<Permission> getPermissions() {
         if (permissions == null) {
             if (lazyPermissions == null) {
-                permissions = ImmutableList.<Permission>of();
+                permissions = ImmutableList.of();
             } else {
                 permissions = ImmutableList.copyOf(Permission.loadPermissions(lazyPermissions, "Permission node '%s' in plugin description file for " + getFullName() + " is invalid", defaultPerm));
                 lazyPermissions = null;
@@ -920,15 +915,15 @@ public final class PluginDescriptionFile {
         }
 
         if (map.get("commands") != null) {
-            ImmutableMap.Builder<String, Map<String, Object>> commandsBuilder = ImmutableMap.<String, Map<String, Object>>builder();
+            ImmutableMap.Builder<String, Map<String, Object>> commandsBuilder = ImmutableMap.builder();
             try {
                 for (Map.Entry<?, ?> command : ((Map<?, ?>) map.get("commands")).entrySet()) {
-                    ImmutableMap.Builder<String, Object> commandBuilder = ImmutableMap.<String, Object>builder();
+                    ImmutableMap.Builder<String, Object> commandBuilder = ImmutableMap.builder();
                     if (command.getValue() != null) {
                         for (Map.Entry<?, ?> commandEntry : ((Map<?, ?>) command.getValue()).entrySet()) {
                             if (commandEntry.getValue() instanceof Iterable) {
                                 // This prevents internal alias list changes
-                                ImmutableList.Builder<Object> commandSubList = ImmutableList.<Object>builder();
+                                ImmutableList.Builder<Object> commandSubList = ImmutableList.builder();
                                 for (Object commandSubListItem : (Iterable<?>) commandEntry.getValue()) {
                                     if (commandSubListItem != null) {
                                         commandSubList.add(commandSubListItem);
@@ -983,7 +978,7 @@ public final class PluginDescriptionFile {
         }
 
         if (map.get("authors") != null) {
-            ImmutableList.Builder<String> authorsBuilder = ImmutableList.<String>builder();
+            ImmutableList.Builder<String> authorsBuilder = ImmutableList.builder();
             if (map.get("author") != null) {
                 authorsBuilder.add(map.get("author").toString());
             }
@@ -1000,7 +995,7 @@ public final class PluginDescriptionFile {
         } else if (map.get("author") != null) {
             authors = ImmutableList.of(map.get("author").toString());
         } else {
-            authors = ImmutableList.<String>of();
+            authors = ImmutableList.of();
         }
 
         if (map.get("default-permission") != null) {
@@ -1014,7 +1009,7 @@ public final class PluginDescriptionFile {
         }
 
         if (map.get("awareness") instanceof Iterable) {
-            Set<PluginAwareness> awareness = new HashSet<PluginAwareness>();
+            Set<PluginAwareness> awareness = new HashSet<>();
             try {
                 for (Object o : (Iterable<?>) map.get("awareness")) {
                     awareness.add((PluginAwareness) o);
@@ -1042,7 +1037,7 @@ public final class PluginDescriptionFile {
             return ImmutableList.of();
         }
 
-        final ImmutableList.Builder<String> builder = ImmutableList.<String>builder();
+        final ImmutableList.Builder<String> builder = ImmutableList.builder();
         try {
             for (final Object entry : (Iterable<?>) value) {
                 builder.add(entry.toString().replace(' ', '_'));
@@ -1056,7 +1051,7 @@ public final class PluginDescriptionFile {
     }
 
     private Map<String, Object> saveMap() {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
 
         map.put("name", name);
         map.put("main", main);

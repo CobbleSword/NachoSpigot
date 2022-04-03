@@ -14,7 +14,7 @@ public abstract class ConfigurationTest {
     public abstract Configuration getConfig();
 
     public Map<String, Object> getTestValues() {
-        HashMap<String, Object> result = new LinkedHashMap<String, Object>();
+        HashMap<String, Object> result = new LinkedHashMap<>();
 
         result.put("integer", Integer.MIN_VALUE);
         result.put("string", "String Value");
@@ -129,7 +129,7 @@ public abstract class ConfigurationTest {
     public void testCreateSection() {
         Configuration config = getConfig();
 
-        Set<String> set = new HashSet<String>();
+        Set<String> set = new HashSet<>();
         set.add("this");
         set.add("this.test.sub");
         set.add("this.test");

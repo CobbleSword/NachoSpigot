@@ -1,7 +1,6 @@
 package org.bukkit.command.defaults;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
@@ -57,7 +56,7 @@ public class OpCommand extends VanillaCommand {
 
             Player senderPlayer = (Player) sender;
 
-            ArrayList<String> matchedPlayers = new ArrayList<String>();
+            ArrayList<String> matchedPlayers = new ArrayList<>();
             for (Player player : sender.getServer().getOnlinePlayers()) {
                 String name = player.getName();
                 if (!senderPlayer.canSee(player) || player.isOp()) {
@@ -68,7 +67,7 @@ public class OpCommand extends VanillaCommand {
                 }
             }
 
-            Collections.sort(matchedPlayers, String.CASE_INSENSITIVE_ORDER);
+            matchedPlayers.sort(String.CASE_INSENSITIVE_ORDER);
             return matchedPlayers;
         }
         return ImmutableList.of();

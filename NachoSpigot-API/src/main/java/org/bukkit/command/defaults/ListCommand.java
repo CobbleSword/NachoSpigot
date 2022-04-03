@@ -39,7 +39,7 @@ public class ListCommand extends VanillaCommand {
             online.append(player.getDisplayName());
         }
 
-        sender.sendMessage("There are " + players.size() + "/" + Bukkit.getMaxPlayers() + " players online:\n" + online.toString());
+        sender.sendMessage("There are " + players.size() + "/" + Bukkit.getMaxPlayers() + " players online:\n" + online);
 
         return true;
     }

@@ -39,23 +39,23 @@ import com.google.common.collect.ImmutableSet;
  */
 public final class SimplePluginManager implements PluginManager {
     private final Server server;
-    private final Map<Pattern, PluginLoader> fileAssociations = new HashMap<Pattern, PluginLoader>();
-    private final List<Plugin> plugins = new ArrayList<Plugin>();
-    private final Map<String, Plugin> lookupNames = new HashMap<String, Plugin>();
+    private final Map<Pattern, PluginLoader> fileAssociations = new HashMap<>();
+    private final List<Plugin> plugins = new ArrayList<>();
+    private final Map<String, Plugin> lookupNames = new HashMap<>();
     private static File updateDirectory = null;
     private final SimpleCommandMap commandMap;
-    private final Map<String, Permission> permissions = new HashMap<String, Permission>();
-    private final Map<Boolean, Set<Permission>> defaultPerms = new LinkedHashMap<Boolean, Set<Permission>>();
-    private final Map<String, Map<Permissible, Boolean>> permSubs = new HashMap<String, Map<Permissible, Boolean>>();
-    private final Map<Boolean, Map<Permissible, Boolean>> defSubs = new HashMap<Boolean, Map<Permissible, Boolean>>();
-    private boolean useTimings = false;
+    private final Map<String, Permission> permissions = new HashMap<>();
+    private final Map<Boolean, Set<Permission>> defaultPerms = new LinkedHashMap<>();
+    private final Map<String, Map<Permissible, Boolean>> permSubs = new HashMap<>();
+    private final Map<Boolean, Map<Permissible, Boolean>> defSubs = new HashMap<>();
+    private final boolean useTimings = false;
 
     public SimplePluginManager(Server instance, SimpleCommandMap commandMap) {
         server = instance;
         this.commandMap = commandMap;
 
-        defaultPerms.put(true, new HashSet<Permission>());
-        defaultPerms.put(false, new HashSet<Permission>());
+        defaultPerms.put(true, new HashSet<>());
+        defaultPerms.put(false, new HashSet<>());
     }
 
     /**
@@ -104,7 +104,7 @@ public final class SimplePluginManager implements PluginManager {
         Validate.notNull(directory, "Directory cannot be null");
         Validate.isTrue(directory.isDirectory(), "Directory must be a directory");
 
-        List<Plugin> result = new ArrayList<Plugin>();
+        List<Plugin> result = new ArrayList<>();
         Set<Pattern> filters = fileAssociations.keySet();
 
         if (!(server.getUpdateFolder().isEmpty())) {
@@ -128,7 +128,7 @@ public final class SimplePluginManager implements PluginManager {
 
             if (loader == null) continue;
 
-            PluginDescriptionFile description = null;
+            PluginDescriptionFile description;
             try {
                 description = loader.getPluginDescription(file);
                 String name = description.getName();
@@ -164,13 +164,13 @@ public final class SimplePluginManager implements PluginManager {
                     // Duplicates do not matter, they will be removed together if applicable
                     softDependencies.get(description.getName()).addAll(softDependencySet);
                 } else {
-                    softDependencies.put(description.getName(), new LinkedList<String>(softDependencySet));
+                    softDependencies.put(description.getName(), new LinkedList<>(softDependencySet));
                 }
             }
 
             Collection<String> dependencySet = description.getDepend();
             if (dependencySet != null && !dependencySet.isEmpty()) {
-                dependencies.put(description.getName(), new LinkedList<String>(dependencySet));
+                dependencies.put(description.getName(), new LinkedList<>(dependencySet));
             }
 
             Collection<String> loadBeforeSet = description.getLoadBefore();
@@ -180,7 +180,7 @@ public final class SimplePluginManager implements PluginManager {
                         softDependencies.get(loadBeforeTarget).add(description.getName());
                     } else {
                         // softDependencies is never iterated, so 'ghost' plugins aren't an issue
-                        Collection<String> shortSoftDependency = new LinkedList<String>();
+                        Collection<String> shortSoftDependency = new LinkedList<>();
                         shortSoftDependency.add(description.getName());
                         softDependencies.put(loadBeforeTarget, shortSoftDependency);
                     }
@@ -634,12 +634,7 @@ public final class SimplePluginManager implements PluginManager {
 
     public void subscribeToPermission(String permission, Permissible permissible) {
         String name = permission.toLowerCase();
-        Map<Permissible, Boolean> map = permSubs.get(name);
-
-        if (map == null) {
-            map = new WeakHashMap<Permissible, Boolean>();
-            permSubs.put(name, map);
-        }
+        Map<Permissible, Boolean> map = permSubs.computeIfAbsent(name, k -> new WeakHashMap<>());
 
         map.put(permissible, true);
     }
@@ -669,12 +664,7 @@ public final class SimplePluginManager implements PluginManager {
     }
 
     public void subscribeToDefaultPerms(boolean op, Permissible permissible) {
-        Map<Permissible, Boolean> map = defSubs.get(op);
-
-        if (map == null) {
-            map = new WeakHashMap<Permissible, Boolean>();
-            defSubs.put(op, map);
-        }
+        Map<Permissible, Boolean> map = defSubs.computeIfAbsent(op, k -> new WeakHashMap<>());
 
         map.put(permissible, true);
     }
@@ -702,7 +692,7 @@ public final class SimplePluginManager implements PluginManager {
     }
 
     public Set<Permission> getPermissions() {
-        return new HashSet<Permission>(permissions.values());
+        return new HashSet<>(permissions.values());
     }
 
     public boolean useTimings() {

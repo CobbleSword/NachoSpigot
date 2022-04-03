@@ -233,25 +233,25 @@ public enum Effect {
     private static final Map<String, Effect> BY_NAME = Maps.newHashMap();
     private final String particleName;
 
-    private Effect(int id, Type type) {
+    Effect(int id, Type type) {
         this(id,type,null);
     }
 
-    private Effect(int id, Type type, Class<?> data) {
+    Effect(int id, Type type, Class<?> data) {
         this.id = id;
         this.type = type;
         this.data = data;
         particleName = null;
     }
 
-    private Effect(String particleName, Type type, Class<?> data) {
+    Effect(String particleName, Type type, Class<?> data) {
         this.particleName = particleName;
         this.type = type;
         id = 0;
         this.data = data;
     }
 
-    private Effect(String particleName, Type type) {
+    Effect(String particleName, Type type) {
         this.particleName = particleName;
         this.type = type;
         id = 0;

@@ -22,7 +22,7 @@ public class EffectCommand extends VanillaCommand {
     }
 
     static {
-        ImmutableList.Builder<String> builder = ImmutableList.<String>builder();
+        ImmutableList.Builder<String> builder = ImmutableList.builder();
 
         for (PotionEffectType type : PotionEffectType.values()) {
             if (type != null) {
@@ -112,7 +112,7 @@ public class EffectCommand extends VanillaCommand {
         if (args.length == 1) {
             return super.tabComplete(sender, commandLabel, args);
         } else if (args.length == 2) {
-            return StringUtil.copyPartialMatches(args[1], effects, new ArrayList<String>(effects.size()));
+            return StringUtil.copyPartialMatches(args[1], effects, new ArrayList<>(effects.size()));
         }
 
         return ImmutableList.of();

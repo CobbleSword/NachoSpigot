@@ -18,5 +18,5 @@ public interface Hanging extends Entity, Attachable {
      * @return False if force was false and there was no block for it to
      *     attach to in order to face the given direction.
      */
-    public boolean setFacingDirection(BlockFace face, boolean force);
+    boolean setFacingDirection(BlockFace face, boolean force);
 }

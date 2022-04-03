@@ -10,7 +10,7 @@ public interface Tameable {
      *
      * @return true if this has been tamed
      */
-    public boolean isTamed();
+    boolean isTamed();
 
     /**
      * Sets if this has been tamed. Not necessary if the method setOwner has
@@ -21,14 +21,14 @@ public interface Tameable {
      *
      * @param tame true if tame
      */
-    public void setTamed(boolean tame);
+    void setTamed(boolean tame);
 
     /**
      * Gets the current owning AnimalTamer
      *
      * @return the owning AnimalTamer, or null if not owned
      */
-    public AnimalTamer getOwner();
+    AnimalTamer getOwner();
 
     /**
      * Set this to be owned by given AnimalTamer.
@@ -39,6 +39,6 @@ public interface Tameable {
      *
      * @param tamer the AnimalTamer who should own this
      */
-    public void setOwner(AnimalTamer tamer);
+    void setOwner(AnimalTamer tamer);
 
 }

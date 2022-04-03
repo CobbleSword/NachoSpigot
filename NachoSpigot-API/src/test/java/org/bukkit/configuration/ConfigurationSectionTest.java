@@ -186,7 +186,7 @@ public abstract class ConfigurationSectionTest {
     @Test
     public void testSectionMap() {
         ConfigurationSection config = getConfigurationSection();
-        Map<String, Object> testMap = new LinkedHashMap<String, Object>();
+        Map<String, Object> testMap = new LinkedHashMap<>();
 
         testMap.put("string", "Hello World");
         testMap.put("integer", 15);
@@ -397,7 +397,7 @@ public abstract class ConfigurationSectionTest {
     public void testGetList_String() {
         ConfigurationSection section = getConfigurationSection();
         String key = "exists";
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
 
         map.put("one", 1);
         map.put("two", "two");
@@ -413,7 +413,7 @@ public abstract class ConfigurationSectionTest {
         assertEquals(Arrays.asList((Object) true, false), section.getBooleanList(key));
         assertEquals(Arrays.asList((Object) 4.0, 5.0, 6.0), section.getDoubleList(key));
         assertEquals(Arrays.asList((Object) 4.0f, 5.0f, 6.0f), section.getFloatList(key));
-        assertEquals(Arrays.asList((Object) 4l, 5l, 6l), section.getLongList(key));
+        assertEquals(Arrays.asList((Object) 4L, 5L, 6L), section.getLongList(key));
         assertEquals(Arrays.asList((Object) (byte) 4, (byte) 5, (byte) 6), section.getByteList(key));
         assertEquals(Arrays.asList((Object) (short) 4, (short) 5, (short) 6), section.getShortList(key));
         assertEquals(map, section.getMapList(key).get(0));

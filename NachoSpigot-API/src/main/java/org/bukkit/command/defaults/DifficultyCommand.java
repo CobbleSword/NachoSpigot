@@ -74,7 +74,7 @@ public class DifficultyCommand extends VanillaCommand {
         Validate.notNull(alias, "Alias cannot be null");
 
         if (args.length == 1) {
-            return StringUtil.copyPartialMatches(args[0], DIFFICULTY_NAMES, new ArrayList<String>(DIFFICULTY_NAMES.size()));
+            return StringUtil.copyPartialMatches(args[0], DIFFICULTY_NAMES, new ArrayList<>(DIFFICULTY_NAMES.size()));
         }
 
         return ImmutableList.of();

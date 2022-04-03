@@ -45,7 +45,7 @@ public enum PotionType {
     }
 
     public boolean isInstant() {
-        return effect == null ? true : effect.isInstant();
+        return effect == null || effect.isInstant();
     }
 
     /**

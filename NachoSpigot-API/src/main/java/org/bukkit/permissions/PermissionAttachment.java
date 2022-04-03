@@ -10,7 +10,7 @@ import org.bukkit.plugin.Plugin;
  */
 public class PermissionAttachment {
     private PermissionRemovedExecutor removed;
-    private final Map<String, Boolean> permissions = new LinkedHashMap<String, Boolean>();
+    private final Map<String, Boolean> permissions = new LinkedHashMap<>();
     private final Permissible permissible;
     private final Plugin plugin;
 
@@ -73,7 +73,7 @@ public class PermissionAttachment {
      * @return Copy of all permissions and values expressed by this attachment
      */
     public Map<String, Boolean> getPermissions() {
-        return new LinkedHashMap<String, Boolean>(permissions);
+        return new LinkedHashMap<>(permissions);
     }
 
     /**

@@ -145,7 +145,7 @@ public class VersionCommand extends BukkitCommand {
         Validate.notNull(alias, "Alias cannot be null");
 
         if (args.length == 1) {
-            List<String> completions = new ArrayList<String>();
+            List<String> completions = new ArrayList<>();
             String toComplete = args[0].toLowerCase();
             for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
                 if (StringUtil.startsWithIgnoreCase(plugin.getName(), toComplete)) {
@@ -160,7 +160,7 @@ public class VersionCommand extends BukkitCommand {
     private final ReentrantLock versionLock = new ReentrantLock();
     private boolean hasVersion = false;
     private String versionMessage = null;
-    private final Set<CommandSender> versionWaiters = new HashSet<CommandSender>();
+    private final Set<CommandSender> versionWaiters = new HashSet<>();
     private boolean versionTaskStarted = false;
     private long lastCheck = 0;
 

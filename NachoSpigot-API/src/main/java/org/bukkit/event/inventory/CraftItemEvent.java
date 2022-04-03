@@ -9,7 +9,7 @@ import org.bukkit.inventory.Recipe;
  * Called when the recipe of an Item is completed inside a crafting matrix.
  */
 public class CraftItemEvent extends InventoryClickEvent {
-    private Recipe recipe;
+    private final Recipe recipe;
 
     @Deprecated
     public CraftItemEvent(Recipe recipe, InventoryView what, SlotType type, int slot, boolean right, boolean shift) {

@@ -103,7 +103,7 @@ public class TimingsCommand extends BukkitCommand {
 
         if (args.length == 1) {
             return StringUtil.copyPartialMatches(args[0], TIMINGS_SUBCOMMANDS,
-                new ArrayList<String>(TIMINGS_SUBCOMMANDS.size()));
+                    new ArrayList<>(TIMINGS_SUBCOMMANDS.size()));
         }
         return ImmutableList.of();
     }

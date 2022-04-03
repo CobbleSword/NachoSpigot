@@ -48,13 +48,12 @@ public class GameRuleCommand extends VanillaCommand {
                 sender.sendMessage(ChatColor.RED + "No game rule called " + rule + " is available");
             }
 
-            return true;
         } else {
             sender.sendMessage(ChatColor.RED + "Usage: " + usageMessage);
             sender.sendMessage("Rules: " + this.createString(getGameWorld(sender).getGameRules(), 0, ", "));
 
-            return true;
         }
+        return true;
     }
 
     private World getGameWorld(CommandSender sender) {
@@ -77,11 +76,11 @@ public class GameRuleCommand extends VanillaCommand {
         Validate.notNull(alias, "Alias cannot be null");
 
         if (args.length == 1) {
-            return StringUtil.copyPartialMatches(args[0], Arrays.asList(getGameWorld(sender).getGameRules()), new ArrayList<String>());
+            return StringUtil.copyPartialMatches(args[0], Arrays.asList(getGameWorld(sender).getGameRules()), new ArrayList<>());
         }
 
         if (args.length == 2) {
-            return StringUtil.copyPartialMatches(args[1], GAMERULE_STATES, new ArrayList<String>(GAMERULE_STATES.size()));
+            return StringUtil.copyPartialMatches(args[1], GAMERULE_STATES, new ArrayList<>(GAMERULE_STATES.size()));
         }
 
         return ImmutableList.of();

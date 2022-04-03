@@ -21,5 +21,5 @@ public interface Dropper extends BlockState, InventoryHolder {
      * ContainerBlock, the randomly selected ItemStack is dropped on
      * the ground in the form of an {@link org.bukkit.entity.Item Item}.
      */
-     public void drop();
+    void drop();
 }

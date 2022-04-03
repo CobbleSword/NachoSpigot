@@ -6,7 +6,6 @@ import static org.junit.Assert.*;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.Test;
 
-@SuppressWarnings("javadoc")
 public class ColorTest {
     static class TestColor {
         static int id = 0;

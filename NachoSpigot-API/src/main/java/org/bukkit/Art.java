@@ -37,11 +37,13 @@ public enum Art {
     SKELETON(24, 4, 3),
     DONKEYKONG(25, 4, 3);
 
-    private int id, width, height;
+    private final int id;
+    private final int width;
+    private final int height;
     private static final HashMap<String, Art> BY_NAME = Maps.newHashMap();
     private static final HashMap<Integer, Art> BY_ID = Maps.newHashMap();
 
-    private Art(int id, int width, int height) {
+    Art(int id, int width, int height) {
         this.id = id;
         this.width = width;
         this.height = height;

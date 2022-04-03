@@ -10,12 +10,12 @@ public interface Creeper extends Monster {
      *
      * @return true if this creeper is powered
      */
-    public boolean isPowered();
+    boolean isPowered();
 
     /**
      * Sets the Powered status of this Creeper
      *
      * @param value New Powered status
      */
-    public void setPowered(boolean value);
+    void setPowered(boolean value);
 }

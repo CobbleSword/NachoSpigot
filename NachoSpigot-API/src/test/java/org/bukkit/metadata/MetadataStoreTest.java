@@ -5,15 +5,14 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.TestPlugin;
 import org.junit.Test;
 
 public class MetadataStoreTest {
-    private Plugin pluginX = new TestPlugin("x");
-    private Plugin pluginY = new TestPlugin("y");
+    private final Plugin pluginX = new TestPlugin("x");
+    private final Plugin pluginY = new TestPlugin("y");
 
     StringMetadataStore subject = new StringMetadataStore();
 
@@ -37,11 +36,9 @@ public class MetadataStoreTest {
     public void testInvalidateAll() {
         final Counter counter = new Counter();
 
-        subject.setMetadata("subject", "key", new LazyMetadataValue(pluginX, new Callable<Object>() {
-            public Object call() throws Exception {
-                counter.increment();
-                return 10;
-            }
+        subject.setMetadata("subject", "key", new LazyMetadataValue(pluginX, () -> {
+            counter.increment();
+            return 10;
         }));
 
         assertTrue(subject.hasMetadata("subject", "key"));
@@ -55,11 +52,9 @@ public class MetadataStoreTest {
     public void testInvalidateAllButActuallyNothing() {
         final Counter counter = new Counter();
 
-        subject.setMetadata("subject", "key", new LazyMetadataValue(pluginX, new Callable<Object>() {
-            public Object call() throws Exception {
-                counter.increment();
-                return 10;
-            }
+        subject.setMetadata("subject", "key", new LazyMetadataValue(pluginX, () -> {
+            counter.increment();
+            return 10;
         }));
 
         assertTrue(subject.hasMetadata("subject", "key"));
@@ -122,14 +117,14 @@ public class MetadataStoreTest {
         assertFalse(subject.hasMetadata("subject", "otherKey"));
     }
 
-    private class StringMetadataStore extends MetadataStoreBase<String> implements MetadataStore<String> {
+    private static class StringMetadataStore extends MetadataStoreBase<String> implements MetadataStore<String> {
         @Override
         protected String disambiguate(String subject, String metadataKey) {
             return subject + ":" + metadataKey;
         }
     }
 
-    private class Counter {
+    private static class Counter {
         int c = 0;
 
         public void increment() {

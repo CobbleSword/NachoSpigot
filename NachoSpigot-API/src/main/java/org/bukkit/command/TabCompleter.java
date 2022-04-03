@@ -20,7 +20,7 @@ public interface TabCompleter {
      * @return A List of possible completions for the final argument, or null
      *     to default to the command executor
      */
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args);
+    List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args);
 
     // PaperSpigot start - location tab-completes
     default List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args, Location location) {

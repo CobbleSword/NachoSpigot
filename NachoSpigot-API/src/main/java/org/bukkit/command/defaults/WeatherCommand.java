@@ -66,7 +66,7 @@ public class WeatherCommand extends VanillaCommand {
         Validate.notNull(alias, "Alias cannot be null");
 
         if (args.length == 1) {
-            return StringUtil.copyPartialMatches(args[0], WEATHER_TYPES, new ArrayList<String>(WEATHER_TYPES.size()));
+            return StringUtil.copyPartialMatches(args[0], WEATHER_TYPES, new ArrayList<>(WEATHER_TYPES.size()));
         }
 
         return ImmutableList.of();

@@ -15,14 +15,14 @@ public interface Projectile extends Entity {
      * @return the {@link LivingEntity} that shot this projectile
      */
     @Deprecated
-    public LivingEntity _INVALID_getShooter();
+    LivingEntity _INVALID_getShooter();
 
     /**
      * Retrieve the shooter of this projectile.
      *
      * @return the {@link ProjectileSource} that shot this projectile
      */
-    public ProjectileSource getShooter();
+    ProjectileSource getShooter();
 
     /**
      * This method exists for legacy reasons to provide backwards
@@ -32,14 +32,14 @@ public interface Projectile extends Entity {
      * @param shooter the {@link LivingEntity} that shot this projectile
      */
     @Deprecated
-    public void _INVALID_setShooter(LivingEntity shooter);
+    void _INVALID_setShooter(LivingEntity shooter);
 
     /**
      * Set the shooter of this projectile.
      *
      * @param source the {@link ProjectileSource} that shot this projectile
      */
-    public void setShooter(ProjectileSource source);
+    void setShooter(ProjectileSource source);
 
     /**
      * Determine if this projectile should bounce or not when it hits.
@@ -48,7 +48,7 @@ public interface Projectile extends Entity {
      *
      * @return true if it should bounce.
      */
-    public boolean doesBounce();
+    boolean doesBounce();
 
     /**
      * Set whether or not this projectile should bounce or not when it hits
@@ -56,5 +56,5 @@ public interface Projectile extends Entity {
      *
      * @param doesBounce whether or not it should bounce.
      */
-    public void setBounce(boolean doesBounce);
+    void setBounce(boolean doesBounce);
 }

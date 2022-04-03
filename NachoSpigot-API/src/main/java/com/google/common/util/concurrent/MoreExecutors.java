@@ -264,20 +264,17 @@ public final class MoreExecutors {
             addShutdownHook(
                     MoreExecutors.newThread(
                             "DelayedShutdownHook-for-" + service,
-                            new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        // We'd like to log progress and failures that may arise in the
-                                        // following code, but unfortunately the behavior of logging
-                                        // is undefined in shutdown hooks.
-                                        // This is because the logging code installs a shutdown hook of its
-                                        // own. See Cleaner class inside {@link LogManager}.
-                                        service.shutdown();
-                                        service.awaitTermination(terminationTimeout, timeUnit);
-                                    } catch (InterruptedException ignored) {
-                                        // We're shutting down anyway, so just ignore.
-                                    }
+                            () -> {
+                                try {
+                                    // We'd like to log progress and failures that may arise in the
+                                    // following code, but unfortunately the behavior of logging
+                                    // is undefined in shutdown hooks.
+                                    // This is because the logging code installs a shutdown hook of its
+                                    // own. See Cleaner class inside {@link LogManager}.
+                                    service.shutdown();
+                                    service.awaitTermination(terminationTimeout, timeUnit);
+                                } catch (InterruptedException ignored) {
+                                    // We're shutting down anyway, so just ignore.
                                 }
                             }));
         }
@@ -638,7 +635,6 @@ public final class MoreExecutors {
     @GwtIncompatible // TODO
     private static final class ScheduledListeningDecorator extends ListeningDecorator
             implements ListeningScheduledExecutorService {
-        @SuppressWarnings("hiding")
         final ScheduledExecutorService delegate;
 
         ScheduledListeningDecorator(ScheduledExecutorService delegate) {
@@ -659,7 +655,7 @@ public final class MoreExecutors {
                 Callable<V> callable, long delay, TimeUnit unit) {
             TrustedListenableFutureTask<V> task = TrustedListenableFutureTask.create(callable);
             ScheduledFuture<?> scheduled = delegate.schedule(task, delay, unit);
-            return new ListenableScheduledTask<V>(task, scheduled);
+            return new ListenableScheduledTask<>(task, scheduled);
         }
 
         @Override
@@ -859,12 +855,7 @@ public final class MoreExecutors {
             final BlockingQueue<Future<T>> queue) {
         final ListenableFuture<T> future = executorService.submit(task);
         future.addListener(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        queue.add(future);
-                    }
-                },
+                () -> queue.add(future),
                 directExecutor());
         return future;
     }
@@ -895,11 +886,7 @@ public final class MoreExecutors {
              * ReflectiveOperationException, which Animal Sniffer would reject. (Old versions of Android
              * don't *seem* to mind, but there might be edge cases of which we're unaware.)
              */
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("Couldn't invoke ThreadManager.currentRequestThreadFactory", e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Couldn't invoke ThreadManager.currentRequestThreadFactory", e);
-        } catch (NoSuchMethodException e) {
+        } catch (IllegalAccessException | NoSuchMethodException | ClassNotFoundException e) {
             throw new RuntimeException("Couldn't invoke ThreadManager.currentRequestThreadFactory", e);
         } catch (InvocationTargetException e) {
             throw Throwables.propagate(e.getCause());
@@ -922,19 +909,13 @@ public final class MoreExecutors {
                     .getMethod("getCurrentEnvironment")
                     .invoke(null)
                     != null;
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             // If ApiProxy doesn't exist, we're not on AppEngine at all.
             return false;
-        } catch (InvocationTargetException e) {
-            // If ApiProxy throws an exception, we're not in a proper AppEngine environment.
-            return false;
-        } catch (IllegalAccessException e) {
-            // If the method isn't accessible, we're not on a supported version of AppEngine;
-            return false;
-        } catch (NoSuchMethodException e) {
-            // If the method doesn't exist, we're not on a supported version of AppEngine;
-            return false;
-        }
+        } // If ApiProxy throws an exception, we're not in a proper AppEngine environment.
+        // If the method isn't accessible, we're not on a supported version of AppEngine;
+        // If the method doesn't exist, we're not on a supported version of AppEngine;
+
     }
 
     /**
@@ -972,12 +953,7 @@ public final class MoreExecutors {
     static Executor renamingDecorator(final Executor executor, final Supplier<String> nameSupplier) {
         checkNotNull(executor);
         checkNotNull(nameSupplier);
-        return new Executor() {
-            @Override
-            public void execute(Runnable command) {
-                executor.execute(Callables.threadRenaming(command, nameSupplier));
-            }
-        };
+        return command -> executor.execute(Callables.threadRenaming(command, nameSupplier));
     }
 
     /**
@@ -1132,14 +1108,11 @@ public final class MoreExecutors {
             // directExecutor() cannot throw RejectedExecutionException
             return delegate;
         }
-        return new Executor() {
-            @Override
-            public void execute(Runnable command) {
-                try {
-                    delegate.execute(command);
-                } catch (RejectedExecutionException e) {
-                    future.setException(e);
-                }
+        return command -> {
+            try {
+                delegate.execute(command);
+            } catch (RejectedExecutionException e) {
+                future.setException(e);
             }
         };
     }

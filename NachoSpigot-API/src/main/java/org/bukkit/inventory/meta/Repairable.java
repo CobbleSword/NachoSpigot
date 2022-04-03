@@ -26,6 +26,5 @@ public interface Repairable {
      */
     void setRepairCost(int cost);
 
-    @SuppressWarnings("javadoc")
     Repairable clone();
 }

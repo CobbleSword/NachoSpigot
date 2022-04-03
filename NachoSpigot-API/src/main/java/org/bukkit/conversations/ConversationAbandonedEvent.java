@@ -8,8 +8,8 @@ import java.util.EventObject;
  */
 public class ConversationAbandonedEvent extends EventObject {
 
-    private ConversationContext context;
-    private ConversationCanceller canceller;
+    private final ConversationContext context;
+    private final ConversationCanceller canceller;
 
     public ConversationAbandonedEvent(Conversation conversation) {
         this(conversation, null);

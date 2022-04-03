@@ -162,7 +162,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
   public static <V extends @Nullable Object> ListenableFuture<V> immediateFailedFuture(
       Throwable throwable) {
     checkNotNull(throwable);
-    return new ImmediateFailedFuture<V>(throwable);
+    return new ImmediateFailedFuture<>(throwable);
   }
 
   /**
@@ -249,13 +249,10 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
     TrustedListenableFutureTask<O> task = TrustedListenableFutureTask.create(callable);
     final Future<?> scheduled = executorService.schedule(task, delay, timeUnit);
     task.addListener(
-        new Runnable() {
-          @Override
-          public void run() {
-            // Don't want to interrupt twice
-            scheduled.cancel(false);
-          }
-        },
+            () -> {
+              // Don't want to interrupt twice
+              scheduled.cancel(false);
+            },
         directExecutor());
     return task;
   }
@@ -576,11 +573,9 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
   @SafeVarargs
   public static <V extends @Nullable Object> ListenableFuture<List<V>> allAsList(
       ListenableFuture<? extends V>... futures) {
-    ListenableFuture<List<@Nullable V>> nullable =
-        new ListFuture<V>(ImmutableList.copyOf(futures), true);
     // allAsList ensures that it fills the output list with V instances.
     @SuppressWarnings("nullness")
-    ListenableFuture<List<V>> nonNull = nullable;
+    ListenableFuture<List<V>> nonNull = new ListFuture<>(ImmutableList.copyOf(futures), true);
     return nonNull;
   }
 
@@ -603,11 +598,9 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
   @Beta
   public static <V extends @Nullable Object> ListenableFuture<List<V>> allAsList(
       Iterable<? extends ListenableFuture<? extends V>> futures) {
-    ListenableFuture<List<@Nullable V>> nullable =
-        new ListFuture<V>(ImmutableList.copyOf(futures), true);
     // allAsList ensures that it fills the output list with V instances.
     @SuppressWarnings("nullness")
-    ListenableFuture<List<V>> nonNull = nullable;
+    ListenableFuture<List<V>> nonNull = new ListFuture<>(ImmutableList.copyOf(futures), true);
     return nonNull;
   }
 
@@ -623,7 +616,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
   @SafeVarargs
   public static <V extends @Nullable Object> FutureCombiner<V> whenAllComplete(
       ListenableFuture<? extends V>... futures) {
-    return new FutureCombiner<V>(false, ImmutableList.copyOf(futures));
+    return new FutureCombiner<>(false, ImmutableList.copyOf(futures));
   }
 
   /**
@@ -637,7 +630,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
   @Beta
   public static <V extends @Nullable Object> FutureCombiner<V> whenAllComplete(
       Iterable<? extends ListenableFuture<? extends V>> futures) {
-    return new FutureCombiner<V>(false, ImmutableList.copyOf(futures));
+    return new FutureCombiner<>(false, ImmutableList.copyOf(futures));
   }
 
   /**
@@ -651,7 +644,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
   @SafeVarargs
   public static <V extends @Nullable Object> FutureCombiner<V> whenAllSucceed(
       ListenableFuture<? extends V>... futures) {
-    return new FutureCombiner<V>(true, ImmutableList.copyOf(futures));
+    return new FutureCombiner<>(true, ImmutableList.copyOf(futures));
   }
 
   /**
@@ -664,7 +657,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
   @Beta
   public static <V extends @Nullable Object> FutureCombiner<V> whenAllSucceed(
       Iterable<? extends ListenableFuture<? extends V>> futures) {
-    return new FutureCombiner<V>(true, ImmutableList.copyOf(futures));
+    return new FutureCombiner<>(true, ImmutableList.copyOf(futures));
   }
 
   /**
@@ -722,7 +715,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
      */
     public <C extends @Nullable Object> ListenableFuture<C> callAsync(
         AsyncCallable<C> combiner, Executor executor) {
-      return new CombinedFuture<C>(futures, allMustSucceed, executor, combiner);
+      return new CombinedFuture<>(futures, allMustSucceed, executor, combiner);
     }
 
     /**
@@ -742,7 +735,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
     @CanIgnoreReturnValue // TODO(cpovirk): Remove this
     public <C extends @Nullable Object> ListenableFuture<C> call(
         Callable<C> combiner, Executor executor) {
-      return new CombinedFuture<C>(futures, allMustSucceed, executor, combiner);
+      return new CombinedFuture<>(futures, allMustSucceed, executor, combiner);
     }
 
     /**
@@ -761,7 +754,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
           new Callable<@Nullable Void>() {
             @Override
             @CheckForNull
-            public Void call() throws Exception {
+            public Void call() {
               combiner.run();
               return null;
             }
@@ -856,7 +849,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
      * whenAllComplete().collectSuccesses(). That API would have a signature more like the current
      * one.
      */
-    return new ListFuture<V>(ImmutableList.copyOf(futures), false);
+    return new ListFuture<>(ImmutableList.copyOf(futures), false);
   }
 
   /**
@@ -880,7 +873,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
   @Beta
   public static <V extends @Nullable Object> ListenableFuture<List<@Nullable V>> successfulAsList(
       Iterable<? extends ListenableFuture<? extends V>> futures) {
-    return new ListFuture<V>(ImmutableList.copyOf(futures), false);
+    return new ListFuture<>(ImmutableList.copyOf(futures), false);
   }
 
   /**
@@ -904,32 +897,25 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
    *
    * @since 17.0
    */
-  public static <T extends @Nullable Object> ImmutableList<ListenableFuture<T>> inCompletionOrder(
+  public static <T extends @Nullable Object> ImmutableList<?> inCompletionOrder(
       Iterable<? extends ListenableFuture<? extends T>> futures) {
     ListenableFuture<? extends T>[] copy = gwtCompatibleToArray(futures);
     final InCompletionOrderState<T> state = new InCompletionOrderState<>(copy);
     ImmutableList.Builder<AbstractFuture<T>> delegatesBuilder =
         ImmutableList.builderWithExpectedSize(copy.length);
     for (int i = 0; i < copy.length; i++) {
-      delegatesBuilder.add(new InCompletionOrderFuture<T>(state));
+      delegatesBuilder.add(new InCompletionOrderFuture<>(state));
     }
 
     final ImmutableList<AbstractFuture<T>> delegates = delegatesBuilder.build();
     for (int i = 0; i < copy.length; i++) {
       final int localI = i;
       copy[i].addListener(
-          new Runnable() {
-            @Override
-            public void run() {
-              state.recordInputCompletion(delegates, localI);
-            }
-          },
+              () -> state.recordInputCompletion(delegates, localI),
           directExecutor());
     }
 
-    @SuppressWarnings("unchecked")
-    ImmutableList<ListenableFuture<T>> delegatesCast = (ImmutableList) delegates;
-    return delegatesCast;
+    return delegates;
   }
 
   /** Can't use Iterables.toArray because it's not gwt compatible */
@@ -1102,7 +1088,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
       final FutureCallback<? super V> callback,
       Executor executor) {
     Preconditions.checkNotNull(callback);
-    future.addListener(new CallbackListener<V>(future, callback), executor);
+    future.addListener(new CallbackListener<>(future, callback), executor);
   }
 
   /** See {@link #addCallback(ListenableFuture, FutureCallback, Executor)} for behavioral notes. */

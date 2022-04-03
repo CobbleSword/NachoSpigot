@@ -12,7 +12,7 @@ public interface Prompt extends Cloneable {
     /**
      * A convenience constant for indicating the end of a conversation.
      */
-    static final Prompt END_OF_CONVERSATION = null;
+    Prompt END_OF_CONVERSATION = null;
 
     /**
      * Gets the text to display to the user when this prompt is first

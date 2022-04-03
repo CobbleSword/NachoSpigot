@@ -23,7 +23,6 @@
  */
 package co.aikar.timings;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -35,7 +34,6 @@ import org.bukkit.command.RemoteConsoleCommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.entity.EntityType;
-import org.bukkit.plugin.Plugin;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
@@ -43,12 +41,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -109,12 +107,7 @@ class TimingsExport extends Thread {
                 pair("cpu", runtime.availableProcessors()),
                 pair("runtime", ManagementFactory.getRuntimeMXBean().getUptime()),
                 pair("flags", StringUtils.join(runtimeBean.getInputArguments(), " ")),
-                pair("gc", toObjectMapper(ManagementFactory.getGarbageCollectorMXBeans(), new Function<GarbageCollectorMXBean, JSONPair>() {
-                    @Override
-                    public JSONPair apply(GarbageCollectorMXBean input) {
-                        return pair(input.getName(), toArray(input.getCollectionCount(), input.getCollectionTime()));
-                    }
-                }))
+                pair("gc", toObjectMapper(ManagementFactory.getGarbageCollectorMXBeans(), input -> pair(input.getName(), toArray(input.getCollectionCount(), input.getCollectionTime()))))
             )
         );
 
@@ -150,49 +143,24 @@ class TimingsExport extends Thread {
 
         parent.put("idmap", createObject(
             pair("groups", toObjectMapper(
-                TimingIdentifier.GROUP_MAP.values(), new Function<TimingIdentifier.TimingGroup, JSONPair>() {
-                @Override
-                public JSONPair apply(TimingIdentifier.TimingGroup group) {
-                    return pair(group.id, group.name);
-                }
-            })),
+                TimingIdentifier.GROUP_MAP.values(), group -> pair(group.id, group.name))),
             pair("handlers", handlers),
-            pair("worlds", toObjectMapper(TimingHistory.worldMap.entrySet(), new Function<Map.Entry<String, Integer>, JSONPair>() {
-                    @Override
-                    public JSONPair apply(Map.Entry<String, Integer> input) {
-                        return pair(input.getValue(), input.getKey());
-                    }
-                })),
+            pair("worlds", toObjectMapper(TimingHistory.worldMap.entrySet(), input -> pair(input.getValue(), input.getKey()))),
             pair("tileentity",
-                toObjectMapper(tileEntityTypeSet, new Function<Material, JSONPair>() {
-                    @Override
-                    public JSONPair apply(Material input) {
-                        return pair(input.getId(), input.name());
-                    }
-                })),
+                toObjectMapper(tileEntityTypeSet, input -> pair(input.getId(), input.name()))),
             pair("entity",
-                toObjectMapper(entityTypeSet, new Function<EntityType, JSONPair>() {
-                    @Override
-                    public JSONPair apply(EntityType input) {
-                        return pair(input.getTypeId(), input.name());
-                    }
-                }))
+                toObjectMapper(entityTypeSet, input -> pair(input.getTypeId(), input.name())))
         ));
 
         // Information about loaded plugins
 
         parent.put("plugins", toObjectMapper(Bukkit.getPluginManager().getPlugins(),
-            new Function<Plugin, JSONPair>() {
-                @Override
-                public JSONPair apply(Plugin plugin) {
-                    return pair(plugin.getName(), createObject(
-                        pair("version", plugin.getDescription().getVersion()),
-                        pair("description", String.valueOf(plugin.getDescription().getDescription()).trim()),
-                        pair("website", plugin.getDescription().getWebsite()),
-                        pair("authors", StringUtils.join(plugin.getDescription().getAuthors(), ", "))
-                    ));
-                }
-            }));
+                plugin -> pair(plugin.getName(), createObject(
+                    pair("version", plugin.getDescription().getVersion()),
+                    pair("description", String.valueOf(plugin.getDescription().getDescription()).trim()),
+                    pair("website", plugin.getDescription().getWebsite()),
+                    pair("authors", StringUtils.join(plugin.getDescription().getAuthors(), ", "))
+                ))));
 
 
 
@@ -263,12 +231,7 @@ class TimingsExport extends Thread {
         if (!(val instanceof MemorySection)) {
             if (val instanceof List) {
                 Iterable<Object> v = (Iterable<Object>) val;
-                return toArrayMapper(v, new Function<Object, Object>() {
-                    @Override
-                    public Object apply(Object input) {
-                        return valAsJSON(input, parentKey);
-                    }
-                });
+                return toArrayMapper(v, input -> valAsJSON(input, parentKey));
             } else {
                 return val.toString();
             }
@@ -295,12 +258,7 @@ class TimingsExport extends Thread {
         sender.sendMessage(ChatColor.GREEN + "Preparing Timings Report...");
 
 
-        out.put("data", toArrayMapper(history, new Function<TimingHistory, Object>() {
-            @Override
-            public Object apply(TimingHistory input) {
-                return input.export();
-            }
-        }));
+        out.put("data", toArrayMapper(history, TimingHistory::export));
 
 
         String response = null;
@@ -315,7 +273,7 @@ class TimingsExport extends Thread {
                 this.def.setLevel(7);
             }};
 
-            request.write(JSONValue.toJSONString(out).getBytes("UTF-8"));
+            request.write(JSONValue.toJSONString(out).getBytes(StandardCharsets.UTF_8));
             request.close();
 
             response = getResponse(con);
@@ -349,9 +307,7 @@ class TimingsExport extends Thread {
     }
 
     private String getResponse(HttpURLConnection con) throws IOException {
-        InputStream is = null;
-        try {
-            is = con.getInputStream();
+        try (InputStream is = con.getInputStream()) {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
             byte[] b = new byte[1024];
@@ -365,10 +321,6 @@ class TimingsExport extends Thread {
             sender.sendMessage(ChatColor.RED + "Error uploading timings, check your logs for more information");
             Bukkit.getLogger().log(Level.WARNING, con.getResponseMessage(), ex);
             return null;
-        } finally {
-            if (is != null) {
-                is.close();
-            }
         }
     }
 }

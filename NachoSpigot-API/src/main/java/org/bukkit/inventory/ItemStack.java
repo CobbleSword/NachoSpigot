@@ -335,7 +335,7 @@ public class ItemStack implements Cloneable, ConfigurationSerializable {
         if (stack == this) {
             return true;
         }
-        return getTypeId() == stack.getTypeId() && getDurability() == stack.getDurability() && hasItemMeta() == stack.hasItemMeta() && (hasItemMeta() ? Bukkit.getItemFactory().equals(getItemMeta(), stack.getItemMeta()) : true);
+        return getTypeId() == stack.getTypeId() && getDurability() == stack.getDurability() && hasItemMeta() == stack.hasItemMeta() && (!hasItemMeta() || Bukkit.getItemFactory().equals(getItemMeta(), stack.getItemMeta()));
     }
 
     @Override
@@ -377,7 +377,7 @@ public class ItemStack implements Cloneable, ConfigurationSerializable {
      * @return True if this has the given enchantment
      */
     public boolean containsEnchantment(Enchantment ench) {
-        return meta == null ? false : meta.hasEnchant(ench);
+        return meta != null && meta.hasEnchant(ench);
     }
 
     /**
@@ -396,7 +396,7 @@ public class ItemStack implements Cloneable, ConfigurationSerializable {
      * @return Map of enchantments.
      */
     public Map<Enchantment, Integer> getEnchantments() {
-        return meta == null ? ImmutableMap.<Enchantment, Integer>of() : meta.getEnchants();
+        return meta == null ? ImmutableMap.of() : meta.getEnchants();
     }
 
     /**
@@ -493,7 +493,7 @@ public class ItemStack implements Cloneable, ConfigurationSerializable {
 
     @Utility
     public Map<String, Object> serialize() {
-        Map<String, Object> result = new LinkedHashMap<String, Object>();
+        Map<String, Object> result = new LinkedHashMap<>();
 
         result.put("type", getType().name());
 

@@ -11,21 +11,21 @@ public interface Ocelot extends Animals, Tameable {
      *
      * @return Type of the cat.
      */
-    public Type getCatType();
+    Type getCatType();
 
     /**
      * Sets the current type of this cat.
      *
      * @param type New type of this cat.
      */
-    public void setCatType(Type type);
+    void setCatType(Type type);
 
     /**
      * Checks if this ocelot is sitting
      *
      * @return true if sitting
      */
-    public boolean isSitting();
+    boolean isSitting();
 
     /**
      * Sets if this ocelot is sitting. Will remove any path that the ocelot
@@ -33,12 +33,12 @@ public interface Ocelot extends Animals, Tameable {
      *
      * @param sitting true if sitting
      */
-    public void setSitting(boolean sitting);
+    void setSitting(boolean sitting);
 
     /**
      * Represents the various different cat types there are.
      */
-    public enum Type {
+    enum Type {
         WILD_OCELOT(0),
         BLACK_CAT(1),
         RED_CAT(2),
@@ -53,7 +53,7 @@ public interface Ocelot extends Animals, Tameable {
             }
         }
 
-        private Type(int id) {
+        Type(int id) {
             this.id = id;
         }
 

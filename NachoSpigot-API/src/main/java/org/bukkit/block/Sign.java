@@ -10,7 +10,7 @@ public interface Sign extends BlockState {
      *
      * @return Array of Strings containing each line of text
      */
-    public String[] getLines();
+    String[] getLines();
 
     /**
      * Gets the line of text at the specified index.
@@ -21,7 +21,7 @@ public interface Sign extends BlockState {
      * @throws IndexOutOfBoundsException Thrown when the line does not exist
      * @return Text on the given line
      */
-    public String getLine(int index) throws IndexOutOfBoundsException;
+    String getLine(int index) throws IndexOutOfBoundsException;
 
     /**
      * Sets the line of text at the specified index.
@@ -33,5 +33,5 @@ public interface Sign extends BlockState {
      * @param line New text to set at the specified index
      * @throws IndexOutOfBoundsException If the index is out of the range 0..3
      */
-    public void setLine(int index, String line) throws IndexOutOfBoundsException;
+    void setLine(int index, String line) throws IndexOutOfBoundsException;
 }

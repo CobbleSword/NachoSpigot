@@ -7,12 +7,12 @@ public interface Guardian extends Monster {
      * 
      * @return true if the Guardian is an Elder Guardian, false if not
      */
-    public boolean isElder();
+    boolean isElder();
 
     /**
      * Set the Guardian to an elder Guardian or not
      *
      * @param shouldBeElder True if this Guardian should be a elder Guardian, false if not
      */
-    public void setElder(boolean shouldBeElder);
+    void setElder(boolean shouldBeElder);
 }

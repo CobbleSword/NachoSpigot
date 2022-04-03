@@ -1,6 +1,7 @@
 package org.bukkit.command.defaults;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,7 +14,7 @@ public class PluginsCommand extends BukkitCommand {
         this.description = "Gets a list of plugins running on the server";
         this.usageMessage = "/plugins";
         this.setPermission("bukkit.command.plugins");
-        this.setAliases(Arrays.asList("pl"));
+        this.setAliases(Collections.singletonList("pl"));
     }
 
     @Override
@@ -38,7 +39,7 @@ public class PluginsCommand extends BukkitCommand {
             pluginList.append(plugin.getDescription().getName());
         }
 
-        return "(" + plugins.length + "): " + pluginList.toString();
+        return "(" + plugins.length + "): " + pluginList;
     }
 
     // Spigot Start

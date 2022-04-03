@@ -25,7 +25,7 @@ public enum GrassSpecies {
     private final byte data;
     private final static Map<Byte, GrassSpecies> BY_DATA = Maps.newHashMap();
 
-    private GrassSpecies(final int data) {
+    GrassSpecies(final int data) {
         this.data = (byte) data;
     }
 

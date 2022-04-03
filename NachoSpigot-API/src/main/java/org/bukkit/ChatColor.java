@@ -215,7 +215,7 @@ public enum ChatColor{
      * you need to dynamically convert colour codes from your custom format.
      */
     public static final char COLOR_CHAR = '\u00A7';
-    private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + String.valueOf(COLOR_CHAR) + "[0-9A-FK-OR]");
+    private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + COLOR_CHAR + "[0-9A-FK-OR]");
 
     private final int intCode;
     private final char code;
@@ -224,11 +224,11 @@ public enum ChatColor{
     private final static Map<Integer, ChatColor> BY_ID = Maps.newHashMap();
     private final static Map<Character, ChatColor> BY_CHAR = Maps.newHashMap();
 
-    private ChatColor(char code, int intCode) {
+    ChatColor(char code, int intCode) {
         this(code, intCode, false);
     }
 
-    private ChatColor(char code, int intCode, boolean isFormat) {
+    ChatColor(char code, int intCode, boolean isFormat) {
         this.code = code;
         this.intCode = intCode;
         this.isFormat = isFormat;
@@ -237,7 +237,7 @@ public enum ChatColor{
 
     public net.md_5.bungee.api.ChatColor asBungee() {
         return net.md_5.bungee.api.ChatColor.RESET;
-    };
+    }
 
     /**
      * Gets the char value associated with this color
@@ -338,7 +338,7 @@ public enum ChatColor{
      * @return Any remaining ChatColors to pass onto the next line.
      */
     public static String getLastColors(String input) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         int length = input.length();
 
         // Search backwards from the end as it is faster
@@ -349,7 +349,7 @@ public enum ChatColor{
                 ChatColor color = getByChar(c);
 
                 if (color != null) {
-                    result = color.toString() + result;
+                    result.insert(0, color);
 
                     // Once we find a color or reset we can stop searching
                     if (color.isColor() || color.equals(RESET)) {
@@ -359,7 +359,7 @@ public enum ChatColor{
             }
         }
 
-        return result;
+        return result.toString();
     }
 
     static {

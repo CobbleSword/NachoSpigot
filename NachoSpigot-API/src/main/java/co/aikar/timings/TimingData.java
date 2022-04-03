@@ -35,12 +35,7 @@ import static co.aikar.util.JSONUtil.toArray;
  * This is broken out to reduce memory usage
  */
 class TimingData {
-    static Function<Integer, TimingData> LOADER = new Function<Integer, TimingData>() {
-        @Override
-        public TimingData apply(Integer input) {
-            return new TimingData(input);
-        }
-    };
+    static Function<Integer, TimingData> LOADER = TimingData::new;
     int id;
     int count = 0;
     int lagCount = 0;
@@ -91,7 +86,7 @@ class TimingData {
         return new TimingData(this);
     }
 
-    public List export() {
+    public List<?> export() {
         List list = toArray(
             id,
             count,

@@ -1,6 +1,7 @@
 package org.bukkit.command.defaults;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,7 +14,7 @@ public class ReloadCommand extends BukkitCommand {
         this.description = "Reloads the server configuration and plugins";
         this.usageMessage = "/reload";
         this.setPermission("bukkit.command.reload");
-        this.setAliases(Arrays.asList("rl"));
+        this.setAliases(Collections.singletonList("rl"));
     }
 
     @Override

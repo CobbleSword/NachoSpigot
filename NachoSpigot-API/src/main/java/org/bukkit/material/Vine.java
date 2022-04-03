@@ -139,7 +139,7 @@ public class Vine extends MaterialData {
             case UP:
                 break;
             default:
-                throw new IllegalArgumentException("Vines can't go on face " + face.toString());
+                throw new IllegalArgumentException("Vines can't go on face " + face);
         }
     }
 
@@ -181,7 +181,7 @@ public class Vine extends MaterialData {
             case UP:
                 break;
             default:
-                throw new IllegalArgumentException("Vines can't go on face " + face.toString());
+                throw new IllegalArgumentException("Vines can't go on face " + face);
         }
     }
 

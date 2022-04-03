@@ -49,7 +49,7 @@ public class DeopCommand extends VanillaCommand {
         Validate.notNull(alias, "Alias cannot be null");
 
         if (args.length == 1) {
-            List<String> completions = new ArrayList<String>();
+            List<String> completions = new ArrayList<>();
             for (OfflinePlayer player : Bukkit.getOperators()) {
                 String playerName = player.getName();
                 if (StringUtil.startsWithIgnoreCase(playerName, args[0])) {

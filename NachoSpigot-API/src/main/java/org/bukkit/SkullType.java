@@ -8,5 +8,5 @@ public enum SkullType {
     WITHER,
     ZOMBIE,
     PLAYER,
-    CREEPER;
+    CREEPER
 }

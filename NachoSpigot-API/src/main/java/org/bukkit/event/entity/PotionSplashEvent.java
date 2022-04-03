@@ -35,7 +35,7 @@ public class PotionSplashEvent extends ProjectileHitEvent implements Cancellable
      * @return The thrown potion entity
      */
     public ThrownPotion getPotion() {
-        return (ThrownPotion) getEntity();
+        return getEntity();
     }
 
     /**
@@ -44,7 +44,7 @@ public class PotionSplashEvent extends ProjectileHitEvent implements Cancellable
      * @return A fresh copy of the affected entity list
      */
     public Collection<LivingEntity> getAffectedEntities() {
-        return new ArrayList<LivingEntity>(affectedEntities.keySet());
+        return new ArrayList<>(affectedEntities.keySet());
     }
 
     /**

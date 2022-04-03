@@ -12,14 +12,14 @@ public interface Skull extends BlockState {
      *
      * @return true if the skull has an owner
      */
-    public boolean hasOwner();
+    boolean hasOwner();
 
     /**
      * Gets the owner of the skull, if one exists
      *
      * @return the owner of the skull or null if the skull does not have an owner
      */
-    public String getOwner();
+    String getOwner();
 
     /**
      * Sets the owner of the skull
@@ -30,33 +30,33 @@ public interface Skull extends BlockState {
      * @param name the new owner of the skull
      * @return true if the owner was successfully set
      */
-    public boolean setOwner(String name);
+    boolean setOwner(String name);
 
     /**
      * Gets the rotation of the skull in the world
      *
      * @return the rotation of the skull
      */
-    public BlockFace getRotation();
+    BlockFace getRotation();
 
     /**
      * Sets the rotation of the skull in the world
      *
      * @param rotation the rotation of the skull
      */
-    public void setRotation(BlockFace rotation);
+    void setRotation(BlockFace rotation);
 
     /**
      * Gets the type of skull
      *
      * @return the type of skull
      */
-    public SkullType getSkullType();
+    SkullType getSkullType();
 
     /**
      * Sets the type of skull
      *
      * @param skullType the type of skull
      */
-    public void setSkullType(SkullType skullType);
+    void setSkullType(SkullType skullType);
 }

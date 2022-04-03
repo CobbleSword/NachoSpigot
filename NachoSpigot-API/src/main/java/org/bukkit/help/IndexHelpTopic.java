@@ -70,7 +70,7 @@ public class IndexHelpTopic extends HelpTopic {
             if (topic.canSee(sender)) {
                 String lineStr = buildIndexLine(sender, topic).replace("\n", ". ");
                 if (sender instanceof Player && lineStr.length() > ChatPaginator.GUARANTEED_NO_WRAP_CHAT_PAGE_WIDTH) {
-                    sb.append(lineStr.substring(0, ChatPaginator.GUARANTEED_NO_WRAP_CHAT_PAGE_WIDTH - 3));
+                    sb.append(lineStr, 0, ChatPaginator.GUARANTEED_NO_WRAP_CHAT_PAGE_WIDTH - 3);
                     sb.append("...");
                 } else {
                     sb.append(lineStr);
@@ -101,12 +101,11 @@ public class IndexHelpTopic extends HelpTopic {
      * @return The rendered index line.
      */
     protected String buildIndexLine(CommandSender sender, HelpTopic topic) {
-        StringBuilder line = new StringBuilder();
-        line.append(ChatColor.GOLD);
-        line.append(topic.getName());
-        line.append(": ");
-        line.append(ChatColor.WHITE);
-        line.append(topic.getShortText());
-        return line.toString();
+        String line = ChatColor.GOLD +
+                topic.getName() +
+                ": " +
+                ChatColor.WHITE +
+                topic.getShortText();
+        return line;
     }
 }

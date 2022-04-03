@@ -80,9 +80,9 @@ public class TimeCommand extends VanillaCommand {
         Validate.notNull(alias, "Alias cannot be null");
 
         if (args.length == 1) {
-            return StringUtil.copyPartialMatches(args[0], TABCOMPLETE_ADD_SET, new ArrayList<String>(TABCOMPLETE_ADD_SET.size()));
+            return StringUtil.copyPartialMatches(args[0], TABCOMPLETE_ADD_SET, new ArrayList<>(TABCOMPLETE_ADD_SET.size()));
         } else if (args.length == 2 && args[0].equalsIgnoreCase("set")) {
-            return StringUtil.copyPartialMatches(args[1], TABCOMPLETE_DAY_NIGHT, new ArrayList<String>(TABCOMPLETE_DAY_NIGHT.size()));
+            return StringUtil.copyPartialMatches(args[1], TABCOMPLETE_DAY_NIGHT, new ArrayList<>(TABCOMPLETE_DAY_NIGHT.size()));
         }
         return ImmutableList.of();
     }

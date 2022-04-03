@@ -23,16 +23,16 @@ public class BlockIterator implements Iterator<Block> {
 
     private boolean end = false;
 
-    private Block[] blockQueue = new Block[3];
-    private int currentBlock = 0;
-    private int currentDistance = 0;
-    private int maxDistanceInt;
+    private final Block[] blockQueue = new Block[3];
+    private int currentBlock;
+    private int currentDistance;
+    private final int maxDistanceInt;
 
     private int secondError;
     private int thirdError;
 
-    private int secondStep;
-    private int thirdStep;
+    private final int secondStep;
+    private final int thirdStep;
 
     private BlockFace mainFace;
     private BlockFace secondFace;
@@ -335,23 +335,19 @@ public class BlockIterator implements Iterator<Block> {
             thirdError -= gridSize;
             secondError -= gridSize;
             currentBlock = 2;
-            return;
         } else if (secondError > 0) {
             blockQueue[1] = blockQueue[0].getRelative(mainFace);
             blockQueue[0] = blockQueue[1].getRelative(secondFace);
             secondError -= gridSize;
             currentBlock = 1;
-            return;
         } else if (thirdError > 0) {
             blockQueue[1] = blockQueue[0].getRelative(mainFace);
             blockQueue[0] = blockQueue[1].getRelative(thirdFace);
             thirdError -= gridSize;
             currentBlock = 1;
-            return;
         } else {
             blockQueue[0] = blockQueue[0].getRelative(mainFace);
             currentBlock = 0;
-            return;
         }
     }
 }

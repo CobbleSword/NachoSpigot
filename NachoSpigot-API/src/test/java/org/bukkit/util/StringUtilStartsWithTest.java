@@ -18,7 +18,7 @@ public class StringUtilStartsWithTest {
 
     @Parameters(name= "{index}: {0} startsWith {1} == {2}")
     public static List<Object[]> data() {
-        return ImmutableList.<Object[]>of(
+        return ImmutableList.of(
             new Object[] {
                 "Apple",
                 "Apples",

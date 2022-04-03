@@ -23,6 +23,6 @@ public class PlayerChatTabCompleteEventTest {
     }
 
     private String getToken(String message) {
-        return new PlayerChatTabCompleteEvent(TestPlayer.getInstance(), message, ImmutableList.<String>of()).getLastToken();
+        return new PlayerChatTabCompleteEvent(TestPlayer.getInstance(), message, ImmutableList.of()).getLastToken();
     }
 }

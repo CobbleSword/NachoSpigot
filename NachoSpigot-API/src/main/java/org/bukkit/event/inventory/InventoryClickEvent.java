@@ -48,9 +48,9 @@ public class InventoryClickEvent extends InventoryInteractEvent {
     private final ClickType click;
     private final InventoryAction action;
     private final Inventory clickedInventory;
-    private SlotType slot_type;
-    private int whichSlot;
-    private int rawSlot;
+    private final SlotType slot_type;
+    private final int whichSlot;
+    private final int rawSlot;
     private ItemStack current = null;
     private int hotbarKey = -1;
 

@@ -49,7 +49,7 @@ public class ValidatingPromptTest {
 
     //TODO: TestPlayerNamePrompt()
     
-    private class TestBooleanPrompt extends BooleanPrompt {
+    private static class TestBooleanPrompt extends BooleanPrompt {
         public boolean result;
         
         @Override
@@ -63,7 +63,7 @@ public class ValidatingPromptTest {
         }
     }
     
-    private class TestFixedSetPrompt extends FixedSetPrompt {
+    private static class TestFixedSetPrompt extends FixedSetPrompt {
         public String result;
 
         public TestFixedSetPrompt(String... fixedSet) {
@@ -81,7 +81,7 @@ public class ValidatingPromptTest {
         }
     }
     
-    private class TestNumericPrompt extends NumericPrompt {
+    private static class TestNumericPrompt extends NumericPrompt {
         public Number result;
         
         @Override
@@ -95,7 +95,7 @@ public class ValidatingPromptTest {
         }
     }
 
-    private class TestRegexPrompt extends RegexPrompt {
+    private static class TestRegexPrompt extends RegexPrompt {
         public String result;
 
         public TestRegexPrompt(String pattern) {

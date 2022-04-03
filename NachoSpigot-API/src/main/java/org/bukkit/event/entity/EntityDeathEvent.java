@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 public class EntityDeathEvent extends EntityEvent {
     private static final HandlerList handlers = new HandlerList();
     private final List<ItemStack> drops;
-    private int dropExp = 0;
+    private int dropExp;
 
     public EntityDeathEvent(final LivingEntity entity, final List<ItemStack> drops) {
         this(entity, drops, 0);

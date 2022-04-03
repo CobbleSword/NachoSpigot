@@ -7,7 +7,7 @@ import java.util.HashMap;
  */
 public class MapFont {
 
-    private final HashMap<Character, CharacterSprite> chars = new HashMap<Character, CharacterSprite>();
+    private final HashMap<Character, CharacterSprite> chars = new HashMap<>();
     private int height = 0;
     protected boolean malleable = true;
 

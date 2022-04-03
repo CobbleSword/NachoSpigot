@@ -90,7 +90,7 @@ public class TestServer implements InvocationHandler {
         }
     }
 
-    private Thread creatingThread = Thread.currentThread();
+    private final Thread creatingThread = Thread.currentThread();
     private PluginManager pluginManager;
 
     private TestServer() {

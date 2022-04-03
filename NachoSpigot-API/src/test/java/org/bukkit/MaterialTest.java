@@ -29,7 +29,7 @@ public class MaterialTest {
         for (Material material : Material.values()) {
             if (material.getId() > 255) continue;
 
-            assertTrue(String.format("[%d] %s", material.getId(), material.toString()), material.isBlock());
+            assertTrue(String.format("[%d] %s", material.getId(), material), material.isBlock());
         }
     }
 

@@ -8,7 +8,7 @@ import org.bukkit.plugin.Plugin;
  * to enter another player's name.
  */
 public abstract class PlayerNamePrompt extends ValidatingPrompt{
-    private Plugin plugin;
+    private final Plugin plugin;
 
     public PlayerNamePrompt(Plugin plugin) {
         super();

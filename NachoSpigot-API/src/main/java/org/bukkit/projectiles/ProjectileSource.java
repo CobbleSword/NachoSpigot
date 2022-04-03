@@ -15,7 +15,7 @@ public interface ProjectileSource {
      * @param projectile class of the projectile to launch
      * @return the launched projectile
      */
-    public <T extends Projectile> T launchProjectile(Class<? extends T> projectile);
+    <T extends Projectile> T launchProjectile(Class<? extends T> projectile);
 
     /**
      * Launches a {@link Projectile} from the ProjectileSource with an
@@ -26,5 +26,5 @@ public interface ProjectileSource {
      * @param velocity the velocity with which to launch
      * @return the launched projectile
      */
-    public <T extends Projectile> T launchProjectile(Class<? extends T> projectile, Vector velocity);
+    <T extends Projectile> T launchProjectile(Class<? extends T> projectile, Vector velocity);
 }

@@ -46,7 +46,7 @@ public class PardonIpCommand extends VanillaCommand {
         Validate.notNull(alias, "Alias cannot be null");
 
         if (args.length == 1) {
-            return StringUtil.copyPartialMatches(args[0], Bukkit.getIPBans(), new ArrayList<String>());
+            return StringUtil.copyPartialMatches(args[0], Bukkit.getIPBans(), new ArrayList<>());
         }
         return ImmutableList.of();
     }

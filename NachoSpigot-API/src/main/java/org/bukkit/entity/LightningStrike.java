@@ -10,10 +10,10 @@ public interface LightningStrike extends Weather {
      *
      * @return whether the strike is an effect
      */
-    public boolean isEffect();
+    boolean isEffect();
 
 
-    public class Spigot extends Entity.Spigot
+    class Spigot extends Entity.Spigot
     {
 
         /*

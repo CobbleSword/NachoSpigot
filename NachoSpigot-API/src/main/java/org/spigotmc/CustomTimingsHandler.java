@@ -66,10 +66,10 @@ public final class CustomTimingsHandler {
             }
         }
 
-        Class calling = null;
+        Class<?> calling = null;
         if (sunReflectAvailable) {
             try {
-                calling = (Class) getCallerClass.invoke(null, 2);
+                calling = (Class<?>) getCallerClass.invoke(null, 2);
             } catch (IllegalAccessException | InvocationTargetException ignored) {}
         }
 

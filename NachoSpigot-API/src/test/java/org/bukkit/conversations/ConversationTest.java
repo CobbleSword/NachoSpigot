@@ -87,7 +87,7 @@ public class ConversationTest {
         assertEquals(conversation, forWhom.abandonedConverstion);
     }
 
-    private class FirstPrompt extends StringPrompt {
+    private static class FirstPrompt extends StringPrompt {
 
         public String getPromptText(ConversationContext context) {
             return "FirstPrompt";
@@ -100,7 +100,7 @@ public class ConversationTest {
         }
     }
 
-    private class SecondPrompt extends MessagePrompt {
+    private static class SecondPrompt extends MessagePrompt {
 
         @Override
         protected Prompt getNextPrompt(ConversationContext context) {

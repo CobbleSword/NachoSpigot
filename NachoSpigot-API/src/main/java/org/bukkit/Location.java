@@ -2,6 +2,7 @@ package org.bukkit;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.bukkit.block.Block;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -496,7 +497,7 @@ public class Location implements Cloneable, ConfigurationSerializable {
         }
         final Location other = (Location) obj;
 
-        if (this.world != other.world && (this.world == null || !this.world.equals(other.world))) {
+        if (!Objects.equals(this.world, other.world)) {
             return false;
         }
         if (Double.doubleToLongBits(this.x) != Double.doubleToLongBits(other.x)) {
@@ -511,10 +512,7 @@ public class Location implements Cloneable, ConfigurationSerializable {
         if (Float.floatToIntBits(this.pitch) != Float.floatToIntBits(other.pitch)) {
             return false;
         }
-        if (Float.floatToIntBits(this.yaw) != Float.floatToIntBits(other.yaw)) {
-            return false;
-        }
-        return true;
+        return Float.floatToIntBits(this.yaw) == Float.floatToIntBits(other.yaw);
     }
 
     @Override
@@ -567,7 +565,7 @@ public class Location implements Cloneable, ConfigurationSerializable {
 
 	@Utility
 	public Map<String, Object> serialize() {
-		Map<String, Object> data = new HashMap<String, Object>();
+		Map<String, Object> data = new HashMap<>();
 		data.put("world", this.world.getName());
 
 		data.put("x", this.x);

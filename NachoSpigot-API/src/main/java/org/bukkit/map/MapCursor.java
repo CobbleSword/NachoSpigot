@@ -158,9 +158,9 @@ public final class MapCursor {
         BLUE_POINTER(3),
         WHITE_CROSS(4);
 
-        private byte value;
+        private final byte value;
 
-        private Type(int value) {
+        Type(int value) {
             this.value = (byte) value;
         }
 

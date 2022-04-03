@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
  */
 public abstract class MapRenderer {
 
-    private boolean contextual;
+    private final boolean contextual;
 
     /**
      * Initialize the map renderer base to be non-contextual. See {@link

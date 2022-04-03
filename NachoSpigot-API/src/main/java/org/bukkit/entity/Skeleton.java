@@ -10,19 +10,19 @@ public interface Skeleton extends Monster {
      *
      * @return Current type
      */
-    public SkeletonType getSkeletonType();
+    SkeletonType getSkeletonType();
 
     /**
      * Sets the new type of this skeleton.
      *
      * @param type New type
      */
-    public void setSkeletonType(SkeletonType type);
+    void setSkeletonType(SkeletonType type);
 
     /*
      * Represents the various different Skeleton types.
      */
-    public enum SkeletonType {
+    enum SkeletonType {
         NORMAL(0),
         WITHER(1);
 
@@ -35,7 +35,7 @@ public interface Skeleton extends Monster {
             }
         }
 
-        private SkeletonType(int id) {
+        SkeletonType(int id) {
             this.id = id;
         }
 

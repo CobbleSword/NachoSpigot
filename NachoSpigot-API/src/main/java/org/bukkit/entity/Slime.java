@@ -8,10 +8,10 @@ public interface Slime extends LivingEntity {
     /**
      * @return The size of the slime
      */
-    public int getSize();
+    int getSize();
 
     /**
      * @param sz The new size of the slime.
      */
-    public void setSize(int sz);
+    void setSize(int sz);
 }

@@ -48,7 +48,7 @@ public class LazyMetadataValue extends MetadataValueAdapter implements MetadataV
         super(owningPlugin);
         Validate.notNull(cacheStrategy, "cacheStrategy cannot be null");
         Validate.notNull(lazyValue, "lazyValue cannot be null");
-        this.internalValue = new SoftReference<Object>(null);
+        this.internalValue = new SoftReference<>(null);
         this.lazyValue = lazyValue;
         this.cacheStrategy = cacheStrategy;
     }
@@ -85,7 +85,7 @@ public class LazyMetadataValue extends MetadataValueAdapter implements MetadataV
                 if (value == null) {
                     value = ACTUALLY_NULL;
                 }
-                internalValue = new SoftReference<Object>(value);
+                internalValue = new SoftReference<>(value);
             } catch (Exception e) {
                 throw new MetadataEvaluationException(e);
             }

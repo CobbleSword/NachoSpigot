@@ -16,7 +16,7 @@ public interface PluginAwareness {
      * be checked by using {@link PluginDescriptionFile#getAwareness()}.{@link
      * Set#contains(Object) contains(flag)}.
      */
-    public enum Flags implements PluginAwareness {
+    enum Flags implements PluginAwareness {
         /**
          * This specifies that all (text) resources stored in a plugin's jar
          * use UTF-8 encoding.
@@ -24,6 +24,5 @@ public interface PluginAwareness {
          * @see JavaPlugin#getTextResource(String)
          */
         UTF8,
-        ;
     }
 }

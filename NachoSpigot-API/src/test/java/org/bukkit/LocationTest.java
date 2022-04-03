@@ -41,9 +41,9 @@ public class LocationTest {
 
     @Parameters(name= "{index}: {0}")
     public static List<Object[]> data() {
-        Random RANDOM = new Random(1l); // Test is deterministic
+        Random RANDOM = new Random(1L); // Test is deterministic
         int r = 0;
-        return ImmutableList.<Object[]>of(
+        return ImmutableList.of(
             new Object[] { "X",
                 1, 0, 0,
                 270, 0
@@ -82,7 +82,7 @@ public class LocationTest {
             },
             new Object[] { "-X Z",
                 -HALF_UNIT, 0, HALF_UNIT,
-                (90 + 0) / 2, 0
+                (90) / 2, 0
             },
             new Object[] { "X Y Z",
                 HALF_HALF_UNIT, HALF_UNIT, HALF_HALF_UNIT,

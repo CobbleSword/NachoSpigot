@@ -5,7 +5,7 @@ package org.bukkit.conversations;
  * enters an exact input string
  */
 public class ExactMatchConversationCanceller implements ConversationCanceller {
-    private String escapeSequence;
+    private final String escapeSequence;
 
     /**
      * Builds an ExactMatchConversationCanceller.

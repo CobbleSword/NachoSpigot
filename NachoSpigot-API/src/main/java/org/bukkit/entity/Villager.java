@@ -10,20 +10,20 @@ public interface Villager extends Ageable, NPC {
      *
      * @return Current profession.
      */
-    public Profession getProfession();
+    Profession getProfession();
 
     /**
      * Sets the new profession of this villager.
      *
      * @param profession New profession.
      */
-    public void setProfession(Profession profession);
+    void setProfession(Profession profession);
 
 
     /**
      * Represents the various different Villager professions there may be.
      */
-    public enum Profession {
+    enum Profession {
         FARMER(0),
         LIBRARIAN(1),
         PRIEST(2),
@@ -39,7 +39,7 @@ public interface Villager extends Ageable, NPC {
             }
         }
 
-        private Profession(int id) {
+        Profession(int id) {
             this.id = id;
         }
 

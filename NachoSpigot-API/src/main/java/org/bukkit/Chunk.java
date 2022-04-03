@@ -124,5 +124,5 @@ public interface Chunk {
      */
     boolean unload();
 
-    public List<Block> getBlocks(Material material);
+    List<Block> getBlocks(Material material);
 }

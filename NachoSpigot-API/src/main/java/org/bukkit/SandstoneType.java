@@ -15,7 +15,7 @@ public enum SandstoneType {
     private final byte data;
     private final static Map<Byte, SandstoneType> BY_DATA = Maps.newHashMap();
 
-    private SandstoneType(final int data) {
+    SandstoneType(final int data) {
         this.data = (byte) data;
     }
 

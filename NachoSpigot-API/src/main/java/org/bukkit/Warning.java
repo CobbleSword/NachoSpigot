@@ -21,7 +21,7 @@ public @interface Warning {
     /**
      * This represents the states that server verbose for warnings may be.
      */
-    public enum WarningState {
+    enum WarningState {
 
         /**
          * Indicates all warnings should be printed for deprecated items.
