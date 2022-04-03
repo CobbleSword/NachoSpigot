@@ -4,18 +4,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
 import io.netty.buffer.Unpooled;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-// CraftBukkit start
 import org.bukkit.Bukkit;
 import org.bukkit.WeatherType;
 import org.bukkit.craftbukkit.CraftWorld;
@@ -24,6 +15,8 @@ import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+
+import java.util.*;
 // CraftBukkit end
 
 public class EntityPlayer extends EntityHuman implements ICrafting {
@@ -1194,9 +1187,9 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
 
         pluginRainPositionPrevious = pluginRainPosition;
         if (weather == WeatherType.DOWNFALL) {
-            pluginRainPosition += 0.01;
+            pluginRainPosition += 0.01F;
         } else {
-            pluginRainPosition -= 0.01;
+            pluginRainPosition -= 0.01F;
         }
 
         pluginRainPosition = MathHelper.a(pluginRainPosition, 0.0F, 1.0F);

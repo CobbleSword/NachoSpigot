@@ -59,7 +59,7 @@ class TimingData {
 
     void add(long diff) {
         ++curTickCount;
-        curTickTotal += diff;
+        curTickTotal += (int) diff;
     }
 
     void processTick(boolean violated) {
