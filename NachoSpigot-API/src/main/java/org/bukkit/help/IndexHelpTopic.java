@@ -101,11 +101,10 @@ public class IndexHelpTopic extends HelpTopic {
      * @return The rendered index line.
      */
     protected String buildIndexLine(CommandSender sender, HelpTopic topic) {
-        String line = ChatColor.GOLD +
+        return ChatColor.GOLD +
                 topic.getName() +
                 ": " +
                 ChatColor.WHITE +
                 topic.getShortText();
-        return line;
     }
 }

@@ -1,6 +1,5 @@
 package org.bukkit.command.defaults;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 import org.bukkit.Bukkit;

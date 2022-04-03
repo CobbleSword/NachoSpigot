@@ -14,7 +14,7 @@ public class EntityCreatePortalEvent extends EntityEvent implements Cancellable 
     private static final HandlerList handlers = new HandlerList();
     private final List<BlockState> blocks;
     private boolean cancelled = false;
-    private PortalType type;
+    private final PortalType type;
 
     public EntityCreatePortalEvent(final LivingEntity what, final List<BlockState> blocks, final PortalType type) {
         super(what);

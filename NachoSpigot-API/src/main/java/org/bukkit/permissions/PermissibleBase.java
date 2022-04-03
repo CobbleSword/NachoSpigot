@@ -14,7 +14,7 @@ import org.bukkit.plugin.Plugin;
  * Base Permissible for use in any Permissible object via proxy or extension
  */
 public class PermissibleBase implements Permissible {
-    private ServerOperator opable;
+    private final ServerOperator opable;
     private Permissible parent = this;
     private final List<PermissionAttachment> attachments = new LinkedList<>();
     private final Map<String, PermissionAttachmentInfo> permissions = new HashMap<>();

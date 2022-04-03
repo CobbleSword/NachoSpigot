@@ -598,8 +598,7 @@ public class ScoreboardCommand extends VanillaCommand {
     }
 
     private List<String> getCurrentEntries() {
-        List<String> list = new ArrayList<>();
-        list.addAll(Bukkit.getScoreboardManager().getMainScoreboard().getEntries());
+        List<String> list = new ArrayList<>(Bukkit.getScoreboardManager().getMainScoreboard().getEntries());
         list.sort(String.CASE_INSENSITIVE_ORDER);
         return list;
     }
