@@ -270,7 +270,7 @@ public class SimpleCommandMap implements CommandMap {
 
             // We register these as commands so they have absolute priority.
             if (targets.size() > 0) {
-                knownCommands.put(alias.toLowerCase(), new FormattedCommandAlias(alias.toLowerCase(), targets.toArray(new String[targets.size()])));
+                knownCommands.put(alias.toLowerCase(), new FormattedCommandAlias(alias.toLowerCase(), targets.toArray(new String[0])));
             } else {
                 knownCommands.remove(alias.toLowerCase());
             }

@@ -89,15 +89,16 @@ public class ChatPaginator {
             }
 
             if (c == ' ' || c == '\n') {
+                String[] split = word.toString().split("(?<=\\G.{" + lineLength + "})");
                 if (line.length() == 0 && word.length() > lineLength) { // special case: extremely long word begins a line
-                    Collections.addAll(lines, word.toString().split("(?<=\\G.{" + lineLength + "})"));
+                    Collections.addAll(lines, split);
                 } else if (line.length() + word.length() - lineColorChars == lineLength) { // Line exactly the correct length...newline
                     line.append(word);
                     lines.add(line.toString());
                     line = new StringBuilder();
                     lineColorChars = 0;
                 } else if (line.length() + 1 + word.length() - lineColorChars > lineLength) { // Line too long...break the line
-                    for (String partialWord : word.toString().split("(?<=\\G.{" + lineLength + "})")) {
+                    for (String partialWord : split) {
                         lines.add(line.toString());
                         line = new StringBuilder(partialWord);
                     }
@@ -137,7 +138,7 @@ public class ChatPaginator {
             }
         }
 
-        return lines.toArray(new String[lines.size()]);
+        return lines.toArray(new String[0]);
     }
 
     public static class ChatPage {

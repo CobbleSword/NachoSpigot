@@ -284,7 +284,7 @@ public final class SimplePluginManager implements PluginManager {
             }
         }
 
-        return result.toArray(new Plugin[result.size()]);
+        return result.toArray(new Plugin[0]);
     }
 
     /**
