@@ -1,13 +1,12 @@
 package org.spigotmc;
 
-import java.io.File;
-import java.util.List;
-
 import dev.cobblesword.nachospigot.Nacho;
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+
+import java.io.File;
 
 public class RestartCommand extends Command
 {
@@ -25,14 +24,7 @@ public class RestartCommand extends Command
     {
         if ( testPermission( sender ) )
         {
-            MinecraftServer.getServer().processQueue.add( new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    restart();
-                }
-            } );
+            MinecraftServer.getServer().processQueue.add(RestartCommand::restart);
         }
         return true;
     }
@@ -55,7 +47,7 @@ public class RestartCommand extends Command
                 WatchdogThread.doStop();
 
                 // Kick all players
-                for ( EntityPlayer p : (List< EntityPlayer>) MinecraftServer.getServer().getPlayerList().players )
+                for ( EntityPlayer p : MinecraftServer.getServer().getPlayerList().players)
                 {
                     p.playerConnection.disconnect(SpigotConfig.restartMessage);
                 }
@@ -63,7 +55,7 @@ public class RestartCommand extends Command
                 try
                 {
                     Thread.sleep( 100 );
-                } catch ( InterruptedException ex )
+                } catch ( InterruptedException ignored)
                 {
                 }
                 // Close the socket so we can rebind with the new process
@@ -73,7 +65,7 @@ public class RestartCommand extends Command
                 try
                 {
                     Thread.sleep( 100 );
-                } catch ( InterruptedException ex )
+                } catch ( InterruptedException ignored)
                 {
                 }
 
@@ -81,35 +73,33 @@ public class RestartCommand extends Command
                 try
                 {
                     MinecraftServer.getServer().stop();
-                } catch ( Throwable t )
+                } catch ( Throwable ignored)
                 {
                 }
 
                 // This will be done AFTER the server has completely halted
-                Thread shutdownHook = new Thread()
-                {
-                    @Override
-                    public void run()
+                Thread shutdownHook = new Thread(() -> {
+                    try
                     {
-                        try
+                        String os = System.getProperty( "os.name" ).toLowerCase();
+                        if ( os.contains( "win" ) )
                         {
-                            String os = System.getProperty( "os.name" ).toLowerCase();
-                            if ( os.contains( "win" ) )
-                            {
-                                Runtime.getRuntime().exec( "cmd /c start " + script.getPath() );
-                            } else
-                            {
-                                Runtime.getRuntime().exec( new String[]
-                                {
-                                    "sh", script.getPath()
-                                } );
-                            }
-                        } catch ( Exception e )
+                            Runtime.getRuntime().exec( new String[]
+                                    {
+                                            "cmd /c start ", script.getPath()
+                                    } );
+                        } else
                         {
-                            e.printStackTrace();
+                            Runtime.getRuntime().exec( new String[]
+                            {
+                                "sh", script.getPath()
+                            } );
                         }
+                    } catch ( Exception e )
+                    {
+                        e.printStackTrace();
                     }
-                };
+                });
 
                 shutdownHook.setDaemon( true );
                 Runtime.getRuntime().addShutdownHook( shutdownHook );
