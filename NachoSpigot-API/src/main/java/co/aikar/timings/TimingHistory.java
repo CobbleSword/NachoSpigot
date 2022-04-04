@@ -73,7 +73,7 @@ public class TimingHistory {
             this.minuteReports = MINUTE_REPORTS.toArray(new MinuteReport[MINUTE_REPORTS.size() + 1]);
             this.minuteReports[this.minuteReports.length - 1] = new MinuteReport();
         } else {
-            this.minuteReports = MINUTE_REPORTS.toArray(new MinuteReport[0]);
+            this.minuteReports = MINUTE_REPORTS.toArray(new MinuteReport[MINUTE_REPORTS.size()]);
         }
         long ticks = 0;
         for (MinuteReport mp : this.minuteReports) {

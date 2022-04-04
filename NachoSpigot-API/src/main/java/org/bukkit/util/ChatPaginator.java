@@ -138,7 +138,7 @@ public class ChatPaginator {
             }
         }
 
-        return lines.toArray(new String[0]);
+        return lines.toArray(new String[lines.size()]);
     }
 
     public static class ChatPage {

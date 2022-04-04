@@ -289,6 +289,6 @@ public abstract class Enchantment {
      * @return Array of enchantments
      */
     public static Enchantment[] values() {
-        return byId.values().toArray(new Enchantment[0]);
+        return byId.values().toArray(new Enchantment[byId.size()]);
     }
 }

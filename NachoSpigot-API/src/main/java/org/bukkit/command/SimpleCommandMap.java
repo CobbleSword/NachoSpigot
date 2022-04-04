@@ -1,22 +1,16 @@
 package org.bukkit.command;
 
-import static org.bukkit.util.Java15Compat.Arrays_copyOfRange;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
-
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.command.defaults.*;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
+
+import java.util.*;
+import java.util.regex.Pattern;
+
+import static org.bukkit.util.Java15Compat.Arrays_copyOfRange;
 
 public class SimpleCommandMap implements CommandMap {
     private static final Pattern PATTERN_ON_SPACE = Pattern.compile(" ", Pattern.LITERAL);
@@ -270,7 +264,7 @@ public class SimpleCommandMap implements CommandMap {
 
             // We register these as commands so they have absolute priority.
             if (targets.size() > 0) {
-                knownCommands.put(alias.toLowerCase(), new FormattedCommandAlias(alias.toLowerCase(), targets.toArray(new String[0])));
+                knownCommands.put(alias.toLowerCase(), new FormattedCommandAlias(alias.toLowerCase(), targets.toArray(new String[targets.size()])));
             } else {
                 knownCommands.remove(alias.toLowerCase());
             }
