@@ -58,19 +58,19 @@ public final class CraftChatMessage {
                     } else if (format.isFormat()) {
                         switch (format) {
                         case BOLD:
-                            modifier.setBold(Boolean.TRUE);
+                            modifier.setBold(true);
                             break;
                         case ITALIC:
-                            modifier.setItalic(Boolean.TRUE);
+                            modifier.setItalic(true);
                             break;
                         case STRIKETHROUGH:
-                            modifier.setStrikethrough(Boolean.TRUE);
+                            modifier.setStrikethrough(true);
                             break;
                         case UNDERLINE:
-                            modifier.setUnderline(Boolean.TRUE);
+                            modifier.setUnderline(true);
                             break;
                         case OBFUSCATED:
-                            modifier.setRandom(Boolean.TRUE);
+                            modifier.setRandom(true);
                             break;
                         default:
                             throw new AssertionError("Unexpected message format");

@@ -1,10 +1,11 @@
 package net.minecraft.server;
 
-import com.velocitypowered.natives.compression.VelocityCompressor; // Paper
-import com.velocitypowered.natives.util.Natives; // Paper
-import dev.cobblesword.nachospigot.Nacho; // Nacho
-import dev.cobblesword.nachospigot.exception.ExploitException; // Nacho
 import com.google.common.collect.Queues;
+import com.velocitypowered.natives.compression.VelocityCompressor;
+import com.velocitypowered.natives.util.Natives;
+import dev.cobblesword.nachospigot.Nacho;
+import dev.cobblesword.nachospigot.commons.minecraft.CryptException;
+import dev.cobblesword.nachospigot.exception.ExploitException;
 import io.netty.channel.*;
 import io.netty.channel.local.LocalChannel;
 import io.netty.channel.local.LocalServerChannel;
@@ -14,12 +15,6 @@ import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.AbstractEventExecutor;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-import java.net.SocketAddress;
-import java.util.Iterator;
-import java.util.Queue;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-
-import dev.cobblesword.nachospigot.commons.minecraft.CryptException;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
@@ -28,6 +23,11 @@ import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
+
+import java.net.SocketAddress;
+import java.util.Iterator;
+import java.util.Queue;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
 
@@ -173,7 +173,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
     public void handle(Packet packet) {
         if (this.isConnected()) {
             this.sendPacketQueue();
-            this.dispatchPacket(packet, null, Boolean.TRUE);
+            this.dispatchPacket(packet, null, true);
         } else {
             this.j.writeLock().lock();
 
@@ -190,7 +190,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
     public void a(Packet packet, GenericFutureListener<? extends Future<? super Void>> listener, GenericFutureListener<? extends Future<? super Void>>... listeners) {
         if (this.isConnected()) {
             this.sendPacketQueue();
-            this.dispatchPacket(packet, ArrayUtils.insert(0, listeners, listener), Boolean.TRUE);
+            this.dispatchPacket(packet, ArrayUtils.insert(0, listeners, listener), true);
         } else {
             this.j.writeLock().lock();
 
@@ -280,7 +280,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
     }
 
     private void a(final Packet packet, final GenericFutureListener<? extends Future<? super Void>>[] agenericfuturelistener) {
-        this.dispatchPacket(packet, agenericfuturelistener, Boolean.TRUE);
+        this.dispatchPacket(packet, agenericfuturelistener, true);
     }
 
     private void sendPacketQueue() {
@@ -296,7 +296,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
                     Packet packet = queued.a;
                     if (hasWrotePacket && (needsFlush || this.canFlush)) flush();
                     iterator.remove();
-                    this.dispatchPacket(packet, queued.b, (!iterator.hasNext() && (needsFlush || this.canFlush)) ? Boolean.TRUE : Boolean.FALSE);
+                    this.dispatchPacket(packet, queued.b, (!iterator.hasNext() && (needsFlush || this.canFlush)) ? true : false);
                     hasWrotePacket = true;
                 }
             } finally {
