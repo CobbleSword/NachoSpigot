@@ -4,7 +4,6 @@ import net.minecraft.server.BlockDropper;
 import net.minecraft.server.BlockPosition;
 import net.minecraft.server.Blocks;
 import net.minecraft.server.TileEntityDropper;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Dropper;

@@ -1,17 +1,10 @@
 package org.bukkit.craftbukkit.event;
 
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
-
 import dev.cobblesword.nachospigot.Nacho;
+import net.minecraft.server.Entity;
 import net.minecraft.server.*;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Server;
@@ -33,19 +26,7 @@ import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.inventory.CraftMetaBook;
 import org.bukkit.craftbukkit.util.CraftDamageSource;
 import org.bukkit.craftbukkit.util.CraftMagicNumbers;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Creeper;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Firework;
-import org.bukkit.entity.Horse;
-import org.bukkit.entity.LightningStrike;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Pig;
-import org.bukkit.entity.PigZombie;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.ThrownExpBottle;
-import org.bukkit.entity.ThrownPotion;
+import org.bukkit.entity.*;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.*;
@@ -61,6 +42,12 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.meta.BookMeta;
+
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 
 public class CraftEventFactory {
     public static final DamageSource MELTING = CraftDamageSource.copyOf(DamageSource.BURN);
@@ -100,8 +87,8 @@ public class CraftEventFactory {
         Block blockClicked = craftWorld.getBlockAt(clickedX, clickedY, clickedZ);
 
         boolean canBuild = true;
-        for (int i = 0; i < blockStates.size(); i++) {
-            if (!canBuild(craftWorld, player, blockStates.get(i).getX(), blockStates.get(i).getZ())) {
+        for (BlockState blockState : blockStates) {
+            if (!canBuild(craftWorld, player, blockState.getX(), blockState.getZ())) {
                 canBuild = false;
                 break;
             }
@@ -168,7 +155,7 @@ public class CraftEventFactory {
         Block blockClicked = craftWorld.getBlockAt(clickedX, clickedY, clickedZ);
         BlockFace blockFace = CraftBlock.notchToBlockFace(clickedFace);
 
-        PlayerEvent event = null;
+        PlayerEvent event;
         if (isFilling) {
             event = new PlayerBucketFillEvent(player, blockClicked, blockFace, bucket, itemInHand);
             ((PlayerBucketFillEvent) event).setCancelled(!canBuild(craftWorld, player, clickedX, clickedZ));
@@ -370,7 +357,7 @@ public class CraftEventFactory {
     }
 
     public static EntityDeathEvent callEntityDeathEvent(EntityLiving victim) {
-        return callEntityDeathEvent(victim, new ArrayList<org.bukkit.inventory.ItemStack>(0));
+        return callEntityDeathEvent(victim, new ArrayList<>(0));
     }
 
     public static EntityDeathEvent callEntityDeathEvent(EntityLiving victim, List<org.bukkit.inventory.ItemStack> drops) {
@@ -479,7 +466,7 @@ public class CraftEventFactory {
             }
             return event;
         } else if (blockDamage != null) {
-            DamageCause cause = null;
+            DamageCause cause;
             Block damager = blockDamage;
             blockDamage = null;
             if (source == DamageSource.CACTUS) {
@@ -493,7 +480,7 @@ public class CraftEventFactory {
             }
             return event;
         } else if (entityDamage != null) {
-            DamageCause cause = null;
+            DamageCause cause;
             CraftEntity damager = entityDamage.getBukkitEntity();
             entityDamage = null;
             if (source == DamageSource.ANVIL || source == DamageSource.FALLING_BLOCK) {
@@ -564,8 +551,8 @@ public class CraftEventFactory {
     private static final Function<? super Double, Double> ZERO = Functions.constant(-0.0);
 
     public static EntityDamageEvent handleLivingEntityDamageEvent(Entity damagee, DamageSource source, double rawDamage, double hardHatModifier, double blockingModifier, double armorModifier, double resistanceModifier, double magicModifier, double absorptionModifier, Function<Double, Double> hardHat, Function<Double, Double> blocking, Function<Double, Double> armor, Function<Double, Double> resistance, Function<Double, Double> magic, Function<Double, Double> absorption) {
-        Map<DamageModifier, Double> modifiers = new EnumMap<DamageModifier, Double>(DamageModifier.class);
-        Map<DamageModifier, Function<? super Double, Double>> modifierFunctions = new EnumMap<DamageModifier, Function<? super Double, Double>>(DamageModifier.class);
+        Map<DamageModifier, Double> modifiers = new EnumMap<>(DamageModifier.class);
+        Map<DamageModifier, Function<? super Double, Double>> modifierFunctions = new EnumMap<>(DamageModifier.class);
         modifiers.put(DamageModifier.BASE, rawDamage);
         modifierFunctions.put(DamageModifier.BASE, ZERO);
         if (source == DamageSource.FALLING_BLOCK || source == DamageSource.ANVIL) {
@@ -597,7 +584,7 @@ public class CraftEventFactory {
             return false;
         }
 
-        final EnumMap<DamageModifier, Double> modifiers = new EnumMap<DamageModifier, Double>(DamageModifier.class);
+        final EnumMap<DamageModifier, Double> modifiers = new EnumMap<>(DamageModifier.class);
         final EnumMap<DamageModifier, Function<? super Double, Double>> functions = new EnumMap(DamageModifier.class);
 
         modifiers.put(DamageModifier.BASE, damage);

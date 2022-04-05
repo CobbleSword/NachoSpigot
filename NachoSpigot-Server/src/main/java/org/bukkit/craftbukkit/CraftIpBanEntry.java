@@ -2,11 +2,12 @@ package org.bukkit.craftbukkit;
 
 import net.minecraft.server.IpBanEntry;
 import net.minecraft.server.IpBanList;
+import org.bukkit.Bukkit;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
-import org.bukkit.Bukkit;
 
 public final class CraftIpBanEntry implements org.bukkit.BanEntry {
     private final IpBanList list;
@@ -57,7 +58,7 @@ public final class CraftIpBanEntry implements org.bukkit.BanEntry {
 
     @Override
     public void setExpiration(Date expiration) {
-        if (expiration != null && expiration.getTime() == new Date(0, 0, 0, 0, 0, 0).getTime()) {
+        if (expiration != null && expiration.getTime() == new Date(0, Calendar.JANUARY, 0, 0, 0, 0).getTime()) {
             expiration = null; // Forces "forever"
         }
 

@@ -3,11 +3,12 @@ package org.bukkit.craftbukkit;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.server.GameProfileBanEntry;
 import net.minecraft.server.GameProfileBanList;
+import org.bukkit.Bukkit;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
-import org.bukkit.Bukkit;
 
 public final class CraftProfileBanEntry implements org.bukkit.BanEntry {
     private final GameProfileBanList list;
@@ -58,7 +59,7 @@ public final class CraftProfileBanEntry implements org.bukkit.BanEntry {
 
     @Override
     public void setExpiration(Date expiration) {
-        if (expiration != null && expiration.getTime() == new Date(0, 0, 0, 0, 0, 0).getTime()) {
+        if (expiration != null && expiration.getTime() == new Date(0, Calendar.JANUARY, 0, 0, 0, 0).getTime()) {
             expiration = null; // Forces "forever"
         }
 

@@ -1,7 +1,7 @@
 package org.bukkit.craftbukkit.scoreboard;
 
-import java.util.Set;
-
+import com.google.common.collect.ImmutableSet;
+import net.minecraft.server.ScoreboardTeam;
 import net.minecraft.server.ScoreboardTeamBase.EnumNameTagVisibility;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
@@ -9,9 +9,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Team;
 
-import com.google.common.collect.ImmutableSet;
-
-import net.minecraft.server.ScoreboardTeam;
+import java.util.Objects;
+import java.util.Set;
 
 final class CraftTeam extends CraftScoreboardComponent implements Team {
     private final ScoreboardTeam team;
@@ -167,7 +166,6 @@ final class CraftTeam extends CraftScoreboardComponent implements Team {
     }
 
     public boolean hasEntry(String entry) throws IllegalArgumentException, IllegalStateException {
-        Validate.notNull("Entry cannot be null");
 
         CraftScoreboard scoreboard = checkState();
 
@@ -236,7 +234,7 @@ final class CraftTeam extends CraftScoreboardComponent implements Team {
             return false;
         }
         final CraftTeam other = (CraftTeam) obj;
-        return !(this.team != other.team && (this.team == null || !this.team.equals(other.team)));
+        return Objects.equals(this.team, other.team);
     }
 
 }

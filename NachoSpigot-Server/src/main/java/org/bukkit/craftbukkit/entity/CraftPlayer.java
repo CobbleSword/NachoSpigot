@@ -1,48 +1,32 @@
 package org.bukkit.craftbukkit.entity;
 
+import com.destroystokyo.paper.Title;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.authlib.GameProfile;
 import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.commons.Constants;
+import dev.cobblesword.nachospigot.commons.Dictionary;
 import io.netty.buffer.Unpooled;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.lang.Override;
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import me.elier.nachospigot.config.NachoConfig;
 import net.md_5.bungee.api.chat.BaseComponent;
-import dev.cobblesword.nachospigot.commons.Dictionary;
-
 import net.minecraft.server.*;
 import net.minecraft.server.PacketPlayOutTitle.EnumTitleAction;
-
-import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.NotImplementedException;
-import org.bukkit.*;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Achievement;
-import org.bukkit.Statistic;
 import org.bukkit.Material;
-import org.bukkit.Statistic.Type;
+import org.bukkit.Statistic;
+import org.bukkit.*;
 import org.bukkit.World;
+import org.bukkit.Statistic.Type;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
 import org.bukkit.conversations.ManuallyAbandonedConversationCanceller;
+import org.bukkit.craftbukkit.*;
 import org.bukkit.craftbukkit.block.CraftSign;
 import org.bukkit.craftbukkit.conversations.ConversationTracker;
-import org.bukkit.craftbukkit.CraftEffect;
-import org.bukkit.craftbukkit.CraftOfflinePlayer;
-import org.bukkit.craftbukkit.CraftServer;
-import org.bukkit.craftbukkit.CraftSound;
-import org.bukkit.craftbukkit.CraftStatistic;
-import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.map.CraftMapView;
 import org.bukkit.craftbukkit.map.RenderData;
 import org.bukkit.craftbukkit.scoreboard.CraftScoreboard;
@@ -61,18 +45,25 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.messaging.StandardMessenger;
 import org.bukkit.scoreboard.Scoreboard;
-// PaperSpigot start
-import com.destroystokyo.paper.Title;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 // PaperSpigot end
 
 @DelegateDeserialization(CraftOfflinePlayer.class)
 public class CraftPlayer extends CraftHumanEntity implements Player {
-    private long firstPlayed = 0;
+    private long firstPlayed;
     private long lastPlayed = 0;
     private boolean hasPlayedBefore = false;
     private final ConversationTracker conversationTracker = new ConversationTracker();
-    private final Set<String> channels = new HashSet<String>();
-    private final Set<UUID> hiddenPlayers = new HashSet<UUID>();
+    private final Set<String> channels = new HashSet<>();
+    private final Set<UUID> hiddenPlayers = new HashSet<>();
     private int hash = 0;
     private double health = 20;
     private boolean scaledHealth = false;
@@ -276,7 +267,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
             name = getName();
         }
         getHandle().listName = name.equals(getName()) ? null : CraftChatMessage.fromString(name)[0];
-        for (EntityPlayer player : (List<EntityPlayer>)server.getHandle().players) {
+        for (EntityPlayer player : server.getHandle().players) {
             if (player.getBukkitEntity().canSee(this)) {
                 player.playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.UPDATE_DISPLAY_NAME, getHandle()));
             }
@@ -502,7 +493,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         if (getHandle().playerConnection == null) return;
 
         RenderData data = ((CraftMapView) map).render(this);
-        Collection<MapIcon> icons = new ArrayList<MapIcon>();
+        Collection<MapIcon> icons = new ArrayList<>();
         for (MapCursor cursor : data.cursors) {
             if (cursor.isVisible()) {
                 icons.add(new MapIcon(cursor.getRawType(), cursor.getX(), cursor.getY(), cursor.getDirection()));
@@ -1052,7 +1043,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 
     @Override
     public Map<String, Object> serialize() {
-        Map<String, Object> result = new LinkedHashMap<String, Object>();
+        Map<String, Object> result = new LinkedHashMap<>();
 
         result.put("name", getName());
 
@@ -1218,7 +1209,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 
             for (String channel : listening) {
                 try {
-                    stream.write(channel.getBytes("UTF8"));
+                    stream.write(channel.getBytes(StandardCharsets.UTF_8));
                     stream.write((byte) 0);
                 } catch (IOException ex) {
                     Logger.getLogger(CraftPlayer.class.getName()).log(Level.SEVERE, "Could not send Plugin Channel REGISTER to " + getName(), ex);
@@ -1424,7 +1415,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
 
         injectScaledMaxHealth(set, true);
 
-        getHandle().getDataWatcher().watch(6, (float) getScaledHealth());
+        getHandle().getDataWatcher().watch(6, getScaledHealth());
         getHandle().playerConnection.sendPacket(new PacketPlayOutUpdateHealth(getScaledHealth(), getHandle().getFoodData().getFoodLevel(), getHandle().getFoodData().getSaturationLevel()));
         getHandle().playerConnection.sendPacket(new PacketPlayOutUpdateAttributes(getHandle().getId(), set));
 
@@ -1535,7 +1526,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
                 packet = new PacketPlayOutWorldEvent( packetData, new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ() ), id, false );
             } else
             {
-                net.minecraft.server.EnumParticle particle = null;
+                net.minecraft.server.EnumParticle particle;
                 int[] extra = null;
                 if ((particle = Dictionary.EFFECT_TO_PARTICLE.get(effect)) != null) {
                     if (effect.getData() != null)
@@ -1582,7 +1573,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
         @Override
         public Set<Player> getHiddenPlayers()
         {
-            Set<Player> ret = new HashSet<Player>();
+            Set<Player> ret = new HashSet<>();
             for ( UUID u : hiddenPlayers )
             {
                 ret.add( getServer().getPlayer( u ) );

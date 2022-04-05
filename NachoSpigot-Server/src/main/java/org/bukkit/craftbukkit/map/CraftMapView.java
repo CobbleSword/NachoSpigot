@@ -1,13 +1,6 @@
 package org.bukkit.craftbukkit.map;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import net.minecraft.server.WorldMap;
-
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftWorld;
@@ -15,12 +8,14 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 
+import java.util.*;
+
 public final class CraftMapView implements MapView {
 
-    private final Map<CraftPlayer, RenderData> renderCache = new HashMap<CraftPlayer, RenderData>();
-    private final List<MapRenderer> renderers = new ArrayList<MapRenderer>();
-    private final Map<MapRenderer, Map<CraftPlayer, CraftMapCanvas>> canvases = new HashMap<MapRenderer, Map<CraftPlayer, CraftMapCanvas>>();
-    protected final WorldMap worldMap;
+    private final Map<CraftPlayer, RenderData> renderCache = new HashMap<>();
+    private final List<MapRenderer> renderers = new ArrayList<>();
+    private final Map<MapRenderer, Map<CraftPlayer, CraftMapCanvas>> canvases = new HashMap<>();
+    final WorldMap worldMap;
 
     public CraftMapView(WorldMap worldMap) {
         this.worldMap = worldMap;
@@ -84,13 +79,13 @@ public final class CraftMapView implements MapView {
     }
 
     public List<MapRenderer> getRenderers() {
-        return new ArrayList<MapRenderer>(renderers);
+        return new ArrayList<>(renderers);
     }
 
     public void addRenderer(MapRenderer renderer) {
         if (!renderers.contains(renderer)) {
             renderers.add(renderer);
-            canvases.put(renderer, new HashMap<CraftPlayer, CraftMapCanvas>());
+            canvases.put(renderer, new HashMap<>());
             renderer.initialize(this);
         }
     }
@@ -128,7 +123,7 @@ public final class CraftMapView implements MapView {
             renderCache.put(context ? player : null, render);
         }
 
-        if (context && renderCache.containsKey(null)) {
+        if (context) {
             renderCache.remove(null);
         }
 

@@ -1,23 +1,11 @@
 package org.bukkit.craftbukkit.inventory;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-
-import net.minecraft.server.NBTBase;
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.NBTTagList;
-import net.minecraft.server.NBTTagString;
-
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Sets;
+import net.minecraft.server.*;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -30,26 +18,20 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.Repairable;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Sets;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Set;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.minecraft.server.NBTCompressedStreamTools;
-import org.apache.commons.codec.binary.Base64;
 
-// Spigot start
-import static org.spigotmc.ValidateUtils.*;
-import net.minecraft.server.GenericAttributes;
-import net.minecraft.server.IAttribute;
+import static org.spigotmc.ValidateUtils.limit;
 // Spigot end
 
 /**
@@ -85,7 +67,6 @@ class CraftMetaItem implements ItemMeta, Repairable {
             enum To {
                 BUKKIT,
                 NBT,
-                ;
             }
             To value();
         }
@@ -152,9 +133,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
 
             try {
                 return constructor.newInstance(map);
-            } catch (final InstantiationException e) {
-                throw new AssertionError(e);
-            } catch (final IllegalAccessException e) {
+            } catch (final InstantiationException | IllegalAccessException e) {
                 throw new AssertionError(e);
             } catch (final InvocationTargetException e) {
                 throw e.getCause();
@@ -227,7 +206,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
 
     private static final Set<String> HANDLED_TAGS = Sets.newHashSet();
 
-    private final Map<String, NBTBase> unhandledTags = new HashMap<String, NBTBase>();
+    private final Map<String, NBTBase> unhandledTags = new HashMap<>();
 
     CraftMetaItem(CraftMetaItem meta) {
         if (meta == null) {
@@ -237,11 +216,11 @@ class CraftMetaItem implements ItemMeta, Repairable {
         this.displayName = meta.displayName;
 
         if (meta.hasLore()) {
-            this.lore = new ArrayList<String>(meta.lore);
+            this.lore = new ArrayList<>(meta.lore);
         }
 
         if (meta.enchantments != null) { // Spigot
-            this.enchantments = new HashMap<Enchantment, Integer>(meta.enchantments);
+            this.enchantments = new HashMap<>(meta.enchantments);
         }
 
         this.repairCost = meta.repairCost;
@@ -260,7 +239,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
 
             if (display.hasKey(LORE.NBT)) {
                 NBTTagList list = display.getList(LORE.NBT, 8);
-                lore = new ArrayList<String>(list.size());
+                lore = new ArrayList<>(list.size());
 
                 for (int index = 0; index < list.size(); index++) {
                     String line = limit( list.getString(index), 1024 ); // Spigot
@@ -284,9 +263,9 @@ class CraftMetaItem implements ItemMeta, Repairable {
             NBTTagList nbttaglist = tag.getList(ATTRIBUTES.NBT, 10);
 
             // Spigot start
-            gnu.trove.map.hash.TObjectDoubleHashMap<String> attributeTracker = new gnu.trove.map.hash.TObjectDoubleHashMap<String>();
-            gnu.trove.map.hash.TObjectDoubleHashMap<String> attributeTrackerX = new gnu.trove.map.hash.TObjectDoubleHashMap<String>();
-            Map<String, IAttribute> attributesByName = new HashMap<String, IAttribute>();
+            gnu.trove.map.hash.TObjectDoubleHashMap<String> attributeTracker = new gnu.trove.map.hash.TObjectDoubleHashMap<>();
+            gnu.trove.map.hash.TObjectDoubleHashMap<String> attributeTrackerX = new gnu.trove.map.hash.TObjectDoubleHashMap<>();
+            Map<String, IAttribute> attributesByName = new HashMap<>();
             attributeTracker.put( "generic.maxHealth", 20.0 );
             attributesByName.put( "generic.maxHealth", GenericAttributes.maxHealth );
             attributeTracker.put( "generic.followRange", 32.0 );
@@ -300,9 +279,9 @@ class CraftMetaItem implements ItemMeta, Repairable {
             NBTTagList oldList = nbttaglist;
             nbttaglist = new NBTTagList();
 
-            List<NBTTagCompound> op0 = new ArrayList<NBTTagCompound>();
-            List<NBTTagCompound> op1 = new ArrayList<NBTTagCompound>();
-            List<NBTTagCompound> op2 = new ArrayList<NBTTagCompound>();
+            List<NBTTagCompound> op0 = new ArrayList<>();
+            List<NBTTagCompound> op1 = new ArrayList<>();
+            List<NBTTagCompound> op2 = new ArrayList<>();
 
             for ( int i = 0; i < oldList.size(); ++i )
             {
@@ -404,7 +383,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
                 if (!(nbttaglist.get(i) instanceof NBTTagCompound)) {
                     continue;
                 }
-                NBTTagCompound nbttagcompound = (NBTTagCompound) nbttaglist.get(i);
+                NBTTagCompound nbttagcompound = nbttaglist.get(i);
 
                 if (!nbttagcompound.hasKeyOfType(ATTRIBUTES_UUID_HIGH.NBT, 99)) {
                     continue;
@@ -462,11 +441,11 @@ class CraftMetaItem implements ItemMeta, Repairable {
         }
 
         NBTTagList ench = tag.getList(key.NBT, 10);
-        Map<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>(ench.size());
+        Map<Enchantment, Integer> enchantments = new HashMap<>(ench.size());
 
         for (int i = 0; i < ench.size(); i++) {
-            int id = 0xffff & ((NBTTagCompound) ench.get(i)).getShort(ENCHANTMENTS_ID.NBT);
-            int level = 0xffff & ((NBTTagCompound) ench.get(i)).getShort(ENCHANTMENTS_LVL.NBT);
+            int id = 0xffff & ench.get(i).getShort(ENCHANTMENTS_ID.NBT);
+            int level = 0xffff & ench.get(i).getShort(ENCHANTMENTS_LVL.NBT);
 
             // Spigot start - skip invalid enchantments
             Enchantment e = Enchantment.getById(id);
@@ -483,7 +462,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
 
         Iterable<?> lore = SerializableMeta.getObject(Iterable.class, map, LORE.BUKKIT, true);
         if (lore != null) {
-            safelyAdd(lore, this.lore = new ArrayList<String>(), Integer.MAX_VALUE);
+            safelyAdd(lore, this.lore = new ArrayList<>(), Integer.MAX_VALUE);
         }
 
         enchantments = buildEnchantments(map, ENCHANTMENTS);
@@ -541,7 +520,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
             return null;
         }
 
-        Map<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>(ench.size());
+        Map<Enchantment, Integer> enchantments = new HashMap<>(ench.size());
         for (Map.Entry<?, ?> entry : ench.entrySet()) {
             Enchantment enchantment = Enchantment.getByName(entry.getKey().toString());
 
@@ -670,12 +649,12 @@ class CraftMetaItem implements ItemMeta, Repairable {
     }
 
     public Map<Enchantment, Integer> getEnchants() {
-        return hasEnchants() ? ImmutableMap.copyOf(enchantments) : ImmutableMap.<Enchantment, Integer>of();
+        return hasEnchants() ? ImmutableMap.copyOf(enchantments) : ImmutableMap.of();
     }
 
     public boolean addEnchant(Enchantment ench, int level, boolean ignoreRestrictions) {
         if (enchantments == null) {
-            enchantments = new HashMap<Enchantment, Integer>(4);
+            enchantments = new HashMap<>(4);
         }
 
         if (ignoreRestrictions || level >= ench.getStartLevel() && level <= ench.getMaxLevel()) {
@@ -742,7 +721,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
     }
 
     public List<String> getLore() {
-        return this.lore == null ? null : new ArrayList<String>(this.lore);
+        return this.lore == null ? null : new ArrayList<>(this.lore);
     }
 
     public void setLore(List<String> lore) { // too tired to think if .clone is better
@@ -750,7 +729,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
             this.lore = null;
         } else {
             if (this.lore == null) {
-                safelyAdd(lore, this.lore = new ArrayList<String>(lore.size()), Integer.MAX_VALUE);
+                safelyAdd(lore, this.lore = new ArrayList<>(lore.size()), Integer.MAX_VALUE);
             } else {
                 this.lore.clear();
                 safelyAdd(lore, this.lore, Integer.MAX_VALUE);
@@ -830,10 +809,10 @@ class CraftMetaItem implements ItemMeta, Repairable {
         try {
             CraftMetaItem clone = (CraftMetaItem) super.clone();
             if (this.lore != null) {
-                clone.lore = new ArrayList<String>(this.lore);
+                clone.lore = new ArrayList<>(this.lore);
             }
             if (this.enchantments != null) {
-                clone.enchantments = new HashMap<Enchantment, Integer>(this.enchantments);
+                clone.enchantments = new HashMap<>(this.enchantments);
             }
             clone.hideFlag = this.hideFlag;
             return clone;
@@ -873,7 +852,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
         // Spigot end
 
 
-        Set<String> hideFlags = new HashSet<String>();
+        Set<String> hideFlags = new HashSet<>();
         for (ItemFlag hideFlagEnum : getItemFlags()) {
             hideFlags.add(hideFlagEnum.name());
         }
@@ -881,7 +860,7 @@ class CraftMetaItem implements ItemMeta, Repairable {
             builder.put(HIDEFLAGS.BUKKIT, hideFlags);
         }
 
-        final Map<String, NBTBase> internalTags = new HashMap<String, NBTBase>(unhandledTags);
+        final Map<String, NBTBase> internalTags = new HashMap<>(unhandledTags);
         serializeInternal(internalTags);
         if (!internalTags.isEmpty()) {
             NBTTagCompound internal = new NBTTagCompound();

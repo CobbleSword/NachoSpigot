@@ -1,24 +1,24 @@
 package org.bukkit.craftbukkit.util;
 
+import org.apache.commons.lang.Validate;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.apache.commons.lang.Validate;
-
 public final class WeakCollection<T> implements Collection<T> {
     static final Object NO_VALUE = new Object();
     private final Collection<WeakReference<T>> collection;
 
     public WeakCollection() {
-        collection = new ArrayList<WeakReference<T>>();
+        collection = new ArrayList<>();
     }
 
     public boolean add(T value) {
         Validate.notNull(value, "Cannot add null value");
-        return collection.add(new WeakReference<T>(value));
+        return collection.add(new WeakReference<>(value));
     }
 
     public boolean addAll(Collection<? extends T> collection) {
@@ -26,7 +26,7 @@ public final class WeakCollection<T> implements Collection<T> {
         boolean ret = false;
         for (T value : collection) {
             Validate.notNull(value, "Cannot add null value");
-            ret |= values.add(new WeakReference<T>(value));
+            ret |= values.add(new WeakReference<>(value));
         }
         return ret;
     }
@@ -57,7 +57,7 @@ public final class WeakCollection<T> implements Collection<T> {
 
     public Iterator<T> iterator() {
         return new Iterator<T>() {
-            Iterator<WeakReference<T>> it = collection.iterator();
+            final Iterator<WeakReference<T>> it = collection.iterator();
             Object value = NO_VALUE;
 
             public boolean hasNext() {
@@ -67,7 +67,6 @@ public final class WeakCollection<T> implements Collection<T> {
                 }
 
                 Iterator<WeakReference<T>> it = this.it;
-                value = null;
 
                 while (it.hasNext()) {
                     WeakReference<T> ref = it.next();
@@ -160,10 +159,6 @@ public final class WeakCollection<T> implements Collection<T> {
     }
 
     private Collection<T> toCollection() {
-        ArrayList<T> collection = new ArrayList<T>();
-        for (T value : this) {
-            collection.add(value);
-        }
-        return collection;
+        return new ArrayList<>(this);
     }
 }

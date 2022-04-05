@@ -4,7 +4,6 @@ import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.PacketPlayOutHeldItemSlot;
 import net.minecraft.server.PacketPlayOutSetSlot;
 import net.minecraft.server.PlayerInventory;
-
 import org.apache.commons.lang.Validate;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.HumanEntity;
@@ -98,7 +97,7 @@ public class CraftInventoryPlayer extends CraftInventory implements org.bukkit.i
     }
 
     public ItemStack getBoots() {
-        return getItem(getSize() + 0);
+        return getItem(getSize());
     }
 
     public void setHelmet(ItemStack helmet) {
@@ -114,7 +113,7 @@ public class CraftInventoryPlayer extends CraftInventory implements org.bukkit.i
     }
 
     public void setBoots(ItemStack boots) {
-        setItem(getSize() + 0, boots);
+        setItem(getSize(), boots);
     }
 
     public ItemStack[] getArmorContents() {

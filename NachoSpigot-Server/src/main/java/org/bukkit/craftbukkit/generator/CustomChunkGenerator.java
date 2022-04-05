@@ -1,14 +1,13 @@
 package org.bukkit.craftbukkit.generator;
 
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.server.*;
-
 import org.bukkit.block.Biome;
+import org.bukkit.craftbukkit.block.CraftBlock;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.craftbukkit.block.CraftBlock;
+
+import java.util.List;
+import java.util.Random;
 
 public class CustomChunkGenerator extends InternalChunkGenerator {
     private final ChunkGenerator generator;

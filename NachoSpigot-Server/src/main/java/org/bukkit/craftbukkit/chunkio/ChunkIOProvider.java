@@ -1,14 +1,13 @@
 package org.bukkit.craftbukkit.chunkio;
 
-import java.io.IOException;
 import net.minecraft.server.Chunk;
 import net.minecraft.server.ChunkRegionLoader;
 import net.minecraft.server.NBTTagCompound;
-
 import org.bukkit.Server;
 import org.bukkit.craftbukkit.util.AsynchronousExecutor;
 import org.bukkit.craftbukkit.util.LongHash;
 
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 class ChunkIOProvider implements AsynchronousExecutor.CallBackProvider<QueuedChunk, Chunk, Runnable, RuntimeException> {

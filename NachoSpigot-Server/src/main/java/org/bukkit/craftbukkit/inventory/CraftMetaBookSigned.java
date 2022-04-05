@@ -1,19 +1,17 @@
 package org.bukkit.craftbukkit.inventory;
 
-import java.util.Map;
-
+import com.google.common.collect.ImmutableMap.Builder;
+import net.minecraft.server.IChatBaseComponent;
+import net.minecraft.server.IChatBaseComponent.ChatSerializer;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.NBTTagList;
-
+import net.minecraft.server.NBTTagString;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
 import org.bukkit.craftbukkit.inventory.CraftMetaItem.SerializableMeta;
 import org.bukkit.inventory.meta.BookMeta;
 
-import com.google.common.collect.ImmutableMap.Builder;
-import net.minecraft.server.IChatBaseComponent.ChatSerializer;
-import net.minecraft.server.IChatBaseComponent;
-import net.minecraft.server.NBTTagString;
+import java.util.Map;
 
 @DelegateDeserialization(SerializableMeta.class)
 class CraftMetaBookSigned extends CraftMetaBook implements BookMeta {
@@ -104,8 +102,7 @@ class CraftMetaBookSigned extends CraftMetaBook implements BookMeta {
 
     @Override
     public CraftMetaBookSigned clone() {
-        CraftMetaBookSigned meta = (CraftMetaBookSigned) super.clone();
-        return meta;
+        return (CraftMetaBookSigned) super.clone();
     }
 
     @Override

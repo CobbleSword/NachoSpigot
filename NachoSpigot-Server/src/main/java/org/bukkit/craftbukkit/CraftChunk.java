@@ -1,20 +1,19 @@
 package org.bukkit.craftbukkit;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import net.minecraft.server.*;
-
 import org.bukkit.Chunk;
+import org.bukkit.ChunkSnapshot;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.block.CraftBlock;
 import org.bukkit.craftbukkit.util.CraftMagicNumbers;
 import org.bukkit.entity.Entity;
-import org.bukkit.ChunkSnapshot;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class CraftChunk implements Chunk {
     private WeakReference<net.minecraft.server.Chunk> weakChunk;
@@ -27,7 +26,7 @@ public class CraftChunk implements Chunk {
 
     public CraftChunk(net.minecraft.server.Chunk chunk) {
         if (!(chunk instanceof EmptyChunk)) {
-            this.weakChunk = new WeakReference<net.minecraft.server.Chunk>(chunk);
+            this.weakChunk = new WeakReference<>(chunk);
         }
 
         worldServer = (WorldServer) getHandle().world;
@@ -50,7 +49,7 @@ public class CraftChunk implements Chunk {
             c = worldServer.getChunkAt(x, z);
 
             if (!(c instanceof EmptyChunk)) {
-                weakChunk = new WeakReference<net.minecraft.server.Chunk>(c);
+                weakChunk = new WeakReference<>(c);
             }
         }
 
@@ -90,9 +89,9 @@ public class CraftChunk implements Chunk {
 
         for (int i = 0; i < 16; i++) {
             // Paper start - speed up (was with chunk.entitySlices[i].toArray() and cast checks which costs a lot of performance if called often)
-            for (Object entity : chunk.entitySlices[i]) {
+            for (net.minecraft.server.Entity entity : chunk.entitySlices[i]) {
                 if (entity == null) continue;
-                entities[index++] = ((net.minecraft.server.Entity) entity).getBukkitEntity();
+                entities[index++] = entity.getBukkitEntity();
             }
             // Paper end
         }
@@ -149,7 +148,7 @@ public class CraftChunk implements Chunk {
             for(int i = 0; i < blockIds.length; i++)
             {
                 // This does a lookup in the block registry, but does not create any objects, so should be pretty efficient
-                IBlockData blockData = (IBlockData) net.minecraft.server.Block.d.a(blockIds[i]);
+                IBlockData blockData = net.minecraft.server.Block.d.a(blockIds[i]);
                 if(blockData != null && blockData.getBlock() == nmsBlock) { // SportPaper - fix NPE
                     blocks.add(getBlock(i & 0xf, section.getYPosition() | (i >> 8), (i >> 4) & 0xf));
                 }
@@ -195,7 +194,7 @@ public class CraftChunk implements Chunk {
                 // Copy base IDs
                 for (int j = 0; j < 4096; j++) {
                     if (baseids[j] == 0) continue;
-                    IBlockData blockData = (IBlockData) net.minecraft.server.Block.d.a(baseids[j]);
+                    IBlockData blockData = net.minecraft.server.Block.d.a(baseids[j]);
                     if (blockData == null) continue;
                     blockids[j] = (short) net.minecraft.server.Block.getId(blockData.getBlock());
                     int data = blockData.getBlock().toLegacyData(blockData);

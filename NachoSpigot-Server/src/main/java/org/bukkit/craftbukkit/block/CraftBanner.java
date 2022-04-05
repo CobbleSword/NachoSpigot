@@ -1,7 +1,5 @@
 package org.bukkit.craftbukkit.block;
 
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.NBTTagList;
 import net.minecraft.server.TileEntityBanner;
@@ -13,11 +11,14 @@ import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.craftbukkit.CraftWorld;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CraftBanner extends CraftBlockState implements Banner {
 
     private final TileEntityBanner banner;
     private DyeColor base;
-    private List<Pattern> patterns = new ArrayList<Pattern>();
+    private List<Pattern> patterns = new ArrayList<>();
 
     public CraftBanner(final Block block) {
         super(block);
@@ -29,7 +30,7 @@ public class CraftBanner extends CraftBlockState implements Banner {
 
         if (banner.patterns != null) {
             for (int i = 0; i < banner.patterns.size(); i++) {
-                NBTTagCompound p = (NBTTagCompound) banner.patterns.get(i);
+                NBTTagCompound p = banner.patterns.get(i);
                 patterns.add(new Pattern(DyeColor.getByDyeData((byte) p.getInt("Color")), PatternType.getByIdentifier(p.getString("Pattern"))));
             }
         }
@@ -43,7 +44,7 @@ public class CraftBanner extends CraftBlockState implements Banner {
 
         if (banner.patterns != null) {
             for (int i = 0; i < banner.patterns.size(); i++) {
-                NBTTagCompound p = (NBTTagCompound) banner.patterns.get(i);
+                NBTTagCompound p = banner.patterns.get(i);
                 patterns.add(new Pattern(DyeColor.getByDyeData((byte) p.getInt("Color")), PatternType.getByIdentifier(p.getString("Pattern"))));
             }
         }
@@ -61,12 +62,12 @@ public class CraftBanner extends CraftBlockState implements Banner {
 
     @Override
     public List<Pattern> getPatterns() {
-        return new ArrayList<Pattern>(patterns);
+        return new ArrayList<>(patterns);
     }
 
     @Override
     public void setPatterns(List<Pattern> patterns) {
-        this.patterns = new ArrayList<Pattern>(patterns);
+        this.patterns = new ArrayList<>(patterns);
     }
 
     @Override

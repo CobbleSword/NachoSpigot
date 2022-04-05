@@ -1,13 +1,9 @@
 package org.bukkit.craftbukkit.inventory;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap.Builder;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.NBTTagList;
-
 import org.apache.commons.lang.Validate;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -19,8 +15,10 @@ import org.bukkit.craftbukkit.inventory.CraftMetaItem.ItemMetaKey.Specific.To;
 import org.bukkit.craftbukkit.inventory.CraftMetaItem.SerializableMeta;
 import org.bukkit.inventory.meta.FireworkMeta;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap.Builder;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 @DelegateDeserialization(SerializableMeta.class)
 class CraftMetaFirework extends CraftMetaItem implements FireworkMeta {
@@ -69,7 +67,7 @@ class CraftMetaFirework extends CraftMetaItem implements FireworkMeta {
         this.power = that.power;
 
         if (that.hasEffects()) {
-            this.effects = new ArrayList<FireworkEffect>(that.effects);
+            this.effects = new ArrayList<>(that.effects);
         }
     }
 
@@ -89,10 +87,10 @@ class CraftMetaFirework extends CraftMetaItem implements FireworkMeta {
         }
 
         NBTTagList fireworkEffects = fireworks.getList(EXPLOSIONS.NBT, 10);
-        List<FireworkEffect> effects = this.effects = new ArrayList<FireworkEffect>(fireworkEffects.size());
+        List<FireworkEffect> effects = this.effects = new ArrayList<>(fireworkEffects.size());
 
         for (int i = 0; i < fireworkEffects.size(); i++) {
-            effects.add(getEffect((NBTTagCompound) fireworkEffects.get(i)));
+            effects.add(getEffect(fireworkEffects.get(i)));
         }
     }
 
@@ -189,7 +187,7 @@ class CraftMetaFirework extends CraftMetaItem implements FireworkMeta {
 
         List<FireworkEffect> effects = this.effects;
         if (effects == null) {
-            effects = this.effects = new ArrayList<FireworkEffect>();
+            effects = this.effects = new ArrayList<>();
         }
 
         for (Object obj : collection) {
@@ -243,12 +241,7 @@ class CraftMetaFirework extends CraftMetaItem implements FireworkMeta {
 
     @Override
     boolean applicableTo(Material type) {
-        switch(type) {
-            case FIREWORK:
-                return true;
-            default:
-                return false;
-        }
+        return type == Material.FIREWORK;
     }
 
     @Override
@@ -318,7 +311,7 @@ class CraftMetaFirework extends CraftMetaItem implements FireworkMeta {
         CraftMetaFirework meta = (CraftMetaFirework) super.clone();
 
         if (this.effects != null) {
-            meta.effects = new ArrayList<FireworkEffect>(this.effects);
+            meta.effects = new ArrayList<>(this.effects);
         }
 
         return meta;
@@ -327,7 +320,7 @@ class CraftMetaFirework extends CraftMetaItem implements FireworkMeta {
     public void addEffect(FireworkEffect effect) {
         Validate.notNull(effect, "Effect cannot be null");
         if (this.effects == null) {
-            this.effects = new ArrayList<FireworkEffect>();
+            this.effects = new ArrayList<>();
         }
         this.effects.add(effect);
     }
@@ -340,7 +333,7 @@ class CraftMetaFirework extends CraftMetaItem implements FireworkMeta {
 
         List<FireworkEffect> list = this.effects;
         if (list == null) {
-            list = this.effects = new ArrayList<FireworkEffect>();
+            list = this.effects = new ArrayList<>();
         }
 
         for (FireworkEffect effect : effects) {
@@ -355,7 +348,7 @@ class CraftMetaFirework extends CraftMetaItem implements FireworkMeta {
     }
 
     public List<FireworkEffect> getEffects() {
-        return this.effects == null ? ImmutableList.<FireworkEffect>of() : ImmutableList.copyOf(this.effects);
+        return this.effects == null ? ImmutableList.of() : ImmutableList.copyOf(this.effects);
     }
 
     public int getEffectsSize() {

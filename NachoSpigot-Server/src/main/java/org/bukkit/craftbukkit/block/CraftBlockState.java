@@ -1,11 +1,12 @@
 package org.bukkit.craftbukkit.block;
 
 import net.minecraft.server.BlockPosition;
-import org.bukkit.Location;
-import org.bukkit.block.Block;
+import net.minecraft.server.TileEntity;
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.CraftChunk;
 import org.bukkit.craftbukkit.CraftWorld;
@@ -14,7 +15,7 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 
 import java.util.List;
-import net.minecraft.server.TileEntity;
+import java.util.Objects;
 
 public class CraftBlockState implements BlockState {
     private final CraftWorld world;
@@ -207,7 +208,7 @@ public class CraftBlockState implements BlockState {
             return false;
         }
         final CraftBlockState other = (CraftBlockState) obj;
-        if (this.world != other.world && (this.world == null || !this.world.equals(other.world))) {
+        if (!Objects.equals(this.world, other.world)) {
             return false;
         }
         if (this.x != other.x) {
@@ -222,10 +223,7 @@ public class CraftBlockState implements BlockState {
         if (this.type != other.type) {
             return false;
         }
-        if (this.data != other.data && (this.data == null || !this.data.equals(other.data))) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.data, other.data);
     }
 
     @Override

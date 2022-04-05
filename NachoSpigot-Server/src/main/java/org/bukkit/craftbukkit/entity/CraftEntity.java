@@ -1,14 +1,8 @@
 package org.bukkit.craftbukkit.entity;
 
+import com.destroystokyo.paper.PaperConfig;
 import com.google.common.base.Preconditions;
-
-import java.lang.ref.WeakReference;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
 import net.minecraft.server.*;
-
 import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.Server;
@@ -17,14 +11,14 @@ import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.metadata.MetadataValue;
-import org.bukkit.permissions.PermissibleBase;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionAttachment;
-import org.bukkit.permissions.PermissionAttachmentInfo;
-import org.bukkit.permissions.ServerOperator;
+import org.bukkit.permissions.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
-import com.destroystokyo.paper.PaperConfig;
+
+import java.lang.ref.WeakReference;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 public abstract class CraftEntity implements org.bukkit.entity.Entity {
     private static final PermissibleBase perm = new PermissibleBase(new ServerOperator() {
@@ -268,7 +262,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
 
     public List<org.bukkit.entity.Entity> getNearbyEntities(double x, double y, double z) {
         List<Entity> notchEntityList = entity.world.a(entity, entity.getBoundingBox().grow(x, y, z), null);
-        List<org.bukkit.entity.Entity> bukkitEntityList = new java.util.ArrayList<org.bukkit.entity.Entity>(notchEntityList.size());
+        List<org.bukkit.entity.Entity> bukkitEntityList = new java.util.ArrayList<>(notchEntityList.size());
 
         for (Entity e : notchEntityList) {
             bukkitEntityList.add(e.getBukkitEntity());
@@ -509,7 +503,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
 
     @Override
     public boolean hasPermission(Permission perm) {
-        return this.perm.hasPermission(perm);
+        return CraftEntity.perm.hasPermission(perm);
     }
 
     @Override

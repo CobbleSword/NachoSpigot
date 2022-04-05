@@ -1,12 +1,11 @@
 package org.bukkit.craftbukkit.inventory;
 
 import net.minecraft.server.ITileInventory;
+import net.minecraft.server.InventoryLargeChest;
 import org.bukkit.block.DoubleChest;
 import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-
-import net.minecraft.server.InventoryLargeChest;
 
 public class CraftInventoryDoubleChest extends CraftInventory implements DoubleChestInventory {
     private final CraftInventory left;

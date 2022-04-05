@@ -1,9 +1,8 @@
 package org.bukkit.craftbukkit.inventory;
 
-import net.minecraft.server.IRecipe;
 import net.minecraft.server.IInventory;
+import net.minecraft.server.IRecipe;
 import net.minecraft.server.InventoryCrafting;
-
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -45,7 +44,7 @@ public class CraftInventoryCrafting extends CraftInventory implements CraftingIn
         ItemStack[] items = new ItemStack[getSize()];
         net.minecraft.server.ItemStack[] mcResultItems = getResultInventory().getContents();
 
-        int i = 0;
+        int i;
         for (i = 0; i < mcResultItems.length; i++ ) {
             items[i] = CraftItemStack.asCraftMirror(mcResultItems[i]);
         }

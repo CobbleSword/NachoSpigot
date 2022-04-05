@@ -3,7 +3,6 @@ package org.bukkit.craftbukkit.entity;
 import net.minecraft.server.EntityFireworks;
 import net.minecraft.server.ItemStack;
 import net.minecraft.server.Items;
-
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;

@@ -3,7 +3,6 @@ package org.bukkit.craftbukkit.entity;
 import net.minecraft.server.EntityPainting;
 import net.minecraft.server.EntityPainting.EnumArt;
 import net.minecraft.server.WorldServer;
-
 import org.bukkit.Art;
 import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.CraftArt;

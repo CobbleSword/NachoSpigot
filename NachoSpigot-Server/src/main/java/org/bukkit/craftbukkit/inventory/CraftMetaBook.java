@@ -1,29 +1,26 @@
 package org.bukkit.craftbukkit.inventory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap.Builder;
+import net.minecraft.server.IChatBaseComponent;
+import net.minecraft.server.IChatBaseComponent.ChatSerializer;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.NBTTagList;
-
+import net.minecraft.server.NBTTagString;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
 import org.bukkit.craftbukkit.inventory.CraftMetaItem.SerializableMeta;
+import org.bukkit.craftbukkit.util.CraftChatMessage;
 import org.bukkit.inventory.meta.BookMeta;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap.Builder;
 import java.util.AbstractList;
-import net.minecraft.server.IChatBaseComponent.ChatSerializer;
-import net.minecraft.server.IChatBaseComponent;
-import net.minecraft.server.NBTTagString;
-import org.bukkit.craftbukkit.util.CraftChatMessage;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-// Spigot start
-import static org.spigotmc.ValidateUtils.*;
+import static org.spigotmc.ValidateUtils.limit;
 // Spigot end
 
 @DelegateDeserialization(SerializableMeta.class)

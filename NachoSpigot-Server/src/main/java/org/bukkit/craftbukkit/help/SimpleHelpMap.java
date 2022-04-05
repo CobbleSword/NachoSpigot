@@ -3,7 +3,6 @@ package org.bukkit.craftbukkit.help;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
-
 import org.bukkit.command.*;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.command.defaults.VanillaCommand;
@@ -26,8 +25,8 @@ public class SimpleHelpMap implements HelpMap {
 
     @SuppressWarnings("unchecked")
     public SimpleHelpMap(CraftServer server) {
-        this.helpTopics = new TreeMap<String, HelpTopic>(HelpTopicComparator.topicNameComparatorInstance()); // Using a TreeMap for its explicit sorting on key
-        this.topicFactoryMap = new HashMap<Class, HelpTopicFactory<Command>>();
+        this.helpTopics = new TreeMap<>(HelpTopicComparator.topicNameComparatorInstance()); // Using a TreeMap for its explicit sorting on key
+        this.topicFactoryMap = new HashMap<>();
         this.server = server;
         this.yaml = new HelpYamlReader(server);
 
@@ -98,7 +97,7 @@ public class SimpleHelpMap implements HelpMap {
      */
     public synchronized void initializeCommands() {
         // ** Load topics from highest to lowest priority order **
-        Set<String> ignoredPlugins = new HashSet<String>(yaml.getIgnoredPlugins());
+        Set<String> ignoredPlugins = new HashSet<>(yaml.getIgnoredPlugins());
 
         // Don't load any automatic help topics if All is ignored
         if (ignoredPlugins.contains("All")) {
@@ -147,7 +146,7 @@ public class SimpleHelpMap implements HelpMap {
         }
 
         // Initialize plugin-level sub-topics
-        Map<String, Set<HelpTopic>> pluginIndexes = new HashMap<String, Set<HelpTopic>>();
+        Map<String, Set<HelpTopic>> pluginIndexes = new HashMap<>();
         fillPluginIndexes(pluginIndexes, server.getCommandMap().getCommands());
 
         for (Map.Entry<String, Set<HelpTopic>> entry : pluginIndexes.entrySet()) {
@@ -172,7 +171,7 @@ public class SimpleHelpMap implements HelpMap {
                 HelpTopic topic = getHelpTopic("/" + command.getLabel());
                 if (topic != null) {
                     if (!pluginIndexes.containsKey(pluginName)) {
-                        pluginIndexes.put(pluginName, new TreeSet<HelpTopic>(HelpTopicComparator.helpTopicComparatorInstance())); //keep things in topic order
+                        pluginIndexes.put(pluginName, new TreeSet<>(HelpTopicComparator.helpTopicComparatorInstance())); //keep things in topic order
                     }
                     pluginIndexes.get(pluginName).add(topic);
                 }
@@ -197,10 +196,7 @@ public class SimpleHelpMap implements HelpMap {
         if ((command instanceof BukkitCommand || command instanceof VanillaCommand) && ignoredPlugins.contains("Bukkit")) {
             return true;
         }
-        if (command instanceof PluginIdentifiableCommand && ignoredPlugins.contains(((PluginIdentifiableCommand)command).getPlugin().getName())) {
-            return true;
-        }
-        return false;
+        return command instanceof PluginIdentifiableCommand && ignoredPlugins.contains(((PluginIdentifiableCommand) command).getPlugin().getName());
     }
 
     public void registerHelpTopicFactory(Class commandClass, HelpTopicFactory factory) {
@@ -210,7 +206,7 @@ public class SimpleHelpMap implements HelpMap {
         topicFactoryMap.put(commandClass, factory);
     }
 
-    private class IsCommandTopicPredicate implements Predicate<HelpTopic> {
+    private static class IsCommandTopicPredicate implements Predicate<HelpTopic> {
 
         public boolean apply(HelpTopic topic) {
             return topic.getName().charAt(0) == '/';

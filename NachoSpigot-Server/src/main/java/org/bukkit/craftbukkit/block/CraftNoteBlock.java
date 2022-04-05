@@ -2,7 +2,6 @@ package org.bukkit.craftbukkit.block;
 
 import net.minecraft.server.BlockPosition;
 import net.minecraft.server.TileEntityNote;
-
 import org.bukkit.Instrument;
 import org.bukkit.Material;
 import org.bukkit.Note;

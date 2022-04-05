@@ -1,13 +1,12 @@
 package org.bukkit.craftbukkit.generator;
 
+import net.minecraft.server.*;
+import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.generator.BlockPopulator;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import net.minecraft.server.*;
-
-import org.bukkit.craftbukkit.CraftWorld;
-import org.bukkit.generator.BlockPopulator;
 
 public class NormalChunkGenerator extends InternalChunkGenerator {
     private final IChunkProvider provider;
@@ -28,7 +27,7 @@ public class NormalChunkGenerator extends InternalChunkGenerator {
 
     @Override
     public List<BlockPopulator> getDefaultPopulators(org.bukkit.World world) {
-        return new ArrayList<BlockPopulator>();
+        return new ArrayList<>();
     }
 
     @Override

@@ -1,35 +1,7 @@
 package org.bukkit.craftbukkit.entity;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import dev.cobblesword.nachospigot.knockback.KnockbackProfile;
-import net.minecraft.server.DamageSource;
-import net.minecraft.server.EntityArmorStand;
-import net.minecraft.server.EntityArrow;
-import net.minecraft.server.EntityEgg;
-import net.minecraft.server.EntityEnderPearl;
-import net.minecraft.server.EntityFishingHook;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.EntityFireball;
-import net.minecraft.server.EntityInsentient;
-import net.minecraft.server.EntityLargeFireball;
-import net.minecraft.server.EntityLiving;
-import net.minecraft.server.EntityPlayer;
-import net.minecraft.server.EntityPotion;
-import net.minecraft.server.EntitySmallFireball;
-import net.minecraft.server.EntitySnowball;
-import net.minecraft.server.EntityThrownExpBottle;
-import net.minecraft.server.EntityWither;
-import net.minecraft.server.EntityWitherSkull;
-import net.minecraft.server.GenericAttributes;
-import net.minecraft.server.MobEffect;
-import net.minecraft.server.MobEffectList;
-
+import net.minecraft.server.*;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -38,22 +10,8 @@ import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.inventory.CraftEntityEquipment;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Egg;
-import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Fireball;
-import org.bukkit.entity.Fish;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.SmallFireball;
-import org.bukkit.entity.Snowball;
-import org.bukkit.entity.ThrownExpBottle;
-import org.bukkit.entity.ThrownPotion;
-import org.bukkit.entity.WitherSkull;
+import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.EntityEquipment;
@@ -63,6 +21,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.NumberConversions;
 import org.bukkit.util.Vector;
+
+import java.util.*;
 
 public class CraftLivingEntity extends CraftEntity implements LivingEntity {
     private CraftEntityEquipment equipment;
@@ -133,7 +93,7 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
         if (maxDistance > 120) {
             maxDistance = 120;
         }
-        ArrayList<Block> blocks = new ArrayList<Block>();
+        ArrayList<Block> blocks = new ArrayList<>();
         Iterator<Block> itr = new BlockIterator(this, maxDistance);
         while (itr.hasNext()) {
             Block block = itr.next();
@@ -159,7 +119,7 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
         if (maxDistance > 120) {
             maxDistance = 120;
         }
-        ArrayList<Block> blocks = new ArrayList<Block>();
+        ArrayList<Block> blocks = new ArrayList<>();
         Iterator<Block> itr = new BlockIterator(this, maxDistance);
         while (itr.hasNext()) {
             Block block = itr.next();
@@ -324,12 +284,11 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
     }
 
     public Collection<PotionEffect> getActivePotionEffects() {
-        List<PotionEffect> effects = new ArrayList<PotionEffect>();
-        for (Object raw : getHandle().effects.values()) {
+        List<PotionEffect> effects = new ArrayList<>();
+        for (MobEffect raw : getHandle().effects.values()) {
             if (!(raw instanceof MobEffect))
                 continue;
-            MobEffect handle = (MobEffect) raw;
-            effects.add(new PotionEffect(PotionEffectType.getById(handle.getEffectId()), handle.getDuration(), handle.getAmplifier(), handle.isAmbient(), handle.isShowParticles()));
+            effects.add(new PotionEffect(PotionEffectType.getById(raw.getEffectId()), raw.getDuration(), raw.getAmplifier(), raw.isAmbient(), raw.isShowParticles()));
         }
         return effects;
     }
@@ -369,7 +328,7 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
                 launch = new EntityLargeFireball(world, getHandle(), direction.getX(), direction.getY(), direction.getZ());
             }
 
-            ((EntityFireball) launch).projectileSource = this;
+            launch.projectileSource = this;
             launch.setPositionRotation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
         }
 

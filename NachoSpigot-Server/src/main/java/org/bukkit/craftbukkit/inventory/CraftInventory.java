@@ -1,28 +1,17 @@
 package org.bukkit.craftbukkit.inventory;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
-
-import net.minecraft.server.IHopper;
-import net.minecraft.server.IInventory;
-import net.minecraft.server.InventoryCrafting;
-import net.minecraft.server.InventoryEnderChest;
-import net.minecraft.server.InventoryMerchant;
-import net.minecraft.server.PlayerInventory;
-import net.minecraft.server.TileEntityBeacon;
-import net.minecraft.server.TileEntityBrewingStand;
-import net.minecraft.server.TileEntityDispenser;
-import net.minecraft.server.TileEntityDropper;
-import net.minecraft.server.TileEntityFurnace;
-
+import net.minecraft.server.*;
 import org.apache.commons.lang.Validate;
+import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.Material;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.ListIterator;
 
 public class CraftInventory implements Inventory {
     protected final IInventory inventory;
@@ -155,7 +144,7 @@ public class CraftInventory implements Inventory {
     }
 
     public HashMap<Integer, ItemStack> all(int materialId) {
-        HashMap<Integer, ItemStack> slots = new HashMap<Integer, ItemStack>();
+        HashMap<Integer, ItemStack> slots = new HashMap<>();
 
         ItemStack[] inventory = getContents();
         for (int i = 0; i < inventory.length; i++) {
@@ -173,7 +162,7 @@ public class CraftInventory implements Inventory {
     }
 
     public HashMap<Integer, ItemStack> all(ItemStack item) {
-        HashMap<Integer, ItemStack> slots = new HashMap<Integer, ItemStack>();
+        HashMap<Integer, ItemStack> slots = new HashMap<>();
         if (item != null) {
             ItemStack[] inventory = getContents();
             for (int i = 0; i < inventory.length; i++) {
@@ -263,7 +252,7 @@ public class CraftInventory implements Inventory {
 
     public HashMap<Integer, ItemStack> addItem(ItemStack... items) {
         Validate.noNullElements(items, "Item cannot be null");
-        HashMap<Integer, ItemStack> leftover = new HashMap<Integer, ItemStack>();
+        HashMap<Integer, ItemStack> leftover = new HashMap<>();
 
         /* TODO: some optimization
          *  - Create a 'firstPartial' with a 'fromIndex'
@@ -328,7 +317,7 @@ public class CraftInventory implements Inventory {
 
     public HashMap<Integer, ItemStack> removeItem(ItemStack... items) {
         Validate.notNull(items, "Items cannot be null");
-        HashMap<Integer, ItemStack> leftover = new HashMap<Integer, ItemStack>();
+        HashMap<Integer, ItemStack> leftover = new HashMap<>();
 
         // TODO: optimization
 

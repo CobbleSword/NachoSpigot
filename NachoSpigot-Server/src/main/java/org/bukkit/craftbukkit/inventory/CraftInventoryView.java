@@ -1,5 +1,6 @@
 package org.bukkit.craftbukkit.inventory;
 
+import net.minecraft.server.Container;
 import org.bukkit.GameMode;
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 import org.bukkit.entity.HumanEntity;
@@ -8,8 +9,6 @@ import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
-
-import net.minecraft.server.Container;
 
 public class CraftInventoryView extends InventoryView {
     private final Container container;

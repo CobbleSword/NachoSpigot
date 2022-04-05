@@ -1,21 +1,20 @@
 package org.bukkit.craftbukkit.command;
 
-import java.util.EnumMap;
-import java.util.Map;
-
 import dev.cobblesword.nachospigot.Nacho;
-import org.fusesource.jansi.Ansi;
-import org.fusesource.jansi.Ansi.Attribute;
 import jline.Terminal;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.craftbukkit.CraftServer;
+import org.fusesource.jansi.Ansi;
+import org.fusesource.jansi.Ansi.Attribute;
+
+import java.util.EnumMap;
+import java.util.Map;
 
 public class ColouredConsoleSender extends CraftConsoleCommandSender {
     private final Terminal terminal;
-    private final Map<ChatColor, String> replacements = new EnumMap<ChatColor, String>(ChatColor.class);
+    private final Map<ChatColor, String> replacements = new EnumMap<>(ChatColor.class);
     private final ChatColor[] colors = ChatColor.values();
 
     protected ColouredConsoleSender() {
@@ -52,11 +51,7 @@ public class ColouredConsoleSender extends CraftConsoleCommandSender {
             if (!conversationTracker.isConversingModaly()) {
                 String result = message;
                 for (ChatColor color : colors) {
-                    if (replacements.containsKey(color)) {
-                        result = result.replaceAll("(?i)" + color.toString(), replacements.get(color));
-                    } else {
-                        result = result.replaceAll("(?i)" + color.toString(), "");
-                    }
+                    result = result.replaceAll("(?i)" + color.toString(), replacements.getOrDefault(color, ""));
                 }
                 Nacho.LOGGER.info(result + Ansi.ansi().reset().toString());
             }

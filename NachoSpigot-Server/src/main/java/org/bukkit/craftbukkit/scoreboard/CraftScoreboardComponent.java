@@ -1,7 +1,7 @@
 package org.bukkit.craftbukkit.scoreboard;
 
 abstract class CraftScoreboardComponent {
-    private CraftScoreboard scoreboard;
+    private final CraftScoreboard scoreboard;
 
     CraftScoreboardComponent(CraftScoreboard scoreboard) {
         this.scoreboard = scoreboard;

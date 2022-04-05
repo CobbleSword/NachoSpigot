@@ -4,16 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.AbstractCollection;
-import java.util.AbstractSet;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.ConcurrentModificationException;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 
 @SuppressWarnings("unchecked")
 public class LongObjectHashMap<V> implements Cloneable, Serializable {
@@ -88,7 +79,6 @@ public class LongObjectHashMap<V> implements Cloneable, Serializable {
             values[index] = innerValues = (V[]) new Object[8];
             innerKeys[0] = key;
             innerValues[0] = value;
-            size++;
         } else {
             int i;
             for (i = 0; i < innerKeys.length; i++) {
@@ -115,8 +105,8 @@ public class LongObjectHashMap<V> implements Cloneable, Serializable {
             values[index] = innerValues = Arrays.copyOf(innerValues, i << 1);
             innerKeys[i] = key;
             innerValues[i] = value;
-            size++;
         }
+        size++;
 
         return null;
     }
@@ -192,7 +182,7 @@ public class LongObjectHashMap<V> implements Cloneable, Serializable {
      */
     @Deprecated
     public Set<Map.Entry<Long, V>> entrySet() {
-        HashSet<Map.Entry<Long, V>> set = new HashSet<Map.Entry<Long, V>>();
+        HashSet<Map.Entry<Long, V>> set = new HashSet<>();
         for (long key : keySet()) {
             set.add(new Entry(key, get(key)));
         }

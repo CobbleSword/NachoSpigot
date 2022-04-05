@@ -1,23 +1,21 @@
 package org.bukkit.craftbukkit.inventory;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap.Builder;
+import net.minecraft.server.NBTTagCompound;
+import net.minecraft.server.NBTTagList;
+import org.apache.commons.lang.Validate;
+import org.bukkit.Material;
+import org.bukkit.configuration.serialization.DelegateDeserialization;
+import org.bukkit.craftbukkit.inventory.CraftMetaItem.SerializableMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.NBTTagList;
-
-import org.apache.commons.lang.Validate;
-import org.bukkit.Material;
-import org.bukkit.configuration.serialization.DelegateDeserialization;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.craftbukkit.inventory.CraftMetaItem.SerializableMeta;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap.Builder;
 
 @DelegateDeserialization(SerializableMeta.class)
 class CraftMetaPotion extends CraftMetaItem implements PotionMeta {
@@ -37,7 +35,7 @@ class CraftMetaPotion extends CraftMetaItem implements PotionMeta {
         }
         CraftMetaPotion potionMeta = (CraftMetaPotion) meta;
         if (potionMeta.hasCustomEffects()) {
-            this.customEffects = new ArrayList<PotionEffect>(potionMeta.customEffects);
+            this.customEffects = new ArrayList<>(potionMeta.customEffects);
         }
     }
 
@@ -47,7 +45,7 @@ class CraftMetaPotion extends CraftMetaItem implements PotionMeta {
         if (tag.hasKey(POTION_EFFECTS.NBT)) {
             NBTTagList list = tag.getList(POTION_EFFECTS.NBT, 10);
             int length = list.size();
-            customEffects = new ArrayList<PotionEffect>(length);
+            customEffects = new ArrayList<>(length);
 
             for (int i = 0; i < length; i++) {
                 NBTTagCompound effect = list.get(i);
@@ -107,19 +105,14 @@ class CraftMetaPotion extends CraftMetaItem implements PotionMeta {
 
     @Override
     boolean applicableTo(Material type) {
-        switch(type) {
-            case POTION:
-                return true;
-            default:
-                return false;
-        }
+        return type == Material.POTION;
     }
 
     @Override
     public CraftMetaPotion clone() {
         CraftMetaPotion clone = (CraftMetaPotion) super.clone();
         if (this.customEffects != null) {
-            clone.customEffects = new ArrayList<PotionEffect>(this.customEffects);
+            clone.customEffects = new ArrayList<>(this.customEffects);
         }
         return clone;
     }
@@ -152,7 +145,7 @@ class CraftMetaPotion extends CraftMetaItem implements PotionMeta {
             }
         } else {
             if (customEffects == null) {
-                customEffects = new ArrayList<PotionEffect>();
+                customEffects = new ArrayList<>();
             }
             customEffects.add(effect);
             return true;

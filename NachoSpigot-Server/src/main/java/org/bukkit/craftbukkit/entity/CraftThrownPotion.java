@@ -1,9 +1,6 @@
 package org.bukkit.craftbukkit.entity;
 
-import java.util.Collection;
-
 import net.minecraft.server.EntityPotion;
-
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.CraftServer;
@@ -13,6 +10,8 @@ import org.bukkit.entity.ThrownPotion;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
+
+import java.util.Collection;
 
 public class CraftThrownPotion extends CraftProjectile implements ThrownPotion {
     public CraftThrownPotion(CraftServer server, EntityPotion entity) {

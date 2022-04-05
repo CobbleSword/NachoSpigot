@@ -1,8 +1,8 @@
 package org.bukkit.craftbukkit.scheduler;
 
+import co.aikar.timings.SpigotTimings;
+import co.aikar.timings.Timing;
 import org.bukkit.Bukkit;
-import co.aikar.timings.SpigotTimings; // Spigot
-import co.aikar.timings.Timing; // Spigot
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -98,7 +98,7 @@ public class CraftTask implements BukkitTask, Runnable { // Spigot
      * @return false if it is a craft future task that has already begun execution, true otherwise
      */
     boolean cancel0() {
-        setPeriod(-2l);
+        setPeriod(-2L);
         return true;
     }
 

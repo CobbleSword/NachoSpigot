@@ -11,7 +11,7 @@ public class ChunkIOExecutor {
     static final int BASE_THREADS = NachoConfig.chunkThreads;
     static final int PLAYERS_PER_THREAD = NachoConfig.playersPerThread;
 
-    private static final AsynchronousExecutor<QueuedChunk, Chunk, Runnable, RuntimeException> instance = new AsynchronousExecutor<QueuedChunk, Chunk, Runnable, RuntimeException>(new ChunkIOProvider(), BASE_THREADS);
+    private static final AsynchronousExecutor<QueuedChunk, Chunk, Runnable, RuntimeException> instance = new AsynchronousExecutor<>(new ChunkIOProvider(), BASE_THREADS);
 
     public static Chunk syncChunkLoad(World world, ChunkRegionLoader loader, ChunkProviderServer provider, int x, int z) {
         return instance.getSkipQueue(new QueuedChunk(x, z, loader, world, provider));

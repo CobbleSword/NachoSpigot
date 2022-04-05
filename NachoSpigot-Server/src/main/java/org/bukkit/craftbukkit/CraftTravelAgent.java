@@ -3,7 +3,6 @@ package org.bukkit.craftbukkit;
 import net.minecraft.server.BlockPosition;
 import net.minecraft.server.PortalTravelAgent;
 import net.minecraft.server.WorldServer;
-
 import org.bukkit.Location;
 import org.bukkit.TravelAgent;
 

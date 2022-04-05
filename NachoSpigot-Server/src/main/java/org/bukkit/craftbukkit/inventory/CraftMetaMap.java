@@ -1,15 +1,13 @@
 package org.bukkit.craftbukkit.inventory;
 
-import java.util.Map;
-
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.server.NBTTagCompound;
-
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
 import org.bukkit.craftbukkit.inventory.CraftMetaItem.SerializableMeta;
 import org.bukkit.inventory.meta.MapMeta;
 
-import com.google.common.collect.ImmutableMap;
+import java.util.Map;
 
 @DelegateDeserialization(SerializableMeta.class)
 class CraftMetaMap extends CraftMetaItem implements MapMeta {
@@ -59,12 +57,7 @@ class CraftMetaMap extends CraftMetaItem implements MapMeta {
 
     @Override
     boolean applicableTo(Material type) {
-        switch (type) {
-            case MAP:
-                return true;
-            default:
-                return false;
-        }
+        return type == Material.MAP;
     }
 
     @Override

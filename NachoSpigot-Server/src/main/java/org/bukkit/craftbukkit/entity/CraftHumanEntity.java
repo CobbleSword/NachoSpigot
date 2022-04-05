@@ -1,32 +1,25 @@
 package org.bukkit.craftbukkit.entity;
 
-import java.util.Set;
-
 import net.minecraft.server.*;
-
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.event.CraftEventFactory;
+import org.bukkit.craftbukkit.inventory.*;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.event.CraftEventFactory;
-import org.bukkit.craftbukkit.inventory.CraftContainer;
-import org.bukkit.craftbukkit.inventory.CraftInventory;
-import org.bukkit.craftbukkit.inventory.CraftInventoryPlayer;
-import org.bukkit.craftbukkit.inventory.CraftInventoryView;
-import org.bukkit.craftbukkit.inventory.CraftItemStack;
-import org.bukkit.craftbukkit.CraftServer;
-import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.inventory.*;
 import org.bukkit.permissions.PermissibleBase;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.plugin.Plugin;
+
+import java.util.Set;
 
 public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
     private CraftInventoryPlayer inventory;
@@ -186,21 +179,21 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
                 break;
             case DISPENSER:
                 if (iinventory instanceof TileEntityDispenser) {
-                    getHandle().openContainer((TileEntityDispenser) iinventory);
+                    getHandle().openContainer(iinventory);
                 } else {
                     openCustomInventory(inventory, player, "minecraft:dispenser");
                 }
                 break;
             case DROPPER:
                 if (iinventory instanceof TileEntityDropper) {
-                    getHandle().openContainer((TileEntityDropper) iinventory);
+                    getHandle().openContainer(iinventory);
                 } else {
                     openCustomInventory(inventory, player, "minecraft:dropper");
                 }
                 break;
             case FURNACE:
                 if (iinventory instanceof TileEntityFurnace) {
-                    getHandle().openContainer((TileEntityFurnace) iinventory);
+                    getHandle().openContainer(iinventory);
                 } else {
                     openCustomInventory(inventory, player, "minecraft:furnace");
                 }
@@ -210,7 +203,7 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
                 break;
             case BREWING:
                 if (iinventory instanceof TileEntityBrewingStand) {
-                    getHandle().openContainer((TileEntityBrewingStand) iinventory);
+                    getHandle().openContainer(iinventory);
                 } else {
                     openCustomInventory(inventory, player, "minecraft:brewing_stand");
                 }
@@ -220,16 +213,16 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
                 break;
             case HOPPER:
                 if (iinventory instanceof TileEntityHopper) {
-                    getHandle().openContainer((TileEntityHopper) iinventory);
+                    getHandle().openContainer(iinventory);
                 } else if (iinventory instanceof EntityMinecartHopper) {
-                    getHandle().openContainer((EntityMinecartHopper) iinventory);
+                    getHandle().openContainer(iinventory);
                 } else {
                     openCustomInventory(inventory, player, "minecraft:hopper");
                 }
                 break;
             case BEACON:
                 if (iinventory instanceof TileEntityBeacon) {
-                    getHandle().openContainer((TileEntityBeacon) iinventory);
+                    getHandle().openContainer(iinventory);
                 } else {
                     openCustomInventory(inventory, player, "minecraft:beacon");
                 }

@@ -2,7 +2,6 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.server.EntityLiving;
 import net.minecraft.server.EntityProjectile;
-
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;
@@ -56,7 +55,7 @@ public abstract class CraftProjectile extends AbstractProjectile implements Proj
         }
         getHandle().shooter = ((CraftLivingEntity) shooter).getHandle();
         if (shooter instanceof CraftHumanEntity) {
-            getHandle().shooterName = ((CraftHumanEntity) shooter).getName();
+            getHandle().shooterName = shooter.getName();
         }
     }
 }

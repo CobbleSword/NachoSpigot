@@ -1,20 +1,19 @@
 package org.bukkit.craftbukkit;
 
+import net.minecraft.server.MinecraftServer;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
-
-import net.minecraft.server.MinecraftServer;
-
 public class CraftCrashReport implements Callable<Object> {
 
-    public Object call() throws Exception {
+    public Object call() {
         StringWriter value = new StringWriter();
         try {
             value.append("\n   Running: ").append(Bukkit.getName()).append(" version ").append(Bukkit.getVersion()).append(" (Implementing API version ").append(Bukkit.getBukkitVersion()).append(") ").append(String.valueOf(MinecraftServer.getServer().getOnlineMode()));

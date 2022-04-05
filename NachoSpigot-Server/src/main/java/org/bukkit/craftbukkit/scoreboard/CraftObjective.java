@@ -2,12 +2,13 @@ package org.bukkit.craftbukkit.scoreboard;
 
 import net.minecraft.server.Scoreboard;
 import net.minecraft.server.ScoreboardObjective;
-
 import org.apache.commons.lang.Validate;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
+
+import java.util.Objects;
 
 final class CraftObjective extends CraftScoreboardComponent implements Objective {
     private final ScoreboardObjective objective;
@@ -131,7 +132,7 @@ final class CraftObjective extends CraftScoreboardComponent implements Objective
             return false;
         }
         final CraftObjective other = (CraftObjective) obj;
-        return !(this.objective != other.objective && (this.objective == null || !this.objective.equals(other.objective)));
+        return Objects.equals(this.objective, other.objective);
     }
 
 

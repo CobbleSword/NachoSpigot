@@ -1,21 +1,15 @@
 package org.bukkit.craftbukkit;
 
-import net.minecraft.server.EntityTypes;
-import net.minecraft.server.EntityTypes.MonsterEggInfo;
-import net.minecraft.server.StatisticList;
-
-import org.bukkit.Achievement;
-import org.bukkit.Statistic;
-import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
-
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.server.Block;
-import net.minecraft.server.Item;
-import net.minecraft.server.MinecraftKey;
+import net.minecraft.server.*;
+import net.minecraft.server.EntityTypes.MonsterEggInfo;
+import org.bukkit.Achievement;
+import org.bukkit.Material;
+import org.bukkit.Statistic;
+import org.bukkit.entity.EntityType;
 
 public class CraftStatistic {
     private static final BiMap<String, org.bukkit.Statistic> statistics;
@@ -32,8 +26,8 @@ public class CraftStatistic {
                 .put("achievement.blazeRod", Achievement.GET_BLAZE_ROD)
                 .put("achievement.potion", Achievement.BREW_POTION)
                 .build();
-        ImmutableBiMap.Builder<String, org.bukkit.Statistic> statisticBuilder = ImmutableBiMap.<String, org.bukkit.Statistic>builder();
-        ImmutableBiMap.Builder<String, org.bukkit.Achievement> achievementBuilder = ImmutableBiMap.<String, org.bukkit.Achievement>builder();
+        ImmutableBiMap.Builder<String, org.bukkit.Statistic> statisticBuilder = ImmutableBiMap.builder();
+        ImmutableBiMap.Builder<String, org.bukkit.Achievement> achievementBuilder = ImmutableBiMap.builder();
         for (Statistic statistic : Statistic.values()) {
             if (statistic == Statistic.PLAY_ONE_TICK) {
                 statisticBuilder.put("stat.playOneMinute", statistic);
@@ -42,7 +36,7 @@ public class CraftStatistic {
             }
         }
         for (Achievement achievement : Achievement.values()) {
-            if (specialCases.values().contains(achievement)) {
+            if (specialCases.containsValue(achievement)) {
                 continue;
             }
             achievementBuilder.put("achievement." + CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, achievement.name()), achievement);
@@ -119,7 +113,7 @@ public class CraftStatistic {
     }
 
     public static net.minecraft.server.Statistic getEntityStatistic(org.bukkit.Statistic stat, EntityType entity) {
-        MonsterEggInfo monsteregginfo = (MonsterEggInfo) EntityTypes.eggInfo.get(Integer.valueOf(entity.getTypeId()));
+        MonsterEggInfo monsteregginfo = EntityTypes.eggInfo.get((int) entity.getTypeId());
 
         if (monsteregginfo != null) {
             return monsteregginfo.killEntityStatistic;
@@ -135,11 +129,11 @@ public class CraftStatistic {
     public static Material getMaterialFromStatistic(net.minecraft.server.Statistic statistic) {
         String statisticString = statistic.name;
         String val = statisticString.substring(statisticString.lastIndexOf(".") + 1);
-        Item item = (Item) Item.REGISTRY.get(new MinecraftKey(val));
+        Item item = Item.REGISTRY.get(new MinecraftKey(val));
         if (item != null) {
             return Material.getMaterial(Item.getId(item));
         }
-        Block block = (Block) Block.REGISTRY.get(new MinecraftKey(val));
+        Block block = Block.REGISTRY.get(new MinecraftKey(val));
         if (block != null) {
             return Material.getMaterial(Block.getId(block));
         }

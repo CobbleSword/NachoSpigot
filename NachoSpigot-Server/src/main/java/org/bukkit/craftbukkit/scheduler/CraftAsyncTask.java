@@ -1,17 +1,17 @@
 package org.bukkit.craftbukkit.scheduler;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
-
 import org.apache.commons.lang.UnhandledException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitWorker;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
+
 
 class CraftAsyncTask extends CraftTask {
 
-    private final LinkedList<BukkitWorker> workers = new LinkedList<BukkitWorker>();
+    private final LinkedList<BukkitWorker> workers = new LinkedList<>();
     private final Map<Integer, CraftTask> runners;
 
     CraftAsyncTask(final Map<Integer, CraftTask> runners, final Plugin plugin, final Runnable task, final int id, final long delay) {
@@ -99,7 +99,7 @@ class CraftAsyncTask extends CraftTask {
     boolean cancel0() {
         synchronized (workers) {
             // Synchronizing here prevents race condition for a completing task
-            setPeriod(-2l);
+            setPeriod(-2L);
             if (workers.isEmpty()) {
                 runners.remove(getTaskId());
             }

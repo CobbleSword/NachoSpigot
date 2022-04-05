@@ -1,12 +1,11 @@
 package org.bukkit.craftbukkit.help;
 
+import com.google.common.base.Charsets;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.help.HelpTopic;
-
-import com.google.common.base.Charsets;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,7 +53,7 @@ public class HelpYamlReader {
      * @return A list of general topics.
      */
     public List<HelpTopic> getGeneralTopics() {
-        List<HelpTopic> topics = new LinkedList<HelpTopic>();
+        List<HelpTopic> topics = new LinkedList<>();
         ConfigurationSection generalTopics = helpYaml.getConfigurationSection("general-topics");
         if (generalTopics != null) {
             for (String topicName : generalTopics.getKeys(false)) {
@@ -74,7 +73,7 @@ public class HelpYamlReader {
      * @return A list of index topics.
      */
     public List<HelpTopic> getIndexTopics() {
-        List<HelpTopic> topics = new LinkedList<HelpTopic>();
+        List<HelpTopic> topics = new LinkedList<>();
         ConfigurationSection indexTopics = helpYaml.getConfigurationSection("index-topics");
         if (indexTopics != null) {
             for (String topicName : indexTopics.getKeys(false)) {
@@ -95,7 +94,7 @@ public class HelpYamlReader {
      * @return A list of amendments.
      */
     public List<HelpTopicAmendment> getTopicAmendments() {
-        List<HelpTopicAmendment> amendments = new LinkedList<HelpTopicAmendment>();
+        List<HelpTopicAmendment> amendments = new LinkedList<>();
         ConfigurationSection commandTopics = helpYaml.getConfigurationSection("amended-topics");
         if (commandTopics != null) {
             for (String topicName : commandTopics.getKeys(false)) {

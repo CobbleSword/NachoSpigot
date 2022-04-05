@@ -1,21 +1,13 @@
 package org.bukkit.craftbukkit.block;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 import net.minecraft.server.*;
-
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.PistonMoveReaction;
+import org.bukkit.block.*;
 import org.bukkit.craftbukkit.CraftChunk;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.util.CraftMagicNumbers;
@@ -24,13 +16,18 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.BlockVector;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 public class CraftBlock implements Block {
     private final CraftChunk chunk;
     private final int x;
     private final int y;
     private final int z;
-    private static final Biome BIOME_MAPPING[];
-    private static final BiomeBase BIOMEBASE_MAPPING[];
+    private static final Biome[] BIOME_MAPPING;
+    private static final BiomeBase[] BIOMEBASE_MAPPING;
 
     public CraftBlock(CraftChunk chunk, int x, int y, int z) {
         this.x = x;
@@ -429,7 +426,7 @@ public class CraftBlock implements Block {
     }
 
     public Collection<ItemStack> getDrops() {
-        List<ItemStack> drops = new ArrayList<ItemStack>();
+        List<ItemStack> drops = new ArrayList<>();
 
         net.minecraft.server.Block block = this.getNMSBlock();
         if (block != Blocks.AIR) {
@@ -455,7 +452,7 @@ public class CraftBlock implements Block {
                         drops.add(CraftItemStack.asBukkitCopy(nmsStack));
                         // We don't want to drop cocoa blocks, we want to drop cocoa beans.
                     } else if (Blocks.COCOA == block) {
-                        int age = (Integer) block.fromLegacyData(data).get(BlockCocoa.AGE);
+                        int age = block.fromLegacyData(data).get(BlockCocoa.AGE);
                         int dropAmount = (age >= 2 ? 3 : 1);
                         for (int j = 0; j < dropAmount; ++j) {
                             drops.add(new ItemStack(Material.INK_SACK, 1, (short) 3));

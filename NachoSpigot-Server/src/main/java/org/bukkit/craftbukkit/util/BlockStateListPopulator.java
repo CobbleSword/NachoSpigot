@@ -1,21 +1,20 @@
 package org.bukkit.craftbukkit.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.server.Block;
 import net.minecraft.server.BlockPosition;
 import net.minecraft.server.IBlockData;
-
 import org.bukkit.World;
 import org.bukkit.block.BlockState;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BlockStateListPopulator {
     private final World world;
     private final List<BlockState> list;
 
     public BlockStateListPopulator(World world) {
-        this(world, new ArrayList<BlockState>());
+        this(world, new ArrayList<>());
     }
 
     public BlockStateListPopulator(World world, List<BlockState> list) {

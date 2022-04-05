@@ -1,7 +1,6 @@
 package org.bukkit.craftbukkit.inventory;
 
 import net.minecraft.server.EntityInsentient;
-
 import org.bukkit.craftbukkit.entity.CraftLivingEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.EntityEquipment;

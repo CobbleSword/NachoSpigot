@@ -1,17 +1,11 @@
 package org.bukkit.craftbukkit.inventory;
 
-import net.minecraft.server.ChatComponentText;
+import net.minecraft.server.*;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
-
-import net.minecraft.server.Container;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.IInventory;
-import net.minecraft.server.PacketPlayOutOpenWindow;
-import net.minecraft.server.Slot;
 
 public class CraftContainer extends Container {
     private final InventoryView view;
