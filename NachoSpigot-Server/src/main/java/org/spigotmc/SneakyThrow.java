@@ -3,9 +3,10 @@ package org.spigotmc;
 public class SneakyThrow
 {
 
+    @SuppressWarnings("RedundantTypeArguments")
     public static void sneaky(Throwable t)
     {
-        throw SneakyThrow.superSneaky( t );
+        throw SneakyThrow.<RuntimeException>superSneaky(t);
     }
 
     private static <T extends Throwable> T superSneaky(Throwable t) throws T
