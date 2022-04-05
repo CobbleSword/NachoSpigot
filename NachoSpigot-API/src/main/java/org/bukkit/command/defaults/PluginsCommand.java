@@ -1,11 +1,11 @@
 package org.bukkit.command.defaults;
 
-import java.util.Collections;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
+
+import java.util.Collections;
 
 public class PluginsCommand extends BukkitCommand {
     public PluginsCommand(String name) {

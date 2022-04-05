@@ -1,13 +1,13 @@
 package org.bukkit;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-
 import org.bukkit.block.Block;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.util.NumberConversions;
 import org.bukkit.util.Vector;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Represents a 3-dimensional position in a world

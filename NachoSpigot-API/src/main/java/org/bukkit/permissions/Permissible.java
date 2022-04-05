@@ -1,7 +1,8 @@
 package org.bukkit.permissions;
 
-import java.util.Set;
 import org.bukkit.plugin.Plugin;
+
+import java.util.Set;
 
 /**
  * Represents an object that may be assigned permissions

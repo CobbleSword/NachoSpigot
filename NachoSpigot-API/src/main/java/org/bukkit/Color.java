@@ -1,12 +1,11 @@
 package org.bukkit;
 
-import java.util.Map;
-
+import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 
-import com.google.common.collect.ImmutableMap;
+import java.util.Map;
 
 /**
  * A container for a color palette. This class is immutable; the set methods

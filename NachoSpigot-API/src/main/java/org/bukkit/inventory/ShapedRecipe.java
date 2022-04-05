@@ -1,12 +1,11 @@
 package org.bukkit.inventory;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.lang.Validate;
-
 import org.bukkit.Material;
 import org.bukkit.material.MaterialData;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Represents a shaped (ie normal) crafting recipe.

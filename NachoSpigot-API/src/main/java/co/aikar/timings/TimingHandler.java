@@ -23,9 +23,9 @@
  */
 package co.aikar.timings;
 
+import co.aikar.util.LoadingIntMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import org.bukkit.Bukkit;
-import co.aikar.util.LoadingIntMap;
 
 import java.util.logging.Level;
 

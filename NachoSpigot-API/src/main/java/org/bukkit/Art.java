@@ -1,10 +1,9 @@
 package org.bukkit;
 
-import java.util.HashMap;
-
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.Validate;
 
-import com.google.common.collect.Maps;
+import java.util.HashMap;
 
 /**
  * Represents the art on a painting

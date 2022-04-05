@@ -1,12 +1,13 @@
 package org.bukkit.util;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * Represents a mutable vector. Because the components of Vectors are mutable,

@@ -1,13 +1,13 @@
 package org.bukkit.event.player;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.commons.lang.Validate;
 import org.bukkit.Warning;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Holds information for player chat and commands

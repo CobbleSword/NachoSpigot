@@ -1,14 +1,14 @@
 package org.bukkit.event.entity;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-
 import org.apache.commons.lang.Validate;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * Called when a splash potion hits an area

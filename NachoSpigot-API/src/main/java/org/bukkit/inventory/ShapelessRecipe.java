@@ -1,13 +1,12 @@
 package org.bukkit.inventory;
 
+import org.apache.commons.lang.Validate;
+import org.bukkit.Material;
+import org.bukkit.material.MaterialData;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.commons.lang.Validate;
-
-import org.bukkit.Material;
-import org.bukkit.material.MaterialData;
 
 /**
  * Represents a shapeless recipe, where the arrangement of the ingredients on

@@ -1,14 +1,10 @@
 package org.bukkit.permissions;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+
+import java.util.*;
+import java.util.logging.Level;
 
 /**
  * Base Permissible for use in any Permissible object via proxy or extension

@@ -1,14 +1,12 @@
 package org.bukkit.metadata;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.TestPlugin;
 import org.junit.Test;
+
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class MetadataStoreTest {
     private final Plugin pluginX = new TestPlugin("x");

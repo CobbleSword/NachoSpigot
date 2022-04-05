@@ -1,11 +1,6 @@
 package org.bukkit;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-
-import java.util.List;
-import java.util.Random;
-
+import com.google.common.collect.ImmutableList;
 import org.bukkit.util.Vector;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +8,12 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.google.common.collect.ImmutableList;
+import java.util.List;
+import java.util.Random;
+
+import static org.hamcrest.Matchers.closeTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 @RunWith(Parameterized.class)
 public class LocationTest {

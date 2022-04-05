@@ -1,9 +1,10 @@
 package org.bukkit;
 
-import java.util.Random;
 import org.bukkit.command.CommandSender;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
+
+import java.util.Random;
 
 /**
  * Represents various types of options that may be used to create a world.

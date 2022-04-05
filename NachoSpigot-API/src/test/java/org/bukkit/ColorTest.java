@@ -1,10 +1,10 @@
 package org.bukkit;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.Test;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 public class ColorTest {
     static class TestColor {

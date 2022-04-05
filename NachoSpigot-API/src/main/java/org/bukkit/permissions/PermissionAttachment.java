@@ -1,8 +1,9 @@
 package org.bukkit.permissions;
 
+import org.bukkit.plugin.Plugin;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
-import org.bukkit.plugin.Plugin;
 
 /**
  * Holds information about a permission attachment on a {@link Permissible}

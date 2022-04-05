@@ -1,11 +1,11 @@
 package org.bukkit.command.defaults;
 
-import java.util.Collections;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+
+import java.util.Collections;
 
 public class ReloadCommand extends BukkitCommand {
     public ReloadCommand(String name) {

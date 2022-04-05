@@ -1,6 +1,6 @@
 package org.bukkit.util.permissions;
 
-import org.bukkit.Bukkit; // Nacho
+import org.bukkit.Bukkit;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 

@@ -1,8 +1,8 @@
 package org.bukkit.inventory.meta;
 
-import java.util.List;
-
 import org.bukkit.Material;
+
+import java.util.List;
 
 /**
  * Represents a book ({@link Material#BOOK_AND_QUILL} or {@link

@@ -1,13 +1,13 @@
 package org.bukkit.potion;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.is;
-
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.*;
 
 public class PotionTest {
 

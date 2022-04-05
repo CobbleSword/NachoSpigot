@@ -1,12 +1,12 @@
 package org.bukkit.event.server;
 
-import java.net.InetAddress;
-import java.util.Iterator;
-
 import org.apache.commons.lang.Validate;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.util.CachedServerIcon;
+
+import java.net.InetAddress;
+import java.util.Iterator;
 
 /**
  * Called when a server list ping is coming in. Displayed players can be

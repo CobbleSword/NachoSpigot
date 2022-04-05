@@ -1,8 +1,8 @@
 package org.bukkit;
 
-import java.util.List;
-
 import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 /**
  * This interface provides value conversions that may be specific to a

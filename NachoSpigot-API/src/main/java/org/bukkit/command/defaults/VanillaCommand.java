@@ -1,9 +1,9 @@
 package org.bukkit.command.defaults;
 
-import java.util.List;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+
+import java.util.List;
 
 @Deprecated
 public abstract class VanillaCommand extends Command {

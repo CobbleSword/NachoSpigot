@@ -1,9 +1,9 @@
 package org.bukkit.scoreboard;
 
-import java.util.Set;
-
 import org.bukkit.OfflinePlayer;
 import org.bukkit.potion.PotionEffectType;
+
+import java.util.Set;
 
 /**
  * A team on a scoreboard that has a common display theme and other

@@ -1,16 +1,15 @@
 package org.bukkit.plugin;
 
-import java.io.File;
-import java.io.InputStream;
-import java.util.List;
-
+import com.avaje.ebean.EbeanServer;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.ChunkGenerator;
 
-import com.avaje.ebean.EbeanServer;
+import java.io.File;
+import java.io.InputStream;
+import java.util.List;
 
 public class TestPlugin extends PluginBase {
     private boolean enabled = true;

@@ -1,10 +1,11 @@
 package org.bukkit;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-
 import org.bukkit.material.MaterialData;
 import org.junit.Test;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class MaterialTest {
     @Test

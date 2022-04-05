@@ -1,12 +1,12 @@
 package org.bukkit;
 
-import java.util.Date;
-import java.util.UUID;
-
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.ServerOperator;
+
+import java.util.Date;
+import java.util.UUID;
 
 public interface OfflinePlayer extends ServerOperator, AnimalTamer, ConfigurationSerializable {
 

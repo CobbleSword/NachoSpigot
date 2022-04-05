@@ -1,8 +1,5 @@
 package org.bukkit.plugin;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-
 import org.bukkit.event.Event;
 import org.bukkit.event.EventException;
 import org.bukkit.event.EventPriority;
@@ -12,6 +9,9 @@ import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.junit.Test;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 public class TimedRegisteredListenerTest {
 

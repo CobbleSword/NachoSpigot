@@ -1,15 +1,15 @@
 package org.bukkit.util;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import com.google.common.collect.ImmutableList;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
-
-import com.google.common.collect.ImmutableList;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.sameInstance;
+import static org.junit.Assert.assertThat;
 
 public class StringUtilTest {
 

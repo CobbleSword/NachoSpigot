@@ -1,10 +1,9 @@
 package org.bukkit;
 
-import java.util.Map;
-
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.Validate;
 
-import com.google.common.collect.Maps;
+import java.util.Map;
 
 /**
  * A note class to store a specific note.

@@ -1,12 +1,12 @@
 package org.bukkit.plugin.messaging;
 
+import org.bukkit.entity.Player;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
-
-import org.bukkit.entity.Player;
 
 
 public class TestPlayer implements InvocationHandler {

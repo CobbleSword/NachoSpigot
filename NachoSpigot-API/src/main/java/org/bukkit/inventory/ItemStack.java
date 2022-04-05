@@ -1,9 +1,6 @@
 package org.bukkit.inventory;
 
 import com.google.common.collect.ImmutableMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -12,6 +9,9 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Represents a stack of items

@@ -1,8 +1,8 @@
 package org.bukkit.plugin;
 
-import java.util.Set;
-
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Set;
 
 /**
  * Represents a concept that a plugin is aware of.

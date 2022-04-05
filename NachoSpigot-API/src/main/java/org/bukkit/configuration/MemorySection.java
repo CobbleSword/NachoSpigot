@@ -1,19 +1,14 @@
 package org.bukkit.configuration;
 
-import static org.bukkit.util.NumberConversions.*;
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.Validate;
 import org.bukkit.Color;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+
+import java.util.*;
+
+import static org.bukkit.util.NumberConversions.*;
 
 /**
  * A type of {@link ConfigurationSection} that is stored in memory.

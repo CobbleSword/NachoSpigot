@@ -1,12 +1,12 @@
 package org.bukkit.plugin;
 
+import org.bukkit.event.Event;
+import org.bukkit.event.Listener;
+
 import java.io.File;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
-
-import org.bukkit.event.Event;
-import org.bukkit.event.Listener;
 
 /**
  * Represents a plugin loader, which handles direct access to specific types

@@ -1,12 +1,12 @@
 package org.bukkit.materials;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
-
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.material.Door;
 import org.junit.Test;
+
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 public class MaterialDataTest {
 

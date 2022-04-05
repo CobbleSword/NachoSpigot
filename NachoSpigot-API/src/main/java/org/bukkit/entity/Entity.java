@@ -1,17 +1,17 @@
 package org.bukkit.entity;
 
-import org.bukkit.Location;
 import org.bukkit.EntityEffect;
+import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.metadata.Metadatable;
 import org.bukkit.util.Vector;
 
 import java.util.List;
 import java.util.UUID;
-import org.bukkit.command.CommandSender;
-import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 /**
  * Represents a base entity in the world

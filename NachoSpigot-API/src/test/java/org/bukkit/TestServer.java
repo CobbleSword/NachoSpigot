@@ -1,17 +1,16 @@
 package org.bukkit;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.util.Map;
-import java.util.logging.Logger;
-
+import com.google.common.collect.ImmutableMap;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.SimplePluginManager;
 
-import com.google.common.collect.ImmutableMap;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.Map;
+import java.util.logging.Logger;
 
 public class TestServer implements InvocationHandler {
     private interface MethodHandler {

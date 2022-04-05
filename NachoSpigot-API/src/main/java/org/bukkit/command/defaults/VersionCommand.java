@@ -1,11 +1,8 @@
 package org.bukkit.command.defaults;
 
-import com.destroystokyo.paper.util.VersionFetcher; // Paper - version supplier
+import com.destroystokyo.paper.util.VersionFetcher;
 import com.google.common.base.Charsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,23 +10,18 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.util.StringUtil;
-
-import com.google.common.collect.ImmutableList;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.net.URL;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.locks.ReentrantLock;
-
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-// TacoSpigot start
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 // TacoSpigot end
 
 public class VersionCommand extends BukkitCommand {

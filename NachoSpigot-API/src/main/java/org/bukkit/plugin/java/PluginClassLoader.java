@@ -1,5 +1,9 @@
 package org.bukkit.plugin.java;
 
+import org.apache.commons.lang.Validate;
+import org.bukkit.plugin.InvalidPluginException;
+import org.bukkit.plugin.PluginDescriptionFile;
+
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
@@ -7,10 +11,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.lang.Validate;
-import org.bukkit.plugin.InvalidPluginException;
-import org.bukkit.plugin.PluginDescriptionFile;
 
 /**
  * A ClassLoader for plugins, to allow shared classes across multiple plugins

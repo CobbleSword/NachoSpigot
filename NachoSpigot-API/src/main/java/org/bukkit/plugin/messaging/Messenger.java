@@ -1,8 +1,9 @@
 package org.bukkit.plugin.messaging;
 
-import java.util.Set;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+
+import java.util.Set;
 
 /**
  * A class responsible for managing the registrations of plugin channels and
