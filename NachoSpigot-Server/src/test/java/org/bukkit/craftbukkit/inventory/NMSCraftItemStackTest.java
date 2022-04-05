@@ -12,7 +12,7 @@ import org.junit.Test;
 public class NMSCraftItemStackTest extends AbstractTestingBase {
 
     @Test
-    public void testCloneEnchantedItem() throws Exception {
+    public void testCloneEnchantedItem() {
         net.minecraft.server.ItemStack nmsItemStack = new net.minecraft.server.ItemStack(net.minecraft.server.Items.POTION);
         nmsItemStack.addEnchantment(Enchantment.DAMAGE_ALL, 1);
         ItemStack itemStack = CraftItemStack.asCraftMirror(nmsItemStack);
@@ -27,7 +27,7 @@ public class NMSCraftItemStackTest extends AbstractTestingBase {
     }
 
     @Test
-    public void testCloneNullItem() throws Exception {
+    public void testCloneNullItem() {
         net.minecraft.server.ItemStack nmsItemStack = null;
         ItemStack itemStack = CraftItemStack.asCraftMirror(nmsItemStack);
         ItemStack clone = itemStack.clone();

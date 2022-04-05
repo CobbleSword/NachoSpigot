@@ -24,7 +24,7 @@ public class CompositeSerialization extends AbstractTestingBase {
     public void testSaveRestoreCompositeList() throws InvalidConfigurationException {
         YamlConfiguration out = getConfig();
 
-        List<ItemStack> stacks = new ArrayList<ItemStack>();
+        List<ItemStack> stacks = new ArrayList<>();
         stacks.add(new ItemStack(1));
         stacks.add(new ItemStack(2));
         stacks.add(new ItemStack(3));
@@ -54,7 +54,7 @@ public class CompositeSerialization extends AbstractTestingBase {
         assertThat(stacks, hasSize(raw.size()));
 
         for (int i = 0; i < 9; i++) {
-            assertThat(String.valueOf(i), (Object) stacks.get(i), is((Object) raw.get(i)));
+            assertThat(String.valueOf(i), (Object) stacks.get(i), is(raw.get(i)));
         }
     }
 }

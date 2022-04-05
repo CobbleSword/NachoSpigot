@@ -1,19 +1,19 @@
 package org.bukkit;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
+import com.google.common.collect.Lists;
+import net.minecraft.server.EntityPainting.EnumArt;
+import org.bukkit.craftbukkit.CraftArt;
+import org.junit.Test;
 
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.server.EntityPainting.EnumArt;
-
-import org.bukkit.craftbukkit.CraftArt;
-import org.junit.Test;
-
-import com.google.common.collect.Lists;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 public class ArtTest {
     private static final int UNIT_MULTIPLIER = 16;
@@ -45,7 +45,7 @@ public class ArtTest {
 
     @Test
     public void testCraftArtToNotch() {
-        Map<EnumArt, Art> cache = new EnumMap(EnumArt.class);
+        Map<EnumArt, Art> cache = new EnumMap<>(EnumArt.class);
         for (Art art : Art.values()) {
             EnumArt enumArt = CraftArt.BukkitToNotch(art);
             assertNotNull(art.name(), enumArt);
@@ -55,7 +55,7 @@ public class ArtTest {
 
     @Test
     public void testCraftArtToBukkit() {
-        Map<Art, EnumArt> cache = new EnumMap(Art.class);
+        Map<Art, EnumArt> cache = new EnumMap<>(Art.class);
         for (EnumArt enumArt : EnumArt.values()) {
             Art art = CraftArt.NotchToBukkit(enumArt);
             assertNotNull(enumArt.name(), art);

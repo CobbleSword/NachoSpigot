@@ -7,7 +7,6 @@ import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
 import org.bukkit.FireworkEffect.Type;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -23,7 +22,6 @@ public class ItemStackFireworkTest extends ItemStackTest {
         return StackProvider.compound(operators(), "%s %s", NAME_PARAMETER, Material.FIREWORK);
     }
 
-    @SuppressWarnings("unchecked")
     static List<Object[]> operators() {
         return CompoundOperator.compound(
             Joiner.on('+'),
@@ -32,150 +30,114 @@ public class ItemStackFireworkTest extends ItemStackTest {
             ItemStackLoreEnchantmentTest.operators(),
             Arrays.asList(
                 new Object[] {
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        (Operator) cleanStack -> {
                             FireworkMeta meta = (FireworkMeta) cleanStack.getItemMeta();
                             meta.addEffect(FireworkEffect.builder().withColor(Color.WHITE).build());
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        },
+                        (Operator) cleanStack -> {
                             FireworkMeta meta = (FireworkMeta) cleanStack.getItemMeta();
                             meta.addEffect(FireworkEffect.builder().withColor(Color.BLACK).build());
                             meta.addEffect(FireworkEffect.builder().withColor(Color.GREEN).build());
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
+                        },
                     "Effect Color 1 vs. Effect Color 2"
                 },
                 new Object[] {
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        (Operator) cleanStack -> {
                             FireworkMeta meta = (FireworkMeta) cleanStack.getItemMeta();
                             meta.addEffect(FireworkEffect.builder().withColor(Color.WHITE).with(Type.CREEPER).build());
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        },
+                        (Operator) cleanStack -> {
                             FireworkMeta meta = (FireworkMeta) cleanStack.getItemMeta();
                             meta.addEffect(FireworkEffect.builder().withColor(Color.WHITE).with(Type.BURST).build());
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
+                        },
                     "Effect type 1 vs. Effect type 2"
                 },
                 new Object[] {
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        (Operator) cleanStack -> {
                             FireworkMeta meta = (FireworkMeta) cleanStack.getItemMeta();
                             meta.addEffect(FireworkEffect.builder().withColor(Color.WHITE).withFade(Color.BLUE).build());
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        },
+                        (Operator) cleanStack -> {
                             FireworkMeta meta = (FireworkMeta) cleanStack.getItemMeta();
                             meta.addEffect(FireworkEffect.builder().withColor(Color.WHITE).withFade(Color.RED).build());
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
+                        },
                     "Effect fade 1 vs. Effect fade 2"
                 },
                 new Object[] {
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        (Operator) cleanStack -> {
                             FireworkMeta meta = (FireworkMeta) cleanStack.getItemMeta();
                             meta.addEffect(FireworkEffect.builder().withColor(Color.WHITE).withFlicker().build());
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        },
+                        (Operator) cleanStack -> {
                             FireworkMeta meta = (FireworkMeta) cleanStack.getItemMeta();
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
+                        },
                     "Effect vs. Null"
                 },
                 new Object[] {
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        (Operator) cleanStack -> {
                             FireworkMeta meta = (FireworkMeta) cleanStack.getItemMeta();
                             meta.addEffect(FireworkEffect.builder().withColor(Color.WHITE).withTrail().build());
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
-                            return cleanStack;
-                        }
-                    },
+                        },
+                        (Operator) cleanStack -> cleanStack,
                     "Effect vs. None"
                 }
             ),
             Arrays.asList(
                 new Object[] {
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        (Operator) cleanStack -> {
                             FireworkMeta meta = (FireworkMeta) cleanStack.getItemMeta();
                             meta.setPower(127);
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        },
+                        (Operator) cleanStack -> {
                             FireworkMeta meta = (FireworkMeta) cleanStack.getItemMeta();
                             meta.setPower(100);
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
+                        },
                     "Height vs. Other"
                 },
                 new Object[] {
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        (Operator) cleanStack -> {
                             FireworkMeta meta = (FireworkMeta) cleanStack.getItemMeta();
                             meta.setPower(42);
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        },
+                        (Operator) cleanStack -> {
                             FireworkMeta meta = (FireworkMeta) cleanStack.getItemMeta();
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
+                        },
                     "Height vs. Null"
                 },
                 new Object[] {
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        (Operator) cleanStack -> {
                             FireworkMeta meta = (FireworkMeta) cleanStack.getItemMeta();
                             meta.setPower(10);
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
-                            return cleanStack;
-                        }
-                    },
+                        },
+                        (Operator) cleanStack -> cleanStack,
                     "Height vs. None"
                 }
             )

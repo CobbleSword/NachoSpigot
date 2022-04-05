@@ -122,7 +122,7 @@ public class ItemMetaTest extends AbstractTestingBase {
         craft.setItemMeta(craft.getItemMeta());
         ItemStack bukkit = new ItemStack(craft);
         assertThat(craft, is(bukkit));
-        assertThat(bukkit, is((ItemStack) craft));
+        assertThat(bukkit, is(craft));
     }
 
 

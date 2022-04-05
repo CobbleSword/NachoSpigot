@@ -12,44 +12,28 @@ import org.bukkit.craftbukkit.inventory.CraftItemFactory;
 import org.bukkit.craftbukkit.util.Versioning;
 
 public class DummyServer implements InvocationHandler {
-    private static interface MethodHandler {
+    private interface MethodHandler {
         Object handle(DummyServer server, Object[] args);
     }
-    private static final HashMap<Method, MethodHandler> methods = new HashMap<Method, MethodHandler>();
+    private static final HashMap<Method, MethodHandler> methods = new HashMap<>();
     static {
         try {
             methods.put(
                     Server.class.getMethod("getItemFactory"),
-                    new MethodHandler() {
-                        public Object handle(DummyServer server, Object[] args) {
-                            return CraftItemFactory.instance();
-                        }
-                    }
-                );
+                    (server, args) -> CraftItemFactory.instance()
+            );
             methods.put(
                     Server.class.getMethod("getName"),
-                    new MethodHandler() {
-                        public Object handle(DummyServer server, Object[] args) {
-                            return DummyServer.class.getName();
-                        }
-                    }
-                );
+                    (server, args) -> DummyServer.class.getName()
+            );
             methods.put(
                     Server.class.getMethod("getVersion"),
-                    new MethodHandler() {
-                        public Object handle(DummyServer server, Object[] args) {
-                            return DummyServer.class.getPackage().getImplementationVersion();
-                        }
-                    }
-                );
+                    (server, args) -> DummyServer.class.getPackage().getImplementationVersion()
+            );
             methods.put(
                     Server.class.getMethod("getBukkitVersion"),
-                    new MethodHandler() {
-                        public Object handle(DummyServer server, Object[] args) {
-                            return Versioning.getBukkitVersion();
-                        }
-                    }
-                );
+                    (server, args) -> Versioning.getBukkitVersion()
+            );
             methods.put(
                     Server.class.getMethod("getLogger"),
                     new MethodHandler() {
@@ -67,7 +51,7 @@ public class DummyServer implements InvocationHandler {
 
     public static void setup() {}
 
-    private DummyServer() {};
+    private DummyServer() {}
 
     public Object invoke(Object proxy, Method method, Object[] args) {
         MethodHandler handler = methods.get(method);

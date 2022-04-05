@@ -23,8 +23,7 @@ public class Util {
         field.setAccessible(true);
         try {
             return (T) field.get(object);
-        } catch (IllegalArgumentException e) {
-        } catch (IllegalAccessException e) {
+        } catch (IllegalArgumentException | IllegalAccessException ignored) {
         }
         throw new RuntimeException("Unable to get internal value");
     }

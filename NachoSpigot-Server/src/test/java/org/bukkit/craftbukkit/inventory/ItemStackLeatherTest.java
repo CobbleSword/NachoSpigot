@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import org.junit.runner.RunWith;
@@ -22,7 +21,6 @@ public class ItemStackLeatherTest extends ItemStackTest {
         return StackProvider.compound(operators(), "%s %s", NAME_PARAMETER, Material.LEATHER_BOOTS, Material.LEATHER_CHESTPLATE, Material.LEATHER_HELMET, Material.LEATHER_LEGGINGS);
     }
 
-    @SuppressWarnings("unchecked")
     static List<Object[]> operators() {
         return CompoundOperator.compound(
             Joiner.on('+'),
@@ -31,56 +29,42 @@ public class ItemStackLeatherTest extends ItemStackTest {
             ItemStackLoreEnchantmentTest.operators(),
             Arrays.asList(
                 new Object[] {
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        (Operator) cleanStack -> {
                             LeatherArmorMeta meta = (LeatherArmorMeta) cleanStack.getItemMeta();
                             meta.setColor(Color.FUCHSIA);
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
-                            return cleanStack;
-                        }
-                    },
+                        },
+                        (Operator) cleanStack -> cleanStack,
                     "Color vs Null"
                 },
                 new Object[] {
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        (Operator) cleanStack -> {
                             LeatherArmorMeta meta = (LeatherArmorMeta) cleanStack.getItemMeta();
                             meta.setColor(Color.GRAY);
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        },
+                        (Operator) cleanStack -> {
                             LeatherArmorMeta meta = (LeatherArmorMeta) cleanStack.getItemMeta();
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
+                        },
                     "Color vs Blank"
                 },
                 new Object[] {
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        (Operator) cleanStack -> {
                             LeatherArmorMeta meta = (LeatherArmorMeta) cleanStack.getItemMeta();
                             meta.setColor(Color.MAROON);
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        },
+                        (Operator) cleanStack -> {
                             LeatherArmorMeta meta = (LeatherArmorMeta) cleanStack.getItemMeta();
                             meta.setColor(Color.ORANGE);
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
+                        },
                     "Color vs Other"
                 }
             )

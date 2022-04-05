@@ -1,20 +1,7 @@
 package org.bukkit.craftbukkit.inventory;
 
-import static org.bukkit.support.Matchers.sameHash;
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableList;
 import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -31,8 +18,12 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.ImmutableList;
+import java.io.*;
+import java.util.*;
+
+import static org.bukkit.support.Matchers.sameHash;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 @RunWith(Parameterized.class)
 public class ItemStackTest extends AbstractTestingBase {
@@ -74,7 +65,7 @@ public class ItemStackTest extends AbstractTestingBase {
          * @return
          */
         static List<Object[]> compound(final List<Object[]> parameterList, final String nameFormat, final int nameIndex, final Material...materials) {
-            final List<Object[]> out = new ArrayList<Object[]>();
+            final List<Object[]> out = new ArrayList<>();
             for (Object[] params : parameterList) {
                 final int len = params.length;
                 for (final Material material : materials) {
@@ -151,11 +142,12 @@ public class ItemStackTest extends AbstractTestingBase {
          * @param originalLists
          * @return
          */
+        @SafeVarargs
         static List<Object[]> compound(final Joiner joiner, final int nameParameter, final long singletonBitmask, final List<Object[]>...originalLists) {
 
-            final List<Object[]> out = new ArrayList<Object[]>();
-            final List<List<Object[]>> singletons = new ArrayList<List<Object[]>>();
-            final List<List<Object[]>> notSingletons = new ArrayList<List<Object[]>>();
+            final List<Object[]> out = new ArrayList<>();
+            final List<List<Object[]>> singletons = new ArrayList<>();
+            final List<List<Object[]>> notSingletons = new ArrayList<>();
 
             { // Separate and prime the 'singletons'
                 int i = 0;
@@ -179,11 +171,7 @@ public class ItemStackTest extends AbstractTestingBase {
                             } else if (toOut[i] instanceof Operator) {
                                 final Operator op1 = (Operator) toOut[i];
                                 final Operator op2 = (Operator) singleton[i];
-                                toOut[i] = new Operator() {
-                                    public ItemStack operate(final ItemStack cleanStack) {
-                                        return op2.operate(op1.operate(cleanStack));
-                                    }
-                                };
+                                toOut[i] = (Operator) cleanStack -> op2.operate(op1.operate(cleanStack));
                             }
                         }
                         out.add(toOut);
@@ -197,7 +185,7 @@ public class ItemStackTest extends AbstractTestingBase {
             notSingletons.toArray(lists);
             lists[lists.length - 1] = out;
 
-            final RecursiveContainer methodParams = new RecursiveContainer(joiner, new Object[lists.length], nameParameter, new ArrayList<Object[]>(lists.length), new ArrayList<Object[]>(), lists);
+            final RecursiveContainer methodParams = new RecursiveContainer(joiner, new Object[lists.length], nameParameter, new ArrayList<>(lists.length), new ArrayList<>(), lists);
 
             recursivelyCompound(methodParams, 0);
             methodParams.out.addAll(out);
@@ -317,7 +305,7 @@ public class ItemStackTest extends AbstractTestingBase {
     static final int NAME_PARAMETER = 2;
     static {
         final ItemFactory factory = CraftItemFactory.instance();
-        final Map<Class<? extends ItemMeta>, Material> possibleMaterials = new HashMap<Class<? extends ItemMeta>, Material>();
+        final Map<Class<? extends ItemMeta>, Material> possibleMaterials = new HashMap<>();
         ItemMeta meta;
         for (final Material material : Material.values()) {
             meta = factory.getItemMeta(material);
@@ -329,7 +317,7 @@ public class ItemStackTest extends AbstractTestingBase {
         COMPOUND_MATERIALS = possibleMaterials.values().toArray(new Material[possibleMaterials.size()]);
     }
 
-    @Parameter(0) public StackProvider provider;
+    @Parameter() public StackProvider provider;
     @Parameter(1) public StackProvider unequalProvider;
     @Parameter(NAME_PARAMETER) public String name;
 
@@ -400,12 +388,12 @@ public class ItemStackTest extends AbstractTestingBase {
     }
 
     @Test
-    public void testBukkitYamlDeserialize() throws Throwable {
+    public void testBukkitYamlDeserialize() {
         testYamlDeserialize(new BukkitWrapper(provider), new BukkitWrapper(unequalProvider));
     }
 
     @Test
-    public void testCraftYamlDeserialize() throws Throwable {
+    public void testCraftYamlDeserialize() {
         testYamlDeserialize(new CraftWrapper(provider), new CraftWrapper(unequalProvider));
     }
 
@@ -424,19 +412,10 @@ public class ItemStackTest extends AbstractTestingBase {
         final ItemStack unequalStack = unequalProvider.stack();
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ObjectOutputStream oos = null;
-        try {
-            oos = new BukkitObjectOutputStream(out);
+        try (ObjectOutputStream oos = new BukkitObjectOutputStream(out)) {
 
             oos.writeObject(stack);
             oos.writeObject(unequalStack);
-        } finally {
-            if (oos != null) {
-                try {
-                    oos.close();
-                } catch (IOException ex) {
-                }
-            }
         }
 
         final String data = new String(Base64Coder.encode(out.toByteArray()));
@@ -456,7 +435,7 @@ public class ItemStackTest extends AbstractTestingBase {
             if (ois != null) {
                 try {
                     ois.close();
-                } catch (IOException ex) {
+                } catch (IOException ignored) {
                 }
             }
         }

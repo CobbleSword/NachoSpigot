@@ -9,7 +9,7 @@ public final class Matchers {
     private Matchers() {}
 
     public static <T> Matcher<T> sameHash(T value) {
-        return new SameHash<T>(value);
+        return new SameHash<>(value);
     }
 
     static class SameHash<T> extends BaseMatcher<T> {

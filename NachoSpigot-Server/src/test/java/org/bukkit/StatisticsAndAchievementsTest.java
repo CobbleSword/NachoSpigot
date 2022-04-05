@@ -19,7 +19,7 @@ public class StatisticsAndAchievementsTest extends AbstractTestingBase {
     @Test
     public void verifyAchievementMapping() {
         List<Achievement> achievements = Lists.newArrayList(Achievement.values());
-        for (net.minecraft.server.Achievement achievement : (List<net.minecraft.server.Achievement>) AchievementList.e) {
+        for (net.minecraft.server.Achievement achievement : AchievementList.e) {
             String name = achievement.name;
 
             String message = String.format("org.bukkit.Achievement is missing: '%s'", name);

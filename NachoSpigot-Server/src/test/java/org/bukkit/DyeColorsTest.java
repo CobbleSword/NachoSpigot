@@ -22,7 +22,7 @@ public class DyeColorsTest extends AbstractTestingBase {
 
     @Parameters(name= "{index}: {0}")
     public static List<Object[]> data() {
-        List<Object[]> list = new ArrayList<Object[]>();
+        List<Object[]> list = new ArrayList<>();
         for (DyeColor dye : DyeColor.values()) {
             list.add(new Object[] {dye});
         }

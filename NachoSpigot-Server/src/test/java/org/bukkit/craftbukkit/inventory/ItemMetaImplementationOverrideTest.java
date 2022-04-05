@@ -23,8 +23,8 @@ public class ItemMetaImplementationOverrideTest {
 
     @Parameters(name="[{index}]:{1}")
     public static List<Object[]> data() {
-        final List<Object[]> testData = new ArrayList<Object[]>();
-        List<Class<? extends CraftMetaItem>> classes = new ArrayList<Class<? extends CraftMetaItem>>();
+        final List<Object[]> testData = new ArrayList<>();
+        List<Class<? extends CraftMetaItem>> classes = new ArrayList<>();
 
         for (Material material : ItemStackTest.COMPOUND_MATERIALS) {
             Class<? extends CraftMetaItem> clazz = CraftItemFactory.instance().getItemMeta(material).getClass().asSubclass(parent);
@@ -33,7 +33,7 @@ public class ItemMetaImplementationOverrideTest {
             }
         }
 
-        List<Method> list = new ArrayList<Method>();
+        List<Method> list = new ArrayList<>();
 
         for (Method method: parent.getDeclaredMethods()) {
             if (method.isAnnotationPresent(Overridden.class)) {
@@ -45,11 +45,7 @@ public class ItemMetaImplementationOverrideTest {
             for (final Method method : list) {
                 testData.add(
                     new Object[] {
-                        new Callable<Method>() {
-                            public Method call() throws Exception {
-                                return clazz.getDeclaredMethod(method.getName(), method.getParameterTypes());
-                            }
-                        },
+                            (Callable<Method>) () -> clazz.getDeclaredMethod(method.getName(), method.getParameterTypes()),
                         clazz.getSimpleName() + " contains " + method.getName()
                     }
                 );
@@ -57,11 +53,7 @@ public class ItemMetaImplementationOverrideTest {
 
             testData.add(
                 new Object[] {
-                    new Callable<DelegateDeserialization>() {
-                        public DelegateDeserialization call() throws Exception {
-                            return clazz.getAnnotation(DelegateDeserialization.class);
-                        }
-                    },
+                        (Callable<DelegateDeserialization>) () -> clazz.getAnnotation(DelegateDeserialization.class),
                     clazz.getSimpleName() + " contains annotation " + DelegateDeserialization.class
                 }
             );
@@ -70,7 +62,7 @@ public class ItemMetaImplementationOverrideTest {
         return testData;
     }
 
-    @Parameter(0) public Callable<?> test;
+    @Parameter() public Callable<?> test;
     @Parameter(1) public String name;
 
     @Test

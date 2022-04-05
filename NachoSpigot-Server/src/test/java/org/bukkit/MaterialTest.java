@@ -12,7 +12,6 @@ import org.bukkit.support.AbstractTestingBase;
 import org.junit.Test;
 
 import com.google.common.collect.Maps;
-import java.util.Iterator;
 import org.bukkit.craftbukkit.util.CraftMagicNumbers;
 
 public class MaterialTest extends AbstractTestingBase {
@@ -29,10 +28,7 @@ public class MaterialTest extends AbstractTestingBase {
         }
         materials.remove(0); // Purge air.
 
-        Iterator<Item> items = Item.REGISTRY.iterator();
-
-        while (items.hasNext()) {
-            Item item = items.next();
+        for (Item item : Item.REGISTRY) {
             if (item == null) continue;
 
             int id = CraftMagicNumbers.getId(item);

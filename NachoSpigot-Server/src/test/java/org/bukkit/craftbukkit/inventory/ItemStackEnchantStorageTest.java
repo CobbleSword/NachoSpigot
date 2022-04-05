@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -21,7 +20,6 @@ public class ItemStackEnchantStorageTest extends ItemStackTest {
         return StackProvider.compound(operators(), "%s %s", NAME_PARAMETER, Material.ENCHANTED_BOOK);
     }
 
-    @SuppressWarnings("unchecked")
     static List<Object[]> operators() {
         return CompoundOperator.compound(
             Joiner.on('+'),
@@ -30,76 +28,58 @@ public class ItemStackEnchantStorageTest extends ItemStackTest {
             ItemStackLoreEnchantmentTest.operators(),
             Arrays.asList(
                 new Object[] {
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        (Operator) cleanStack -> {
                             EnchantmentStorageMeta meta = (EnchantmentStorageMeta) cleanStack.getItemMeta();
                             meta.addStoredEnchant(Enchantment.DURABILITY, 1, true);
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        },
+                        (Operator) cleanStack -> {
                             EnchantmentStorageMeta meta = (EnchantmentStorageMeta) cleanStack.getItemMeta();
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
+                        },
                     "Enchantable vs Blank"
                 },
                 new Object[] {
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        (Operator) cleanStack -> {
                             EnchantmentStorageMeta meta = (EnchantmentStorageMeta) cleanStack.getItemMeta();
                             meta.addStoredEnchant(Enchantment.KNOCKBACK, 1, true);
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
-                            return cleanStack;
-                        }
-                    },
+                        },
+                        (Operator) cleanStack -> cleanStack,
                     "Enchantable vs Null"
                 },
                 new Object[] {
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        (Operator) cleanStack -> {
                             EnchantmentStorageMeta meta = (EnchantmentStorageMeta) cleanStack.getItemMeta();
                             meta.addStoredEnchant(Enchantment.DAMAGE_UNDEAD, 1, true);
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        },
+                        (Operator) cleanStack -> {
                             EnchantmentStorageMeta meta = (EnchantmentStorageMeta) cleanStack.getItemMeta();
                             meta.addStoredEnchant(Enchantment.DAMAGE_UNDEAD, 1, true);
                             meta.addStoredEnchant(Enchantment.FIRE_ASPECT, 1, true);
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
+                        },
                     "Enchantable vs More"
                 },
                 new Object[] {
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        (Operator) cleanStack -> {
                             EnchantmentStorageMeta meta = (EnchantmentStorageMeta) cleanStack.getItemMeta();
                             meta.addStoredEnchant(Enchantment.PROTECTION_FIRE, 1, true);
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
-                    new Operator() {
-                        public ItemStack operate(ItemStack cleanStack) {
+                        },
+                        (Operator) cleanStack -> {
                             EnchantmentStorageMeta meta = (EnchantmentStorageMeta) cleanStack.getItemMeta();
                             meta.addEnchant(Enchantment.PROTECTION_FIRE, 2, true);
                             cleanStack.setItemMeta(meta);
                             return cleanStack;
-                        }
-                    },
+                        },
                     "Enchantable vs Other"
                 }
             )

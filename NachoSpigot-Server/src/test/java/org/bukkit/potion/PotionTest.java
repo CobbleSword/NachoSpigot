@@ -1,14 +1,15 @@
 package org.bukkit.potion;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
+import org.bukkit.support.AbstractTestingBase;
+import org.bukkit.support.Util;
+import org.junit.Test;
 
 import java.util.EnumMap;
 import java.util.Map;
 
-import org.bukkit.support.AbstractTestingBase;
-import org.bukkit.support.Util;
-import org.junit.Test;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 public class PotionTest extends AbstractTestingBase {
 
@@ -25,10 +26,10 @@ public class PotionTest extends AbstractTestingBase {
     }
 
     @Test
-    public void testEffectCompleteness() throws Throwable {
+    public void testEffectCompleteness() {
         Map<Integer, ?> effectDurations = Util.getInternalState(net.minecraft.server.PotionBrewer.class, null, "effectDurations");
 
-        Map<PotionType, String> effects = new EnumMap(PotionType.class);
+        Map<PotionType, String> effects = new EnumMap<>(PotionType.class);
         for (int id : effectDurations.keySet()) {
             PotionEffectType type = PotionEffectType.getById(id);
             assertNotNull(String.valueOf(id), PotionEffectType.getById(id));

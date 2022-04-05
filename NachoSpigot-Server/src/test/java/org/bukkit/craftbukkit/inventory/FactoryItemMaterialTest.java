@@ -25,7 +25,7 @@ public class FactoryItemMaterialTest extends AbstractTestingBase {
 
     static {
         Material[] local_materials = Material.values();
-        List<Material> list = new ArrayList<Material>(local_materials.length);
+        List<Material> list = new ArrayList<>(local_materials.length);
         for (Material material : local_materials) {
             if (INVALIDATED_MATERIALS.contains(material)) {
                 continue;
@@ -45,14 +45,14 @@ public class FactoryItemMaterialTest extends AbstractTestingBase {
 
     @Parameters(name="Material[{index}]:{0}")
     public static List<Object[]> data() {
-        List<Object[]> list = new ArrayList<Object[]>();
+        List<Object[]> list = new ArrayList<>();
         for (Material material : materials) {
             list.add(new Object[] {material});
         }
         return list;
     }
 
-    @Parameter(0) public Material material;
+    @Parameter() public Material material;
 
     @Test
     public void itemStack() {

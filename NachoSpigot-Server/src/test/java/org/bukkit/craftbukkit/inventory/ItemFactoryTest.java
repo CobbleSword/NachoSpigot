@@ -21,7 +21,7 @@ public class ItemFactoryTest extends AbstractTestingBase {
     @Test
     public void testKnownAttributes() throws Throwable {
         final ZipInputStream nmsZipStream = new ZipInputStream(CommandAbstract.class/* Magic class that isn't imported! */.getProtectionDomain().getCodeSource().getLocation().openStream());
-        final Collection<String> names = new HashSet<String>();
+        final Collection<String> names = new HashSet<>();
         for (ZipEntry clazzEntry; (clazzEntry = nmsZipStream.getNextEntry()) != null; ) {
             final String entryName = clazzEntry.getName();
             if (!(entryName.endsWith(".class") && entryName.startsWith("net/minecraft/server/"))) {
