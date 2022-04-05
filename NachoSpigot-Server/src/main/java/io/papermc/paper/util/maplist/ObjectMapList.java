@@ -16,11 +16,11 @@ import java.util.Set;
 @SuppressWarnings("unchecked")
 public final class ObjectMapList<T> extends AbstractReferenceList<T> implements Set<T> {
 
-    protected final Int2IntOpenHashMap objectToIndex;
+    private final Int2IntOpenHashMap objectToIndex;
 
-    protected static final Object[] EMPTY_LIST = new Object[0];
-    protected T[] elements = (T[]) EMPTY_LIST;
-    protected int count;
+    private static final Object[] EMPTY_LIST = new Object[0];
+    private T[] elements = (T[]) EMPTY_LIST;
+    private int count;
 
     public ObjectMapList() {
         this(2, 0.8f);

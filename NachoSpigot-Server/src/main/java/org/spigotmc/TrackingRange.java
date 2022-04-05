@@ -1,12 +1,6 @@
 package org.spigotmc;
 
-import net.minecraft.server.Entity;
-import net.minecraft.server.EntityExperienceOrb;
-import net.minecraft.server.EntityGhast;
-import net.minecraft.server.EntityItem;
-import net.minecraft.server.EntityItemFrame;
-import net.minecraft.server.EntityPainting;
-import net.minecraft.server.EntityPlayer;
+import net.minecraft.server.*;
 
 public class TrackingRange
 {
@@ -31,13 +25,7 @@ public class TrackingRange
         }
         else if ( entity instanceof EntityGhast )
         {
-            if ( config.monsterTrackingRange > config.monsterActivationRange )
-            {
-                return config.monsterTrackingRange;
-            } else
-            {
-                return config.monsterActivationRange;
-            }
+            return Math.max(config.monsterTrackingRange, config.monsterActivationRange);
         } else if ( entity.activationType == 2 )
         {
             return config.animalTrackingRange;

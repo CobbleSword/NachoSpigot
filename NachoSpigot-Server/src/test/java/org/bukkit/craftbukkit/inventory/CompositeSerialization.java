@@ -1,17 +1,18 @@
 package org.bukkit.craftbukkit.inventory;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.support.AbstractTestingBase;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 
 public class CompositeSerialization extends AbstractTestingBase {

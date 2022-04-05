@@ -1,18 +1,16 @@
 package org.bukkit;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
+import com.google.common.collect.Maps;
+import net.minecraft.server.Item;
+import org.bukkit.craftbukkit.util.CraftMagicNumbers;
+import org.bukkit.support.AbstractTestingBase;
+import org.junit.Test;
 
 import java.util.Collections;
 import java.util.Map;
 
-import net.minecraft.server.Item;
-
-import org.bukkit.support.AbstractTestingBase;
-import org.junit.Test;
-
-import com.google.common.collect.Maps;
-import org.bukkit.craftbukkit.util.CraftMagicNumbers;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 public class MaterialTest extends AbstractTestingBase {
 

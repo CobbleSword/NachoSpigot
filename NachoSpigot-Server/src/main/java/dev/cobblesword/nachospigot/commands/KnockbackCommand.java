@@ -110,21 +110,18 @@ public class KnockbackCommand extends Command {
                 break;
             }
             case 3: {
-                switch (args[0].toLowerCase()) {
-                    case "set": {
-                        KnockbackProfile profile = KnockbackConfig.getKbProfileByName(args[1]);
-                        if (profile == null) {
-                            sender.sendMessage("§cA profile with that name could not be found.");
-                            return false;
-                        }
-                        Player target = Bukkit.getPlayer(args[2]);
-                        if (target == null) {
-                            sender.sendMessage("§cThat player is not online.");
-                            return false;
-                        }
-                        target.setKnockbackProfile(profile);
-                        break;
+                if ("set".equalsIgnoreCase(args[0])) {
+                    KnockbackProfile profile = KnockbackConfig.getKbProfileByName(args[1]);
+                    if (profile == null) {
+                        sender.sendMessage("§cA profile with that name could not be found.");
+                        return false;
                     }
+                    Player target = Bukkit.getPlayer(args[2]);
+                    if (target == null) {
+                        sender.sendMessage("§cThat player is not online.");
+                        return false;
+                    }
+                    target.setKnockbackProfile(profile);
                 }
                 break;
             }

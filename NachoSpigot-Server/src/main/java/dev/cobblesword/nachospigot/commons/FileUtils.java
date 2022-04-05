@@ -19,7 +19,7 @@ public class FileUtils {
     public static <T> T toObject(File file, Class<T> clazz) {
         String line;
         StringBuilder jsonContent = new StringBuilder();
-        BufferedReader objReader = null;
+        BufferedReader objReader;
         try {
             objReader = new BufferedReader(new FileReader(file));
             while ((line = objReader.readLine()) != null) {

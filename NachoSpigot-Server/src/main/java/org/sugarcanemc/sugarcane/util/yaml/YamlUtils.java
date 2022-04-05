@@ -6,7 +6,7 @@ import java.util.List;
 public class YamlUtils {
     public static int findKey(List<String> lines, String key) {
         String[] parts = key.split("\\.");
-        int _line = 0;
+        int _line;
         int indent = 0;
         List<String> _cpath = new ArrayList<>();
         for (String part : parts) {

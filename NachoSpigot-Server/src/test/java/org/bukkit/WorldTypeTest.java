@@ -1,10 +1,10 @@
 package org.bukkit;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
-
 import net.minecraft.server.WorldType;
 import org.junit.Test;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 public class WorldTypeTest {
     @Test

@@ -1,9 +1,10 @@
 package org.spigotmc;
 
-import java.util.Arrays;
-import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class SpigotWorldConfig
 {
@@ -61,7 +62,7 @@ public class SpigotWorldConfig
     private <T> List getList(String path, T def)
     {
         config.addDefault( "world-settings.default." + path, def );
-        return (List<T>) config.getList( "world-settings." + worldName + "." + path, config.getList( "world-settings.default." + path ) );
+        return config.getList( "world-settings." + worldName + "." + path, config.getList( "world-settings.default." + path ) );
     }
 
     private String getString(String path, String def)
@@ -233,16 +234,10 @@ public class SpigotWorldConfig
         {
             set( "anti-xray.blocks", null );
         }
-        hiddenBlocks = getList( "anti-xray.hide-blocks", Arrays.asList( new Integer[]
-        {
-            14, 15, 16, 21, 48, 49, 54, 56, 73, 74, 82, 129, 130
-        } ) );
+        hiddenBlocks = getList( "anti-xray.hide-blocks", Arrays.asList(14, 15, 16, 21, 48, 49, 54, 56, 73, 74, 82, 129, 130) );
         log( "\tHidden Blocks: " + hiddenBlocks );
 
-        replaceBlocks = getList( "anti-xray.replace-blocks", Arrays.asList( new Integer[]
-        {
-            1, 5
-        } ) );
+        replaceBlocks = getList( "anti-xray.replace-blocks", Arrays.asList(1, 5) );
         log( "\tReplace Blocks: " + replaceBlocks );
 
         antiXrayInstance = new AntiXray( this );

@@ -5,7 +5,7 @@ import net.minecraft.server.*;
 
 public class AntiCrash implements PacketListener {
     @Override
-    public boolean onReceivedPacket(PlayerConnection playerConnection, Packet packet) {
+    public boolean onReceivedPacket(PlayerConnection playerConnection, Packet<?> packet) {
         if (packet instanceof PacketPlayInCustomPayload) {
             PacketDataSerializer ab = ((PacketPlayInCustomPayload)packet).b();
             if (ab.refCnt() < 1) {

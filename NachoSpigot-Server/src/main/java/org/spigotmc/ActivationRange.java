@@ -1,35 +1,9 @@
 package org.spigotmc;
 
-import java.util.List;
-
-import net.minecraft.server.AxisAlignedBB;
-import net.minecraft.server.Chunk;
-import net.minecraft.server.Entity;
-import net.minecraft.server.EntityAmbient;
-import net.minecraft.server.EntityAnimal;
-import net.minecraft.server.EntityArrow;
-import net.minecraft.server.EntityComplexPart;
-import net.minecraft.server.EntityCreature;
-import net.minecraft.server.EntityCreeper;
-import net.minecraft.server.EntityEnderCrystal;
-import net.minecraft.server.EntityEnderDragon;
-import net.minecraft.server.EntityFallingBlock;
-import net.minecraft.server.EntityFireball;
-import net.minecraft.server.EntityFireworks;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.EntityLiving;
-import net.minecraft.server.EntityMonster;
-import net.minecraft.server.EntityProjectile;
-import net.minecraft.server.EntitySheep;
-import net.minecraft.server.EntitySlime;
-import net.minecraft.server.EntityTNTPrimed;
-import net.minecraft.server.EntityVillager;
-import net.minecraft.server.EntityWeather;
-import net.minecraft.server.EntityWither;
-import net.minecraft.server.MathHelper;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.World;
 import co.aikar.timings.SpigotTimings;
+import net.minecraft.server.*;
+
+import java.util.List;
 
 
 public class ActivationRange
@@ -70,9 +44,9 @@ public class ActivationRange
      */
     public static boolean initializeEntityActivationState(Entity entity, SpigotWorldConfig config)
     {
-        if ( ( entity.activationType == 3 && config.miscActivationRange == 0 )
-                || ( entity.activationType == 2 && config.animalActivationRange == 0 )
-                || ( entity.activationType == 1 && config.monsterActivationRange == 0 )
+        return (entity.activationType == 3 && config.miscActivationRange == 0)
+                || (entity.activationType == 2 && config.animalActivationRange == 0)
+                || (entity.activationType == 1 && config.monsterActivationRange == 0)
                 || entity instanceof EntityHuman
                 || entity instanceof EntityProjectile
                 || entity instanceof EntityEnderDragon
@@ -83,12 +57,7 @@ public class ActivationRange
                 || entity instanceof EntityTNTPrimed
                 || entity instanceof EntityFallingBlock // PaperSpigot - Always tick falling blocks
                 || entity instanceof EntityEnderCrystal
-                || entity instanceof EntityFireworks )
-        {
-            return true;
-        }
-
-        return false;
+                || entity instanceof EntityFireworks;
     }
 
     /**
@@ -108,7 +77,7 @@ public class ActivationRange
         maxRange = Math.max( maxRange, miscActivationRange );
         maxRange = Math.min( ( world.spigotConfig.viewDistance << 4 ) - 8, maxRange );
 
-        for ( Entity player : (List<Entity>) (List) world.players )
+        for ( Entity player : (List<Entity>) (List<?>) world.players )
         {
 
             player.activatedTick = MinecraftServer.currentTick;
@@ -234,9 +203,8 @@ public class ActivationRange
                     return true;
                 }
             }
-            if (entity instanceof EntityCreeper && ((EntityCreeper) entity).cn()) { // isExplosive
-                return true;
-            }
+            // isExplosive
+            return entity instanceof EntityCreeper && ((EntityCreeper) entity).cn();
         }
         return false;
     }

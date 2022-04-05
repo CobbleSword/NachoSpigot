@@ -1,9 +1,9 @@
 package net.techcable.tacospigot;
 
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.util.List;
 
 public class TacoSpigotWorldConfig {
 
@@ -54,9 +54,9 @@ public class TacoSpigotWorldConfig {
         return config.getFloat("world-settings." + worldName + "." + path, config.getFloat("world-settings.default." + path));
     }
 
-    private <T> List getList(String path, T def) {
+    private <T> List<?> getList(String path, T def) {
         config.addDefault("world-settings.default." + path, def);
-        return (List<T>) config.getList("world-settings." + worldName + "." + path, config.getList("world-settings.default." + path));
+        return config.getList("world-settings." + worldName + "." + path, config.getList("world-settings.default." + path));
     }
 
     private String getString(String path, String def) {

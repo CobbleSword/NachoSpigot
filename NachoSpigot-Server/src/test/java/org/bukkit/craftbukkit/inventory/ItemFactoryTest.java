@@ -1,7 +1,9 @@
 package org.bukkit.craftbukkit.inventory;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
+import net.minecraft.server.CommandAbstract;
+import net.minecraft.server.IAttribute;
+import org.bukkit.support.AbstractTestingBase;
+import org.junit.Test;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -10,11 +12,8 @@ import java.util.HashSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import net.minecraft.server.CommandAbstract;
-import net.minecraft.server.IAttribute;
-
-import org.bukkit.support.AbstractTestingBase;
-import org.junit.Test;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 public class ItemFactoryTest extends AbstractTestingBase {
 

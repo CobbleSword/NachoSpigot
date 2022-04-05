@@ -1,5 +1,8 @@
 package org.sugarcanemc.sugarcane.util.yaml;
 
+import dev.cobblesword.nachospigot.Nacho;
+import dev.cobblesword.nachospigot.commons.StringUtils;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -7,9 +10,6 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import dev.cobblesword.nachospigot.Nacho;
-import dev.cobblesword.nachospigot.commons.StringUtils;
 
 public class YamlCommenter {
     private final HashMap<String, String> comments = new HashMap<>();

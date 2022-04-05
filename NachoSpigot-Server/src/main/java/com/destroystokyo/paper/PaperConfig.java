@@ -1,14 +1,6 @@
 package com.destroystokyo.paper;
 
 import com.google.common.base.Throwables;
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.*;
-import java.util.logging.Level;
-
 import net.minecraft.server.MinecraftServer;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -16,6 +8,14 @@ import org.bukkit.command.Command;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.spigotmc.SpigotConfig;
+
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.*;
+import java.util.logging.Level;
 
 public class PaperConfig
 {
@@ -42,7 +42,7 @@ public class PaperConfig
         try
         {
             config.load ( CONFIG_FILE );
-        } catch ( IOException ex )
+        } catch ( IOException ignored)
         {
         } catch ( InvalidConfigurationException ex )
         {
@@ -52,7 +52,7 @@ public class PaperConfig
         config.options().header( HEADER );
         config.options().copyDefaults( true );
 
-        commands = new HashMap<String, Command>();
+        commands = new HashMap<>();
 
         version = getInt( "config-version", 9 );
         set( "config-version", 9 );
@@ -123,7 +123,7 @@ public class PaperConfig
     private static float getFloat(String path, float def)
     {
         // TODO: Figure out why getFloat() always returns the default value.
-        return (float) getDouble( path, (double) def );
+        return (float) getDouble( path, def);
     }
 
     private static int getInt(String path, int def)
@@ -135,7 +135,7 @@ public class PaperConfig
     private static <T> List getList(String path, T def)
     {
         config.addDefault( path, def );
-        return (List<T>) config.getList( path, config.getList( path ) );
+        return config.getList( path, config.getList( path ) );
     }
 
     private static String getString(String path, String def)

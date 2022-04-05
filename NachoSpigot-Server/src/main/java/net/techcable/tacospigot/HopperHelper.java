@@ -1,15 +1,6 @@
 package net.techcable.tacospigot;
 
-import net.minecraft.server.Block;
-import net.minecraft.server.BlockChest;
-import net.minecraft.server.BlockPosition;
-import net.minecraft.server.Blocks;
-import net.minecraft.server.IHopper;
-import net.minecraft.server.IInventory;
-import net.minecraft.server.TileEntity;
-import net.minecraft.server.TileEntityHopper;
-import net.minecraft.server.World;
-
+import net.minecraft.server.*;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 
 public class HopperHelper {

@@ -1,13 +1,12 @@
 package org.bukkit.craftbukkit.inventory;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
-
 import net.minecraft.server.Enchantment;
-
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.support.AbstractTestingBase;
 import org.junit.Test;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 public class NMSCraftItemStackTest extends AbstractTestingBase {
 

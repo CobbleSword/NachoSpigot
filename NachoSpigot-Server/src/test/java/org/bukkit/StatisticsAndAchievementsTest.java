@@ -1,19 +1,17 @@
 package org.bukkit;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
-
-import java.util.List;
-
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Lists;
 import net.minecraft.server.AchievementList;
 import net.minecraft.server.StatisticList;
-
 import org.bukkit.craftbukkit.CraftStatistic;
 import org.bukkit.support.AbstractTestingBase;
 import org.junit.Test;
 
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Lists;
+import java.util.List;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 public class StatisticsAndAchievementsTest extends AbstractTestingBase {
     @Test

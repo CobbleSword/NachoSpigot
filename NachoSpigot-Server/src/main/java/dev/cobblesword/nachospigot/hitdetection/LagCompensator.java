@@ -8,7 +8,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
 public class LagCompensator {
 

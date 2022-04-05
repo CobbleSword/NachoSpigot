@@ -1,17 +1,9 @@
 package org.bukkit;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
-
-import java.util.List;
-
-import net.minecraft.server.BlockFalling;
-import net.minecraft.server.BlockFire;
-import net.minecraft.server.Item;
-import net.minecraft.server.ItemFood;
-import net.minecraft.server.ItemRecord;
-
+import com.google.common.collect.Lists;
+import net.minecraft.server.*;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.util.CraftMagicNumbers;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.support.AbstractTestingBase;
 import org.bukkit.support.Util;
@@ -22,11 +14,12 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.google.common.collect.Lists;
+import java.util.List;
 import java.util.Map;
-import net.minecraft.server.Block;
-import net.minecraft.server.Blocks;
-import org.bukkit.craftbukkit.util.CraftMagicNumbers;
+
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.*;
 
 @RunWith(Parameterized.class)
 public class PerMaterialTest extends AbstractTestingBase {

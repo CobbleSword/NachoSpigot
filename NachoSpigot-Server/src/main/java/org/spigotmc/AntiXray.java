@@ -1,22 +1,14 @@
 package org.spigotmc;
 
+import co.aikar.timings.SpigotTimings;
 import gnu.trove.set.TByteSet;
 import gnu.trove.set.hash.TByteHashSet;
-import net.minecraft.server.Block;
-import net.minecraft.server.BlockPosition;
-import net.minecraft.server.Blocks;
-import net.minecraft.server.ChunkSection;
-import net.minecraft.server.World;
+import net.minecraft.server.*;
+import net.techcable.tacospigot.utils.BlockHelper;
 import org.bukkit.craftbukkit.util.CraftMagicNumbers;
-import co.aikar.timings.SpigotTimings;
 
-// PaperSpigot start
 import java.util.HashSet;
 import java.util.Set;
-// PaperSpigot end
-// TacoSpigot start
-import net.minecraft.server.Chunk;
-import net.techcable.tacospigot.utils.BlockHelper;
 // TacoSpigot end
 
 public class AntiXray
@@ -28,7 +20,7 @@ public class AntiXray
     private final byte[] replacementOres;
     // PaperSpigot start
     public boolean queueUpdates = true;
-    public final Set<BlockPosition> pendingUpdates = new HashSet<BlockPosition>();
+    public final Set<BlockPosition> pendingUpdates = new HashSet<>();
     // PaperSpigot end
 
     public AntiXray(SpigotWorldConfig config)

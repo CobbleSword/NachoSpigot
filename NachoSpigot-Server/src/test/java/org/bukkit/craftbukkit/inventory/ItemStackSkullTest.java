@@ -1,15 +1,14 @@
 package org.bukkit.craftbukkit.inventory;
 
-import java.util.Arrays;
-import java.util.List;
-
+import com.google.common.base.Joiner;
 import org.bukkit.Material;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.google.common.base.Joiner;
+import java.util.Arrays;
+import java.util.List;
 
 @RunWith(Parameterized.class)
 public class ItemStackSkullTest extends ItemStackTest {

@@ -1,11 +1,11 @@
 package net.techcable.tacospigot.utils;
 
-import java.util.function.BiConsumer;
-import java.util.function.BiPredicate;
-
 import net.minecraft.server.Block;
 import net.minecraft.server.BlockPosition;
 import net.minecraft.server.World;
+
+import java.util.function.BiConsumer;
+import java.util.function.BiPredicate;
 
 public class BlockHelper {
     private BlockHelper() {}

@@ -1,11 +1,5 @@
 package org.bukkit.craftbukkit.inventory;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
@@ -16,6 +10,13 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
 public class FactoryItemMaterialTest extends AbstractTestingBase {

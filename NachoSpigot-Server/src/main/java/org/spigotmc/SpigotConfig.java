@@ -1,21 +1,10 @@
 package org.spigotmc;
 
+import co.aikar.timings.Timings;
+import co.aikar.timings.TimingsManager;
 import com.google.common.base.Throwables;
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import gnu.trove.map.hash.TObjectIntHashMap;
 import com.google.common.collect.Lists;
+import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.server.AttributeRanged;
 import net.minecraft.server.GenericAttributes;
 import net.minecraft.server.MinecraftServer;
@@ -28,8 +17,15 @@ import org.bukkit.command.Command;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import co.aikar.timings.Timings;
-import co.aikar.timings.TimingsManager;
+
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 public class SpigotConfig
 {
@@ -176,7 +172,7 @@ public class SpigotConfig
     public static String unknownCommandMessage;
     public static String serverFullMessage;
     public static String outdatedClientMessage = "Outdated client! Please use {0}";
-    public static String outdatedServerMessage = "Outdated server! I\'m still on {0}";
+    public static String outdatedServerMessage = "Outdated server! I'm still on {0}";
     private static String transform(String s)
     {
         return ChatColor.translateAlternateColorCodes( '&', s ).replaceAll( "\\n", "\n" );
@@ -266,7 +262,7 @@ public class SpigotConfig
     }
 
     public static boolean disableStatSaving;
-    public static TObjectIntHashMap<String> forcedStats = new TObjectIntHashMap<String>();
+    public static final TObjectIntHashMap<String> forcedStats = new TObjectIntHashMap<>();
     private static void stats()
     {
         disableStatSaving = getBoolean( "stats.disable-saving", false );
@@ -313,10 +309,7 @@ public class SpigotConfig
     public static List<String> spamExclusions;
     private static void spamExclusions()
     {
-        spamExclusions = getList( "commands.spam-exclusions", Arrays.asList( new String[]
-        {
-                "/skill"
-        } ) );
+        spamExclusions = getList( "commands.spam-exclusions", Collections.singletonList("/skill"));
     }
 
     public static boolean silentCommandBlocks;
@@ -339,8 +332,8 @@ public class SpigotConfig
             set( "commands.replace-commands", config.getStringList( "replace-commands" ) );
             config.set( "replace-commands", null );
         }
-        replaceCommands = new HashSet<String>( (List<String>) getList( "commands.replace-commands",
-                Arrays.asList( "setblock", "summon", "testforblock", "tellraw" ) ) );
+        replaceCommands = new HashSet<>((List<String>) getList("commands.replace-commands",
+                Arrays.asList("setblock", "summon", "testforblock", "tellraw")));
     }
     
     public static int userCacheCap;

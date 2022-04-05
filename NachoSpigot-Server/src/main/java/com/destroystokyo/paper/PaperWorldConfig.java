@@ -1,8 +1,9 @@
 package com.destroystokyo.paper;
 
-import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.util.List;
 
 public class PaperWorldConfig
 {
@@ -60,13 +61,13 @@ public class PaperWorldConfig
     private float getFloat(String path, float def)
     {
         // TODO: Figure out why getFloat() always returns the default value.
-        return (float) getDouble( path, (double) def );
+        return (float) getDouble( path, def);
     }
 
-    private <T> List getList(String path, T def)
+    private <T> List<?> getList(String path, T def)
     {
         config.addDefault( "world-settings.default." + path, def );
-        return (List<T>) config.getList( "world-settings." + worldName + "." + path, config.getList( "world-settings.default." + path ) );
+        return config.getList( "world-settings." + worldName + "." + path, config.getList( "world-settings.default." + path ) );
     }
 
     private String getString(String path, String def)

@@ -1,8 +1,6 @@
 package org.bukkit.craftbukkit.inventory;
 
-import java.util.Arrays;
-import java.util.List;
-
+import com.google.common.base.Joiner;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
@@ -12,7 +10,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.google.common.base.Joiner;
+import java.util.Arrays;
+import java.util.List;
 
 @RunWith(Parameterized.class)
 public class ItemStackFireworkChargeTest extends ItemStackTest {

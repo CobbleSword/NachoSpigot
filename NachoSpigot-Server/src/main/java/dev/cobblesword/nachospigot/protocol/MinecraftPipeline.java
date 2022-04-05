@@ -1,7 +1,9 @@
 package dev.cobblesword.nachospigot.protocol;
 
 import io.netty.buffer.ByteBufAllocator;
-import io.netty.channel.*;
+import io.netty.channel.ChannelConfig;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import me.elier.nachospigot.config.NachoConfig;

@@ -6,7 +6,9 @@ import net.minecraft.server.*;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.event.block.BlockRedstoneEvent;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /*
  * Based on https://gist.github.com/Panda4994/70ed6d39c89396570e062e4404a8d518
