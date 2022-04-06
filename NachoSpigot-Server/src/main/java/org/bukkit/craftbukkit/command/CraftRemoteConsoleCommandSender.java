@@ -32,6 +32,13 @@ public class CraftRemoteConsoleCommandSender extends ServerCommandSender impleme
         return true;
     }
 
+    // Paper start
+    @Override
+    public net.kyori.adventure.text.@NotNull Component name() {
+        return net.kyori.adventure.text.Component.text(this.getName());
+    }
+    // Paper end
+
     @Override
     public void setOp(boolean value) {
         throw new UnsupportedOperationException("Cannot change operator status of remote controller.");

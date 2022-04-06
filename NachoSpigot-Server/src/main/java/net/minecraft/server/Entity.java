@@ -2278,7 +2278,7 @@ public abstract class Entity implements ICommandListener {
     }
 
     public void setCustomNameVisible(boolean flag) {
-        this.datawatcher.watch(3, Byte.valueOf((byte) (flag ? 1 : 0)));
+        this.datawatcher.watch(3, (byte) (flag ? 1 : 0));
     }
 
     public boolean getCustomNameVisible() {

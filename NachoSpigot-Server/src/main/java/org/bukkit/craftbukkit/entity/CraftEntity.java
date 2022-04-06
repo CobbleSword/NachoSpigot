@@ -27,6 +27,7 @@ import org.bukkit.util.Vector;
 import com.destroystokyo.paper.PaperConfig;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("unused")
 public abstract class CraftEntity implements org.bukkit.entity.Entity {
     private static final PermissibleBase perm = new PermissibleBase(new ServerOperator() {
 
@@ -43,7 +44,8 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
     
     protected final CraftServer server;
     protected Entity entity;
-    private WeakReference<EntityDamageEvent> lastDamageEvent;  // KigPaper - this is almost never used and only leads to memory leaks // Nacho - Some plugins still use this - credit to AhmHkn0 // Nacho - Convert to WeakReference
+    private WeakReference<EntityDamageEvent> lastDamageEvent;  // KigPaper - this is almost never used and only leads to memory leaks // Nacho - still used by some plugins, convert to WeakReference
+    protected net.kyori.adventure.pointer.Pointers adventure$pointers; // Paper - implement pointers
 
     public CraftEntity(final CraftServer server, final Entity entity) {
         this.server = server;
@@ -51,9 +53,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
     }
 
     public static CraftEntity getEntity(CraftServer server, Entity entity) {
-        /**
-         * Order is *EXTREMELY* important -- keep it right! =D
-         */
+        // Order is *EXTREMELY* important -- keep it right! =D
         if (entity instanceof EntityLiving) {
             // Players
             if (entity instanceof EntityHuman) {
@@ -269,7 +269,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
 
     public List<org.bukkit.entity.Entity> getNearbyEntities(double x, double y, double z) {
         List<Entity> notchEntityList = entity.world.a(entity, entity.getBoundingBox().grow(x, y, z), null);
-        List<org.bukkit.entity.Entity> bukkitEntityList = new java.util.ArrayList<org.bukkit.entity.Entity>(notchEntityList.size());
+        List<org.bukkit.entity.Entity> bukkitEntityList = new java.util.ArrayList<>(notchEntityList.size());
 
         for (Entity e : notchEntityList) {
             bukkitEntityList.add(e.getBukkitEntity());
@@ -448,6 +448,32 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
         return getHandle().vehicle.getBukkitEntity();
     }
 
+    // Paper start
+    @Override
+    public net.kyori.adventure.text.Component customName() {
+        final String name = this.getHandle().getCustomName();
+        return name != null ? io.papermc.paper.adventure.PaperAdventure.LEGACY_SECTION_UXRC.deserialize(name) : null;
+    }
+
+    @Override
+    public void customName(final net.kyori.adventure.text.Component customName) {
+        this.getHandle().setCustomName(customName != null ? io.papermc.paper.adventure.PaperAdventure.LEGACY_SECTION_UXRC.serialize(customName) : "");
+    }
+
+    @Override
+    public net.kyori.adventure.pointer.@NotNull Pointers pointers() {
+        if (this.adventure$pointers == null) {
+            this.adventure$pointers = net.kyori.adventure.pointer.Pointers.builder()
+                .withDynamic(net.kyori.adventure.identity.Identity.DISPLAY_NAME, this::name)
+                .withDynamic(net.kyori.adventure.identity.Identity.UUID, this::getUniqueId)
+                .withStatic(net.kyori.adventure.permission.PermissionChecker.POINTER, this::permissionValue)
+                .build();
+        }
+
+        return this.adventure$pointers;
+    }
+    // Paper end
+
     @Override
     public void setCustomName(String name) {
         if (name == null) {
@@ -492,6 +518,17 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
     public String getName() {
         return getHandle().getName();
     }
+    // Paper start
+    @Override
+    public net.kyori.adventure.text.@org.jetbrains.annotations.NotNull Component name() {
+        return io.papermc.paper.adventure.PaperAdventure.LEGACY_SECTION_UXRC.deserialize(this.getHandle().getName());
+    }
+
+    @Override
+    public net.kyori.adventure.text.@org.jetbrains.annotations.NotNull Component teamDisplayName() {
+        return io.papermc.paper.adventure.PaperAdventure.asAdventure(this.getHandle().getScoreboardDisplayName());
+    }
+    // Paper end
 
     @Override
     public boolean isPermissionSet(String name) {
@@ -510,7 +547,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
 
     @Override
     public boolean hasPermission(Permission perm) {
-        return this.perm.hasPermission(perm);
+        return CraftEntity.perm.hasPermission(perm);
     }
 
     @Override

@@ -38,6 +38,13 @@ public class CraftConsoleCommandSender extends ServerCommandSender implements Co
         return "CONSOLE";
     }
 
+    // Paper start
+    @Override
+    public net.kyori.adventure.text.@NotNull Component name() {
+        return net.kyori.adventure.text.Component.text(this.getName());
+    }
+    // Paper end
+
     public boolean isOp() {
         return true;
     }
@@ -65,4 +72,11 @@ public class CraftConsoleCommandSender extends ServerCommandSender implements Co
     public boolean isConversing() {
         return conversationTracker.isConversing();
     }
+
+    // Paper start
+    @Override
+    public void sendMessage(final net.kyori.adventure.identity.@NotNull Identity identity, final net.kyori.adventure.text.@NotNull Component message, final net.kyori.adventure.audience.@NotNull MessageType type) {
+        this.sendRawMessage(io.papermc.paper.adventure.PaperAdventure.LEGACY_SECTION_UXRC.serialize(message));
+    }
+    // Paper end
 }

@@ -186,21 +186,21 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
                 break;
             case DISPENSER:
                 if (iinventory instanceof TileEntityDispenser) {
-                    getHandle().openContainer((TileEntityDispenser) iinventory);
+                    getHandle().openContainer(iinventory);
                 } else {
                     openCustomInventory(inventory, player, "minecraft:dispenser");
                 }
                 break;
             case DROPPER:
                 if (iinventory instanceof TileEntityDropper) {
-                    getHandle().openContainer((TileEntityDropper) iinventory);
+                    getHandle().openContainer(iinventory);
                 } else {
                     openCustomInventory(inventory, player, "minecraft:dropper");
                 }
                 break;
             case FURNACE:
                 if (iinventory instanceof TileEntityFurnace) {
-                    getHandle().openContainer((TileEntityFurnace) iinventory);
+                    getHandle().openContainer(iinventory);
                 } else {
                     openCustomInventory(inventory, player, "minecraft:furnace");
                 }
@@ -210,7 +210,7 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
                 break;
             case BREWING:
                 if (iinventory instanceof TileEntityBrewingStand) {
-                    getHandle().openContainer((TileEntityBrewingStand) iinventory);
+                    getHandle().openContainer(iinventory);
                 } else {
                     openCustomInventory(inventory, player, "minecraft:brewing_stand");
                 }
@@ -220,16 +220,16 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
                 break;
             case HOPPER:
                 if (iinventory instanceof TileEntityHopper) {
-                    getHandle().openContainer((TileEntityHopper) iinventory);
+                    getHandle().openContainer(iinventory);
                 } else if (iinventory instanceof EntityMinecartHopper) {
-                    getHandle().openContainer((EntityMinecartHopper) iinventory);
+                    getHandle().openContainer(iinventory);
                 } else {
                     openCustomInventory(inventory, player, "minecraft:hopper");
                 }
                 break;
             case BEACON:
                 if (iinventory instanceof TileEntityBeacon) {
-                    getHandle().openContainer((TileEntityBeacon) iinventory);
+                    getHandle().openContainer(iinventory);
                 } else {
                     openCustomInventory(inventory, player, "minecraft:beacon");
                 }
@@ -259,7 +259,9 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
         container = CraftEventFactory.callInventoryOpenEvent(player, container);
         if(container == null) return;
 
-        String title = container.getBukkitView().getTitle();
+        //String title = container.getBukkitView().getTitle(); // Paper - comment
+        net.kyori.adventure.text.Component adventure$title = container.getBukkitView().title(); // Paper
+        if (adventure$title == null) adventure$title = io.papermc.paper.adventure.PaperAdventure.LEGACY_SECTION_UXRC.deserialize(container.getBukkitView().getTitle()); // Paper
         int size = container.getBukkitView().getTopInventory().getSize();
 
         // Special cases
@@ -270,7 +272,8 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
             size = 0;
         }
 
-        player.playerConnection.sendPacket(new PacketPlayOutOpenWindow(container.windowId, windowType, new ChatComponentText(title), size));
+        //player.playerConnection.sendPacket(new PacketPlayOutOpenWindow(container.windowId, windowType, new ChatComponentText(title), size)); // Paper - comment\
+        player.playerConnection.sendPacket(new PacketPlayOutOpenWindow(container.windowId, windowType, io.papermc.paper.adventure.PaperAdventure.asVanilla(adventure$title), size)); // Paper
         getHandle().activeContainer = container;
         getHandle().activeContainer.addSlotListener(player);
     }

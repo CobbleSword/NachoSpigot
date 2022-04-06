@@ -5,6 +5,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class CraftEnchantment extends Enchantment {
     private final net.minecraft.server.Enchantment target;
@@ -138,4 +139,10 @@ public class CraftEnchantment extends Enchantment {
         CraftEnchantment ench = (CraftEnchantment) other;
         return !target.a(ench.target);
     }
+    // Paper start
+    @Override
+    public net.kyori.adventure.text.@NotNull Component displayName(int level) {
+        return io.papermc.paper.adventure.PaperAdventure.LEGACY_SECTION_UXRC.deserialize(target.d(level)); // PAIL: getFullName
+    }
+    // Paper end
 }

@@ -61,7 +61,7 @@ public abstract class Enchantment {
     }
 
     public static Enchantment getByName(String s) {
-        return (Enchantment) Enchantment.E.get(new MinecraftKey(s));
+        return Enchantment.E.get(new MinecraftKey(s));
     }
 
     public static Set<MinecraftKey> getEffects() {
