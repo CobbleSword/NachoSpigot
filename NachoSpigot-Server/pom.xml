@@ -152,8 +152,8 @@
             <url>https://maven.elmakers.com/repository/</url>
         </repository>
         <repository>
-            <id>velocity</id>
-            <url>https://nexus.velocitypowered.com/repository/maven-public/</url>
+            <id>papermc</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
     </repositories>
 
