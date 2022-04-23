@@ -22,3 +22,5 @@ These licenses include:
 - FlameTick [(GPLv3)](licenses/GPL.md)
 - Migot [(GPLv3)](licenses/GPL.md)
 - Sugarcane [(GPLv3)](licenses/GPL.md)
+
+Any other unmodified code in the NMS package is part of the Minecraft Server and available under the terms of the Minecraft EULA.
