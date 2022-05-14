@@ -213,6 +213,10 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
             }
         }
         // Paper end
+        
+        // Paper start - don't allow plugins to set problematic velocity vectors
+        Preconditions.checkArgument(vel.getX() == vel.getX() && vel.getY() == vel.getY() && vel.getZ() == vel.getZ(), "Illegal velocity vector: " + vel);
+        // Paper end
 
         entity.motX = vel.getX();
         entity.motY = vel.getY();
