@@ -1030,7 +1030,13 @@ public abstract class EntityHuman extends EntityLiving {
 
                             if (!event.isCancelled()) {
                                 if (!velocity.equals(event.getVelocity())) {
-                                    player.setVelocity(event.getVelocity());
+                                    // Nacho start - don't allow plugins to set problematic velocity vectors
+                                    org.bukkit.util.Vector newVelocity = event.getVelocity();
+                                    if(newVelocity.getX() != newVelocity.getX()) newVelocity.setX(0);
+                                    if(newVelocity.getY() != newVelocity.getY()) newVelocity.setY(0);
+                                    if(newVelocity.getZ() != newVelocity.getZ()) newVelocity.setZ(0);
+                                    // Nacho end
+                                    player.setVelocity(newVelocity);
                                 }
                                 ((EntityPlayer) entity).playerConnection.sendPacket(new PacketPlayOutEntityVelocity(entity));
                                 entity.velocityChanged = false;
