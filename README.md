@@ -27,6 +27,12 @@ Youtube: https://www.youtube.com/c/SprockPls
 It was fun while it lasted, thank you!
 ```
 
+#### [Elierrr / Elier](https://github.com/Elierrr)
+```
+~ Contributor
+Even as a late contributor, I was treated as someone who was always there, it was fun during these times and I have to thank everyone who helped, especially Sprock, Sculas, and Galaxis.
+```
+
 ### Log4j Exploit ([CVE-2021-44228](https://github.com/advisories/GHSA-jfh8-c2jp-5v3q))
 An exploit was found in the Log4j library, and all versions of Minecraft are affected; both server and client.
 
