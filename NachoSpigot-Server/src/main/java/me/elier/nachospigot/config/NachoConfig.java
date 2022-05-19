@@ -102,12 +102,12 @@ public class NachoConfig {
     }
 
     static void loadComments() {
-        c.addComment("config-version", "Configuration version, do NOT modify this!");
-        c.addComment("settings.save-empty-scoreboard-teams", "Toggles whether or not the server should save empty scoreboard teams");
+        c.addComment("config-version", "Configuration version, do NOT modify this!\nThis is used to detect which version of the config you are using.");
+        c.addComment("settings.save-empty-scoreboard-teams", "Toggles if server should save empty scoreboard teams");
         c.addComment("settings.commands.enable-version-command", "Toggles the /version command");
         c.addComment("settings.commands.enable-plugins-command", "Toggles the /plugins command");
         c.addComment("settings.commands.enable-reload-command", "Toggles the /reload command");
-        c.addComment("settings.fast-operators", "Enables Fast Operators, which uses a faster method for managing operators");
+        c.addComment("settings.fast-operators", "Resets operators every restart");
         c.addComment("settings.stop-notify-bungee", "Disables the firewall check when running BungeeCord");
         c.addComment("settings.anti-malware", "Enables the built-in anti malware feature");
         c.addComment("settings.kick-on-illegal-behavior", "Kicks players if they try to do an illegal action (e.g. using a creative mode action while not in creative mode.)");
@@ -115,20 +115,20 @@ public class NachoConfig {
         c.addComment("settings.event.fire-entity-explode-event", "Toggles the entity explode event");
         c.addComment("settings.event.fire-player-move-event", "Toggles the player move event");
         c.addComment("settings.event.fire-leaf-decay-event", "Toggles the leaf decay event");
-        c.addComment("settings.brand-name", "Changes the brand name of the server.\nThis will show in statistics, server lists, client crashes,\n and in the client debug screen. (accessed by pressing F3)");
+        c.addComment("settings.brand-name", "Changes the brand name of the server.\nThis will show in statistics, server lists, client crashes,\n and in the client debug screen.");
         c.addComment("settings.stop-decoding-itemstack-on-place", "Disables decoding itemstacks when not needed");
-        c.addComment("settings.anti-crash", "Kicks players if they try to do an action that would/might crash the server");
+        c.addComment("settings.anti-crash", "Kicks players if they try to do a malicious action that could crash the server");
         c.addComment("settings.chunk.threads", "The amount of threads used for chunks");
-        c.addComment("settings.chunk.players-per-thread", "The amount of players for each thread");
+        c.addComment("settings.chunk.players-per-thread", "The amount of players for each chunk thread");
         c.addComment("settings.use-tcp-nodelay", "Enables the TCP_NODELAY socket option");
-        c.addComment("settings.fixed-pools.use-fixed-pools-for-explosions", "Enables fixed thread pool for explosions");
+        c.addComment("settings.fixed-pools.use-fixed-pools-for-explosions", "Enables fixed thread pool for async explosions");
         c.addComment("settings.fixed-pools.size", "The size for the fixed thread pool for explosions.");
-        c.addComment("settings.faster-cannon-tracker", "Enables a faster cannon entity tracker");
-        c.addComment("settings.fix-eat-while-running", "Fixes the eating while running bug");
-        c.addComment("settings.hide-projectiles-from-hidden-players", "Hides projectiles from hidden players");
+        c.addComment("settings.faster-cannon-tracker", "Enables a faster cannon entity tracker.\nThis may break plugins that modify cannon entities' metadata.");
+        c.addComment("settings.fix-eat-while-running", "Fixes the eating while running bug (doesn't fix every time)");
+        c.addComment("settings.hide-projectiles-from-hidden-players", "Projectiles from a player hidden will also be hidden");
         c.addComment("settings.anti-enderpearl-glitch", "Enables anti enderpearl glitch");
-        c.addComment("settings.disabled-block-fall-animation", "Disables the fall animation for blocks");
-        c.addComment("settings.enable-protocol-shim", "Enables packet network shim. Allows ProtocolLib and ProtocolSupport to work, but requires extra memory. Disable this if you don't use these plugins!");
+        c.addComment("settings.disabled-block-fall-animation", "Disables the fall animation for blocks like sand or gravel");
+        c.addComment("settings.enable-protocol-shim", "Enables packet network shim. Allows ProtocolLib and ProtocolSupport to work, but requires extra memory.\nDisable this if you don't use these plugins!");
         c.addComment("settings.instant-interaction", "Disables delay of all interactions");
         c.addComment("settings.disable-infinisleeper-thread-usage", "Disable infinisleeper thread usage, just enable this if you know what are you doing.");
         c.addComment("settings.enable-fastmath", "Enable Fast Math usage.");
@@ -142,7 +142,7 @@ public class NachoConfig {
         c.addComment("settings.commands.permissions.plugins", "Enables a required permission to use /plugins");
         c.addComment("settings.commands.enable-help-command", "Toggles the /help command");
         c.addComment("settings.use-improved-hitreg", "Enables the usage of an improved hitreg based on lag compensation and small other details.");
-        c.addComment("settings.disable-disconnect-spam", "Disables that players can be kicked because of disconnect.spam.");
+        c.addComment("settings.disable-disconnect-spam", "Disables getting kicked from spamming in the chat");
         NachoWorldConfig.loadComments();
     }
 
@@ -305,7 +305,7 @@ public class NachoConfig {
     public static boolean useFasterCannonTracker;
 
     private static void useFasterCannonTracker() {
-        useFasterCannonTracker = getBoolean("settings.faster-cannon-tracker", true);
+        useFasterCannonTracker = getBoolean("settings.faster-cannon-tracker", false);
     }
 
     public static boolean fixEatWhileRunning;
