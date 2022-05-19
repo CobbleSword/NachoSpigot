@@ -45,6 +45,13 @@ It was a beautyful time. I will miss NachoSpigot, but some parts live further. L
 two years and it has been quite a ride, thank you to all maintainers and contributors and wish you all the best in your future projects.
 ```
 
+#### [Tofpu](https://github.com/Tofpu)
+```
+~ Contributor & Appreciator 
+Even though I haven't contributed much into the project, I was treated very nicely when I did at the time. 
+I thank everyone who made this project as it is today, it was fun while it lasted!
+```
+
 ### Log4j Exploit ([CVE-2021-44228](https://github.com/advisories/GHSA-jfh8-c2jp-5v3q))
 An exploit was found in the Log4j library, and all versions of Minecraft are affected; both server and client.
 
