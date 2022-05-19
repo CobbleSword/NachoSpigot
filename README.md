@@ -39,6 +39,12 @@ Even as a late contributor, I was treated as someone who was always there, it wa
 It was a beautyful time. I will miss NachoSpigot, but some parts live further. Love you Lew, Sprock, Lucas & Elier.
 ```
 
+#### [wuangg / street](https://github.com/wuangg)
+```
+~ Project Contributor
+two years and it has been quite a ride, thank you to all maintainers and contributors and wish you all the best in your future projects.
+```
+
 ### Log4j Exploit ([CVE-2021-44228](https://github.com/advisories/GHSA-jfh8-c2jp-5v3q))
 An exploit was found in the Log4j library, and all versions of Minecraft are affected; both server and client.
 
