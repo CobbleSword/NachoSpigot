@@ -1,4 +1,6 @@
-# This project currently doesn't have any maintainers! There are many unfixed issues with nobody working on them. It is recommended that you look for another 1.8 fork or use newer versions with backwards-compatibility plugins.
+### This project is no longer maintained!
+There are many unfixed issues with nobody working on them due to a lack of maintainers.
+It is recommended that you look for another 1.8 fork or use newer versions with backwards-compatibility plugins.
 
 ## NachoSpigot [![GitHub Workflow Status](https://github.com/CobbleSword/NachoSpigot/actions/workflows/build-nachospigot.yml/badge.svg)](https://nightly.link/CobbleSword/NachoSpigot/workflows/build-nachospigot/master/NachoSpigot-server.zip)
 
@@ -15,6 +17,12 @@ Thanks for all the love and support you have all put into NachoSpigot
 Discord: Sprock#0001
 Twitter: https://twitter.com/SprockPls
 Youtube: https://www.youtube.com/c/SprockPls
+```
+
+#### [Lucas / Sculas](https://github.com/Lucaskyy)
+```
+~ Project Maintainer
+It was fun while it lasted, thank you!
 ```
 
 ### Log4j Exploit ([CVE-2021-44228](https://github.com/advisories/GHSA-jfh8-c2jp-5v3q))
