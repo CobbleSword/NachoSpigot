@@ -8,7 +8,7 @@ While NachoSpigot hasn't been benchmarked properly yet, a server running NachoSp
 
 ### Developers Notes / Good byes
 
-#### HeathLoganCampbell / Sprock
+#### [HeathLoganCampbell / Sprock](https://github.com/HeathLoganCampbell)
 ```
 Founder of NachoSpigot
 Discord: Sprock#0001
