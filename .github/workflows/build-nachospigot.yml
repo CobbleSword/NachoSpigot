@@ -1,6 +1,6 @@
 name: NachoSpigot Build
 
-on: [push]
+on: []
 
 jobs:
   build:
