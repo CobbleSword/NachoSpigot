@@ -2,7 +2,7 @@
 There are many unfixed issues with nobody working on them due to a lack of maintainers.
 It is recommended that you look for another 1.8 fork or use newer versions with backwards-compatibility plugins.
 
-Currently, [WindSpigot](https://github.com/Wind-Development/WindSpigot) looks the most promising. Please check it out if you are unable to use something like Purpur (1.18+).
+Currently, [WindSpigot](https://github.com/Wind-Development/WindSpigot) and [PandaSpigot](https://github.com/hpfxd/PandaSpigot) look the most promising. Please check them out if you are unable to use something like Purpur (1.18+).
 
 ## NachoSpigot [![GitHub Workflow Status](https://github.com/CobbleSword/NachoSpigot/actions/workflows/build-nachospigot.yml/badge.svg)](https://nightly.link/CobbleSword/NachoSpigot/workflows/build-nachospigot/master/NachoSpigot-server.zip)
 
