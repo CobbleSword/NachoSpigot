@@ -33,6 +33,12 @@ It was fun while it lasted, thank you!
 Even as a late contributor, I was treated as someone who was always there, it was fun during these times and I have to thank everyone who helped, especially Sprock, Sculas, and Galaxis.
 ```
 
+#### [Galaxis / crafter2345](https://github.com/crafter23456)
+```
+~ Contributor
+It was a beautyful time. I will miss NachoSpigot, but some parts live further. Love you Lew, Sprock, Lucas & Elier.
+```
+
 ### Log4j Exploit ([CVE-2021-44228](https://github.com/advisories/GHSA-jfh8-c2jp-5v3q))
 An exploit was found in the Log4j library, and all versions of Minecraft are affected; both server and client.
 
