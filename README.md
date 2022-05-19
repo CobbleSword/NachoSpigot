@@ -2,7 +2,7 @@
 There are many unfixed issues with nobody working on them due to a lack of maintainers.
 It is recommended that you look for another 1.8 fork or use newer versions with backwards-compatibility plugins.
 
-Currently, [WindSpigot](https://github.com/Wind-Development/WindSpigot) looks the most promising. Please check it out if you are unable to use something like Purpur (1.18+).
+Currently, [WindSpigot](https://github.com/Wind-Development/WindSpigot) and [PandaSpigot](https://github.com/hpfxd/PandaSpigot) look the most promising. Please check them out if you are unable to use something like Purpur (1.18+).
 
 ## NachoSpigot [![GitHub Workflow Status](https://github.com/CobbleSword/NachoSpigot/actions/workflows/build-nachospigot.yml/badge.svg)](https://nightly.link/CobbleSword/NachoSpigot/workflows/build-nachospigot/master/NachoSpigot-server.zip)
 
@@ -25,6 +25,24 @@ Youtube: https://www.youtube.com/c/SprockPls
 ```
 ~ Project Maintainer
 It was fun while it lasted, thank you!
+```
+
+#### [Elierrr / Elier](https://github.com/Elierrr)
+```
+~ Contributor
+Even as a late contributor, I was treated as someone who was always there, it was fun during these times and I have to thank everyone who helped, especially Sprock, Sculas, and Galaxis.
+```
+
+#### [Galaxis / crafter2345](https://github.com/crafter23456)
+```
+~ Contributor
+It was a beautyful time. I will miss NachoSpigot, but some parts live further. Love you Lew, Sprock, Lucas & Elier.
+```
+
+#### [wuangg / street](https://github.com/wuangg)
+```
+~ Project Contributor
+two years and it has been quite a ride, thank you to all maintainers and contributors and wish you all the best in your future projects.
 ```
 
 #### [Tofpu](https://github.com/Tofpu)
