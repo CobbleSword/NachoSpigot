@@ -6,6 +6,14 @@ NachoSpigot offers a number of enhancements to performance as well as bug fixes 
 
 While NachoSpigot hasn't been benchmarked properly yet, a server running NachoSpigot was successfully able to run a Minecraft event with 300 players and 20 TPS continuously.
 
+### Developers Notes / Good byes
+
+#### HeathLoganCampbell / Sprock
+```
+Founder of NachoSpigot
+Discord: Sprock#0001
+```
+
 ### Log4j Exploit ([CVE-2021-44228](https://github.com/advisories/GHSA-jfh8-c2jp-5v3q))
 An exploit was found in the Log4j library, and all versions of Minecraft are affected; both server and client.
 
