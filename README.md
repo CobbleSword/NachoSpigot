@@ -4,13 +4,7 @@ It is recommended that you look for another 1.8 fork or use newer versions with 
 
 Currently, [WindSpigot](https://github.com/Wind-Development/WindSpigot) and [PandaSpigot](https://github.com/hpfxd/PandaSpigot) look the most promising. Please check them out if you are unable to use something like Purpur (1.18+).
 
-## NachoSpigot [![GitHub Workflow Status](https://github.com/CobbleSword/NachoSpigot/actions/workflows/build-nachospigot.yml/badge.svg)](https://nightly.link/CobbleSword/NachoSpigot/workflows/build-nachospigot/master/NachoSpigot-server.zip)
-
-NachoSpigot offers a number of enhancements to performance as well as bug fixes and being able to perform well with a large number of players.
-
-While NachoSpigot hasn't been benchmarked properly yet, a server running NachoSpigot was successfully able to run a Minecraft event with 300 players and 20 TPS continuously.
-
-### Developers Notes / Good byes
+### Developers Notes / Farewells
 
 #### [HeathLoganCampbell / Sprock](https://github.com/HeathLoganCampbell)
 ```
@@ -23,8 +17,8 @@ Youtube: https://www.youtube.com/c/SprockPls
 
 #### [Lucas / Sculas](https://github.com/Lucaskyy)
 ```
-~ Project Maintainer
-It was fun while it lasted, thank you!
+~ Maintainer
+It was fun while it lasted. Thank you for accompanying our journey!
 ```
 
 #### [Elierrr / Elier](https://github.com/Elierrr)
@@ -41,7 +35,7 @@ It was a beautyful time. I will miss NachoSpigot, but some parts live further. L
 
 #### [wuangg / street](https://github.com/wuangg)
 ```
-~ Project Contributor
+~ Contributor
 two years and it has been quite a ride, thank you to all maintainers and contributors and wish you all the best in your future projects.
 ```
 
@@ -52,20 +46,10 @@ Even though I haven't contributed much into the project, I was treated very nice
 I thank everyone who made this project as it is today, it was fun while it lasted!
 ```
 
-### Log4j Exploit ([CVE-2021-44228](https://github.com/advisories/GHSA-jfh8-c2jp-5v3q))
-An exploit was found in the Log4j library, and all versions of Minecraft are affected; both server and client.
+## NachoSpigot
+NachoSpigot offers a number of enhancements to performance as well as bug fixes and being able to perform well with a large number of players.
 
-**NachoSpigot has fixed this issue, so it is safe to use NachoSpigot in production again.**
-
-For now, NachoSpigot has completely disabled lookups for Log4j if any other exploits come up since this one has raised popularity.
-If this ever causes issues, we can disable this and hope none of this ever happens again. We're also prepared for any new exploits with this so we can update Log4j ASAP.
-
-## Current State
-Java 17 (LTS) is the recommended version to use, otherwise Java 11 is fine. Java 8 works, but is not recommended due to security issues.
-
-**NachoSpigot supports Java 8 to Java 18!**
-
-Nacho can be used in production environments with a good degree of stability.
+While NachoSpigot hasn't been benchmarked properly yet, a server running NachoSpigot was successfully able to run a Minecraft event with 300 players and 20 TPS continuously.
 
 If you find any bugs, please [create an issue](../../issues/new) or contact us in the [Discord server](https://discord.gg/ewcYeERKJw)!
 
