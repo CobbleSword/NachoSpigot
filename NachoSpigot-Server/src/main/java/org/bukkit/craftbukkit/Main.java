@@ -22,11 +22,11 @@ public class Main {
     public static boolean useConsole = true;
 
     public static void main(String[] args) {
-        if(System.getProperty("ignoreDeprecated") != true) {
+        if(System.getProperty("ignoreDeprecated") != "true") {
             System.err.println("NachoSpigot is no longer maintained or supported");
             System.err.println("There are many unfixed bugs that will not be fixed");
             System.err.println("It is recommended that you use a different 1.8 fork or use newer versions with backwards-compatibility plugins");
-            System.err.println("If you know what you're doing, you can continue using NachoSpigot by enabling the \"ignoreDeprecated\" JVM argument.");
+            System.err.println("If you know what you're doing, you can continue using NachoSpigot by setting the \"ignoreDeprecated\" JVM argument to \"true\"");
             System.exit(1);
         }
         System.setProperty("log4j2.formatMsgNoLookups", "true");
