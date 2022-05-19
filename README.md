@@ -14,7 +14,7 @@ While NachoSpigot hasn't been benchmarked properly yet, a server running NachoSp
 Thanks for all the love and support you have all put into NachoSpigot
 Discord: Sprock#0001
 Twitter: https://twitter.com/SprockPls
-Youtube: https://www.youtube.com/channel/UCQlwZZLg3YZb5RYboR94jPQ
+Youtube: https://www.youtube.com/c/SprockPls
 ```
 
 ### Log4j Exploit ([CVE-2021-44228](https://github.com/advisories/GHSA-jfh8-c2jp-5v3q))
