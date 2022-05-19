@@ -1,7 +1,6 @@
 name: Test PR
 
-on:
-  pull_request:
+on: []
 
 jobs:
   build:
