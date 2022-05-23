@@ -5,9 +5,12 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Proxy;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
+import com.github.sadcenter.auth.NachoAuthenticationService;
+import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.destroystokyo.paper.PaperConfig;
 import dev.cobblesword.nachospigot.Nacho;
 import dev.cobblesword.nachospigot.commons.IPUtils;
@@ -178,7 +181,14 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
             // Spigot start
             NachoConfig.init((File) options.valueOf("nacho-settings")); // NachoSpigot - Load config before PlayerList
             KnockbackConfig.init((File) options.valueOf("knockback-settings"));
-            this.setPlayerList(new DedicatedPlayerList(this)); // Nacho - deobfuscate setPlayerList
+            // Nacho start - Use our own authentication system
+            YggdrasilAuthenticationService yggdrasilAuthenticationService = new YggdrasilAuthenticationService(super.e, UUID.randomUUID().toString());
+            this.V = NachoConfig.useNachoAuthenticator ? new NachoAuthenticationService(yggdrasilAuthenticationService) : yggdrasilAuthenticationService;
+            this.W = this.V.createMinecraftSessionService();
+            this.Y = this.V.createProfileRepository();
+            // Nacho end
+
+            this.setPlayerList(new DedicatedPlayerList(this));
             org.spigotmc.SpigotConfig.init((File) options.valueOf("spigot-settings"));
             org.spigotmc.SpigotConfig.registerCommands();
             // Spigot end

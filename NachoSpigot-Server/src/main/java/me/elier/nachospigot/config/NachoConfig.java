@@ -141,6 +141,10 @@ public class NachoConfig {
         c.addComment("settings.commands.permissions.version", "Enables a required permission to use /version");
         c.addComment("settings.commands.permissions.plugins", "Enables a required permission to use /plugins");
         c.addComment("settings.commands.enable-help-command", "Toggles the /help command");
+        c.addComment("settings.authenticator.use-nacho-authentication", "Enables our own authentication system.");
+        c.addComment("settings.authenticator.backups", "Should backup calls be enabled (recommended)");
+        c.addComment("settings.authenticator.uuid-priority", "What api should be used first in uuid fetching stage (ashcon, mojang)");
+        c.addComment("settings.authenticator.textures-priority", "What api should be used first in textures downloading stage (ashcon, mojang)");
         c.addComment("settings.use-improved-hitreg", "Enables the usage of an improved hitreg based on lag compensation and small other details.");
         c.addComment("settings.disable-disconnect-spam", "Disables that players can be kicked because of disconnect.spam.");
         NachoWorldConfig.loadComments();
@@ -321,19 +325,19 @@ public class NachoConfig {
     }
 
     public static boolean lagCompensatedPotions;
-    
+
     private static void lagCompensatedPotions() {
         lagCompensatedPotions = getBoolean("settings.lag-compensated-potions", false);
     }
 
     public static boolean smoothPotting;
-    
+
     private static void smoothPotting() {
         smoothPotting = getBoolean("settings.smooth-potting", false);
     }
 
     public static boolean antiEnderPearlGlitch;
-    
+
     private static void antiEnderPearlGlitch() {
         antiEnderPearlGlitch = getBoolean("settings.anti-enderpearl-glitch", false);
     }
@@ -389,7 +393,7 @@ public class NachoConfig {
 
     private static void enableProtocolShim() {
         if (config.contains("settings.enable-protocolib-shim")) getBoolean("settings.enable-protocol-shim", config.getBoolean("settings.enable-protocolib-shim")); else
-        enableProtocolShim = getBoolean("settings.enable-protocol-shim", true);
+            enableProtocolShim = getBoolean("settings.enable-protocol-shim", true);
     }
 
     public static boolean instantPlayInUseEntity;
@@ -398,10 +402,25 @@ public class NachoConfig {
         instantPlayInUseEntity = getBoolean("settings.instant-interaction", false);
     }
 
+    public static boolean useNachoAuthenticator;
+    public static boolean backups;
+    public static boolean uuidMojangPriority;
+    public static boolean texturesMojangPriority;
+
+    private static void authentication() {
+        useNachoAuthenticator = getBoolean("settings.authenticator.use-nacho-authentication", false);
+        backups = getBoolean("settings.authenticator.backups", true);
+        uuidMojangPriority = getString("settings.authenticator.uuid-priority", "ashcon")
+                .equalsIgnoreCase("ashcon");
+        texturesMojangPriority = getString("settings.authenticator.textures-priority", "mojang")
+                .equalsIgnoreCase("ashcon");
+    }
+
     public static boolean enableImprovedHitReg;
 
     private static void enableImprovedHitReg() {
         enableImprovedHitReg = getBoolean("settings.use-improved-hitreg", false);
+
     }
 
     public static boolean disableDisconnectSpam;

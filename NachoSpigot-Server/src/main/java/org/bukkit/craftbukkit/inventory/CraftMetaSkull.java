@@ -1,19 +1,16 @@
 package org.bukkit.craftbukkit.inventory;
 
-import java.util.Map;
-
+import com.github.sadcenter.auth.NachoAuthenticationService;
+import com.google.common.collect.ImmutableMap.Builder;
+import com.mojang.authlib.GameProfile;
+import me.elier.nachospigot.config.NachoConfig;
 import net.minecraft.server.*;
-
-// PaperSpigot start
-// PaperSpigot end
-
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
 import org.bukkit.craftbukkit.inventory.CraftMetaItem.SerializableMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import com.google.common.collect.ImmutableMap.Builder;
-import com.mojang.authlib.GameProfile;
+import java.util.Map;
 
 @DelegateDeserialization(SerializableMeta.class)
 class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
@@ -73,21 +70,30 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
         super.applyToItem(tag);
 
         if (profile != null) {
-            NBTTagCompound owner = new NBTTagCompound();
-            GameProfileSerializer.serialize(owner, profile);
-            tag.set( SKULL_OWNER.NBT, owner );
-            // Spigot start - do an async lookup of the profile. 
-            // Unfortunately there is not way to refresh the holding
-            // inventory, so that responsibility is left to the user.
-            net.minecraft.server.TileEntitySkull.b(profile, input -> {
-                NBTTagCompound owner1 = new NBTTagCompound();
-                GameProfileSerializer.serialize(owner1, input );
-                tag.set( SKULL_OWNER.NBT, owner1);
+            // Nacho start - Use our own authentication system
+            setSkullNbt(tag, profile);
+
+            if (NachoConfig.useNachoAuthenticator) {
+                NachoAuthenticationService authenticator = (NachoAuthenticationService) MinecraftServer.getServer().getAuthenticator();
+
+                authenticator.getProfile(profile.getName()).thenAccept(gameProfile -> {
+                    setSkullNbt(tag, gameProfile);
+                });
+            } else TileEntitySkull.b(profile, gameProfile -> {
+                setSkullNbt(tag, gameProfile);
                 return false;
             });
-            // Spigot end
+            // Nacho end
         }
     }
+
+    // Nacho start
+    private void setSkullNbt(NBTTagCompound tag, GameProfile gameProfile) {
+        NBTTagCompound ownerTag = new NBTTagCompound();
+        GameProfileSerializer.serialize(ownerTag, gameProfile);
+        tag.set(SKULL_OWNER.NBT, ownerTag);
+    }
+    // Nacho end
 
     @Override
     boolean isEmpty() {
@@ -126,18 +132,22 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
         if (name == null || name.length() > MAX_OWNER_LENGTH) {
             return false;
         }
-        
+
         // PaperSpigot start - Check usercache if the player is online
-	EntityPlayer player = MinecraftServer.getServer().getPlayerList().getPlayer(name);
-	if (profile == null && player != null) profile = player.getProfile(); 
-	// PaperSpigot end
-		   
+        EntityPlayer player = MinecraftServer.getServer().getPlayerList().getPlayer(name);
+        if (profile == null && player != null) profile = player.getProfile();
+        // PaperSpigot end
+
         if (profile == null) {
         	// name.toLowerCase(java.util.Locale.ROOT) causes the NPE
-        	profile = TileEntitySkull.skinCache.getIfPresent(name.toLowerCase(java.util.Locale.ROOT)); // Paper // tries to get from skincache
+            // Nacho start - Use our own authentication system
+        	profile = NachoConfig.useNachoAuthenticator ?
+                    ((NachoAuthenticationService) MinecraftServer.getServer().getAuthenticator()).getPresentProfile(name) :
+                    TileEntitySkull.skinCache.getIfPresent(name);  // Paper // tries to get from skincache
+            // Nacho end
         }
         if (profile == null) profile = new GameProfile(null, name);
-        
+
         return true;
     }
 

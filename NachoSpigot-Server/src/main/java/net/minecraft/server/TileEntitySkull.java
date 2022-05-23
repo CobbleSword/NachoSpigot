@@ -1,32 +1,30 @@
 package net.minecraft.server;
 
+import com.github.sadcenter.auth.NachoAuthenticationService;
+import com.google.common.base.Predicate;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Iterables;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import com.mojang.authlib.Agent;
 import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.ProfileLookupCallback;
 import com.mojang.authlib.properties.Property;
+import me.elier.nachospigot.config.NachoConfig;
+
 import java.util.UUID;
-
-// Spigot start
-import com.google.common.base.Predicate;
-
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.mojang.authlib.Agent;
-import com.mojang.authlib.ProfileLookupCallback;
-// Spigot end
 
 public class TileEntitySkull extends TileEntity {
 
     private int a;
     private int rotation;
     private GameProfile g = null;
-    // Spigot start
+    //Spigot start
     public static final Executor executor = Executors.newFixedThreadPool(3,
             new ThreadFactoryBuilder()
                     .setNameFormat("Head Conversion Thread - %1$d")
@@ -58,7 +56,7 @@ public class TileEntitySkull extends TileEntity {
 
                     GameProfile profile = profiles[ 0 ];
                     if (profile == null) {
-                        UUID uuid = EntityHuman.createPlayerUUID(new GameProfile(null, key)); // Nacho - deobfuscate createPlayerUUID
+                        UUID uuid = EntityHuman.createPlayerUUID(new GameProfile(null, key));
                         profile = new GameProfile(uuid, key);
 
                         gameProfileLookup.onProfileLookupSucceeded(profile);
@@ -77,8 +75,8 @@ public class TileEntitySkull extends TileEntity {
                     return profile;
                 }
             } );
-    
-    // Spigot end
+
+    //Spigot end
 
     public TileEntitySkull() {}
 
@@ -139,11 +137,20 @@ public class TileEntitySkull extends TileEntity {
     private void e() {
         // Spigot start
         GameProfile profile = this.g;
-        setSkullType( 0 ); // Work around client bug
-        b(profile, new Predicate<GameProfile>() {
-
-            @Override
-            public boolean apply(GameProfile input) {
+        setSkullType(0); // Work around client bug
+        // Nacho start - Use our own authentication system
+        if (NachoConfig.useNachoAuthenticator && profile != null) {
+            NachoAuthenticationService authenticator = (NachoAuthenticationService) MinecraftServer.getServer().getAuthenticator();
+            authenticator.getProfile(profile.getName()).thenAccept(gameProfile -> {
+                setSkullType(3); // Work around client bug
+                g = gameProfile;
+                update();
+                if (world != null) {
+                    world.notify(position);
+                }
+            });
+        } else if (!NachoConfig.useNachoAuthenticator) {
+            b(profile, input -> {
                 setSkullType(3); // Work around client bug
                 g = input;
                 update();
@@ -151,9 +158,9 @@ public class TileEntitySkull extends TileEntity {
                     world.notify(position);
                 }
                 return false;
-            }
-        }); 
-        // Spigot end
+            });
+        } else setSkullType(3); // Work around client bug
+        // Spigot/Nacho end
     }
 
     // Spigot start - Support async lookups
@@ -197,7 +204,7 @@ public class TileEntitySkull extends TileEntity {
             callback.apply(gameprofile);
         }
     }
-    // Spigot end    
+    // Spigot end
 
     public int getSkullType() {
         return this.a;
