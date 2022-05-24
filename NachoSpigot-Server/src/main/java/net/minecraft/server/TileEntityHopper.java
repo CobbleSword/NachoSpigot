@@ -569,7 +569,7 @@ public class TileEntityHopper extends TileEntityContainer implements IHopper, IU
                         tileentityhopper.d(tileentityhopper.world.spigotConfig.hopperTransfer); // Spigot
                     }
 
-//                    iinventory.update(); // Paper
+                    //iinventory.update(); // Paper
                 }
 
                 iinventory.update();
