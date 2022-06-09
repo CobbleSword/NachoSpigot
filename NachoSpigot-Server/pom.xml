@@ -189,6 +189,11 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
+            <resource>
+                <directory>../licenses</directory>
+                <targetPath>licenses</targetPath>
+                <filtering>false</filtering>
+            </resource>
         </resources>
         <plugins>
             <plugin>
