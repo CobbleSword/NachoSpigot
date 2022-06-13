@@ -54,6 +54,7 @@ public class ItemBoat extends Item {
                 if (movingobjectposition.type == MovingObjectPosition.EnumMovingObjectType.BLOCK) {
                     BlockPosition blockposition = movingobjectposition.a();
 
+                    /* Paper - Remove unneeded interaction event trigger
                     // CraftBukkit start - Boat placement
                     org.bukkit.event.player.PlayerInteractEvent event = org.bukkit.craftbukkit.event.CraftEventFactory.callPlayerInteractEvent(entityhuman, org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK, blockposition, movingobjectposition.direction, itemstack);
 
@@ -61,6 +62,7 @@ public class ItemBoat extends Item {
                         return itemstack;
                     }
                     // CraftBukkit end
+                    */ // Paper - Remove unneeded interaction event trigger
 
                     if (world.getType(blockposition).getBlock() == Blocks.SNOW_LAYER) {
                         blockposition = blockposition.down();
